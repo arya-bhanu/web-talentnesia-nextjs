@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import Arrow from '../../../../public/icons/arrow-right-sharp.svg';
+import Arrow from '../../../public/icons/arrow-right-sharp.svg';
 const NewsLetterSubscriptionCard = ({
 	title,
 	subTitle,

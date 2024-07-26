@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import React from 'react';
 import SocialMedia from './SocialMedia';
-import LogoCompany from '../../../../../public/logo-company.svg';
+import LogoCompany from '../../../public/logo-company.svg';
 import NavLinks, { ILink } from './NavLinks';
-import Arrow from '../../../../../public/icons/arrow-right-sharp.svg';
+import Arrow from '../../../public/icons/arrow-right-sharp.svg';
 
 const dataNavs = [
 	{
