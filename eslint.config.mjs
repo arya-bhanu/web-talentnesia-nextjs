@@ -1,0 +1,38 @@
+export default {
+  extends: [
+    'next',
+    'next/core-web-vitals',
+    'plugin:prettier/recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  plugins: ['prettier', '@typescript-eslint', 'react'],
+  rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+    'react/prop-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/triple-slash-reference': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/no-floating-promises': 'off',
+    '@typescript-eslint/no-invalid-void-type': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
+    '@typescript-eslint/no-base-to-string': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+    '@typescript-eslint/no-unsafe-argument': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'react/no-children-prop': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-uses-react': 'off',
+    'react/display-name': 'off',
+  },
+};
