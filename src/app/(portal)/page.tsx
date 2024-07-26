@@ -1,4 +1,4 @@
-import Landing from '@/modules/portal/Home';
+import HomeView from '@/portal/app/home';
 export default function Home() {
-	return <Landing />;
+	return <HomeView />;
 }
