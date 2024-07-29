@@ -1,4 +1,4 @@
-import HomeView from '@/portal/app/home';
+import HomeView from '@/portal/modules/home';
 export default function Home() {
 	return <HomeView />;
 }
