@@ -5,13 +5,15 @@ import EliteClassSectionView from './components/EliteClass';
 import UserStorySectionView from './components/UserStory';
 import PartnersSectionView from './components/Partners/_Partners.view';
 import NewsLetterSubscriptionSectionView from './components/NewsLetterSubscription';
+import BenefitsSectionView from './components/Benefits';
 
 const HomeView = () => {
 	return (
 		<>
 			<HeroSectionView />
 			<main className='container'>
-				<ProgramDimensionSectionView className='mt-24' />
+				<BenefitsSectionView />
+				<ProgramDimensionSectionView className='mt-20' />
 				<EliteClassSectionView className='mt-24' />
 				<UserStorySectionView className='mt-48' />
 				<PartnersSectionView className='mt-28' />
