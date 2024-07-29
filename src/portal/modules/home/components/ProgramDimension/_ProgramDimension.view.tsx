@@ -3,6 +3,7 @@ import React from 'react';
 import ProgramDimensionCard, {
 	IProgramDimension,
 } from '@/portal/components/ProgramDimensionCard';
+import RoundedPrimaryButton from '@/portal/components/RoundedPrimaryButton';
 
 const programs: IProgramDimension[] = [
 	{ title: 'Illustration', imgUrl: '/img/landing/illustration.svg' },
@@ -51,15 +52,7 @@ const ProgramDimensionSectionView = ({ className }: { className?: string }) => {
 							terbaik sesuai minatmu, mulai dari sini!
 						</p>
 					</div>
-					<button className='flex max-w-[90%] items-center justify-between gap-4 px-7 py-2.5 font-inter bg-[#FFC862] rounded-full'>
-						<span>Jelajahi Sekarang</span>
-						<Image
-							alt='icon arrow'
-							src={'/icons/arrow-right-sharp.svg'}
-							width={15}
-							height={15}
-						/>
-					</button>
+					<RoundedPrimaryButton className='py-3 w-fit px-7 gap-4'>Jelajahi Sekarang</RoundedPrimaryButton>
 				</div>
 			</div>
 		</section>

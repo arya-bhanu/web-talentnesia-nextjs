@@ -21,8 +21,8 @@ const BenefitCard = ({
 				width={64}
 				height={64}
 			/>
-			<figcaption>
-				<h2>{props.label}</h2>
+			<figcaption className='mt-4'>
+				<h2 className='text-[#344054] font-semibold'>{props.label}</h2>
 			</figcaption>
 		</figure>
 	);

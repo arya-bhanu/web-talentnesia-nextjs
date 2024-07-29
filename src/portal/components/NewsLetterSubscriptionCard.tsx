@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import Arrow from '../../../public/icons/arrow-right-sharp.svg';
+import RoundedPrimaryButton from './RoundedPrimaryButton';
 const NewsLetterSubscriptionCard = ({
 	title,
 	subTitle,
@@ -43,17 +44,7 @@ const NewsLetterSubscriptionCard = ({
 					borderColor
 				)}
 			/>
-			<button
-				className={clsx(
-					actionButton.bgColor,
-					'px-3 py-2.5 rounded-full flex items-center justify-around gap-3 flex-[1]'
-				)}
-			>
-				<span className={clsx(actionButton.textColor, 'font-medium')}>
-					{actionButton.text}
-				</span>
-				<Arrow />
-			</button>
+			<RoundedPrimaryButton className='px-6'>{actionButton.text}</RoundedPrimaryButton>
 		</div>
 	);
 };
