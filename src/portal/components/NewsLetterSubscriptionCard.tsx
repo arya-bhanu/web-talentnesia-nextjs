@@ -27,24 +27,26 @@ const NewsLetterSubscriptionCard = ({
 		<div
 			className={clsx(
 				color.bg,
-				'rounded-3xl pl-16 py-16 pr-8 flex items-end gap-12'
+				' rounded-2xl md:rounded-3xl pl-8 md:pl-10 lg:pl-16 py-8 sm:py-10 md:py-16 pr-8 flex lg:items-end  items-center gap-6 md:gap-9 lg:gap-12 flex-wrap lg:flex-row flex-col '
 			)}
 		>
 			<div className={clsx(color.text, 'flex-[2]')}>
-				<h3 className='text-xl font-semibold font-poppins'>{title}</h3>
-				<p className='text-sm font-[400] mt-9'>{subTitle}</p>
+				<h3 className=' text-base sm:text-lg md:text-xl font-semibold font-poppins'>{title}</h3>
+				<p className=' text-xs md:text-sm font-[400] mt-4 md:mt-5 lg:mt-9'>{subTitle}</p>
 			</div>
 			<input
 				type='email'
 				placeholder='Tulis email anda'
 				className={clsx(
 					color.text,
-					'bg-transparent outline-none flex-[2] py-2 text-sm',
+					'bg-transparent outline-none flex-[2] w-full py-2 md:text-sm',
 					placeholderColor,
 					borderColor
 				)}
 			/>
-			<RoundedPrimaryButton className='px-6'>{actionButton.text}</RoundedPrimaryButton>
+			<RoundedPrimaryButton className='px-6 w-full sm:w-fit'>
+				{actionButton.text}
+			</RoundedPrimaryButton>
 		</div>
 	);
 };
