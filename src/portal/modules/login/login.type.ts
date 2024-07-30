@@ -1,4 +1,4 @@
 export interface LoginViewProps {
-    showPassword: boolean;
-    togglePasswordVisibility: () => void;
-  }  
+  showPassword: boolean;
+  togglePasswordVisibility: () => void;
+}

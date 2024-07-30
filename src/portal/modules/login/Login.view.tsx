@@ -2,21 +2,27 @@
 
 import React from 'react';
 import Image from 'next/image';
-import './style.css';
+import Link from 'next/link';
 import { LoginViewProps } from './login.type';
+import './login.style.css';
 
-export const LoginView: React.FC<LoginViewProps> = ({ showPassword, togglePasswordVisibility }) => {
+export const LoginView: React.FC<LoginViewProps> = ({
+  showPassword,
+  togglePasswordVisibility,
+}) => {
   return (
     <div className="flex flex-col md:flex-row h-screen font-poppins">
-      <div className="flex flex-col justify-center w-full md:w-1/2 lg:w-[55%] p-8 md:p-12 lg:p-20 xl:p-28 bg-white">
+      <div className="flex flex-col justify-center w-full md:w-1/2 lg:w-[45%] p-8 md:p-12 lg:p-20 xl:p-28 bg-white">
         <div className="mb-8">
-          <Image
-            src="icons/logo-company.svg"
-            alt="logo-talentnesia"
-            width={300}
-            height={300}
-            className="w-32 md:w-48 h-auto mb-4 mx-auto md:mx-0"
-          />
+          <Link href="/" passHref>
+            <Image
+              src="/icons/logo-company-text.svg"
+              alt="logo-talentnesia"
+              width={300}
+              height={300}
+              className="w-32 md:w-48 h-auto mb-4 mx-auto md:mx-0"
+            />
+          </Link>
           <p className="text-sm text-gray-500 text-center md:text-left">
             Excellence in animation begins at our doorstep. Be part of us, where
             industry mentors shape your future.
@@ -24,7 +30,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ showPassword, togglePasswo
         </div>
         <button className="flex items-center justify-center w-full py-2 mb-4 border border-gray-300 rounded-full text-[#000000]">
           <Image
-            src="icons/google.svg"
+            src="/icons/google.svg"
             alt="Google"
             width={20}
             height={20}
@@ -47,7 +53,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ showPassword, togglePasswo
           </div>
           <div className="relative">
             <input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
             />
@@ -59,8 +65,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ showPassword, togglePasswo
               <Image
                 src={
                   showPassword
-                    ? 'icons/icon-eyeslash.svg'
-                    : 'icons/icon-eye.svg'
+                    ? '/icons/icon-eyeslash.svg'
+                    : '/icons/icon-eye.svg'
                 }
                 alt={showPassword ? 'Hide password' : 'Show password'}
                 width={20}
@@ -69,12 +75,9 @@ export const LoginView: React.FC<LoginViewProps> = ({ showPassword, togglePasswo
             </button>
           </div>
           <div className="flex items-center justify-end">
-            <a
-              href="#"
-              className="text-sm text-[#219EBC] hover:underline"
-            >
+            <Link href={'#'} className="text-sm text-[#219EBC] hover:underline">
               Forgot Password?
-            </a>
+            </Link>
           </div>
           <button
             type="submit"
@@ -85,14 +88,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ showPassword, togglePasswo
         </form>
         <p className="mt-10 text-center text-sm text-gray-500">
           Don't have an account yet?{' '}
-          <a href="#" className="text-[#219EBC] hover:underline">
+          <Link href={'#'} className="text-sm text-[#219EBC] hover:underline">
             Let's register
-          </a>
+          </Link>
         </p>
       </div>
-      <div className="hidden md:flex md:w-1/2 lg:w-[45%] bg-[#219EBC] relative">
+      <div className="hidden md:flex md:w-1/2 lg:w-[55%] bg-[#219EBC] relative">
         <div className="pl-8">
-          <h2 className="text-xl lg:text-2xl font-medium mb-4 mt-20 text-white tracking-wide">
+          <h2 className="text-xl lg:text-2xl font-medium mb-4 mt-20 text-white tracking-wide ml-5 lg:20">
             Exciting courses and programs <br />
             await you, join Talentnesia now.
           </h2>
@@ -102,7 +105,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ showPassword, togglePasswo
               alt="picture-woman"
               width={490}
               height={575}
-              className="md:w-[424px] md:h-[498px] lg:w-[490px] lg:h-[575px]"
+              className="md:w-[424px] md:h-[498px] xl:w-[490px] xl:h-[575px]"
             />
           </div>
         </div>

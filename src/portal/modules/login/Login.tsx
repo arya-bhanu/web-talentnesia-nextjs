@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { LoginView } from './Login.view';
-import { LoginViewProps } from './login.type';
 
 export const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
