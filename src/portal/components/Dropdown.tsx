@@ -8,8 +8,8 @@ const Dropdown = ({
 	links?: string[];
 }) => {
 	return (
-		<button className='flex items-center gap-2 group'>
-			<span className='font-inter font-medium'>{children}</span>
+		<button className='flex items-center lg:gap-1 xl:gap-2 group'>
+			<span className='font-inter font-medium lg:text-base text-sm'>{children}</span>
 			<Image
 				alt='arrow icon'
 				src={'/icons/arrow-right.svg'}
