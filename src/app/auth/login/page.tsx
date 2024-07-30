@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login } from '@/portal/modules/login';
+import { Login } from '@/backoffice/modules/auth/login';
 
 const page = () => {
   return (
