@@ -16,8 +16,8 @@ const HomeView = () => {
 				<ProgramDimensionSectionView className='mt-20' />
 				<EliteClassSectionView className='mt-24' />
 				<UserStorySectionView className='mt-48' />
-				<PartnersSectionView className='mt-28' />
-				<NewsLetterSubscriptionSectionView className='mt-36' />
+				<PartnersSectionView className='mt-16 md:mt-20 lg:mt-28' />
+				<NewsLetterSubscriptionSectionView className='mt-16 md:mt-28 lg:mt-36' />
 			</main>
 		</>
 	);
