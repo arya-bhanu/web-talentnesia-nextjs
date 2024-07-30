@@ -12,7 +12,7 @@ const HomeView = () => {
 		<>
 			<HeroSectionView />
 			<main className='container'>
-				<BenefitsSectionView />
+				<BenefitsSectionView className='mt-9 md:mt-16 xl:mt-0' />
 				<ProgramDimensionSectionView className='mt-14 md:mt-16 lg:mt-20' />
 				<EliteClassSectionView className='mt-14 md:mt-16 lg:mt-24' />
 				<UserStorySectionView className=' mt-14 sm:mt-28 md:mt-36 lg:mt-48' />
