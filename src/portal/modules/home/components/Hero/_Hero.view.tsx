@@ -5,10 +5,10 @@ import React from 'react';
 
 const HeroSectionView = ({ className }: { className?: string }) => {
 	return (
-		<section className={clsx(className, 'bg-primary min-h-screen')}>
-			<div className='flex container pt-24'>
+		<section className={clsx(className, 'bg-primary min-h-[70vh] lg:min-h-[80vh] xl:min-h-screen')}>
+			<div className='flex container pt-10 md:pt-14 lg:pt-24'>
 				<div className='flex-[1]'>
-					<h1 className='font-semibold text-white font-poppins text-5xl leading-[58px]'>
+					<h1 className='font-semibold text-white font-poppins text-2xl md:text-3xl lg:text-4xl xl:text-5xl  lg:leading-normal xl:leading-[58px]'>
 						Elevate Your IT Career with Industry Pioneers
 					</h1>
 					<p className='text-white text-base font-normal font-inter leading-6 mt-7 '>
@@ -22,17 +22,17 @@ const HeroSectionView = ({ className }: { className?: string }) => {
 						Mulai Perjalanan Karirmu
 					</RoundedPrimaryButton>
 				</div>
-				<div className='flex-[2] flex justify-end '>
+				<div className='flex-[2] justify-end lg:flex hidden'>
 					<Image
 						alt='hero image'
-						className='block w-fit'
+						className='block object-contain'
 						src={'/img/landing/hero-landing.png'}
 						width={620}
 						height={523}
 					/>
 				</div>
 			</div>
-			<h4 className='font-poppins font-normal text-xl container text-white'>
+			<h4 className='font-poppins font-normal text-base md:text-lg lg:text-xl container text-white mt-5 '>
 				Bagaimana Talentnesia membantu meraih{' '}
 				<span className='font-bold'>Karir Impianmu</span>
 			</h4>
