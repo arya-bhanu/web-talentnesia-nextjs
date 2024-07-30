@@ -1,7 +1,7 @@
 import React from 'react';
 import { Login } from '@/backoffice/modules/auth/login';
 
-const page = () => {
+const LoginPage = () => {
   return (
     <>
       <Login />
@@ -9,4 +9,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LoginPage;
