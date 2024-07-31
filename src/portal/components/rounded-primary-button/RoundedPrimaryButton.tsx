@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 import clsx from 'clsx';
-import Arrow from '../../../public/icons/arrow-right-sharp.svg';
+import Arrow from '../../../../public/icons/arrow-right-sharp.svg';
 
 interface RoundedPrimaryButtonProps
 	extends ButtonHTMLAttributes<HTMLButtonElement> {

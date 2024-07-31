@@ -2,10 +2,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import React from 'react';
 import styles from './benefit_card.module.css';
-export interface IBenefitCard {
-	imgUrl: string;
-	label: string;
-}
+import { IBenefitCard } from './benefitCard.type';
 const BenefitCard = ({
 	className,
 	props,

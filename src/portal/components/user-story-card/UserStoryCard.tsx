@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import ButtonCarousel from './ButtonCarousel';
+import ButtonCarousel from '../button-caraousel/ButtonCarousel';
 
 const UserStoryCard = ({ className }: { className?: string }) => {
 	const [activeNumber, setActiveNumber] = useState(0);

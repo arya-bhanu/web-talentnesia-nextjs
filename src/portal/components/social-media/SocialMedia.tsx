@@ -1,5 +1,5 @@
 import React from 'react';
-import SocialLogo, { ISocialLogo } from './SocialLogo';
+import SocialLogo, { ISocialLogo } from '../social-logo/SocialLogo';
 import clsx from 'clsx';
 
 const dataSocialMedia: ISocialLogo[] = [
