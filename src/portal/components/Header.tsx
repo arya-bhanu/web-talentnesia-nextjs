@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
@@ -49,7 +49,9 @@ const Header = () => {
 					</Link>
 				</div>
 			</nav>
-			<Hamburger />
+			<span className='block lg:hidden'>
+				<Hamburger />
+			</span>
 		</header>
 	);
 };
