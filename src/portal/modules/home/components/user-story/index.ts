@@ -1,2 +1,2 @@
-import UserStorySectionView from './_UserStory.view';
+import UserStorySectionView from './UserStory.view';
 export default UserStorySectionView;
