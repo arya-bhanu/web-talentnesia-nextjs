@@ -1,11 +1,11 @@
 import React from 'react';
-import HeroSectionView from './components/Hero/_Hero.view';
-import ProgramDimensionSectionView from './components/ProgramDimension';
-import EliteClassSectionView from './components/EliteClass';
-import UserStorySectionView from './components/UserStory';
-import PartnersSectionView from './components/Partners/_Partners.view';
-import NewsLetterSubscriptionSectionView from './components/NewsLetterSubscription';
-import BenefitsSectionView from './components/Benefits';
+import HeroSectionView from './components/hero/_Hero.view';
+import ProgramDimensionSectionView from './components/program-dimension';
+import EliteClassSectionView from './components/elite-class';
+import UserStorySectionView from './components/user-story';
+import PartnersSectionView from './components/partners/_Partners.view';
+import NewsLetterSubscriptionSectionView from './components/news-letter-subscription';
+import BenefitsSectionView from './components/benefits';
 
 const HomeView = () => {
 	return (
