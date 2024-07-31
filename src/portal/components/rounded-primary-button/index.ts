@@ -1,2 +1,1 @@
-import RoundedPrimaryButton from './RoundedPrimaryButton';
-export default RoundedPrimaryButton;
+export { default } from './RoundedPrimaryButton';

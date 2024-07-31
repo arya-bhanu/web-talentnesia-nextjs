@@ -1,24 +1,15 @@
 import React from 'react';
-import SocialLogo, { ISocialLogo } from '../social-logo/SocialLogo';
+import SocialMediaView from './SocialMedia.view';
 import clsx from 'clsx';
+import { dataSocialMedia } from './socialMedia.data';
 
-const dataSocialMedia: ISocialLogo[] = [
-	{ imgUrl: '/img/landing/social-media/facebook.svg', linkSocial: '/' },
-	{ imgUrl: '/img/landing/social-media/instagram.svg', linkSocial: '/' },
-	{ imgUrl: '/img/landing/social-media/linkedin.svg', linkSocial: '/' },
-	{ imgUrl: '/img/landing/social-media/twitter.svg', linkSocial: '/' },
-];
-const SocialMedia = ({ className }: { className?: string }) => {
-	return (
-		<nav className={clsx('flex items-center gap-3', className)}>
-			{dataSocialMedia.map((social, index: number) => (
-				<SocialLogo
-					key={index}
-					{...social}
-				/>
-			))}
-		</nav>
-	);
+const SocialMedia: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <SocialMediaView
+      className={clsx('flex items-center gap-3', className)}
+      dataSocialMedia={dataSocialMedia}
+    />
+  );
 };
 
 export default SocialMedia;
