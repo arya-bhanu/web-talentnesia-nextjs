@@ -1,22 +1,17 @@
 'use client';
 import Header from '@/portal/components/header/Header';
 import Footer from '@/portal/components/footer';
-import React, { ReactNode, useContext } from 'react';
-import ObserverProvider, {
-  ObserverContext,
-} from '@/utils/portal/ObserverProvider';
+import React, { ReactNode } from 'react';
+import ObserverProvider from '@/utils/portal/ObserverProvider';
+import { useInView } from 'react-intersection-observer';
 
 const PortalLayout = ({ children }: { children: ReactNode }) => {
-  const { topViewObserver } = useContext(ObserverContext);
+  const { ref, inView } = useInView({ threshold: 1 });
   return (
     <ObserverProvider>
-      <section className="pt-12">
-        <div
-          id="top-element"
-          ref={topViewObserver.observerRef}
-          className="w-full h-2 absolute top-0"
-        />
-        <Header />
+      <section>
+        <div ref={ref} className="w-full absolute top-0 h-2 bg-white opacity-0" />
+        <Header isTopView={inView} />
         <main>{children}</main>
         <Footer className="mt-24" />
       </section>

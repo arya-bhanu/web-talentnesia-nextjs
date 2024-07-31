@@ -9,19 +9,9 @@ interface ObserverContextValue {
     inView: boolean;
     entry: IntersectionObserverEntry | undefined;
   };
-  topViewObserver: {
-    observerRef: (node?: Element | null) => void;
-    inView: boolean;
-    entry: IntersectionObserverEntry | undefined;
-  };
 }
 
 const ObserverContext = createContext<ObserverContextValue>({
-  topViewObserver: {
-    inView: false,
-    observerRef: () => {},
-    entry: undefined,
-  },
   headerObserver: {
     inView: false,
     observerRef: () => {},
@@ -35,11 +25,7 @@ const ObserverProvider = ({ children }: { children: ReactNode }) => {
     inView: headerInView,
     entry: headerEntry,
   } = useInView({ threshold: 0.2 });
-  const {
-    ref: topViewObserverRef,
-    inView: topViewInView,
-    entry: topViewEntry,
-  } = useInView({ threshold: 1 });
+
   return (
     <ObserverContext.Provider
       value={{
@@ -47,11 +33,6 @@ const ObserverProvider = ({ children }: { children: ReactNode }) => {
           observerRef: headerObserverRef,
           entry: headerEntry,
           inView: headerInView,
-        },
-        topViewObserver: {
-          observerRef: topViewObserverRef,
-          entry: topViewEntry,
-          inView: topViewInView,
         },
       }}
     >

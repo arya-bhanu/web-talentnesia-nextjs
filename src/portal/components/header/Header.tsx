@@ -6,12 +6,21 @@ import SearchBar from '../search-bar/Searchbar';
 import Dropdown from '../dropdown/Dropdown';
 import { Sling as Hamburger } from 'hamburger-react';
 import { ObserverContext } from '@/utils/portal/ObserverProvider';
+import clsx from 'clsx';
 
-const Header = () => {
-  const { topViewObserver, headerObserver } = useContext(ObserverContext);
-  console.log(topViewObserver.inView);
+const Header = ({ isTopView }: { isTopView?: boolean }) => {
+  const { headerObserver } = useContext(ObserverContext);
+  console.log(headerObserver.inView);
+  console.log('top view ' + isTopView);
   return (
-    <header className="py-2 px-1 lg:p-3 flex items-center gap-3 fixed top-0 bg-white w-full z-50 shadow-lg">
+    <header
+      className={clsx(
+        'py-2 px-1 lg:p-3 flex items-center gap-3 fixed top-0 bg-white w-full z-50 shadow-lg transition-all',
+        !isTopView && headerObserver.inView
+          ? '-translate-y-20'
+          : 'translate-y-0',
+      )}
+    >
       <div className="flex items-center gap-x-8 lg:gap-x-14 xl:gap-x-24 w-full lg:w-fit">
         <Link href={'/'} className="w-fit flex items-center gap-1 md:gap-3">
           <Image
