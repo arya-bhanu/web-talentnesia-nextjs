@@ -16,8 +16,20 @@ This structure separates components and features into distinct modules to enhanc
     │   ├── hooks/
     │   │   └── useLogin.ts
     │   ├── index.ts
+    │   ├── login.data.ts
     │   ├── login.type.ts
     │   ├── Login.tsx
     │   └── Login.view.tsx
     └── index.ts
+```
+
+### Simple Component Structure
+
+```js
+    card/
+    ├── card.ts
+    ├── card.data.ts
+    ├── card.type.ts
+    ├── Card.tsx
+    └── Card.view.tsx
 ```
