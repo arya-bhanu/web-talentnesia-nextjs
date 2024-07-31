@@ -1,2 +1,1 @@
-import NewsLetterSubscriptionCard from './NewsLetterSubscriptionCard';
-export default NewsLetterSubscriptionCard;
+export { default } from './NewsLetterSubscriptionCard';

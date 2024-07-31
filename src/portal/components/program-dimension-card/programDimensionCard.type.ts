@@ -1,4 +1,4 @@
 export interface IProgramDimension {
-  title: string;
   imgUrl: string;
+  title: string;
 }

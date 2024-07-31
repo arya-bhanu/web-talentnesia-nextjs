@@ -1,2 +1,1 @@
-import UserStoryCard from './UserStoryCard';
-export default UserStoryCard;
+export { default } from './UserStoryCard';

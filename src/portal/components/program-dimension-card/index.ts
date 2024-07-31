@@ -1,2 +1,1 @@
-import ProgramDimensionCard from './ProgramDimensionCard';
-export default ProgramDimensionCard;
+export { default } from './ProgramDimensionCard';
