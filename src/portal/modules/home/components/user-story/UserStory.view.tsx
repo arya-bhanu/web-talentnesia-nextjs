@@ -1,4 +1,4 @@
-import UserStoryCard from '@/portal/components/UserStoryCard';
+import UserStoryCard from '@/portal/components/user-story-card/UserStoryCard';
 import React from 'react';
 
 const UserStorySectionView = ({ className }: { className?: string }) => {

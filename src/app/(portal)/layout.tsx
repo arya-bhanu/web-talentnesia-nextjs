@@ -1,6 +1,6 @@
 'use client';
-import Header from '@/portal/components/Header';
-import Footer from '@/portal/components/Footer';
+import Header from '@/portal/components/header/Header';
+import Footer from '@/portal/components/footer';
 import React, { ReactNode, useContext } from 'react';
 import ObserverProvider, {
   ObserverContext,

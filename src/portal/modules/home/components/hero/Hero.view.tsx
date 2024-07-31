@@ -1,5 +1,5 @@
 'use client';
-import RoundedPrimaryButton from '@/portal/components/RoundedPrimaryButton';
+import RoundedPrimaryButton from '@/portal/components/rounded-primary-button/RoundedPrimaryButton';
 import { ObserverContext } from '@/utils/portal/ObserverProvider';
 import clsx from 'clsx';
 import Image from 'next/image';

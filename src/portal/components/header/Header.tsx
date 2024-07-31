@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import Image from 'next/image';
-import SearchBar from './Searchbar';
-import Dropdown from './Dropdown';
+import SearchBar from '../search-bar/Searchbar';
+import Dropdown from '../dropdown/Dropdown';
 import { Sling as Hamburger } from 'hamburger-react';
 import { ObserverContext } from '@/utils/portal/ObserverProvider';
 
