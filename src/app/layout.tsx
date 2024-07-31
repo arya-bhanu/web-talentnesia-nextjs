@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={clsx(inter.className)}>{children}</body>
+			<body id='top-element' className={clsx(inter.className)}>{children}</body>
 		</html>
 	);
 }

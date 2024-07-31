@@ -1,2 +1,2 @@
-import BenefitsSectionView from './_Benefits.view';
+import BenefitsSectionView from './Benefits.view';
 export default BenefitsSectionView;
