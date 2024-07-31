@@ -1,2 +1,2 @@
-import NewsLetterSubscriptionSectionView from './_NewsLetterSubscription.view';
+import NewsLetterSubscriptionSectionView from './NewsLetterSubscription.view';
 export default NewsLetterSubscriptionSectionView;

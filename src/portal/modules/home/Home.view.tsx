@@ -1,9 +1,9 @@
 import React from 'react';
-import HeroSectionView from './components/hero/_Hero.view';
+import HeroSectionView from './components/hero/Hero.view';
 import ProgramDimensionSectionView from './components/program-dimension';
 import EliteClassSectionView from './components/elite-class';
 import UserStorySectionView from './components/user-story';
-import PartnersSectionView from './components/partners/_Partners.view';
+import PartnersSectionView from './components/partners/Partners.view';
 import NewsLetterSubscriptionSectionView from './components/news-letter-subscription';
 import BenefitsSectionView from './components/benefits';
 

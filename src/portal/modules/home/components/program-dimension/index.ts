@@ -1,2 +1,2 @@
-import ProgramDimensionSectionView from './_ProgramDimension.view';
+import ProgramDimensionSectionView from './ProgramDimension.view';
 export default ProgramDimensionSectionView;

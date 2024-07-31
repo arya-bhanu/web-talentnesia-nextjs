@@ -42,7 +42,7 @@ const ProgramDimensionSectionView = ({ className }: { className?: string }) => {
 						/>
 					))}
 				</div>
-				<div className='bg-[#E0F7FA] rounded-[8px] w-fit px-4 md:px-5 lg:px-7 py-4 md:py-6 lg:py-8 flex-1 flex flex-col justify-between'>
+				<div className='bg-[#E0F7FA] rounded-[8px] w-fit px-3 lg:px-4 xl:px-7 py-4 md:py-6 lg:py-8 flex-1 flex flex-col justify-between'>
 					<div className='max-w-[90%]'>
 						<h3 className='font-poppins text-center md:text-start font-semibold text-xl'>
 							Mulai Karir Impianmu dari Sini
@@ -52,7 +52,7 @@ const ProgramDimensionSectionView = ({ className }: { className?: string }) => {
 							terbaik sesuai minatmu, mulai dari sini!
 						</p>
 					</div>
-					<RoundedPrimaryButton className='py-2 md:py-3 w-fit px-3 md:px-5 lg:px-7 gap-4 mt-3 mx-auto'>Jelajahi Sekarang</RoundedPrimaryButton>
+					<RoundedPrimaryButton className='py-2 md:py-3 w-fit px-3 lg:px-4 xl:px-7 gap-4 mt-3 md:mx-0 mx-auto'>Jelajahi Sekarang</RoundedPrimaryButton>
 				</div>
 			</div>
 		</section>

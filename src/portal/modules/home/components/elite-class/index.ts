@@ -1,2 +1,2 @@
-import EliteClassSectionView from './_EliteClass.view';
+import EliteClassSectionView from './EliteClass.view';
 export default EliteClassSectionView;
