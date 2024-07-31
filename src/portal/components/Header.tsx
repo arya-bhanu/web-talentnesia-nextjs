@@ -8,9 +8,8 @@ import { Sling as Hamburger } from 'hamburger-react';
 import { ObserverContext } from '@/utils/portal/ObserverProvider';
 
 const Header = () => {
-  const { inView } = useContext(ObserverContext);
-  console.log(inView);
-
+  const { topViewObserver, headerObserver } = useContext(ObserverContext);
+  console.log(topViewObserver.inView);
   return (
     <header className="py-2 px-1 lg:p-3 flex items-center gap-3 fixed top-0 bg-white w-full z-50 shadow-lg">
       <div className="flex items-center gap-x-8 lg:gap-x-14 xl:gap-x-24 w-full lg:w-fit">

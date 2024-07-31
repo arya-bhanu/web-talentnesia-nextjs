@@ -1,32 +1,60 @@
 'use client';
 import React, { ReactNode } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 interface ObserverContextValue {
-  observerRef: (node?: Element | null) => void;
-  inView: boolean;
-  entry: IntersectionObserverEntry | undefined;
+  headerObserver: {
+    observerRef: (node?: Element | null) => void;
+    inView: boolean;
+    entry: IntersectionObserverEntry | undefined;
+  };
+  topViewObserver: {
+    observerRef: (node?: Element | null) => void;
+    inView: boolean;
+    entry: IntersectionObserverEntry | undefined;
+  };
 }
 
 const ObserverContext = createContext<ObserverContextValue>({
-  inView: false,
-  observerRef: () => {},
-  entry: undefined,
+  topViewObserver: {
+    inView: false,
+    observerRef: () => {},
+    entry: undefined,
+  },
+  headerObserver: {
+    inView: false,
+    observerRef: () => {},
+    entry: undefined,
+  },
 });
 
 const ObserverProvider = ({ children }: { children: ReactNode }) => {
   const {
-    ref: observerRef,
-    inView,
-    entry,
-  } = useInView({
-    /* Optional options */
-    threshold: 0.5,
-  });
-
+    ref: headerObserverRef,
+    inView: headerInView,
+    entry: headerEntry,
+  } = useInView({ threshold: 0.2 });
+  const {
+    ref: topViewObserverRef,
+    inView: topViewInView,
+    entry: topViewEntry,
+  } = useInView({ threshold: 1 });
   return (
-    <ObserverContext.Provider value={{ observerRef, inView, entry }}>
+    <ObserverContext.Provider
+      value={{
+        headerObserver: {
+          observerRef: headerObserverRef,
+          entry: headerEntry,
+          inView: headerInView,
+        },
+        topViewObserver: {
+          observerRef: topViewObserverRef,
+          entry: topViewEntry,
+          inView: topViewInView,
+        },
+      }}
+    >
       {children}
     </ObserverContext.Provider>
   );

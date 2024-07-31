@@ -6,11 +6,10 @@ import Image from 'next/image';
 import React, { useContext } from 'react';
 
 const HeroSectionView = ({ className }: { className?: string }) => {
-  const { observerRef } = useContext(ObserverContext);
-
+  const { headerObserver } = useContext(ObserverContext);
   return (
     <section
-      ref={observerRef}
+      ref={headerObserver.observerRef}
       className={clsx(
         className,
         'bg-primary min-h-[70vh] lg:min-h-[80vh] xl:min-h-screen',
