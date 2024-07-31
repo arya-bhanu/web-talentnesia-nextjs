@@ -6,6 +6,7 @@ import 'swiper/css/bundle'
 import clsx from 'clsx';
 
 const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
 	title: 'Talentnesia',
