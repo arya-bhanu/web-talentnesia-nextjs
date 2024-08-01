@@ -4,6 +4,7 @@ import './globals.css';
 import 'swiper/css';
 import 'swiper/css/bundle';
 import clsx from 'clsx';
+import GlobalProvider from '@/utils/GlobalProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,9 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(inter.className)}>
-        {children}
-      </body>
+      <GlobalProvider>
+        <body className={clsx(inter.className)}>
+          {children}
+          <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+        </body>
+      </GlobalProvider>
     </html>
   );
 }
