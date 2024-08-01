@@ -1,2 +1,2 @@
-import HeroSectionView from './Hero.view';
-export default HeroSectionView;
+import Hero from './Hero';
+export default Hero;
