@@ -21,8 +21,8 @@ export const IicpView: React.FC = () => {
         <ProgramView className='py-10 md:py-10' />
         <PartnersCarousel className='py-5 md:py-10' />
         <UserStoryCard className='mt-16 md:mt-20 lg:mt-32' />
-        <Divider className='py-10 md:py-20' />
-        <ContactView className='py-10 md:py-20' />
+        <Divider className='py-10 md:mt-20' />
+        <ContactView className='py-10 md:py-15' />
       </main>
     </>
   );

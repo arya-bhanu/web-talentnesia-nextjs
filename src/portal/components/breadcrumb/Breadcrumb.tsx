@@ -3,10 +3,11 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { BreadcrumbView } from './Breadcrumb.view';
+import { BreadcrumbViewProps } from './breadcrumb.type';
 
-export const Breadcrumb: React.FC = () => {
+export const Breadcrumb = (props: BreadcrumbViewProps) => {
   const pathname = usePathname();
   const pathSegments = pathname.split('/').filter(Boolean);
 
-  return <BreadcrumbView pathSegments={pathSegments} />;
+  return <BreadcrumbView {...props} pathSegments={pathSegments} />;
 };

@@ -4,12 +4,14 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BreadcrumbViewProps } from './breadcrumb.type';
+import clsx from 'clsx';
 
 export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
   pathSegments,
+  className
 }) => {
   return (
-    <nav aria-label="breadcrumb" className="font-inter mb-5">
+    <nav aria-label="breadcrumb" className={clsx(className, className="font-inter")}>
       <div className="mb-4">
         <ol className="flex text-md text-gray-700 items-center space-x-2">
           <li className="flex items-center">
