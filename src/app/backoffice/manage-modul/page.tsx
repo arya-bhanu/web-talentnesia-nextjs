@@ -1,9 +1,7 @@
-import React from 'react'
-
+'use client';
+import ManageModul from '@/backoffice/modules/manage-modul';
 const ManageModulIndex = () => {
-  return (
-    <div>ManageModulIndex</div>
-  )
-}
+  return <ManageModul />;
+};
 
-export default ManageModulIndex
+export default ManageModulIndex;
