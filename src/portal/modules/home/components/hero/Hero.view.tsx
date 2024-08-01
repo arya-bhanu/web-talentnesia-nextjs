@@ -15,7 +15,7 @@ const HeroSectionView = ({ className }: { className?: string }) => {
         'bg-primary min-h-[70vh] lg:min-h-[80vh] xl:min-h-screen',
       )}
     >
-      <div className="flex container pt-10 md:pt-14 lg:pt-24">
+      <div className="flex container pt-28 md:pt-32 lg:pt-36 xl:pt-40">
         <div className="flex-[1]">
           <h1 className="font-semibold text-white font-poppins text-2xl md:text-3xl lg:text-4xl xl:text-5xl  lg:leading-normal xl:leading-[58px]">
             Elevate Your IT Career with Industry Pioneers
