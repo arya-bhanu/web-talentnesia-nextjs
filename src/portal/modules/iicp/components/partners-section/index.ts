@@ -1,0 +1,1 @@
+export { PartnerView } from './Partners.view';

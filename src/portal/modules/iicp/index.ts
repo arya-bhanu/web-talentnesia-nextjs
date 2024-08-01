@@ -1,0 +1,1 @@
+import { IicpView } from './Iicp.view';
