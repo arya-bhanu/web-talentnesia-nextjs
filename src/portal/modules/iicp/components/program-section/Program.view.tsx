@@ -46,7 +46,7 @@ const ProgramItem = ({
 export const ProgramView = ({ className }: { className?: string }) => {
   return (
     <section className={clsx(className, (className = 'bg-white'))}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {programData.map((program, index) => (
           <ProgramItem key={index} {...program} />
         ))}

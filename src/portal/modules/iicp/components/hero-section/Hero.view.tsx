@@ -4,7 +4,7 @@ import { Breadcrumb } from '@/portal/components/breadcrumb';
 
 export const HeroSectionView = () => {
   return (
-    <section className="bg-secondary  min-h-[60vh] lg:min-h-[80vh]">
+    <section className="bg-secondary  min-h-[65vh] md:min-h-[60vh] lg:min-h-[80vh]">
       <div className="container pt-10 md:pt-14 lg:pt-24 flex flex-col lg:flex-row items-center lg:items-start">
         <div className="flex-[1] text-center lg:text-left pt-10">
           <Breadcrumb className="my-8 md:my-0 md:mb-5" pathSegments={[]} />
@@ -25,8 +25,8 @@ export const HeroSectionView = () => {
           <Image
             alt="image-hero"
             src="/img/iicp/hero-iicp.png"
-            width={2659}
-            height={2161}
+            width={1189}
+            height={966}
             className="object-contain w-[752px] h-[611px]"
           />
         </div>
