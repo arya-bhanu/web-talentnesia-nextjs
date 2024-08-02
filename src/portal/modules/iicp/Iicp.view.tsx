@@ -7,7 +7,7 @@ import { FeaturesView } from './components/features-section';
 import { ProgramView } from './components/program-section';
 import PartnersCarousel from '@/portal/components/partners-carousel';
 import UserStoryCard from '@/portal/components/user-story-card';
-import { ContactView } from './components/contact-section';
+import { Contact } from './components/contact-section';
 
 export const IicpView: React.FC = () => { 
   return (
@@ -22,7 +22,7 @@ export const IicpView: React.FC = () => {
         <PartnersCarousel className='py-5 md:py-10' />
         <UserStoryCard className='mt-16 md:mt-20 lg:mt-32' />
         <Divider className='py-10 md:mt-20' />
-        <ContactView className='py-10 md:py-15' />
+        <Contact className='py-10 md:py-15' />
       </main>
     </>
   );

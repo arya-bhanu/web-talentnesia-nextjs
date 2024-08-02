@@ -1,1 +1,1 @@
-export { ContactView } from './Contact.view';
+export { Contact } from './Contact';

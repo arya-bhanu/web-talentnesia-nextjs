@@ -2,8 +2,9 @@ import React from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { ContactProps } from './contact.type';
 
-export const ContactView = ({ className }: { className?: string }) => {
+export const ContactView: React.FC<ContactProps> = ({ className }) => {
   return (
     <section className={clsx(className, 'bg-white py-8')}>
       <div className="container mx-auto px-4">

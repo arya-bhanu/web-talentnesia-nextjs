@@ -5,7 +5,7 @@ import React, { ReactNode } from 'react';
 import ObserverProvider from '@/utils/portal/ObserverProvider';
 import { useInView } from 'react-intersection-observer';
 
-const Iicplayout = ({ children }: { children: ReactNode }) => {
+const ContactLayout = ({ children }: { children: ReactNode }) => {
   const { ref, inView } = useInView({ threshold: 1 });
   return (
     <ObserverProvider>
@@ -19,4 +19,4 @@ const Iicplayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default Iicplayout;
+export default ContactLayout;
