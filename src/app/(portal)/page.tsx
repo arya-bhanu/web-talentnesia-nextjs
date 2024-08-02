@@ -1,7 +1,6 @@
-import HomeView from '@/portal/modules/home/Home.view';
-
-const Home = () => {
-  return <HomeView />;
+import Home from '@/portal/modules/home/Home';
+const HomeIndex = () => {
+  return <Home />;
 };
 
-export default Home;
+export default HomeIndex;

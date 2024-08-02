@@ -33,6 +33,7 @@ const config: Config = {
         inter: ['Inter', ...defaultTheme.fontFamily.sans],
         poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
         khand: ['Khand', ...defaultTheme.fontFamily.sans],
+        lato: ['Lato', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: '#219EBC',
