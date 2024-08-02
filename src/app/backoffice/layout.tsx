@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react';
 
 const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <section>
+    <>
       <Navbar />
       <Sidebar />
       <div className="px-8 py-16 sm:ml-64">
@@ -12,7 +12,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
           {children}
         </div>
       </div>
-    </section>
+    </>
   );
 };
 

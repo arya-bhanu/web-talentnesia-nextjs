@@ -1,12 +1,19 @@
 import LabelForm from '@/backoffice/components/label-form/LabelForm';
-import { Label } from 'flowbite-react';
+import { Button, Label } from 'flowbite-react';
 import { Radio } from 'flowbite-react/components/Radio';
 import { TextInput } from 'flowbite-react/components/TextInput';
 import React from 'react';
+import { IManageModulCreate } from './manageModulCreate.type';
+import Link from 'next/link';
 
-const ManageModulCreateView = () => {
+const ManageModulCreateView: React.FC<IManageModulCreate> = ({
+  handleSubmitForm,
+  onChangeSelectedStatus,
+  onChangeModulName,
+  state,
+}) => {
   return (
-    <form action="" className="">
+    <form onSubmit={handleSubmitForm} action="" className="">
       <div className="flex items-center">
         <div className="flex-1">
           <div className="max-w-md">
@@ -16,6 +23,7 @@ const ManageModulCreateView = () => {
               </LabelForm>
             </div>
             <TextInput
+              onChange={onChangeModulName}
               id="modul"
               type="text"
               placeholder="UI/UX Designer"
@@ -23,21 +31,49 @@ const ManageModulCreateView = () => {
             />
           </div>
         </div>
-        <fieldset className="flex flex-1 flex-col gap-4">
-          <legend className="mb-4">
-            <LabelForm isImportant>Status</LabelForm>
-          </legend>
+        <div className="flex flex-1 flex-col gap-4">
+          <LabelForm isImportant>Status</LabelForm>
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2">
-              <Radio id="active" name="status" value="active" defaultChecked />
+              <Radio
+                onChange={onChangeSelectedStatus}
+                id="active"
+                name="status"
+                value="active"
+                checked={state.status === 'active'}
+              />
               <Label htmlFor="active">Active</Label>
             </div>
             <div className="flex items-center gap-2">
-              <Radio id="inactive" name="status" value="inactive" />
+              <Radio
+                onChange={onChangeSelectedStatus}
+                id="inactive"
+                name="status"
+                value="inactive"
+                checked={state.status === 'inactive'}
+              />
               <Label htmlFor="inactive">Inactive</Label>
             </div>
           </div>
-        </fieldset>
+        </div>
+      </div>
+      <div className="mt-5 flex items-center gap-7 justify-end">
+        <Button
+          type="button"
+          outline
+          className="border transition-all duration-300 delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+        >
+          <Link className="" href={'/backoffice/manage-modul'}>
+            Cancel
+          </Link>
+        </Button>
+        <Button
+          type="submit"
+          color={'warning'}
+          className="bg-[#FFC862] text-black"
+        >
+          Submit
+        </Button>
       </div>
     </form>
   );
