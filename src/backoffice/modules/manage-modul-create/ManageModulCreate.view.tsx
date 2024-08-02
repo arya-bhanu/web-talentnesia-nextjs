@@ -37,22 +37,22 @@ const ManageModulCreateView: React.FC<IManageModulCreate> = ({
             <div className="flex items-center gap-2">
               <Radio
                 onChange={onChangeSelectedStatus}
-                id="active"
+                id="status-1"
                 name="status"
                 value="active"
                 checked={state.status === 'active'}
               />
-              <Label htmlFor="active">Active</Label>
+              <Label htmlFor="status-1">Active</Label>
             </div>
             <div className="flex items-center gap-2">
               <Radio
                 onChange={onChangeSelectedStatus}
-                id="inactive"
+                id="status-2"
                 name="status"
                 value="inactive"
                 checked={state.status === 'inactive'}
               />
-              <Label htmlFor="inactive">Inactive</Label>
+              <Label htmlFor="status-2">Inactive</Label>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ const ManageModulCreateView: React.FC<IManageModulCreate> = ({
         <Button
           type="button"
           outline
-          className="border transition-all duration-300 delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+          className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
         >
           <Link className="" href={'/backoffice/manage-modul'}>
             Cancel
