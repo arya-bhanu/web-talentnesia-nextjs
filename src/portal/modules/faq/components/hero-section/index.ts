@@ -1,0 +1,1 @@
+export { HeroSectionView } from './Hero.view'
