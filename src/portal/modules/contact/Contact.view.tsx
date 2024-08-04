@@ -8,8 +8,8 @@ export const ContactView = () => {
     <>
       <HeroSectionView />
       <main className="container py-10 md:px-0 ">
-        <div className="flex flex-col md:flex-row md:justify-between">
-          <ContactCard className="xl:w-1/2 md:mr-4 mb-8 md:mb-0" />
+        <div className="flex flex-col md:flex-row">
+          <ContactCard className="xl:w-[45%] mb-8 md:mb-0 " />
           <ContactForm className="xl:w-1/2" />
         </div>
       </main>

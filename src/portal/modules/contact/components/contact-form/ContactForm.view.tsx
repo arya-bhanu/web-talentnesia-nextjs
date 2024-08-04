@@ -6,7 +6,7 @@
     return (
       <section
         className={clsx(
-          className + ' flex flex-col  lg:items-start pt-5 md:pt-10',
+          className + ' flex flex-col lg:items-start pt-5 md:pt-10',
         )}
       >
         <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl text-[#2B2E33]">
