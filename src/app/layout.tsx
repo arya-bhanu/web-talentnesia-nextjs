@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import GlobalProvider from '@/utils/GlobalProvider';
 import { ThemeModeScript } from 'flowbite-react';
 import Head from 'next/head';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,7 +32,10 @@ export default function RootLayout({
       </Head>
       <body suppressHydrationWarning={true} className={clsx(inter.className)}>
         <GlobalProvider>{children}</GlobalProvider>
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+        <Script
+          strategy="beforeInteractive"
+          src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"
+        ></Script>
       </body>
     </html>
   );

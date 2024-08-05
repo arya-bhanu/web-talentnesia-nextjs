@@ -1,12 +1,20 @@
 'use client';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import Search from '../../../../public/icons/iconamoon_search-bold.svg';
 import Add from '../../../../public/icons/add.svg';
 import IconLeft from '../../../../public/icons/btn-left.svg';
 import IconRight from '../../../../public/icons/btn-right.svg';
 import Link from 'next/link';
-import { IManageModul } from './manageModul.type';
-const ManageModulView: React.FC<IManageModul> = ({ data }) => {
+import { IManageModulView } from './manageModul.type';
+import MoreHoriz from '../../../../public/icons/more_horiz.svg';
+import clsx from 'clsx';
+
+const ManageModulView: React.FC<IManageModulView> = ({
+  data,
+  activeActionPopup,
+  handleActionButtonRow,
+  setActivePopup,
+}) => {
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -28,8 +36,7 @@ const ManageModulView: React.FC<IManageModul> = ({ data }) => {
           </div>
         </form>
         <Link
-          href={'/backoffice/manage-modul/create'}
-          type="button"
+          href="/backoffice/manage-modul/create"
           className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
         >
           <Add />
@@ -105,17 +112,36 @@ const ManageModulView: React.FC<IManageModul> = ({ data }) => {
                     <td className="px-6 py-4">{el.modulName}</td>
                     <td className="px-6 py-4">{el.status}</td>
                     <td className="px-6 py-4">
-                      <button
-                        aria-expanded="false"
-                        data-dropdown-toggle="action-option"
-                      >
-                        Edit
-                      </button>
-                      <div
-                        id="action-option"
-                        className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
-                      >
-                        <p>Hello World</p>
+                      <div className="relative w-fit popup-action">
+                        <button
+                          aria-expanded="false"
+                          data-dropdown-toggle="action-option"
+                          onClick={() => {
+                            if (index === activeActionPopup) {
+                              setActivePopup(-1);
+                            } else {
+                              setActivePopup(index);
+                            }
+                          }}
+                        >
+                          <MoreHoriz />
+                        </button>
+                        <div
+                          id="action-option"
+                          className={clsx(
+                            index === activeActionPopup ? 'flex' : 'hidden',
+                            'z-30 text-base flex-col gap-1 items-start -bottom-20 left-[10%] absolute list-none bg-white divide-y-2 divide-gray-100 p-3 rounded shadow-lg dark:bg-gray-700 dark:divide-gray-600',
+                          )}
+                        >
+                          <button>Edit</button>
+                          <button
+                            onClick={() =>
+                              handleActionButtonRow(el.id, 'delete')
+                            }
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     </td>
                   </tr>
