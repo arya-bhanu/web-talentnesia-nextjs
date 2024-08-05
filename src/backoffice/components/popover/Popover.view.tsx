@@ -2,6 +2,7 @@ import { Popover } from 'flowbite-react';
 import React, { useState } from 'react';
 import MoreHoriz from '../../../../public/icons/more_horiz.svg';
 import { IPopover } from './popover.type';
+import Link from 'next/link';
 
 const PopoverView: React.FC<IPopover> = ({
   index,
@@ -20,9 +21,12 @@ const PopoverView: React.FC<IPopover> = ({
         aria-labelledby="default-popover"
         content={
           <div className="w-fit px-4 py-3 gap-1.5 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-            <button className="hover:text-blue-500 hover:underline">
+            <Link
+              href={`/backoffice/manage-modul/update?slug=${id}`}
+              className="hover:text-blue-500 hover:underline"
+            >
               Edit
-            </button>
+            </Link>
             <button
               className="hover:text-red-500 hover:underline"
               onClick={() => handleActionButtonRow(id, 'delete')}

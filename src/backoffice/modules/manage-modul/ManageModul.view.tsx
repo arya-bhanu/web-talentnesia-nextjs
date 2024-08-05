@@ -1,12 +1,11 @@
 'use client';
-import React, { forwardRef, useState } from 'react';
+import React from 'react';
 import Search from '../../../../public/icons/iconamoon_search-bold.svg';
 import Add from '../../../../public/icons/add.svg';
 import IconLeft from '../../../../public/icons/btn-left.svg';
 import IconRight from '../../../../public/icons/btn-right.svg';
 import Link from 'next/link';
 import { IManageModulView } from './manageModul.type';
-import MoreHoriz from '../../../../public/icons/more_horiz.svg';
 import Popover from '@/backoffice/components/popover';
 
 const ManageModulView: React.FC<IManageModulView> = ({
