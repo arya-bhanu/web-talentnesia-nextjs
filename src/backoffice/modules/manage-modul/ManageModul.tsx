@@ -11,6 +11,7 @@ const ManageModul = () => {
     mutationFn: deleteModule,
   });
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
+  
   const handleActionButtonRow = async (
     id: number,
     action: 'delete' | 'edit',
@@ -23,7 +24,6 @@ const ManageModul = () => {
         break;
     }
     queryClient.invalidateQueries({ queryKey: ['modules'] });
-    // setOpenPopoverIndex(-1);
   };
 
   return (

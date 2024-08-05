@@ -1,26 +1,26 @@
-import { axiosConfigBackoffice } from '@/lib/axiosConfig';
+import { backOfficeAPI } from '@/lib/axiosConfig';
 import { ModuleObject } from '../components/form/formManageModul.type';
 
 export const fetchModules = async () => {
-  const response = await axiosConfigBackoffice.get('/modules');
+  const response = await backOfficeAPI.get('/modules');
   return response;
 };
 
 export const fetchModule = async (id?: number) => {
   if (id) {
-    const response = await axiosConfigBackoffice.get('/module/' + id);
+    const response = await backOfficeAPI.get('/module/' + id);
     return response;
   }
   return null;
 };
 
 export const deleteModule = async (id: number) => {
-  const response = await axiosConfigBackoffice.delete('/modul/' + id);
+  const response = await backOfficeAPI.delete('/modul/' + id);
   return response;
 };
 
 export const createModul = async (data: ModuleObject) => {
-  const response = await axiosConfigBackoffice.post('/modul', data);
+  const response = await backOfficeAPI.post('/modul', data);
   return response;
 };
 
@@ -31,6 +31,6 @@ export const updateModul = async ({
   data: ModuleObject;
   id: number;
 }) => {
-  const response = await axiosConfigBackoffice.put(`/modul/${id}`, data);
+  const response = await backOfficeAPI.put(`/modul/${id}`, data);
   return response;
 };
