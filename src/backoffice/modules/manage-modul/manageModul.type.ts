@@ -11,7 +11,7 @@ export interface APIResponseManageModul {
 
 export interface IManageModulView {
   data?: APIResponseManageModul[];
-  activeActionPopup: number;
-  setActivePopup: React.Dispatch<SetStateAction<number>>;
+  openPopoverIndex: number;
+  setOpenPopoverIndex: React.Dispatch<SetStateAction<number>>;
   handleActionButtonRow: (id: number, action: 'delete' | 'edit') => void;
 }

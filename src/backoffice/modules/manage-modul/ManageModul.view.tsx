@@ -1,5 +1,5 @@
 'use client';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import Search from '../../../../public/icons/iconamoon_search-bold.svg';
 import Add from '../../../../public/icons/add.svg';
 import IconLeft from '../../../../public/icons/btn-left.svg';
@@ -7,13 +7,13 @@ import IconRight from '../../../../public/icons/btn-right.svg';
 import Link from 'next/link';
 import { IManageModulView } from './manageModul.type';
 import MoreHoriz from '../../../../public/icons/more_horiz.svg';
-import clsx from 'clsx';
+import Popover from '@/backoffice/components/popover';
 
 const ManageModulView: React.FC<IManageModulView> = ({
   data,
-  activeActionPopup,
   handleActionButtonRow,
-  setActivePopup,
+  setOpenPopoverIndex,
+  openPopoverIndex,
 }) => {
   return (
     <div>
@@ -111,39 +111,13 @@ const ManageModulView: React.FC<IManageModulView> = ({
                     <td className="px-6 py-4">{index + 1}</td>
                     <td className="px-6 py-4">{el.modulName}</td>
                     <td className="px-6 py-4">{el.status}</td>
-                    <td className="px-6 py-4">
-                      <div className="relative w-fit popup-action">
-                        <button
-                          aria-expanded="false"
-                          data-dropdown-toggle="action-option"
-                          onClick={() => {
-                            if (index === activeActionPopup) {
-                              setActivePopup(-1);
-                            } else {
-                              setActivePopup(index);
-                            }
-                          }}
-                        >
-                          <MoreHoriz />
-                        </button>
-                        <div
-                          id="action-option"
-                          className={clsx(
-                            index === activeActionPopup ? 'flex' : 'hidden',
-                            'z-30 text-base flex-col gap-1 items-start -bottom-20 left-[10%] absolute list-none bg-white divide-y-2 divide-gray-100 p-3 rounded shadow-lg dark:bg-gray-700 dark:divide-gray-600',
-                          )}
-                        >
-                          <button>Edit</button>
-                          <button
-                            onClick={() =>
-                              handleActionButtonRow(el.id, 'delete')
-                            }
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </td>
+                    <Popover
+                      handleActionButtonRow={handleActionButtonRow}
+                      id={el.id}
+                      index={index}
+                      openPopoverIndex={openPopoverIndex}
+                      setOpenPopoverIndex={setOpenPopoverIndex}
+                    />
                   </tr>
                 );
               })}
