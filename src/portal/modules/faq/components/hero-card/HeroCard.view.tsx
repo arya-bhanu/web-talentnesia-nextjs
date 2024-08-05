@@ -9,13 +9,12 @@ export const HeroCardView: React.FC<HeroCardProps> = ({
   title,
   description,
   url,
-  className,
 }) => {
   return (
     <>
-      <section className={clsx(className)}>
-        <div className="relative -top-[5rem] xl:-top-[8rem]">
-          <div className="bg-white rounded-xl border-2 p-6 md:p-8 xl:p-10">
+      <section>
+        <div className="relative -top-[5rem] xl:-mt-[13rem]">
+          <div className="bg-white rounded-xl border-2 p-6 md:p-8">
             <div className="flex flex-col space-y-4 md:space-y-6 xl:space-y-8">
               <Image
                 src={image}

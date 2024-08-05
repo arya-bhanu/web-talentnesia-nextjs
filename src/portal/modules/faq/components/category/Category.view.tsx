@@ -7,7 +7,6 @@ export const CategoryView: React.FC<CategoryViewProps> = ({
   categories,
   selectedCategory,
   hoveredCategory,
-  setSelectedCategory,
   setHoveredCategory,
   handleCategoryClick,
 }) => {
@@ -40,6 +39,7 @@ export const CategoryView: React.FC<CategoryViewProps> = ({
                 width={6}
                 height={6}
                 alt="arrow-right"
+                className='ml-1'
               />
             </button>
           </li>
