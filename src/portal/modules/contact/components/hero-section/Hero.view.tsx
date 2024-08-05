@@ -3,10 +3,11 @@ import Image from 'next/image';
 import { Breadcrumb } from '@/portal/components/breadcrumb';
 import { heroSectionData } from './hero.data';
 import Link from 'next/link';
+import clsx from 'clsx';
 
-export const HeroSectionView = () => {
+export const HeroSectionView = ({className}: {className?: string}) => {
   return (
-    <section className="bg-secondary min-h-[65vh] md:min-h-[60vh] lg:min-h-[80vh] space-y-10">
+    <section className={clsx(className) + "bg-secondary min-h-[65vh] md:min-h-[60vh] lg:min-h-[80vh] space-y-10"}>
       <div className="container pt-10 md:pt-14 lg:pt-24 flex flex-col items-center lg:items-start">
         <div className="text-center lg:text-left pt-10 md:pt-15">
           <Breadcrumb className="my-8 md:my-0 md:mb-5" pathSegments={[]} />
