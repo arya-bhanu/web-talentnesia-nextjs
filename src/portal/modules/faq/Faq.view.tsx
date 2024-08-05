@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeroSectionView } from './components/hero-section';
+import { HeroSection } from './components/hero-section';
 import { HeroCard } from './components/hero-card';
 import { Category } from './components/category';
 import { Accordion } from './components/accordion';
@@ -7,7 +7,7 @@ import { Accordion } from './components/accordion';
 export const FaqView = () => {
   return (
     <>
-      <HeroSectionView />
+      <HeroSection />
       <main className="container mx-auto space-y-8">
         <HeroCard className="mb-10" />
         <h2 className="text-xl font-semibold text-[#344054] mb-4">Kategori FAQ</h2>

@@ -1,4 +1,4 @@
-import { HeroCardProps } from './HeroCard.type';
+import { HeroCardProps } from './heroCard.type';
 
 export const HeroCardData: HeroCardProps[] = [
   {

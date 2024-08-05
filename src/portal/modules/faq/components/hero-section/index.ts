@@ -1,1 +1,1 @@
-export { HeroSectionView } from './Hero.view'
+export { HeroSection } from './Hero';
