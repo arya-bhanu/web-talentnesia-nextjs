@@ -1,0 +1,1 @@
+export { FaqView } from './Faq.view';
