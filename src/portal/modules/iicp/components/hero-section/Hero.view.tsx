@@ -18,7 +18,7 @@ export const HeroSectionView = ({ className }: { className?: string }) => {
         </div>
         <div className="flex-[2] hidden lg:flex justify-end lg:justify-end items-center lg:items-end">
           <Image
-            alt="image-hero"
+            alt="gambar-pahlawan"
             src="/img/iicp/hero-iicp.png"
             width={1189}
             height={966}

@@ -2,11 +2,13 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { HeroCardProps } from './heroCard.type';
+import { HeroCardProps } from './HeroCard.type';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 
-export const HeroCardView: React.FC<{ cards: HeroCardProps[] }> = ({ cards }) => {
+export const HeroCardView: React.FC<{ cards: HeroCardProps[] }> = ({
+  cards,
+}) => {
   return (
     <section className="relative -top-[5rem] xl:-mt-[8rem]">
       <Swiper
