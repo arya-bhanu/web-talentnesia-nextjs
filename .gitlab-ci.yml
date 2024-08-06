@@ -1,0 +1,51 @@
+stages:
+ - cloning
+ - preparation
+ - build
+ - deploy
+
+cloning_repository:
+ stage: cloning
+ tags:
+  - pjt2
+ only:
+  - dev
+ script:
+  - cd /home/talentnesia-dev
+  - if [ -d "web-next-js-talentnesia" ]; then sudo rm -rf web-next-js-talentnesia; fi
+  - sudo git clone -b dev https://oauth2:glpat-NqAr-cgZ73G5DCWw22P1@gitlab.skwn.dev/talentnesia/web-next-js-talentnesia.git
+  - sudo chmod -R 777 web-next-js-talentnesia 
+
+preparing_env:
+ stage: preparation
+ tags:  
+  - pjt2
+ only:
+  - dev
+ script:
+  - cd /home/talentnesia-dev/web-next-js-talentnesia
+  - touch .env  
+
+build_app:
+ stage: build
+ tags:
+  - pjt2
+ only:
+  - dev
+ script:
+  - cd /home/talentnesia-dev/web-next-js-talentnesia
+  - sudo docker build -t $STAGING_REGISTRY_NAME .
+  - sudo docker push $STAGING_REGISTRY_NAME
+
+deploy_app:
+ stage: deploy
+ tags:
+  - pjt2
+ only:
+  - dev
+ script:
+  - cd /home/talentnesia-dev
+  - sudo docker --context project-talentnesia pull $STAGING_REGISTRY_NAME
+  - sudo docker-compose --context project-talentnesia up -d
+  - sudo docker --context project-talentnesia rmi $(docker --context project-wbs images  --filter "reference= docker-registry.skwn.dev/talentnesia-dev" --filter "dangling=true" -q)
+  - sudo docker system prune -f
