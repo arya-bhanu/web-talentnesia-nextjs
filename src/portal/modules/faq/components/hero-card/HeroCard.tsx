@@ -1,5 +1,5 @@
 import React from 'react'
-import { HeroCardData } from './heroCard.data';
+import { HeroCardData } from './HeroCard.data';
 import { HeroCardView } from './HeroCard.view';
 import clsx from 'clsx';
 

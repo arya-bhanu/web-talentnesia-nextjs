@@ -4,7 +4,9 @@ import clsx from 'clsx';
 export const ContentView = ({ className }: { className?: string }) => {
   return (
     <section className={clsx(className, 'py-6 md:py-8 text-justify')}>
-      <h1 className="text-3xl font-bold font-poppins mb-8">Privacy Policy</h1>
+      <h1 className="text-3xl font-bold font-poppins mb-8">
+        Kebijakan Privasi
+      </h1>
       <p className="mb-4">
         Di Lokademi, kami sangat menjaga privasi Anda dan bertekad untuk
         melindungi informasi pribadi Anda. Kebijakan privasi ini berlaku untuk
@@ -16,12 +18,15 @@ export const ContentView = ({ className }: { className?: string }) => {
         web.
       </p>
 
-      <h1 className="text-3xl font-bold font-poppins my-8">Term & Condition</h1>
+      <h1 className="text-3xl font-bold font-poppins my-8">
+        Syarat & Ketentuan
+      </h1>
       <p className="mb-4">
-        Ketentuan dan Syarat ("Syarat") mengatur akses dan penggunaan Anda
-        terhadap Situs Web Lokademi ("Situs Web"). Dengan mengakses atau
-        menggunakan Situs Web, Anda setuju terikat dengan Syarat ini, yang
-        merupakan perjanjian yang mengikat antara Anda dan Lokademi.
+        Syarat dan Ketentuan (&quot;Syarat&quot;) mengatur akses dan penggunaan
+        Anda terhadap Situs Web Lokademi (&quot;Situs Web&quot;). Dengan
+        mengakses atau menggunakan Situs Web, Anda setuju untuk terikat dengan
+        Syarat ini, yang merupakan perjanjian yang mengikat antara Anda dan
+        Lokademi.
       </p>
       <h2 className="text-xl font-semibold font-poppins text-[#455A64] mb-6">
         Penggunaan Website
@@ -64,12 +69,13 @@ export const ContentView = ({ className }: { className?: string }) => {
         Tentang Garansi
       </h2>
       <p className="mb-4">
-        Situs Web disediakan "apa adanya" dan "tersedia" sebagaimana adanya.
-        Lokademi tidak menjamin bahwa Situs Web akan selalu berjalan tanpa
-        hambatan atau tanpa kesalahan, atau bahwa segala kekurangan akan
-        diperbaiki. Lokademi tidak membuat pernyataan atau jaminan apa pun, baik
-        tersurat maupun tersirat, terkait dengan pengoperasian Situs Web atau
-        informasi, konten, bahan, atau produk yang termasuk di dalam Situs Web.
+        Situs Web disediakan &quot;apa adanya&quot; dan &quot;tersedia&quot;
+        sebagaimana adanya. Lokademi tidak menjamin bahwa Situs Web akan selalu
+        berjalan tanpa hambatan atau tanpa kesalahan, atau bahwa segala
+        kekurangan akan diperbaiki. Lokademi tidak membuat pernyataan atau
+        jaminan apa pun, baik tersurat maupun tersirat, terkait dengan
+        pengoperasian Situs Web atau informasi, konten, bahan, atau produk yang
+        termasuk di dalam Situs Web.
       </p>
 
       <h2 className="text-xl font-semibold font-poppins text-[#455A64] mb-6">
@@ -103,12 +109,11 @@ export const ContentView = ({ className }: { className?: string }) => {
         Lokademi berhak untuk mengubah Syarat dan Ketentuan ini kapan saja,
         tanpa pemberitahuan terlebih dahulu. Dengan tetap mengakses atau
         menggunakan Situs Web setelah dilakukan modifikasi, Anda setuju terikat
-        dengan Syarat dan Ketentuan yang telah diubah tersebut. Hukum yang
-        Berlaku dan Yurisdiksi Syarat dan Ketentuan ini akan diatur dan
-        ditafsirkan sesuai dengan hukum negara di mana Lokademi berbasis. Setiap
-        perselisihan yang timbul dari atau berkaitan dengan Syarat dan Ketentuan
-        ini atau penggunaan Situs Web akan tunduk pada yurisdiksi eksklusif
-        pengadilan di negara tersebut.
+        dengan Syarat dan Ketentuan yang telah diubah tersebut. Syarat dan
+        Ketentuan ini akan diatur dan ditafsirkan sesuai dengan hukum negara di
+        mana Lokademi berbasis. Setiap perselisihan yang timbul dari atau
+        berkaitan dengan Syarat dan Ketentuan ini atau penggunaan Situs Web akan
+        tunduk pada yurisdiksi eksklusif pengadilan di negara tersebut.
       </p>
 
       <h2 className="text-xl font-semibold font-poppins text-[#455A64] mb-6">
