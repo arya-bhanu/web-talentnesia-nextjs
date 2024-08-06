@@ -34,8 +34,8 @@ build_app:
   - dev
  script:
   - cd /home/talentnesia-dev/web-next-js-talentnesia
-  - sudo docker build -t $STAGING_REGISTY_NAME .
-  - sudo docker push $STAGING_REGISTY_NAME
+  - sudo docker build -t $STAGING_REGISTRY_NAME .
+  - sudo docker push $STAGING_REGISTRY_NAME
 
 deploy_app:
  stage: deploy
