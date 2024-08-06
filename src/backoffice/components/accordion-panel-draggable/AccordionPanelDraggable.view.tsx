@@ -56,14 +56,12 @@ const AccordionPanelDraggableView: React.FC<
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2.5">
-            <button>
-              <Edit />
-            </button>
-            <button>
-              <Trash />
-            </button>
-          </div>
+          <button>
+            <Edit />
+          </button>
+          <button>
+            <Trash />
+          </button>
         </div>
       </div>
       <div

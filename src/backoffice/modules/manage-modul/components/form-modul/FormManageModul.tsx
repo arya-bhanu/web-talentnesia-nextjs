@@ -15,7 +15,7 @@ const FormManageModul = ({ slug }: { slug?: number }) => {
   const router = useRouter();
 
   // edit
-  const { mutateAsync } = useMutation({
+  const { mutateAsync : createAsync } = useMutation({
     mutationKey: ['modules'],
     mutationFn: createModul,
   });
@@ -43,11 +43,15 @@ const FormManageModul = ({ slug }: { slug?: number }) => {
     try {
       if (slug) {
         await updateAsync({ data: modulObject, id: slug });
+        await queryClient.invalidateQueries({ queryKey: ['modules'] });
+        router.push('/backoffice/manage-modul');
       } else {
-        await mutateAsync({ ...modulObject });
+        await createAsync({ ...modulObject });
+        await queryClient.invalidateQueries({ queryKey: ['modules'] });
+        router.push('/backoffice/manage-modul/create/chapter');
       }
-      await queryClient.invalidateQueries({ queryKey: ['modules'] });
-      router.push('/backoffice/manage-modul');
+
+      
     } catch (err) {
       console.error(err);
     }

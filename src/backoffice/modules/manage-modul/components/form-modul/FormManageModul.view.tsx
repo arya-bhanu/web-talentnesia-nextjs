@@ -66,26 +66,8 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
             </div>
           </div>
         </div>
-        <div className="mt-5 flex items-center gap-7 justify-end">
-          <Button
-            type="button"
-            outline
-            className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
-          >
-            <Link className="" href={'/backoffice/manage-modul'}>
-              Cancel
-            </Link>
-          </Button>
-          <Button
-            type="submit"
-            color={'warning'}
-            className="bg-[#FFC862] text-black"
-          >
-            Submit
-          </Button>
-        </div>
+        <Chapter className="mt-10" />
       </form>
-      <Chapter className='mt-10' />
     </section>
   );
 };

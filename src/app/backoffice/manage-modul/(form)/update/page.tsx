@@ -1,5 +1,5 @@
 'use client';
-import FormManageModul from '@/backoffice/modules/manage-modul/components/form/FormManageModul';
+import FormManageModul from '@/backoffice/modules/manage-modul/components/form-modul/FormManageModul';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 

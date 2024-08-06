@@ -1,5 +1,5 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
-import { ModuleObject } from '../components/form/formManageModul.type';
+import { ModuleObject } from '../components/form-modul/formManageModul.type';
 
 export const fetchModules = async () => {
   const response = await backOfficeAPI.get('/modules');
