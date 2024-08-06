@@ -1,1 +1,1 @@
-export { ProgramView } from './Program.view'
+export { Program } from './Program'

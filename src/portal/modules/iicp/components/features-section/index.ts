@@ -1,1 +1,1 @@
-export { FeaturesView } from './Features.view';
+export { Features } from './Features';

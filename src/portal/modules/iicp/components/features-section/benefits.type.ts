@@ -1,5 +1,5 @@
 export interface featuresProps {
-    imgUrl: string;
-    title: string;
-    description: string;
+  imgUrl: string;
+  title: string;
+  description: string;
 }

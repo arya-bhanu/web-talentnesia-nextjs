@@ -8,10 +8,12 @@ import clsx from 'clsx';
 
 export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
   pathSegments,
-  className
+  className,
+  currentPath
 }) => {
+
   return (
-    <nav aria-label="breadcrumb" className={clsx(className, className="font-inter")}>
+    <nav aria-label="breadcrumb" className={clsx(className, 'font-inter')}>
       <div className="mb-4">
         <ol className="flex text-md text-gray-700 items-center space-x-2">
           <li className="flex items-center">
@@ -22,7 +24,7 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
           {pathSegments.length > 0 && (
             <span className="mx-1 text-[#667085]">
               <Image
-                src={"/icons/arrow-right.svg"}
+                src="/icons/arrow-right.svg"
                 alt="Chevron Right"
                 width={18}
                 height={18}
@@ -39,7 +41,9 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
             return (
               <React.Fragment key={path}>
                 {isLast ? (
-                  <li className="font-bold text-gray-900">{displayName}</li>
+                  <li className="font-bold text-gray-900">
+                    {currentPath || displayName}
+                  </li>
                 ) : (
                   <li className="flex items-center text-[#667085]">
                     <Link href={path} className="hover:underline">
@@ -47,11 +51,11 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
                     </Link>
                     <span className="mx-1">
                       <Image
-                        src={'/icons/arrow-right.svg'}
+                        src="/icons/arrow-right.svg"
                         alt=""
                         width={18}
                         height={18}
-                        className="inline"
+                        className="inline rotate-[-90deg]"
                       />
                     </span>
                   </li>

@@ -1,1 +1,1 @@
-import { IicpView } from './Iicp.view';
+export { Iicp } from './Iicp';
