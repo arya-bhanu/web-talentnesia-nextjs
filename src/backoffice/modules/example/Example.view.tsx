@@ -1,8 +1,5 @@
 import React from 'react';
-
-interface ExampleViewProps {
-  children: React.ReactNode;
-}
+import ExampleViewProps from './components/example.type';
 
 const ExampleView: React.FC<ExampleViewProps> = ({ children }) => {
   return <div>{children}</div>;
