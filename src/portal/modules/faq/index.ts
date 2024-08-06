@@ -1,1 +1,1 @@
-export { FaqView } from './Faq.view';
+export { Faq } from './Faq';

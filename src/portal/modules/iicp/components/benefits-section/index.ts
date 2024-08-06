@@ -1,1 +1,1 @@
-export { BenefitsView } from './Benefits.view';
+export { Benefits } from './Benefits';

@@ -9,5 +9,11 @@ export const Breadcrumb = (props: BreadcrumbViewProps) => {
   const pathname = usePathname();
   const pathSegments = pathname.split('/').filter(Boolean);
 
-  return <BreadcrumbView {...props} pathSegments={pathSegments} />;
+
+  return (
+    <BreadcrumbView
+      {...props}
+      pathSegments={pathSegments}
+    />
+  );
 };
