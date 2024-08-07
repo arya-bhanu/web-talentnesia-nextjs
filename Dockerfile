@@ -12,8 +12,6 @@ COPY . /var/www/html
 # Set the working directory
 WORKDIR /var/www/html
 
-# Webserver user
-RUN chown -R www-data:www-data /var/www/html
 #ENV NEXT_DISABLE_ESLINT=true
 #ENV NEXT_PUBLIC_ESLINT_MODE=off
 
@@ -22,6 +20,9 @@ RUN npm install
 
 # Build application using yarn
 RUN npm run build
+
+# Webserver user
+RUN chown -R www-data:www-data /var/www/html
 
 # Copy nginx configuration
 COPY nginx/default /etc/nginx/sites-enabled/
