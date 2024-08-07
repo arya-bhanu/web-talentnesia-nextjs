@@ -1,4 +1,4 @@
-FROM devopssekawanmedia/yarn:20-cmd
+FROM devopssekawanmedia/npm:20-cmd
 
 # Remove Existing application directory
 RUN rm -rf /var/www/html
