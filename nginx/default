@@ -1,0 +1,51 @@
+server {
+        server_name _;
+        listen 80;
+#        return 301 https://$host$request_uri;
+#}
+#server {
+#        server_name _;
+#        listen  443 ssl;
+#        ssl_certificate /etc/nginx/ssl/certificate.crt;
+#        ssl_certificate_key /etc/nginx/ssl/private.key;
+        client_max_body_size 60M;
+
+        gzip on;
+        gzip_types text/plain text/css text/xml text/javascript application/javascript application/json;
+        gzip_proxied no-cache no-store private expired auth;
+        gzip_vary on;
+        gunzip on;
+#        add_header 'Content-Security-Policy' 'upgrade-insecure-requests';
+
+        root /var/www/html/.next;
+        index index.php index.html index.htm;
+        location /	 {
+		proxy_pass http://localhost:3000/;
+		proxy_http_version 1.1;
+	        proxy_set_header Upgrade $http_upgrade;
+	        proxy_set_header Connection 'upgrade';
+	        proxy_set_header Host $host;
+	        proxy_cache_bypass $http_upgrade;
+        }
+        location ~ /\.envconfig {
+                deny all;
+                return 404;
+        }
+        location ~ /\.env {
+                deny all;
+                return 404;
+        }
+        location ~ /\.git {
+                deny all;
+                return 404;
+        }
+            location ~ /\.config {
+                deny all;
+                return 404;
+        }
+        location ^~ /health {
+                access_log off;
+                add_header 'Content-Type' 'application/json';
+                return 200 '{"status":"Healthy"}';
+        }
+}

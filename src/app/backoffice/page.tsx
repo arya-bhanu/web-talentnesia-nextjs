@@ -1,7 +1,3 @@
-import React from 'react';
+import { Login } from '@/backoffice/modules/auth/login';
 
-const Home = () => {
-  return <h1>Hello</h1>;
-};
-
-export default Home;
+export default Login;

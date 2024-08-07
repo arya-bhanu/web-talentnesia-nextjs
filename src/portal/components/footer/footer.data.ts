@@ -1,4 +1,5 @@
-import { ILink } from "./footer.type";
+import { ILink } from './footer.type';
+
 export const dataNavs = [
   {
     title: 'ABOUT US',
