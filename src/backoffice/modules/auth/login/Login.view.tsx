@@ -5,11 +5,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { LoginViewProps } from './login.type';
 import './login.style.css';
+import useLogin from './hooks/useLogin';
 
-export const LoginView: React.FC<LoginViewProps> = ({
-  showPassword,
-  togglePasswordVisibility,
-}) => {
+export const LoginView: React.FC<Partial<LoginViewProps>> = (
+  {
+    // showPassword,
+    // togglePasswordVisibility,
+  },
+) => {
+  const { showPassword, togglePasswordVisibility } = useLogin();
+
   return (
     <div className="flex flex-col md:flex-row h-screen font-poppins">
       <div className="flex flex-col justify-center w-full md:w-1/2 lg:w-[45%] p-8 md:p-12 lg:p-20 xl:p-28 bg-white">
