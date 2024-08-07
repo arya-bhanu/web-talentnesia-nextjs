@@ -24,8 +24,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
             />
           </Link>
           <p className="text-sm text-gray-500 text-center md:text-left">
-            Excellence in animation begins at our doorstep. Be part of us, where
-            industry mentors shape your future.
+            Keunggulan dalam animasi dimulai dari tempat kami. Jadilah bagian
+            dari kami, di mana mentor industri membentuk masa depan Anda.
           </p>
         </div>
         <button className="flex items-center justify-center w-full py-2 mb-4 border border-gray-300 rounded-full text-[#000000]">
@@ -36,11 +36,11 @@ export const LoginView: React.FC<LoginViewProps> = ({
             height={20}
             className="mr-2"
           />
-          Sign in with Google
+          Masuk dengan Google
         </button>
         <div className="flex items-center mb-4">
           <div className="flex-grow border-t border-gray-300 border-dashed" />
-          <span className="mx-4 text-gray-500">or</span>
+          <span className="mx-4 text-gray-500">atau</span>
           <div className="flex-grow border-t border-gray-300 border-dashed" />
         </div>
         <form className="space-y-4">
@@ -54,7 +54,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
+              placeholder="Kata Sandi"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
             />
             <button
@@ -68,7 +68,11 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     ? '/icons/icon-eyeslash.svg'
                     : '/icons/icon-eye.svg'
                 }
-                alt={showPassword ? 'Hide password' : 'Show password'}
+                alt={
+                  showPassword
+                    ? 'Sembunyikan kata sandi'
+                    : 'Tampilkan kata sandi'
+                }
                 width={20}
                 height={20}
               />
@@ -76,33 +80,33 @@ export const LoginView: React.FC<LoginViewProps> = ({
           </div>
           <div className="flex items-center justify-end">
             <Link href={'#'} className="text-sm text-[#219EBC] hover:underline">
-              Forgot Password?
+              Lupa Kata Sandi?
             </Link>
           </div>
           <button
             type="submit"
             className="w-full py-2 bg-[#219EBC] text-white rounded-full shadow-lg text-sm"
           >
-            LOGIN
+            MASUK
           </button>
         </form>
         <p className="mt-10 text-center text-sm text-gray-500">
-          Don't have an account yet?{' '}
+          Belum punya akun?{' '}
           <Link href={'#'} className="text-sm text-[#219EBC] hover:underline">
-            Let's register
+            Daftar sekarang
           </Link>
         </p>
       </div>
       <div className="hidden md:flex md:w-1/2 lg:w-[55%] bg-[#219EBC] relative">
         <div className="pl-8">
           <h2 className="text-xl lg:text-2xl font-medium mb-4 mt-20 text-white tracking-wide ml-5 lg:20">
-            Exciting courses and programs <br />
-            await you, join Talentnesia now.
+            Kursus dan program menarik <br />
+            menunggu Anda, bergabunglah dengan Talentnesia sekarang.
           </h2>
           <div className="absolute bottom-0 right-0">
             <Image
               src="/images/picture-woman.png"
-              alt="picture-woman"
+              alt="gambar-wanita"
               width={490}
               height={575}
               className="md:w-[424px] md:h-[498px] xl:w-[490px] xl:h-[575px]"
