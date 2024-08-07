@@ -4,6 +4,10 @@ import './globals.css';
 import 'swiper/css';
 import 'swiper/css/bundle';
 import clsx from 'clsx';
+import GlobalProvider from '@/utils/GlobalProvider';
+import { ThemeModeScript } from 'flowbite-react';
+import Head from 'next/head';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,9 +22,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={clsx(inter.className)}>
-        {children}
+    <html lang="en" suppressHydrationWarning={true}>
+      <Head>
+        <ThemeModeScript />
+        <link
+          href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css"
+          rel="stylesheet"
+        />
+      </Head>
+      <body suppressHydrationWarning={true} className={clsx(inter.className)}>
+        <GlobalProvider>{children}</GlobalProvider>
+        <Script
+          strategy="beforeInteractive"
+          src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"
+        ></Script>
       </body>
     </html>
   );

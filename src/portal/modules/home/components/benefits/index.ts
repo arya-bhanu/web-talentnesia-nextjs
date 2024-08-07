@@ -1,2 +1,2 @@
-import BenefitsSectionView from './Benefits.view';
-export default BenefitsSectionView;
+import Benefits from './Benefits';
+export default Benefits;
