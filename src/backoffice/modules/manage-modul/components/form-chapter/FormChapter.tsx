@@ -1,9 +1,8 @@
-"use client"
+'use client';
 import React, { useState } from 'react';
 import FormChapterView from './FormChapter.view';
-import { IFormChapter } from './formChapter.type';
 
-const FormChapter: React.FC<IFormChapter> = (props) => {
+const FormChapter = () => {
   const handleSubmitAddContent = () => {};
   const [openModalAddContent, setOpenModalAddContent] = useState(false);
   return (

@@ -9,6 +9,7 @@ import EditableListContent from '@/backoffice/components/editable-list-content';
 import Modal from '@/backoffice/components/modal';
 import FormContent from '../form-content';
 import { IFormChapter } from './formChapter.type';
+import Link from 'next/link';
 
 const chapters: IEditableListContent[] = [
   {
@@ -80,8 +81,10 @@ const FormChapterView: React.FC<IFormChapter> = ({
               type="button"
               className="border items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
             >
-              <AddWhite />
-              <span>Add Ecam</span>
+              <Link className='flex items-center' href={'/backoffice/manage-modul/create/chapter/add-exam'}>
+                <AddWhite />
+                <span>Add Exam</span>
+              </Link>
             </Button>
             <button
               onClick={() => stateFormAddContent.setOpenModal(true)}

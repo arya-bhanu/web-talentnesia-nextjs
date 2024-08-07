@@ -15,25 +15,24 @@ const ModalView: React.FC<IModal> = ({
       <Modal.Header>{title}</Modal.Header>
       <form onSubmit={handleSubmit}>
         <Modal.Body>{children}</Modal.Body>
-        <div className=" flex justify-end">
-          <Modal.Footer>
-            <Button
-              onClick={() => state.setOpenModal(false)}
-              type="button"
-              outline
-              className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              color={'warning'}
-              className="bg-[#FFC862] text-black"
-            >
-              Submit
-            </Button>
-          </Modal.Footer>
-        </div>
+
+        <Modal.Footer className='w-full justify-end'>
+          <Button
+            onClick={() => state.setOpenModal(false)}
+            type="button"
+            outline
+            className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            color={'warning'}
+            className="bg-[#FFC862] text-black"
+          >
+            Submit
+          </Button>
+        </Modal.Footer>
       </form>
     </Modal>
   );

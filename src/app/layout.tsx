@@ -8,6 +8,7 @@ import GlobalProvider from '@/utils/GlobalProvider';
 import { ThemeModeScript } from 'flowbite-react';
 import Head from 'next/head';
 import Script from 'next/script';
+import "flatpickr/dist/flatpickr.css";
 
 const inter = Inter({ subsets: ['latin'] });
 
