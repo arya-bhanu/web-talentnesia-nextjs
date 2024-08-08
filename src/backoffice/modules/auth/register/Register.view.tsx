@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RegisterViewProps } from './register.type';
+import './register.style.css';
 
 export const RegisterView: React.FC<RegisterViewProps> = ({
   showPassword,

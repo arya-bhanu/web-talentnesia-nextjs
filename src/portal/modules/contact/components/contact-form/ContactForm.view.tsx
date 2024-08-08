@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { issues } from './contactForm.data';
+import './contactForm.style.css';
 
 export const ContactFormView = ({ className}: { className?: string }) => {
   return (

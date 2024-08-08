@@ -40,7 +40,7 @@ export const dataNavs = [
       },
       {
         label: 'Term and Condition',
-        link: 'term-and-condition',
+        link: 'terms',
       },
       {
         label: 'Cookies',
