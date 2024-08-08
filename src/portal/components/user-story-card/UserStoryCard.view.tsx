@@ -3,11 +3,13 @@ import Image from 'next/image';
 import ButtonCarousel from '../button-caraousel/ButtonCarousel';
 import { UserStoryCardViewProps } from './userStoryCard.type';
 
+const noOp = () => {};
+
 const UserStoryCardView: React.FC<UserStoryCardViewProps> = ({
   className,
-  activeNumber,
-  setActiveNumber,
-  testimonials,
+  activeNumber = 0, // Default to 0 if undefined
+  setActiveNumber = noOp,
+  testimonials = [], // Default to empty array if undefined
 }) => {
   const staticPhotos = [
     '/img/landing/user-story/Henry.png',
@@ -15,6 +17,9 @@ const UserStoryCardView: React.FC<UserStoryCardViewProps> = ({
     '/img/landing/user-story/reja.png',
     '/img/landing/user-story/woman.png',
   ];
+
+  // Ensure testimonials and activeNumber are handled safely
+  const currentTestimonial = testimonials[activeNumber % testimonials.length];
 
   return (
     <div className={className}>
@@ -29,10 +34,10 @@ const UserStoryCardView: React.FC<UserStoryCardViewProps> = ({
           />
           <div className="flex bg-white px-3 sm:px-5 py-2 sm:py-4 rounded-b-2xl font-inter gap-1 xl:gap-4 flex-wrap">
             <figcaption className="font-bold sm:text-base text-sm">
-              {testimonials[activeNumber].fullName}
+              {currentTestimonial?.fullName || 'No name available'}
             </figcaption>
             <p className="text-[#667085] sm:text-base text-sm font-normal">
-              {testimonials[activeNumber].statusUser}
+              {currentTestimonial?.statusUser || 'No status available'}
             </p>
           </div>
         </figure>
@@ -45,7 +50,7 @@ const UserStoryCardView: React.FC<UserStoryCardViewProps> = ({
           <span>Cerita Inspiratif Peserta Program Kami</span>
         </strong>
         <p className="mt-2 md:mt-4 lg:mt-6 md:text-base text-xs sm:text-sm">
-          “{testimonials[activeNumber].description}”
+          “{currentTestimonial?.description || 'No description available'}”
         </p>
         <ButtonCarousel
           activeNumber={activeNumber}
