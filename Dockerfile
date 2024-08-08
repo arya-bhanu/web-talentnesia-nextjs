@@ -7,21 +7,22 @@ RUN rm -rf /var/www/html
 COPY . /var/www/html
 
 # Install dependecies using npm
-#RUN npm install --global yarn
+RUN npm install --global yarn
 
 # Set the working directory
 WORKDIR /var/www/html
 
-# Webserver user
-RUN chown -R www-data:www-data /var/www/html
 #ENV NEXT_DISABLE_ESLINT=true
 #ENV NEXT_PUBLIC_ESLINT_MODE=off
 
 # Install dependecies using yarn
-RUN npm install 
+RUN yarn install 
 
 # Build application using yarn
-RUN npm run build
+RUN yarn run build
+
+# Webserver user
+RUN chown -R www-data:www-data /var/www/html
 
 # Copy nginx configuration
 COPY nginx/default /etc/nginx/sites-enabled/

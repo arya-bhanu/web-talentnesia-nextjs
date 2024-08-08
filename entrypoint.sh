@@ -6,5 +6,8 @@ service nginx start
 # Checking http respond
 curl -Is http://localhost
 
+# Stop checking
+service nginx stop >> /dev/null
+
 # Stop interactive
-npm start
+nginx -g 'daemon off;'
