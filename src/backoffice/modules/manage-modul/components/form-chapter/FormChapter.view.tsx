@@ -6,6 +6,10 @@ import Add from '../../../../../../public/icons/add.svg';
 import AddWhite from '../../../../../../public/icons/add-white.svg';
 import { IEditableListContent } from '@/backoffice/components/editable-list-content/editableListContent.type';
 import EditableListContent from '@/backoffice/components/editable-list-content';
+import Modal from '@/backoffice/components/modal';
+import FormContent from '../form-content';
+import { IFormChapter } from './formChapter.type';
+import Link from 'next/link';
 
 const chapters: IEditableListContent[] = [
   {
@@ -39,9 +43,19 @@ const chapters: IEditableListContent[] = [
     urlImg: '/icons/play-circle.svg',
   },
 ];
-const FormChapterView = () => {
+const FormChapterView: React.FC<IFormChapter> = ({
+  handleSubmitAddContent,
+  stateFormAddContent,
+}) => {
   return (
     <div>
+      <Modal
+        handleSubmit={handleSubmitAddContent}
+        state={stateFormAddContent}
+        title="Add Content"
+      >
+        <FormContent />
+      </Modal>
       <form action="">
         <div>
           <div className="mb-2 block">
@@ -67,10 +81,13 @@ const FormChapterView = () => {
               type="button"
               className="border items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
             >
-              <AddWhite />
-              <span>Add Ecam</span>
+              <Link className='flex items-center' href={'/backoffice/manage-modul/create/chapter/add-exam'}>
+                <AddWhite />
+                <span>Add Exam</span>
+              </Link>
             </Button>
             <button
+              onClick={() => stateFormAddContent.setOpenModal(true)}
               type="submit"
               className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
             >
@@ -79,7 +96,7 @@ const FormChapterView = () => {
             </button>
           </div>
         </div>
-        <section className='flex flex-col gap-5 mt-8'>
+        <section className="flex flex-col gap-5 mt-8">
           {chapters.map((el) => (
             <EditableListContent {...el} key={el.id} />
           ))}
