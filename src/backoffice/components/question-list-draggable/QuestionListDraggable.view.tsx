@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import LabelForm from '../label-form';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
-import { Label, Radio, Select, TextInput } from 'flowbite-react';
-import Add from '@/../public/icons/add-sm.svg';
+import { Select } from 'flowbite-react';
+import './questionListDragganle.css';
 import QuestionFieldOption from './question-field-option';
 import QuestionFieldTextarea from './question-field-textarea';
 import Copy from '@/../public/icons/copy.svg';
@@ -12,6 +12,8 @@ import PopoverAction from '../popover-action';
 import { IQuestionListDraggable } from './questionListDraggable.type';
 import QuestionFieldProject from './question-field-project';
 import { QuestionType } from './questionListDraggable.enum';
+import ReactQuill from 'react-quill';
+import clsx from 'clsx';
 const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
   openPopover,
   setOpenPopover,
@@ -30,16 +32,16 @@ const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
     }
   }, [questionType]);
   return (
-    <div className="flex items-start gap-5">
+    <div className={clsx('flex items-start gap-5')}>
       <button>
         <DragIndicator />
       </button>
       <div className="flex-[2]">
-        <div className="flex flex-col gap-1">
+        <div id="richtext" className={clsx('flex flex-col gap-1')}>
           <LabelForm htmlFor="question" isImportant className="w-fit">
             Question
           </LabelForm>
-          <TextInput id="question" />
+          <ReactQuill />
         </div>
         <div className="mt-5">{renderFieldOption()}</div>
       </div>
