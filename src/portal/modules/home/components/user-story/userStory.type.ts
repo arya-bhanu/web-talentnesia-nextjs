@@ -1,6 +1,6 @@
-import { testimonials } from '@/portal/components/user-story-card/userStoryCard.type';
+import { Testimonials } from '@/portal/components/user-story-card/userStoryCard.type';
 
 export interface UserStorySectionViewProps {
   className?: string;
-  testimonials: testimonials[];
+  testimonials: Testimonials[];
 }
