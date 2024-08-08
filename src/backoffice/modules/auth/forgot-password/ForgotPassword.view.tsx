@@ -47,7 +47,6 @@ export const ForgotPasswordView: React.FC<ForgotPasswordViewProps> = ({
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
             />
           </div>
           <button

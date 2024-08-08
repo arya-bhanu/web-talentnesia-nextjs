@@ -45,7 +45,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
         <form className="space-y-6">
           <div className="relative">
             <input
-              contentEditable
+              type='text'
               placeholder="First Name"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
@@ -53,7 +53,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
           </div>
           <div className="relative">
             <input
-              contentEditable
+              type='text'
               placeholder="Last Name"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
@@ -61,7 +61,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
           </div>
           <div className="relative">
             <input
-              contentEditable
+              type='email'
               placeholder="Email"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
@@ -69,7 +69,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
           </div>
           <div className="relative">
             <input
-              type={showPassword ? '' : ''}
+              type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
