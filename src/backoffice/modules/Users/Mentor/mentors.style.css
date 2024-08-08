@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.component {
+    flex: 1 1 auto; /* Grow and shrink as needed, but don't shrink below the min-width */
+    min-width: 200px; /* Set minimum width */
+}

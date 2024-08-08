@@ -13,7 +13,7 @@
     "@tanstack/react-query": "^5.51.16",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
-    "flowbite": "^2.4.1",
+    "flowbite": "^2.5.1",
     "flowbite-react": "^0.10.1",
     "hamburger-react": "^2.5.1",
     "next": "14.2.5",
