@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
-import { IFeatureCard } from './featureCard.type';
+import { courses } from './featureCard.type';
 
-const FeatureCardView = (props: IFeatureCard) => {
+const FeatureCardView = (props: courses) => {
   const formatRupiah = (angka: number) => {
     var reverse = angka.toString().split('').reverse().join('');
     var ribuan = reverse.match(/\d{1,3}/g);
@@ -10,10 +10,11 @@ const FeatureCardView = (props: IFeatureCard) => {
     return 'Rp ' + formatted;
   };
 
-  const renderStar = (n: number) => {
+  const renderStar = (rating: number) => {
     const stars = [];
+    const ratingInt = Math.floor(rating);
 
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < ratingInt; i++) {
       stars.push(
         <Image
           key={i}
@@ -32,7 +33,7 @@ const FeatureCardView = (props: IFeatureCard) => {
       <div className="h-[180px] overflow-clip w-full">
         <Image
           alt="card image"
-          src={props.imgUrl}
+          src={props.logo}
           width={400}
           height={180}
           className="w-full object-cover"
@@ -42,17 +43,17 @@ const FeatureCardView = (props: IFeatureCard) => {
         <figcaption className="text-base sm:text-lg md:text-xl font-poppins font-semibold line-clamp-2">
           {props.title}
         </figcaption>
-        <p className="text-xs text-[#667085] mt-1 md:mt-3">{props.category}</p>
+        <p className="text-xs text-[#667085] mt-1 md:mt-3">{props.description}</p>
         <div className="flex items-center gap-2 mt-1 md:mt-3">
-          <p className="text-xs text-[#344054] ">{props.ratingNumber}</p>
-          <div className="flex items-center gap-1 ">{renderStar(5)}</div>
+          <p className="text-xs text-[#344054] ">{props.rating}</p>
+          <div className="flex items-center gap-1 ">{renderStar(parseFloat(props.rating))}</div>
         </div>
         <div className="flex items-center gap-2 mt-2 sm:mt-3 md:mt-5">
           <p className="text-base md:text-lg lg:text-xl font-semibold">
-            {formatRupiah(props.price)}
+            {formatRupiah(parseFloat(props.currentPrice))}
           </p>
           <p className="font-poppins text-[#98A2B3] text-xs sm:text-sm md:text-base line-through">
-            {formatRupiah(props.prevPrice)}
+            {formatRupiah(parseFloat(props.originPrice))}
           </p>
         </div>
       </div>

@@ -1,9 +1,21 @@
-import React from 'react';
-import DropdownView from './Dropdown.view';
+import React, { useState } from 'react';
+import { DropdownView } from './Dropdown.view';
 import { IDropdown } from './dropdown.type';
 
 const Dropdown = (props: IDropdown) => {
-  return <DropdownView {...props} />;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <DropdownView
+      {...props}
+      isOpen={isOpen}
+      toggleDropdown={toggleDropdown}
+    />
+  );
 };
 
 export default Dropdown;

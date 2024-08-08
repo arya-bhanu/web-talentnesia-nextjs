@@ -1,8 +1,8 @@
 import React from 'react';
 import FeatureCardView from './FeatureCard.view';
-import { IFeatureCard } from './featureCard.type';
+import { courses } from './featureCard.type';
 
-const FeatureCard = (props: IFeatureCard) => {
+const FeatureCard = (props: courses) => {
   return <FeatureCardView {...props} />;
 };
 

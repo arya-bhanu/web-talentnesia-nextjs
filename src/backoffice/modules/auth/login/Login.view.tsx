@@ -79,7 +79,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
             </button>
           </div>
           <div className="flex items-center justify-end">
-            <Link href={'#'} className="text-sm text-[#219EBC] hover:underline">
+            <Link href={'forgot-password'} className="text-sm text-[#219EBC] hover:underline">
               Lupa Kata Sandi?
             </Link>
           </div>
@@ -92,7 +92,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
         </form>
         <p className="mt-10 text-center text-sm text-gray-500">
           Belum punya akun?{' '}
-          <Link href={'#'} className="text-sm text-[#219EBC] hover:underline">
+          <Link href={'register'} className="text-sm text-[#219EBC] hover:underline">
             Daftar sekarang
           </Link>
         </p>

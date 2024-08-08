@@ -30,7 +30,20 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'https',
         hostname: 'flowbite.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api-talentnesia.skwn.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img-b.udemycdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'imagizer.imageshack.com',
       },
     ],
   },

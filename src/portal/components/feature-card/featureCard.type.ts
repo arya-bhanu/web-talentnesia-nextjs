@@ -1,8 +1,10 @@
-export interface IFeatureCard {
-  imgUrl: string;
+export interface courses {
+  logo: string;
   title: string;
-  category: string;
-  ratingNumber: number;
-  price: number;
-  prevPrice: number;
+  description: string;
+  level: string;
+  currentPrice: string;
+  originPrice: string;
+  url: string;
+  rating: string;
 }

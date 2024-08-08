@@ -3,8 +3,12 @@
 import React, { useState } from 'react';
 import UserStoryCardView from './UserStoryCard.view';
 import clsx from 'clsx';
+import { UserStoryCardViewProps } from './userStoryCard.type';
 
-const UserStoryCard: React.FC<{ className?: string }> = ({ className }) => {
+const UserStoryCard: React.FC<UserStoryCardViewProps> = ({
+  className,
+  testimonials,
+}) => {
   const [activeNumber, setActiveNumber] = useState(0);
   return (
     <UserStoryCardView
@@ -14,6 +18,7 @@ const UserStoryCard: React.FC<{ className?: string }> = ({ className }) => {
       )}
       activeNumber={activeNumber}
       setActiveNumber={setActiveNumber}
+      testimonials={testimonials}
     />
   );
 };

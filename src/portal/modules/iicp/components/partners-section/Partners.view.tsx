@@ -2,9 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import clsx from 'clsx';
-import { dataPartners } from '@/portal/components/partners-carousel/partnersCarousel.data';
+import { Partners } from './partners.type';
 
-export const PartnerView = ({ className }: { className?: string }) => {
+export const PartnerView = ({ className, partners }: { className?: string, partners: Partners[]; }) => {
   return (
     <section className={clsx(className, (className = 'bg-white'))}>
       <div className="flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left">
@@ -18,11 +18,11 @@ export const PartnerView = ({ className }: { className?: string }) => {
         </div>
         <div className="w-full flex justify-center lg:justify-end items-center">
           <div className="flex flex-wrap justify-center lg:justify-end items-center gap-6">
-            {dataPartners.map((partner, index: number) => (
+            {partners.map((partner, index: number) => (
               <Link href={partner.link || '/'} key={index}>
                 <Image
                   alt="partner image"
-                  src={partner.imgUrl}
+                  src={partner.logo}
                   width={120}
                   height={30}
                   className="w-20 md:w-28 h-9 md:h-20 object-contain"
