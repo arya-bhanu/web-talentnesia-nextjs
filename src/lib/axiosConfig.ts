@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const backOfficeAPI = axios.create({
-  baseURL: 'http://localhost:7000',
+  baseURL: process.env.API_SERVER_URL,
 });

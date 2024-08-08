@@ -47,5 +47,11 @@ deploy_app:
   - cd /home/talentnesia-dev
   - sudo docker --context project-talentnesia pull $STAGING_REGISTRY_NAME
   - sudo docker-compose --context project-talentnesia up -d
-  - sudo docker --context project-talentnesia rmi $(docker --context project-wbs images  --filter "reference= docker-registry.skwn.dev/talentnesia-dev" --filter "dangling=true" -q)
+  - |
+    DELETABLE_IMAGES=$(sudo docker --context project-ci images --filter "reference=$STAGING_REGISTRY_NAME_NOTAG" --filter "dangling=true" -q)
+    if [ -n "$DELETABLE_IMAGES" ]; then
+      sudo docker --context project-ci rmi $DELETABLE_IMAGES
+    else
+      echo "No deletable images found."
+    fi
   - sudo docker system prune -f

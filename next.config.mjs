@@ -1,5 +1,36 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  env: {
+    API_SERVER_URL: process.env.API_SERVER_URL,
+    APP_URL: process.env.APP_URL,
+  },
+  output: 'export',
+  images: {
+    unoptimized: true,
+    remotePatterns: [
+      {
+        hostname: 'flowbite.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'flowbite.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api-talentnesia.skwn.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img-b.udemycdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'imagizer.imageshack.com',
+      },
+    ],
+  },
+  trailingSlash: true,
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
@@ -26,26 +57,6 @@ const nextConfig = {
     fileLoaderRule.exclude = /\.svg$/i;
 
     return config;
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'flowbite.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api-talentnesia.skwn.dev',
-      },
-      {
-        protocol: 'https',
-        hostname: 'img-b.udemycdn.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'imagizer.imageshack.com',
-      },
-    ],
   },
 };
 
