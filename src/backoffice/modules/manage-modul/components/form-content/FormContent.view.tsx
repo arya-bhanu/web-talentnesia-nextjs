@@ -2,11 +2,12 @@ import LabelForm from '@/backoffice/components/label-form';
 import { FileInput, Label, Select, TextInput } from 'flowbite-react';
 import React from 'react';
 import Flatpickr from 'react-flatpickr';
-import Timer from '../../../../../../public/icons/timer.svg';
+import Timer from '@/../public/icons/timer.svg';
 import styles from './formContent.module.css';
 import clsx from 'clsx';
 import DocumentUpload from '@/../public/icons/document-upload.svg';
 import { IFormContent } from './formContent.type';
+import TimeInput from '@/backoffice/components/time-input';
 
 const FormContentView: React.FC<IFormContent> = ({
   setTime,
@@ -51,7 +52,9 @@ const FormContentView: React.FC<IFormContent> = ({
                   {file.name}
                 </span>
               ) : (
-                <span className="text-sm text-[#219EBC] font-normal">Choose file</span>
+                <span className="text-sm text-[#219EBC] font-normal">
+                  Choose file
+                </span>
               )}
             </div>
             <FileInput
@@ -66,29 +69,7 @@ const FormContentView: React.FC<IFormContent> = ({
             />
           </Label>
         </div>
-        <div className="flex-1 flex flex-col ">
-          <LabelForm isImportant htmlFor="time" className="opacity-0">
-            time
-          </LabelForm>
-          <div className="border border-[#D3D7DD] flex items-center gap-2 px-4 rounded-lg mt-1 flex-1">
-            <Timer />
-            <Flatpickr
-              id="time"
-              className="h-full w-full !border-none"
-              options={{
-                enableTime: true,
-                noCalendar: true,
-                dateFormat: 'H:i',
-                time_24hr: true,
-                minuteIncrement: 1,
-              }}
-              value={time}
-              onChange={([date]) => {
-                setTime(date);
-              }}
-            />
-          </div>
-        </div>
+        <TimeInput setTime={setTime} time={time} />
       </div>
     </div>
   );

@@ -1,9 +1,8 @@
-import React from 'react'
+import AddExam from '@/backoffice/modules/manage-modul/add-exam';
+import React from 'react';
 
 const AddExamIndex = () => {
-  return (
-    <div>AddExamIndex</div>
-  )
-}
+  return <AddExam />;
+};
 
-export default AddExamIndex
+export default AddExamIndex;
