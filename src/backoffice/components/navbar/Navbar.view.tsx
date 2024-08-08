@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 const NavbarView = () => {
@@ -29,10 +30,12 @@ const NavbarView = () => {
               </svg>
             </button>
             <a href="https://flowbite.com" className="flex ms-2 md:me-24">
-              <img
+              <Image
                 src="https://flowbite.com/docs/images/logo.svg"
                 className="h-8 me-3"
                 alt="FlowBite Logo"
+                width={10}
+                height={8}
               />
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                 Flowbite
@@ -49,7 +52,7 @@ const NavbarView = () => {
                   data-dropdown-toggle="dropdown-user"
                 >
                   <span className="sr-only">Open user menu</span>
-                  <img
+                  <Image
                     width={40}
                     height={50}
                     className="w-8 h-8 rounded-full"

@@ -97,7 +97,7 @@ const ChapterView: React.FC<IChapter & IStateChapter> = ({
         </h2>
         <button type='submit' className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">
           <Add />
-          <span className="text-black"> Add Modul</span>
+          <span className="text-black"> Add Chapter</span>
         </button>
       </div>
       <div className="mt-5 flex flex-col gap-3">
