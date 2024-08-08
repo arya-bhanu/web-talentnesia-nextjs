@@ -24,7 +24,10 @@ const QuestionFieldOptionView = () => {
           Option 3
         </Label>
       </div>
-      <button className="flex text-sm font-lato font-medium items-center gap-1">
+      <button
+        type="button"
+        className="flex text-sm font-lato font-medium items-center gap-1"
+      >
         <Add />
         <span>Add New Option</span>
       </button>
