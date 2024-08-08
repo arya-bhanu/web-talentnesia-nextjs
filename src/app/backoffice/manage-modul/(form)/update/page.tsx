@@ -17,4 +17,12 @@ function SuspenseManageModulUpdate() {
   return <FormManageModul slug={Number(slug)} />;
 }
 
-export default ManageModulUpdateIndex;
+const WrappedSuspenseComponent = () => {
+  return (
+    <Suspense>
+      <ManageModulUpdateIndex />
+    </Suspense>
+  );
+};
+
+export default WrappedSuspenseComponent;
