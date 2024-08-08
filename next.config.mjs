@@ -37,14 +37,26 @@ const nextConfig = {
 
     return config;
   },
-
-  env: {
-    API_SERVER_URL: process.env.API_SERVER_URL,
-    APP_URL: process.env.APP_URL,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'flowbite.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api-talentnesia.skwn.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img-b.udemycdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'imagizer.imageshack.com',
+      },
+    ],
   },
-
-  reactStrictMode: true,
-  
 };
 
 export default nextConfig;

@@ -17,7 +17,7 @@ const SearchBarView: React.FC<SearchBarViewProps> = ({
       <input
         type="text"
         placeholder={placeHolder}
-        className="font-poppins text-[#667085] text-sm w-full px-2 md:px-3 lg:px-5 border-none outline-none"
+        className="font-poppins text-[#667085] text-sm w-full px-2 md:px-3 lg:px-5 border-none outline-none focus:outline-none focus:ring-0"
       />
       <button>
         <Image

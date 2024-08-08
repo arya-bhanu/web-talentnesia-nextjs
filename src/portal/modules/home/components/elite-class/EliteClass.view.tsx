@@ -1,8 +1,8 @@
 import FeatureCard from '@/portal/components/feature-card/FeatureCard';
 import React from 'react';
-import { datas } from './eliteClass.data';
+import { EliteClassSectionViewProps } from './eliteClass.type';
 
-const EliteClassSectionView = ({ className }: { className?: string }) => {
+const EliteClassSectionView: React.FC<EliteClassSectionViewProps> = ({ className, courses }) => {
   return (
     <section className={className}>
       <h2 className="font-poppins font-semibold md:text-start text-center text-xl md:text-2xl lg:text-3xl">
@@ -13,8 +13,8 @@ const EliteClassSectionView = ({ className }: { className?: string }) => {
         <strong>pelatihan interaktif dan peluang pekerjaan yang menarik</strong>
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 md:mt-7 lg:mt-9 gap-10">
-        {datas.map((feature, index: number) => (
-          <FeatureCard key={index} {...feature} />
+        {courses.map((course, index: number) => (
+          <FeatureCard key={index} {...course} />
         ))}
       </div>
     </section>
