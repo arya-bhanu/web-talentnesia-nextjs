@@ -7,8 +7,8 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     <>
       <Navbar />
       <Sidebar />
-      <div className="px-8 py-16 sm:ml-64">
-        <div className="p-4 border border-gray-200 rounded-lg dark:border-gray-700 mt-14">
+      <div className="px-8 py-16 sm:ml-64 bg-[#FAFAFA] min-h-screen">
+        <div className="p-4 bg-[#FFFFFF] mt-14 rounded-xl shadow-sm">
           {children}
         </div>
       </div>
