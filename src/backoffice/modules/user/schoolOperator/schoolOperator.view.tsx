@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { religions, maritalStatus, academicTitles, provinces, cityDistrict, subDistrict, placesOfBirth } from './mentor.data';
+import { religions, maritalStatus, provinces, cityDistrict, subDistrict, placesOfBirth, schoolOfOrigin } from './schoolOperator.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useMentorForm } from "./mentor";
-import './mentor.style.css';
+import { useSchoolOperatorForm } from "./schoolOperator";
+import './schoolOperator.style.css';
 
 
 const Datepicker = dynamic(
@@ -25,21 +25,19 @@ const ProfilePictureInput = dynamic(
 
 
 
-type MentorViewProps = ReturnType<typeof useMentorForm>;
+type SchoolOperatorViewProps = ReturnType<typeof useSchoolOperatorForm>;
 
-export const MentorView: React.FC<MentorViewProps> = ({
+export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
   form,
   handleInputChange,
   handleEducationChange,
-  addEducation,
-  removeEducation,
   resetForm
 }) => {
 
     return (
         <>
         <div className="container mx-auto p-1 max-w-full">
-            {/* <h1 className="text-3xl font-bold mb-8">Add Mentor</h1>
+            {/* <h1 className="text-3xl font-bold mb-8">Add SchoolOperator</h1>
             <Breadcrumb pathSegments={[]}/> */}
             <form className="space-y-8">
                 <div className="border p-6 rounded-lg shadow-sm bg-white">
@@ -56,22 +54,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                             <label className="flex mb-1">Name<div className='text-red-600'>*</div></label>
                             <input type="text" name="name" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins" placeholder="Input name" required />
                         </div>
-                        <div className='rounded-lg w-full p-2.5 hidden md:block'></div>
                         <div>
-                            <label className="flex mb-1">NIK<div className='text-red-600'>*</div></label>
+                            <label className="flex mb-1">NIK/Identity Number<div className='text-red-600'>*</div></label>
                             <input type="text" name="nik" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " placeholder="Input NIK" required />
-                        </div>
-                        <div>
-                            <label className="block mb-1">NPWP</label>
-                            <input type="text" name="npwp" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins" placeholder="Input NPWP" />
-                        </div>
-                        <div>
-                            <label className="block mb-1">Foto KTP</label>
-                            <FileInput id="ktp-file" label="Foto KTP" />
-                        </div>
-                        <div>
-                            <label className="block mb-1">Foto NPWP</label>
-                            <FileInput id="npwp-file" label="Foto NPWP" />
                         </div>
                         <div>
                             <label className="flex mb-1">Place of Birth<div className='text-red-600'>*</div></label>
@@ -113,24 +98,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
                                 </label>
                             </div>
                         </div>
-                        <div>
-                            <label className="flex mb-1">Mariage Status<div className='text-red-600'>*</div></label>
-                            <select name="maritalStatus" onChange={handleInputChange}
-                            value={form.maritalStatus || ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins ">
-                            <option className='hidden' value="" disabled>Select Mariage Status</option>
-                                {maritalStatus.map((status, index) => (
-                                    <option key={index} value={status}>{status}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block mb-1">Number of Children</label>
-                            <input type="number" name="numberOfChildren" placeholder="Input Number of Child" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
-                        </div>
-                        <div>
-                            <label className="flex mb-1">Employee Contract<div className='text-red-600'>*</div></label>
-                            <FileInput id="contract-file" label="Employee Contract" />
-                        </div>
                     </div>
                 </div>
 
@@ -143,16 +110,8 @@ export const MentorView: React.FC<MentorViewProps> = ({
                             <input type="text" name="phoneNumber" placeholder="Phone Number" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
                         </div>
                         <div>
-                            <label className="flex mb-1">LinkedIn Link<div className='text-red-600'>*</div></label>
-                            <input type="text" name="linkedin" placeholder="Linkedin Link" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
-                        </div>
-                        <div>
                             <label className="flex mb-1">Email<div className='text-red-600'>*</div></label>
                             <input type="email" name="email" placeholder="Email" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
-                        </div>
-                        <div>
-                            <label className="flex mb-1">Emergency Contact<div className='text-red-600'>*</div></label>
-                            <input type="text" name="emergencyContact" placeholder="Emergency Contact" required onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
                         </div>
                     </div>
                 </div>
@@ -193,10 +152,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
                             <input type="text" name="zipCode" placeholder="Input Zip Code" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
                         </div>
                         <div>
-                            <label className="flex mb-1">Address (KTP)<div className='text-red-600'>*</div></label>
-                            <input type="text" name="addressKtp" placeholder="Input Address (KTP)" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
-                        </div>
-                        <div>
                             <label className="flex mb-1">Address (Domicile)<div className='text-red-600'>*</div></label>
                             <input type="text" name="addressDomicile" placeholder="Input Address (Domicile)" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
                         </div>
@@ -205,77 +160,18 @@ export const MentorView: React.FC<MentorViewProps> = ({
 
                 {/* Section D: Education */}
                 <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg md:text-xl font-semibold">D. Education</h2>
-                        
-                        <button 
-                            type="button" 
-                            onClick={addEducation} 
-                            className="text-black px-4 py-2 rounded"
-                        >
-                            <div className='flex text-[12px] md:text-lg font-poppins'>
-                            <Image src="/img/manage-user/mdi_plus-circle.svg" width={20} height={20} alt="AddEducation" className="w-4 h-4 md:w-6 md:h-6 cursor-pointer" />
-                            Add New Education
-                            </div>
-                        </button>
-                </div>
-
-                    {form.education.map((education, index) => (
-                        <div key={index} className="border-b pb-4 mb-4">
-                            <div className="flex justify-between items-center mb-4 w-full">
+                    <h2 className="text-lg md:text-xl font-semibold mb-4">D. School</h2>
+                    <div className="grid grid-cols-1 gap-4">
                                 <div>
-                                    <h3 className="text-lg font-semibold">{index + 1}.</h3>
-                                </div>
-                                <div>
-                                    {form.education.length > 1 && (
-                                            <button 
-                                                type="button" 
-                                                onClick={() => removeEducation(index)} 
-                                                className="text-red-500 px-4 py-2 rounded flex items-center"
-                                            >
-                                                <Image src="/img/manage-user/Delete.svg" width={50} height={50} alt="RemoveEducation" className="w-8 h-8 md:w-12 md:h-12 cursor-pointer mr-2"
- />
-                                            </button>
-                                        )}
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="flex mb-1">University Name<div className='text-red-600'>*</div></label>
-                                    <input type="text" name={`universityName-${index}`} placeholder="University Name" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
-                                </div>
-                                <div>
-                                    <label className="flex mb-1">Academic Title<div className='text-red-600'>*</div></label>
-                                    <select name={`academicTitle-${index}`} value={education.academicTitle || ""} onChange={handleInputChange}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins ">
-                                        <option className='hidden' value="" disabled>Select Academic Title</option>
-                                        {academicTitles.map((title, idx) => (
-                                            <option key={idx} value={title}>{title}</option>
+                                    <label className="flex mb-1">School of origin<div className='text-red-600'>*</div></label>
+                                    <select name="schoolOfOrigin" value={form.schoolOfOrigin || ""} onChange={handleInputChange}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins ">
+                                    <option className='hidden' value="" disabled>Select School</option>
+                                        {schoolOfOrigin.map((school, idx) => (
+                                            <option key={idx} value={school}>{school}</option>
                                         ))}
                                     </select>
                                 </div>
-                                <div>
-                                    <label className="flex mb-1">Major<div className='text-red-600'>*</div></label>
-                                    <input type="text" name={`major-${index}`} placeholder="Input Major" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
-                                </div>
-                                <div>
-                                    <label className="flex mb-1">GPA<div className='text-red-600'>*</div></label>
-                                    <input type="text" name={`gpa-${index}`} placeholder="Input GPA" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
-                                </div>
-                                <div>
-                                    <label className="flex mb-1">Year Graduated<div className='text-red-600'>*</div></label>
-                                    <Datepicker/>
-                                </div>
-                                <div>
-                                    <label className="flex mb-1">Certificate Number<div className='text-red-600'>*</div></label>
-                                    <input type="text" name={`certificateNumber-${index}`} placeholder="Input Certificate Number" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins " />
-                                </div>
-                                <div>
-                                    <label className="flex mb-1">Academic Certificate<div className='text-red-600'>*</div></label>
-                                    <FileInput id={`certificate-file-${index}`} label={`Academic Certificate ${index + 1}`} />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                    </div>
                 </div>
                 {/* Submit Button */}
                 <div className="flex justify-end space-x-4">
@@ -299,4 +195,4 @@ export const MentorView: React.FC<MentorViewProps> = ({
     );
 };
 
-export default MentorView;
+export default SchoolOperatorView;

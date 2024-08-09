@@ -7,7 +7,7 @@ export interface Education {
   certificateNumber: string;
 }
 
-export interface MentorFormData {
+export interface AdminFormData {
   profilePicture: string | null;
   name: string;
   nik: string;
