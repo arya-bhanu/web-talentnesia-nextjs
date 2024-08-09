@@ -1,20 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { religions, maritalStatus, provinces, cityDistrict, subDistrict, placesOfBirth, schoolOfOrigin } from './schoolOperator.data';
+import { religions, maritalStatus, provinces, cityDistrict, subDistrict, placesOfBirth, schoolOfOrigin } from './school-operator.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useSchoolOperatorForm } from "./schoolOperator";
+import { useSchoolOperatorForm } from "./school-operator";
 import './schoolOperator.style.css';
 
 
 const Datepicker = dynamic(
 () => import('@/backoffice/components/datepicker/Datepicker').then((mod) => mod.Component),
-  { ssr: false }
-);
-
-const FileInput = dynamic(
-  () => import('@/backoffice/components/file-input/FileInput').then((mod) => mod.Component),
   { ssr: false }
 );
 

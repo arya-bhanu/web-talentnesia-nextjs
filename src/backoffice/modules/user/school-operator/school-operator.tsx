@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from "react";
-import { SchoolOperatorView } from "./schoolOperator.view";
-import { SchoolOperatorFormData } from "./schoolOperator.type";
+import { SchoolOperatorView } from "./school-operator.view";
+import { SchoolOperatorFormData } from "./school-operator.type";
 
 export const useSchoolOperatorForm = () => {
   const [form, setForm] = useState<SchoolOperatorFormData>({
