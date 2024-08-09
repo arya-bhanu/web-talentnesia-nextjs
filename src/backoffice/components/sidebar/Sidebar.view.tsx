@@ -26,7 +26,7 @@ const SidebarView = () => {
   return (
     <aside
       id="icon-sidebar"
-      className="fixed top-0 left-0 z-50 w-64 h-screen mt-[-0.5rem] bg-[#FFFFFF] shadow-md overflow-y-auto"
+      className="fixed top-0 left-0 z-50 w-64 min-h-screen bg-[#FFFFFF] shadow-md overflow-y-auto"
       aria-label="Sidebar"
     >
       <div className="flex flex-col items-center py-4 px-3">
