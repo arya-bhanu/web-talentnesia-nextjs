@@ -9,7 +9,7 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/course.svg',
     title: 'Manage Course',
-    path: '#',
+    path: '/backoffice/manage-modul',
   },
   {
     icon: '/icons/sidebar/program.svg',
@@ -25,7 +25,7 @@ export const sidebarData: SidebarProps[] = [
     icon: '/icons/sidebar/setting.svg',
     title: 'Setting',
     links: [
-      { label: 'Academic Level', link: '#' },
+      { label: 'Academic Level', link: '/backoffice/setting/academic-level' },
       { label: 'Academic Title', link: '#' },
       { label: 'Category', link: '#' },
       { label: 'Certificate', link: '#' },

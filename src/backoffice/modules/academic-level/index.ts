@@ -1,1 +1,1 @@
-export { AcademicLevel } from './AcademicLevel';
+export { default } from './AcademicLevel';

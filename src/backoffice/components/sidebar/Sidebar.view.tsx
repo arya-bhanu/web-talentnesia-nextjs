@@ -26,7 +26,7 @@ const SidebarView = () => {
   return (
     <aside
       id="icon-sidebar"
-      className="fixed top-0 left-0 z-50 w-64 min-h-screen bg-[#FFFFFF] shadow-md overflow-y-auto"
+      className="fixed top-0 left-0 z-50 w-64 h-screen bg-[#FFFFFF] shadow-md overflow-y-auto"
       aria-label="Sidebar"
     >
       <div className="flex flex-col items-center py-4 px-3">
@@ -74,7 +74,7 @@ const SidebarView = () => {
                       height={8}
                       className="transition-transform"
                       style={{
-                        transform: expandedIndex === index ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transform: expandedIndex === index ? 'rotate(0deg)' : 'rotate(180deg)',
                         filter:
                           expandedIndex === index
                             ? 'brightness(0) saturate(100%) invert(49%) sepia(85%) saturate(433%) hue-rotate(144deg) brightness(91%) contrast(88%)'

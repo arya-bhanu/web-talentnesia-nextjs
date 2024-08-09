@@ -1,8 +1,9 @@
+import AcademicLevel from '@/backoffice/modules/academic-level'
 import React from 'react'
 
 const AcademicLevelPage = () => {
   return (
-    <div>AcademicLevelPage</div>
+    <AcademicLevel />
   )
 }
 
