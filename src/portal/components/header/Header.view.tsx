@@ -6,7 +6,7 @@ import Dropdown from '../dropdown/Dropdown';
 import { Sling as Hamburger } from 'hamburger-react';
 import clsx from 'clsx';
 import { HeaderViewProps } from './header.type';
-import { programLinks } from './header.data';
+import { programLinks } from '../dropdown/dropdown.data';
 
 const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
 
@@ -39,17 +39,17 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
       </div>
       <nav className=" lg:flex hidden items-center w-[60%] 2xl:w-[50%] ml-auto justify-end gap-2 lg:gap-3 xl:gap-8">
         <Dropdown links={programLinks}>Program</Dropdown>
-        <Link href={'contact'} className='font-inter font-medium lg:text-base text-sm'>Kontak Kami</Link>
+        <Link href={'/contact'} className='font-inter font-medium lg:text-base text-sm'>Kontak Kami</Link>
         <div className="flex items-center gap-2 lg:gap-3">
           <Link
             className="px-4 lg:px-5 xl:px-8 py-1.5 lg:py-2 xl:py-3 border border-[#D0D5DD] rounded-full font-inter font-semibold"
-            href={'auth/register'}
+            href={'/auth/register'}
           >
             Daftar
           </Link>
           <Link
             className="px-4 lg:px-5 xl:px-8 py-1.5 lg:py-2 xl:py-3 border border-[#D0D5DD] bg-[#FFC862] rounded-full font-inter font-semibold"
-            href={'auth/login'}
+            href={'/auth/login'}
           >
             Masuk
           </Link>

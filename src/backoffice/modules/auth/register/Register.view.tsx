@@ -102,7 +102,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
         </form>
         <p className="mt-10 text-center text-sm text-gray-500">
           Already have an account?{' '}
-          <Link href={"login"} className="text-[#219EBC] hover:underline">
+          <Link href={"/auth/login"} className="text-[#219EBC] hover:underline">
             Login now
           </Link>
         </p>
