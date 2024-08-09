@@ -1,0 +1,93 @@
+'use client';
+
+import { useState } from "react";
+import { SchoolOperatorView } from "./school-operator.view";
+import { SchoolOperatorFormData } from "./school-operator.type";
+
+export const useSchoolOperatorForm = () => {
+  const [form, setForm] = useState<SchoolOperatorFormData>({
+    // Section A
+    profilePicture: "",
+    name: "",
+    nik: "",
+    placeOfBirth: "",
+    dateOfBirth: "",
+    religion: "",
+    gender: "",
+
+    // Section B
+    phoneNumber: "",
+    email: "",
+
+    // Section C
+    province: "",
+    city: "",
+    subDistrict: "",
+    zipCode: "",
+    addressDomicile: "",
+
+    // Section D
+    schoolOfOrigin: ""
+  });
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
+
+  const handleEducationChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = event.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+    }));
+  };
+
+  const resetForm = () => {
+    setForm({
+      // Reset all fields to their initial state
+      // Section A
+    profilePicture: "",
+    name: "",
+    nik: "",
+    placeOfBirth: "",
+    dateOfBirth: "",
+    religion: "",
+    gender: "",
+
+    // Section B
+    phoneNumber: "",
+    email: "",
+
+    // Section C
+    province: "",
+    city: "",
+    subDistrict: "",
+    zipCode: "",
+    addressDomicile: "",
+
+    // Section D
+    schoolOfOrigin: ""
+    });
+  };
+  
+  return {
+    form,
+    handleInputChange,
+    handleEducationChange,
+    resetForm,
+  };
+};
+
+export const SchoolOperator: React.FC = () => {
+  const schoolOperatorFormProps = useSchoolOperatorForm();
+
+  return <SchoolOperatorView {...schoolOperatorFormProps} />;
+};

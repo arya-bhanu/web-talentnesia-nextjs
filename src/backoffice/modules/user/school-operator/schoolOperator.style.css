@@ -1,0 +1,17 @@
+.cancel-button, .submit-button {
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+  }
+  
+  .cancel-button:active, .submit-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .cancel-button:hover {
+    background-color: #FEE2E2;
+  }
+  
+  .submit-button:hover {
+    background-color: #FBBF24;
+  }
+  
