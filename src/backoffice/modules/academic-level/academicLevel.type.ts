@@ -1,9 +1,8 @@
 import { SetStateAction } from 'react';
 
 export interface APIResponseAcademicLevel {
-  id: number;
-  levelName: string;
-  status: string;
+  code: number;
+  name: string;
   createdAt: Date;
   updatedAt: Date;
 }

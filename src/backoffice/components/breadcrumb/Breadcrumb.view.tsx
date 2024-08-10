@@ -16,16 +16,22 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
   pathSegments,
   formattedSegments,
   className,
-  currentPath
+  currentPath,
 }) => {
+  const filteredSegments = pathSegments.filter(
+    (segment) => segment !== '' && segment.toLowerCase() !== 'backoffice'
+  );
 
   return (
     <nav aria-label="breadcrumb" className={clsx(className, 'font-poppins text-sm')}>
       <div className="">
         <ol className="flex text-md text-[#989FAD] items-center">
-          {pathSegments.map((segment, index) => {
-            const path = '/' + pathSegments.slice(0, index + 1).join('/');
-            const isLast = index === pathSegments.length - 1;
+          {filteredSegments.map((segment, index) => {
+            const path = '/' + pathSegments
+              .slice(0, pathSegments.indexOf(segment) + 1)
+              .filter((seg) => seg !== '' && seg.toLowerCase() !== 'backoffice')
+              .join('/');
+            const isLast = index === filteredSegments.length - 1;
             const displayName = formattedSegments[index];
             return (
               <React.Fragment key={path}>

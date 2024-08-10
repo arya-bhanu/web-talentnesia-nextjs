@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Search from '../../../../public/icons/iconamoon_search-bold.svg';
 import Add from '../../../../public/icons/add.svg';
 import IconLeft from '../../../../public/icons/btn-left.svg';
@@ -7,6 +7,7 @@ import IconRight from '../../../../public/icons/btn-right.svg';
 import Link from 'next/link';
 import { IAcademicLevelView } from './academicLevel.type';
 import Popover from '@/backoffice/components/popover';
+import AddAcademicTitleView from '@/backoffice/components/add-academic-title/AddAcademicTitle.view';
 
 const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   data,
@@ -14,6 +15,12 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   setOpenPopoverIndex,
   openPopoverIndex,
 }) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -34,32 +41,29 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
             />
           </div>
         </form>
-        <Link
-          href="/backoffice/academic-level/create"
-          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-        >
-          <Add />
-          <span className="text-black"> Add Academic Level</span>
-        </Link>
-      </div>
+        <button
+        onClick={openPopup}
+        className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+      >
+        <Add />
+        <span className="text-black"> Add Academic Level</span>
+      </button>
+
+      {isPopupOpen && <AddAcademicTitleView />}
+    </div>
       <div className="overflow-x-auto max-h-[60vh] overflow-y-auto shadow-md sm:rounded-lg mt-5">
         {data ? (
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  <div className="flex items-center">
-                    No
+                  <div className="flex items-center">   
+                    Code
                   </div>
                 </th>
                 <th scope="col" className="px-6 py-3">
                   <div className="flex items-center">
-                    Academic Level
-                  </div>
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  <div className="flex items-center">
-                    Status
+                    Level Name
                   </div>
                 </th>
                 <th scope="col" className="px-6 py-3">
@@ -71,15 +75,14 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
               {data.map((el, index) => {
                 return (
                   <tr
-                    key={el.id}
+                    key={el.code}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
                     <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4">{el.levelName}</td>
-                    <td className="px-6 py-4">{el.status}</td>
+                    <td className="px-6 py-4">{el.name}</td>
                     <Popover
                       handleActionButtonRow={handleActionButtonRow}
-                      id={el.id}
+                      id={el.code}
                       index={index}
                       openPopoverIndex={openPopoverIndex}
                       setOpenPopoverIndex={setOpenPopoverIndex}

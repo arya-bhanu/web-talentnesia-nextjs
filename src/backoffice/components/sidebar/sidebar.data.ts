@@ -8,7 +8,7 @@ export const sidebarData: SidebarProps[] = [
   },
   {
     icon: '/icons/sidebar/course.svg',
-    title: 'Manage Course',
+    title: 'Manage Module',
     path: '/backoffice/manage-modul',
   },
   {
@@ -23,9 +23,9 @@ export const sidebarData: SidebarProps[] = [
   },
   {
     icon: '/icons/sidebar/setting.svg',
-    title: 'Setting',
+    title: 'Master Data',
     links: [
-      { label: 'Academic Level', link: '/backoffice/setting/academic-level' },
+      { label: 'Academic Level', link: '/backoffice/master-data/academic-level' },
       { label: 'Academic Title', link: '#' },
       { label: 'Category', link: '#' },
       { label: 'Certificate', link: '#' },

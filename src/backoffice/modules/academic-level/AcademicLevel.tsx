@@ -19,7 +19,6 @@ const AcademicLevel = () => {
   ) => {
     switch (action) {
       case 'delete':
-        // Implementasi penghapusan
         break;
       default:
         break;
