@@ -7,10 +7,12 @@ import { Education, AdminFormData } from "./admin.type";
 export const useAdminForm = () => {
   const [form, setForm] = useState<AdminFormData>({
     // Section A
-    profilePicture: "",
+    profilePicture: null,
     name: "",
     nik: "",
     npwp: "",
+    fotoKtp: null,
+    fotoNpwp: null,
     placeOfBirth: "",
     dateOfBirth: "",
     religion: "",
@@ -100,10 +102,12 @@ export const useAdminForm = () => {
   const resetForm = () => {
     setForm({
       // Reset all fields to their initial state
-      profilePicture: "",
+      profilePicture: null,
       name: "",
       nik: "",
       npwp: "",
+      fotoKtp: null,
+      fotoNpwp: null,
       placeOfBirth: "",
       dateOfBirth: "",
       religion: "",
