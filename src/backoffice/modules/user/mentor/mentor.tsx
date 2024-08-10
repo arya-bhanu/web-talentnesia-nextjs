@@ -7,10 +7,12 @@ import { Education, MentorFormData } from "./mentor.type";
 export const useMentorForm = () => {
   const [form, setForm] = useState<MentorFormData>({
     // Section A
-    profilePicture: "",
+    profilePicture: null,
     name: "",
     nik: "",
     npwp: "",
+    fotoKtp: null,
+    fotoNpwp: null,
     placeOfBirth: "",
     dateOfBirth: "",
     religion: "",
@@ -100,10 +102,12 @@ export const useMentorForm = () => {
   const resetForm = () => {
     setForm({
       // Reset all fields to their initial state
-      profilePicture: "",
+      profilePicture: null,
       name: "",
       nik: "",
       npwp: "",
+      fotoKtp: null,
+      fotoNpwp: null,
       placeOfBirth: "",
       dateOfBirth: "",
       religion: "",
