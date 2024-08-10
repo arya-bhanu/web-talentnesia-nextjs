@@ -35,8 +35,8 @@ export const HeroSectionView = ({ className }: { className?: string }) => {
           <Image
             alt="gambar-pahlawan"
             src="/img/iicp/hero-iicp.png"
-            width={1189}
-            height={966}
+            width={376}
+            height={305}
             className="object-contain w-[752px] h-[611px]"
           />
         </div>
