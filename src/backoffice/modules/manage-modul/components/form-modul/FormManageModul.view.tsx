@@ -29,8 +29,8 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                 type="text"
                 placeholder="UI/UX Designer"
                 required
-                defaultValue={populatedDatas?.modulName}
-                key={populatedDatas?.modulName}
+                defaultValue={populatedDatas?.name}
+                key={populatedDatas?.id}
               />
             </div>
           </div>
@@ -41,11 +41,11 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                 <Radio
                   id="status-1"
                   name="status"
-                  value="active"
+                  value={1}
                   defaultChecked={
-                    populatedDatas ? populatedDatas.status === 'active' : true
+                    populatedDatas ? populatedDatas.active === 1 : true
                   }
-                  key={populatedDatas?.status}
+                  key={populatedDatas?.active}
                 />
                 <Label htmlFor="status-1">Active</Label>
               </div>
@@ -53,13 +53,11 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                 <Radio
                   id="status-2"
                   name="status"
-                  value="inactive"
+                  value={0}
                   defaultChecked={
-                    populatedDatas
-                      ? populatedDatas.status === 'inactive'
-                      : false
+                    populatedDatas ? populatedDatas.active === 0 : false
                   }
-                  key={populatedDatas?.status}
+                  key={populatedDatas?.active}
                 />
                 <Label htmlFor="status-2">Inactive</Label>
               </div>

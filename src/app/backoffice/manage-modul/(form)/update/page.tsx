@@ -13,8 +13,9 @@ const ManageModulUpdateIndex = () => {
 
 function SuspenseManageModulUpdate() {
   const searchParams = useSearchParams();
-  const slug = searchParams.get('slug');
-  return <FormManageModul slug={Number(slug)} />;
+  const id = searchParams.get('id');
+
+  return <FormManageModul id={id || undefined} />;
 }
 
 const WrappedSuspenseComponent = () => {

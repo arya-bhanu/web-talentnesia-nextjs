@@ -1,36 +1,38 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
-import { ModuleObject } from '../components/form-modul/formManageModul.type';
+import { APIResponseManageModul } from '../manageModul.type';
 
 export const fetchModules = async () => {
-  const response = await backOfficeAPI.get('/modules');
-  return response;
+  const response = await backOfficeAPI.get('/modul');
+  return response.data;
 };
 
-export const fetchModule = async (id?: number) => {
+export const fetchModule = async (id?: string) => {
   if (id) {
-    const response = await backOfficeAPI.get('/module/' + id);
-    return response;
+    const response = await backOfficeAPI.get('/modul/' + id);
+    return response.data;
   }
   return null;
 };
 
-export const deleteModule = async (id: number) => {
+export const deleteModule = async (id: string) => {
   const response = await backOfficeAPI.delete('/modul/' + id);
-  return response;
+  return response.data;
 };
 
-export const createModul = async (data: ModuleObject) => {
+export const createModul = async (
+  data: Pick<APIResponseManageModul, 'active' | 'name'>,
+) => {
   const response = await backOfficeAPI.post('/modul', data);
-  return response;
+  return response.data;
 };
 
 export const updateModul = async ({
   data,
   id,
 }: {
-  data: ModuleObject;
-  id: number;
+  data: Pick<APIResponseManageModul, 'active' | 'name'>;
+  id: string;
 }) => {
   const response = await backOfficeAPI.put(`/modul/${id}`, data);
-  return response;
+  return response.data;
 };

@@ -1,11 +1,7 @@
 import { ChangeEvent, FormEvent } from 'react';
+import { APIResponseManageModul } from '../../manageModul.type';
 
 export interface IManageModulForm {
   handleSubmitForm: (e: FormEvent<HTMLFormElement>) => void;
-  populatedDatas?: ModuleObject & { id: number };
-}
-
-export interface ModuleObject {
-  modulName: string;
-  status: string;
+  populatedDatas?: APIResponseManageModul;
 }

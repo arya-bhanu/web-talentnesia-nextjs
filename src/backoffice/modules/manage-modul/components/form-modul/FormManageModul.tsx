@@ -1,6 +1,6 @@
 import React from 'react';
 import FormManageModulView from './FormManageModul.view';
-import { IManageModulForm, ModuleObject } from './formManageModul.type';
+import { IManageModulForm } from './formManageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import {
@@ -8,14 +8,15 @@ import {
   fetchModule,
   updateModul,
 } from '../../api/manageModelApi';
+import { APIResponseManageModul } from '../../manageModul.type';
 
-const FormManageModul = ({ slug }: { slug?: number }) => {
+const FormManageModul = ({ id }: { id?: string }) => {
   const queryClient = useQueryClient();
 
   const router = useRouter();
 
   // edit
-  const { mutateAsync : createAsync } = useMutation({
+  const { mutateAsync: createAsync } = useMutation({
     mutationKey: ['modules'],
     mutationFn: createModul,
   });
@@ -28,7 +29,7 @@ const FormManageModul = ({ slug }: { slug?: number }) => {
 
   const { data } = useQuery({
     queryKey: ['module'],
-    queryFn: () => fetchModule(slug),
+    queryFn: () => fetchModule(id),
   });
 
   const handleSubmitForm: IManageModulForm['handleSubmitForm'] = async (e) => {
@@ -36,13 +37,13 @@ const FormManageModul = ({ slug }: { slug?: number }) => {
     const formData = new FormData(e.currentTarget);
     const modul = formData.get('modul');
     const status = formData.get('status');
-    const modulObject = {
-      modulName: modul as string,
-      status: status as string,
-    };
+    const modulObject = { active: Number(status), name: modul } as Pick<
+      APIResponseManageModul,
+      'active' | 'name'
+    >;
     try {
-      if (slug) {
-        await updateAsync({ data: modulObject, id: slug });
+      if (id) {
+        await updateAsync({ data: modulObject, id });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         router.push('/backoffice/manage-modul');
       } else {
@@ -50,8 +51,6 @@ const FormManageModul = ({ slug }: { slug?: number }) => {
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         router.push('/backoffice/manage-modul/create/chapter');
       }
-
-      
     } catch (err) {
       console.error(err);
     }
