@@ -11,6 +11,7 @@ import Chapter from '../chapter';
 const FormManageModulView: React.FC<IManageModulForm> = ({
   handleSubmitForm,
   populatedDatas,
+  id,
 }) => {
   return (
     <section>
@@ -30,7 +31,7 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                 placeholder="UI/UX Designer"
                 required
                 defaultValue={populatedDatas?.name}
-                key={populatedDatas?.id}
+                key={populatedDatas?.name}
               />
             </div>
           </div>
@@ -65,6 +66,24 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
           </div>
         </div>
         <Chapter className="mt-10" />
+        <div className="flex gap-5 w-fit ml-auto mt-14">
+          <Button
+            type="button"
+            outline
+            className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+          >
+            <Link className="" href={'/backoffice/manage-modul'}>
+              Cancel
+            </Link>
+          </Button>
+          <Button
+            type="submit"
+            color={'warning'}
+            className="bg-[#FFC862] text-black"
+          >
+            {id ? 'Update' : 'Submit'}
+          </Button>
+        </div>
       </form>
     </section>
   );

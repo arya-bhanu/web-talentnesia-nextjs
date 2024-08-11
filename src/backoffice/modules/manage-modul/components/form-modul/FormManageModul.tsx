@@ -47,9 +47,10 @@ const FormManageModul = ({ id }: { id?: string }) => {
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         router.push('/backoffice/manage-modul');
       } else {
-        await createAsync({ ...modulObject });
+        const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
-        router.push('/backoffice/manage-modul/create/chapter');
+        const id = responseCreate.data.id;
+        router.push(`/backoffice/manage-modul/create/chapter?modulIdd=${id}`);
       }
     } catch (err) {
       console.error(err);
@@ -60,6 +61,7 @@ const FormManageModul = ({ id }: { id?: string }) => {
     <FormManageModulView
       handleSubmitForm={handleSubmitForm}
       populatedDatas={data?.data}
+      id={id}
     />
   );
 };

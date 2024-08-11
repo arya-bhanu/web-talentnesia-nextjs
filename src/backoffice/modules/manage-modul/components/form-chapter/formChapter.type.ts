@@ -6,4 +6,5 @@ export interface IFormChapter {
     openModal: boolean;
     setOpenModal: Dispatch<SetStateAction<boolean>>;
   };
+  id?: string;
 }

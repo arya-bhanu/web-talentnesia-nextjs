@@ -46,6 +46,7 @@ const chapters: IEditableListContent[] = [
 const FormChapterView: React.FC<IFormChapter> = ({
   handleSubmitAddContent,
   stateFormAddContent,
+  id,
 }) => {
   return (
     <div>
@@ -72,36 +73,57 @@ const FormChapterView: React.FC<IFormChapter> = ({
             className="w-full"
           />
         </div>
-      </form>
-      <div className="mt-14">
-        <div className="flex items-center justify-between">
-          <h3 className="text-base font-semibold font-poppins">Content</h3>
-          <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              className="border items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
-            >
-              <Link className='flex items-center' href={'/backoffice/manage-modul/create/chapter/add-exam'}>
-                <AddWhite />
-                <span>Add Exam</span>
-              </Link>
-            </Button>
-            <button
-              onClick={() => stateFormAddContent.setOpenModal(true)}
-              type="submit"
-              className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
-            >
-              <Add />
-              <span className="text-black"> Add Content</span>
-            </button>
+        <div className="mt-14">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-semibold font-poppins">Content</h3>
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                className="border items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
+              >
+                <Link
+                  className="flex items-center"
+                  href={'/backoffice/manage-modul/create/chapter/add-exam'}
+                >
+                  <AddWhite />
+                  <span>Add Exam</span>
+                </Link>
+              </Button>
+              <button
+                onClick={() => stateFormAddContent.setOpenModal(true)}
+                type="submit"
+                className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
+              >
+                <Add />
+                <span className="text-black"> Add Content</span>
+              </button>
+            </div>
           </div>
+          <section className="flex flex-col gap-5 mt-8">
+            {chapters.map((el) => (
+              <EditableListContent {...el} key={el.id} />
+            ))}
+          </section>
         </div>
-        <section className="flex flex-col gap-5 mt-8">
-          {chapters.map((el) => (
-            <EditableListContent {...el} key={el.id} />
-          ))}
-        </section>
-      </div>
+        <div className="flex gap-5 w-fit ml-auto mt-14">
+          <Button
+            type="button"
+            outline
+            className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+          >
+            <Link className="" href={'/backoffice/manage-modul'}>
+              Cancel
+            </Link>
+          </Button>
+          <Button
+            type="submit"
+            color={'warning'}
+            className="bg-[#FFC862] text-black"
+          >
+            {id ? 'Update' : 'Submit'}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };
