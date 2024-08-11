@@ -9,5 +9,5 @@ export interface IModal {
   state: IModalState;
   children: ReactNode;
   title: string;
-  handleSubmit: (e: FormEvent) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }

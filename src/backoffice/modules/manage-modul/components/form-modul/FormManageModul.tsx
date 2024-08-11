@@ -50,7 +50,7 @@ const FormManageModul = ({ id }: { id?: string }) => {
         const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         const id = responseCreate.data.id;
-        router.push(`/backoffice/manage-modul/create/chapter?modulIdd=${id}`);
+        router.push(`/backoffice/manage-modul/create/chapter?modulId=${id}`);
       }
     } catch (err) {
       console.error(err);

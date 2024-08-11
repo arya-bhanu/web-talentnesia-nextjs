@@ -1,6 +1,7 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
 import { APIResponseManageModul } from '../manageModul.type';
 
+// modul
 export const fetchModules = async () => {
   const response = await backOfficeAPI.get('/modul');
   return response.data;
@@ -34,5 +35,17 @@ export const updateModul = async ({
   id: string;
 }) => {
   const response = await backOfficeAPI.put(`/modul/${id}`, data);
+  return response.data;
+};
+
+// chapter
+export const createChapter = async ({
+  moduleId,
+  title,
+}: {
+  moduleId: string;
+  title: string;
+}) => {
+  const response = await backOfficeAPI.post('/chapter', { moduleId, title });
   return response.data;
 };

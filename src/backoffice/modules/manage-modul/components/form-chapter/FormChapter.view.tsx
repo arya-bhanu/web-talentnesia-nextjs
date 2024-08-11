@@ -47,6 +47,8 @@ const FormChapterView: React.FC<IFormChapter> = ({
   handleSubmitAddContent,
   stateFormAddContent,
   id,
+  handleSubmitCreateChapter,
+  setActionSubChapter,
 }) => {
   return (
     <div>
@@ -57,18 +59,18 @@ const FormChapterView: React.FC<IFormChapter> = ({
       >
         <FormContent />
       </Modal>
-      <form action="">
+      <form onSubmit={handleSubmitCreateChapter}>
         <div>
           <div className="mb-2 block">
-            <LabelForm aria-required htmlFor="modul" isImportant>
+            <LabelForm aria-required htmlFor="chapter" isImportant>
               Chapter Name
             </LabelForm>
           </div>
           <TextInput
-            id="modul"
-            name="modul"
+            id="chapter"
+            name="chapter"
             type="text"
-            placeholder="Design Thinking"
+            placeholder="Chapter 1"
             required
             className="w-full"
           />
@@ -78,19 +80,15 @@ const FormChapterView: React.FC<IFormChapter> = ({
             <h3 className="text-base font-semibold font-poppins">Content</h3>
             <div className="flex items-center gap-2">
               <Button
-                type="button"
-                className="border items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
+                onClick={() => setActionSubChapter('exam')}
+                type="submit"
+                className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
               >
-                <Link
-                  className="flex items-center"
-                  href={'/backoffice/manage-modul/create/chapter/add-exam'}
-                >
-                  <AddWhite />
-                  <span>Add Exam</span>
-                </Link>
+                <AddWhite />
+                <span>Add Exam</span>
               </Button>
               <button
-                onClick={() => stateFormAddContent.setOpenModal(true)}
+                onClick={() => setActionSubChapter('content')}
                 type="submit"
                 className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
               >
