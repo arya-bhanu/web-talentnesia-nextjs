@@ -9,16 +9,16 @@ export interface StudentFormData {
   dateOfBirth: string;
   religion: string;
   gender: string;
-  phoneNumber: string;
+  phone: string;
   email: string;
   province: string;
-  city: string;
+  district: string;
   subDistrict: string;
   zipCode: string;
   addressKtp: string;
   addressDomicile: string;
-  institutionName: string;
-  academicLevel: string;
-  startFrom: string;
-  Until: string;
+  educationName: string;
+  educationLevel: string;
+  start: string;
+  end: string;
 }

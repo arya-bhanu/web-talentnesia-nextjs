@@ -17,18 +17,19 @@ export const useMentorForm = () => {
     dateOfBirth: "",
     religion: "",
     gender: "",
-    maritalStatus: "",
+    isMarried: "",
     numberOfChildren: "",
+    contract: null,
 
     // Section B
-    phoneNumber: "",
+    phone: "",
     linkedin: "",
     email: "",
     emergencyContact: "",
 
     // Section C
     province: "",
-    city: "",
+    district: "",
     subDistrict: "",
     zipCode: "",
     addressKtp: "",
@@ -37,12 +38,13 @@ export const useMentorForm = () => {
     // Section D
     education: [
       {
-        universityName: "",
-        academicTitle: "",
+        name: "",
+        title: "",
         major: "",
         gpa: "",
         yearGraduated: "",
         certificateNumber: "",
+        certificate: null,
       },
     ],
   });
@@ -80,12 +82,13 @@ export const useMentorForm = () => {
       education: [
         ...prevForm.education,
         {
-            universityName: "",
-            academicTitle: "",
-          major: "",
-          gpa: "",
-          yearGraduated: "",
-          certificateNumber: "",
+            name: "",
+            title: "",
+            major: "",
+            gpa: "",
+            yearGraduated: "",
+            certificateNumber: "",
+            certificate: null,
         },
       ],
     }));
@@ -103,34 +106,39 @@ export const useMentorForm = () => {
     setForm({
       // Reset all fields to their initial state
       profilePicture: null,
+
       name: "",
       nik: "",
       npwp: "",
       fotoKtp: null,
       fotoNpwp: null,
-      placeOfBirth: "",
-      dateOfBirth: "",
+      placeOfBirth: "date",
+      dateOfBirth: "date",
       religion: "",
       gender: "",
-      maritalStatus: "",
+      isMarried: "",
       numberOfChildren: "",
-      phoneNumber: "",
+      contract: null,
+
+      phone: "",
       linkedin: "",
       email: "",
       emergencyContact: "",
+
       province: "",
-      city: "",
+      district: "",
       subDistrict: "",
       zipCode: "",
       addressKtp: "",
       addressDomicile: "",
       education: [{
-        universityName: "",
-        academicTitle: "",
-        major: "",
-        gpa: "",
-        yearGraduated: "",
-        certificateNumber: "",
+          name: "",
+          title: "",
+          major: "",
+          gpa: "",
+          yearGraduated: "date",
+          certificateNumber: "",
+          certificate: null,
       }],
     });
   };

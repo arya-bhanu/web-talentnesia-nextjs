@@ -8,14 +8,14 @@ export const religions = [
     'Lainnya'
 ];
 
-export const maritalStatus = [
+export const isMarried = [
     'Belum Menikah',
     'Menikah',
     'Bercerai',
     'Janda'
 ];
 
-export const academicTitles = [
+export const titles = [
     'Sarjana (S1)',
     'Magister (S2)',
     'Doktor (S3)'
@@ -27,7 +27,7 @@ export const provinces = [
     'Jawa Tengah'
 ];
 
-export const cityDistrict = [
+export const districts = [
     'Malang',
     'Cirebon',
     'Semarang'

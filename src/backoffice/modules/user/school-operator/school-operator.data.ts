@@ -8,14 +8,7 @@ export const religions = [
     'Lainnya'
 ];
 
-export const maritalStatus = [
-    'Belum Menikah',
-    'Menikah',
-    'Bercerai',
-    'Janda'
-];
-
-export const schoolOfOrigin = [
+export const schools = [
     'SD (Sekolah Dasar)',
     'SMP (Sekolah Menengah Pertama)',
     'SMA (Sekolah Menengah Atas)',
@@ -34,7 +27,7 @@ export const provinces = [
     'Jawa Tengah',
 ];
 
-export const cityDistrict = [
+export const districts = [
     'Malang',
     'Cirebon',
     'Semarang',

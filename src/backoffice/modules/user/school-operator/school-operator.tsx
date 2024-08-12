@@ -8,6 +8,7 @@ export const useSchoolOperatorForm = () => {
   const [form, setForm] = useState<SchoolOperatorFormData>({
     // Section A
     profilePicture: "",
+
     name: "",
     nik: "",
     placeOfBirth: "",
@@ -21,13 +22,13 @@ export const useSchoolOperatorForm = () => {
 
     // Section C
     province: "",
-    city: "",
+    district: "",
     subDistrict: "",
     zipCode: "",
     addressDomicile: "",
 
     // Section D
-    schoolOfOrigin: ""
+    school: ""
   });
 
   const handleInputChange = (
@@ -68,13 +69,13 @@ export const useSchoolOperatorForm = () => {
 
     // Section C
     province: "",
-    city: "",
+    district: "",
     subDistrict: "",
     zipCode: "",
     addressDomicile: "",
 
     // Section D
-    schoolOfOrigin: ""
+    school: ""
     });
   };
   

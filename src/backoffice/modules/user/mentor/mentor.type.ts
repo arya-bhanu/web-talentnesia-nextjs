@@ -1,10 +1,11 @@
 export interface Education {
-  universityName: string;
-  academicTitle: string;
+  name: string;
+  title: string;
   major: string;
   gpa: string;
   yearGraduated: string;
   certificateNumber: string;
+  certificate: string | null;
 }
 
 export interface MentorFormData {
@@ -18,14 +19,15 @@ export interface MentorFormData {
   dateOfBirth: string;
   religion: string;
   gender: string;
-  maritalStatus: string;
+  isMarried: string;
   numberOfChildren: string;
-  phoneNumber: string;
+  contract: string | null;
+  phone: string;
   linkedin: string;
   emergencyContact: string;
   email: string;
   province: string;
-  city: string;
+  district: string;
   subDistrict: string;
   zipCode: string;
   addressKtp: string;
