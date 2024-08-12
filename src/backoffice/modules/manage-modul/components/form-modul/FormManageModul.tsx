@@ -10,7 +10,7 @@ import {
 } from '../../api/manageModelApi';
 import { APIResponseManageModul } from '../../manageModul.type';
 
-const FormManageModul = ({ id }: { id?: string }) => {
+const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
   const queryClient = useQueryClient();
 
   const router = useRouter();
@@ -27,9 +27,9 @@ const FormManageModul = ({ id }: { id?: string }) => {
     mutationFn: updateModul,
   });
 
-  const { data } = useQuery({
+  const { data: dataModule, isLoading } = useQuery({
     queryKey: ['module'],
-    queryFn: () => fetchModule(id),
+    queryFn: () => fetchModule(moduleId),
   });
 
   const handleSubmitForm: IManageModulForm['handleSubmitForm'] = async (e) => {
@@ -42,8 +42,8 @@ const FormManageModul = ({ id }: { id?: string }) => {
       'active' | 'name'
     >;
     try {
-      if (id) {
-        await updateAsync({ data: modulObject, id });
+      if (moduleId) {
+        await updateAsync({ data: modulObject, moduleId });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         router.push('/backoffice/manage-modul');
       } else {
@@ -60,8 +60,11 @@ const FormManageModul = ({ id }: { id?: string }) => {
   return (
     <FormManageModulView
       handleSubmitForm={handleSubmitForm}
-      populatedDatas={data?.data}
-      id={id}
+      populatedDatas={{
+        data: dataModule?.data,
+        isLoading,
+      }}
+      id={moduleId}
     />
   );
 };

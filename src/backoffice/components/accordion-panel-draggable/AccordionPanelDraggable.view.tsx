@@ -1,23 +1,23 @@
 import React from 'react';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
-import DragIndicator from '../../../../public/icons/drag_indicator.svg';
-import ArrowUp from '../../../../public/icons/arrow-up.svg';
-import Edit from '../../../../public/icons/edit.svg';
-import Trash from '../../../../public/icons/trash.svg';
-import ListDraggable from '../list-draggable';
+import DragIndicator from '@/../public/icons/drag_indicator.svg';
+import ArrowUp from '@/../public/icons/arrow-up.svg';
+import Edit from '@/../public/icons/edit.svg';
+import Trash from '@/../public/icons/trash.svg';
 import clsx from 'clsx';
 import { IStateChapter } from '@/backoffice/modules/manage-modul/components/chapter/chapter.type';
+import ListDraggable from '../list-draggable';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable & IStateChapter & { index: number }
 > = ({
-  panelTitle,
   totalCurriculum,
   totalMinuteDuration,
-  contents,
   activeAccordion,
   index,
   setActiveAccordion,
+  title,
+  contents,
 }) => {
   return (
     <div className="py-3">
@@ -27,7 +27,7 @@ const AccordionPanelDraggableView: React.FC<
         </button>
         <div
           onClick={() => {
-            if (index === activeAccordion) {
+            if (index == activeAccordion) {
               setActiveAccordion(-1);
             } else {
               setActiveAccordion(index);
@@ -39,7 +39,7 @@ const AccordionPanelDraggableView: React.FC<
         >
           <div className="flex items-center gap-4">
             <div className="text-start">
-              <h2 className="font-lato text-sm font-bold">{panelTitle}</h2>
+              <h2 className="font-lato text-sm font-bold">{title}</h2>
               <div className="flex items-center gap-2 text-sm font-lato text-[#323232]">
                 <p>{totalMinuteDuration} min</p>
                 <p>{totalCurriculum} curriculum</p>

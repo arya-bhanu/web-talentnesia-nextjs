@@ -29,13 +29,14 @@ const FormChapter = () => {
     mutationKey: ['content', 'chapter'],
     mutationFn: createContent,
   });
-  const { data: dataChapter } = useQuery({
+  const { data: dataChapter, isLoading: isLoadingChapter } = useQuery({
     queryKey: ['chapter'],
     queryFn: () => fetchChapter(params.get('chapterId')),
   });
   const handleSubmitAddContent = async (
     e: React.FormEvent<HTMLFormElement>,
   ) => {
+   
     try {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
@@ -64,6 +65,7 @@ const FormChapter = () => {
   const handleSubmitCreateChapter = async (
     e: React.FormEvent<HTMLFormElement>,
   ) => {
+    console.log('add chapter');
     try {
       e.preventDefault();
       const moduleId = params.get('modulId');
@@ -108,7 +110,10 @@ const FormChapter = () => {
         setOpenModal: setOpenModalAddContent,
       }}
       handleSubmitCreateChapter={handleSubmitCreateChapter}
-      contents={dataChapter?.data?.contents}
+      contents={{
+        data: dataChapter?.data?.contents,
+        isLoading: isLoadingChapter,
+      }}
     />
   );
 };

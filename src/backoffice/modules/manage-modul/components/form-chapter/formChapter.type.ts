@@ -10,6 +10,9 @@ export interface IFormChapter {
   };
   id?: string;
   setActionSubChapter: Dispatch<SetStateAction<'exam' | 'content'>>;
-  contents: APIContentChapter[] | undefined | null;
+  contents: {
+    data: APIContentChapter[] | undefined | null;
+    isLoading: boolean;
+  };
   defaultValueData: APIChapterModul | null | undefined;
 }

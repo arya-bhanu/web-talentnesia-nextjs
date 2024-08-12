@@ -5,6 +5,7 @@ export interface APIResponseManageModul {
   code: string;
   name: string;
   active: number;
+  chapters: APIChapterModul[] | null | undefined;
 }
 
 export interface APIContentChapter {

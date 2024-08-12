@@ -36,7 +36,7 @@ const PopoverView: React.FC<IPopover> = ({
         content={
           <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
             <Link
-              href={`/backoffice/manage-modul/update?id=${id}`}
+              href={`/backoffice/manage-modul/update?modulId=${id}`}
               className="hover:text-blue-500 hover:underline"
             >
               Edit

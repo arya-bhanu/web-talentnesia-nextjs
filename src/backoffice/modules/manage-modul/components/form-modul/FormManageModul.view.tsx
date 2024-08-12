@@ -30,8 +30,8 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                 type="text"
                 placeholder="UI/UX Designer"
                 required
-                defaultValue={populatedDatas?.name}
-                key={populatedDatas?.name}
+                defaultValue={populatedDatas?.data?.name}
+                key={populatedDatas?.data?.name}
               />
             </div>
           </div>
@@ -44,9 +44,11 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                   name="status"
                   value={1}
                   defaultChecked={
-                    populatedDatas ? populatedDatas.active === 1 : true
+                    populatedDatas?.data
+                      ? populatedDatas.data?.active === 1
+                      : true
                   }
-                  key={populatedDatas?.active}
+                  key={populatedDatas?.data?.active}
                 />
                 <Label htmlFor="status-1">Active</Label>
               </div>
@@ -56,16 +58,23 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                   name="status"
                   value={0}
                   defaultChecked={
-                    populatedDatas ? populatedDatas.active === 0 : false
+                    populatedDatas?.data
+                      ? populatedDatas.data?.active === 0
+                      : false
                   }
-                  key={populatedDatas?.active}
+                  key={populatedDatas?.data?.active}
                 />
                 <Label htmlFor="status-2">Inactive</Label>
               </div>
             </div>
           </div>
         </div>
-        <Chapter className="mt-10" />
+        <Chapter
+          data={{
+            chapters: populatedDatas?.data?.chapters,
+            isLoading: populatedDatas?.isLoading,
+          }}
+        />
         <div className="flex gap-5 w-fit ml-auto mt-14">
           <Button
             type="button"

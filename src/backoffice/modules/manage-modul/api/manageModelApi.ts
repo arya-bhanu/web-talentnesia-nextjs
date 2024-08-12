@@ -29,12 +29,12 @@ export const createModul = async (
 
 export const updateModul = async ({
   data,
-  id,
+  moduleId,
 }: {
   data: Pick<APIResponseManageModul, 'active' | 'name'>;
-  id: string;
+  moduleId: string;
 }) => {
-  const response = await backOfficeAPI.put(`/modul/${id}`, data);
+  const response = await backOfficeAPI.put(`/modul/${moduleId}`, data);
   return response.data;
 };
 

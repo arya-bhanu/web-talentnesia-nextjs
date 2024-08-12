@@ -21,15 +21,17 @@ const FormChapterView: React.FC<IFormChapter> = ({
   contents,
 }) => {
   const renderContents = useMemo(() => {
-    if (!contents) {
+    if (contents.isLoading) {
       return <h1>Loading...</h1>;
     }
 
-    if (contents.length === 0) {
+    if (contents.data?.length === 0 || !contents.data) {
       return <p>Empty content</p>;
     }
 
-    return contents.map((el) => <EditableListContent {...el} key={el.id} />);
+    return contents.data.map((el) => (
+      <EditableListContent {...el} key={el.id} />
+    ));
   }, [contents]);
   return (
     <div>
