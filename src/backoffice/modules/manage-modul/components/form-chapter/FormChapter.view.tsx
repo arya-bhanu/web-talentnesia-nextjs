@@ -1,55 +1,36 @@
 import LabelForm from '@/backoffice/components/label-form/LabelForm';
 import { Button } from 'flowbite-react/components/Button';
 import { TextInput } from 'flowbite-react/components/TextInput';
-import React from 'react';
-import Add from '../../../../../../public/icons/add.svg';
-import AddWhite from '../../../../../../public/icons/add-white.svg';
-import { IEditableListContent } from '@/backoffice/components/editable-list-content/editableListContent.type';
+import React, { useCallback, useMemo } from 'react';
+import Add from '@/../public/icons/add.svg';
+import AddWhite from '@/../public/icons/add-white.svg';
 import EditableListContent from '@/backoffice/components/editable-list-content';
 import Modal from '@/backoffice/components/modal';
 import FormContent from '../form-content';
 import { IFormChapter } from './formChapter.type';
 import Link from 'next/link';
+import clsx from 'clsx';
 
-const chapters: IEditableListContent[] = [
-  {
-    id: 1,
-    durationMinute: 30,
-    title: 'UX Introduction',
-    urlImg: '/icons/play-circle.svg',
-  },
-  {
-    id: 2,
-    durationMinute: 35,
-    title: 'Mentoring 1',
-    urlImg: '/icons/play-circle.svg',
-  },
-  {
-    id: 3,
-    durationMinute: 20,
-    title: 'Hick’s Law ',
-    urlImg: '/icons/play-circle.svg',
-  },
-  {
-    id: 4,
-    durationMinute: 60,
-    title: 'Concistency for your design',
-    urlImg: '/icons/play-circle.svg',
-  },
-  {
-    id: 5,
-    durationMinute: 10,
-    title: 'Jacob’s Law',
-    urlImg: '/icons/play-circle.svg',
-  },
-];
 const FormChapterView: React.FC<IFormChapter> = ({
   handleSubmitAddContent,
   stateFormAddContent,
   id,
   handleSubmitCreateChapter,
   setActionSubChapter,
+  defaultValueData,
+  contents,
 }) => {
+  const renderContents = useMemo(() => {
+    if (!contents) {
+      return <h1>Loading...</h1>;
+    }
+
+    if (contents.length === 0) {
+      return <p>Empty content</p>;
+    }
+
+    return contents.map((el) => <EditableListContent {...el} key={el.id} />);
+  }, [contents]);
   return (
     <div>
       <Modal
@@ -72,7 +53,17 @@ const FormChapterView: React.FC<IFormChapter> = ({
             type="text"
             placeholder="Chapter 1"
             required
-            className="w-full"
+            className={clsx('w-full')}
+            defaultValue={defaultValueData?.title}
+            key={defaultValueData?.title}
+            disabled={defaultValueData?.title ? true : false}
+          />
+          <input
+            type="hidden"
+            name="chapter"
+            id="chapter"
+            defaultValue={defaultValueData?.title}
+            key={defaultValueData?.title + ' hidden'}
           />
         </div>
         <div className="mt-14">
@@ -98,9 +89,7 @@ const FormChapterView: React.FC<IFormChapter> = ({
             </div>
           </div>
           <section className="flex flex-col gap-5 mt-8">
-            {chapters.map((el) => (
-              <EditableListContent {...el} key={el.id} />
-            ))}
+            {renderContents}
           </section>
         </div>
         <div className="flex gap-5 w-fit ml-auto mt-14">

@@ -1,4 +1,5 @@
 import { Dispatch, FormEvent, SetStateAction } from 'react';
+import { APIChapterModul, APIContentChapter } from '../../manageModul.type';
 
 export interface IFormChapter {
   handleSubmitAddContent: (e: FormEvent<HTMLFormElement>) => void;
@@ -9,4 +10,6 @@ export interface IFormChapter {
   };
   id?: string;
   setActionSubChapter: Dispatch<SetStateAction<'exam' | 'content'>>;
+  contents: APIContentChapter[] | undefined | null;
+  defaultValueData: APIChapterModul | null | undefined;
 }

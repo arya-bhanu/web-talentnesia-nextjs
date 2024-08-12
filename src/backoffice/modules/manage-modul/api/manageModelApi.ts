@@ -1,5 +1,5 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
-import { APIResponseManageModul } from '../manageModul.type';
+import { APIContentChapter, APIResponseManageModul } from '../manageModul.type';
 
 // modul
 export const fetchModules = async () => {
@@ -39,6 +39,13 @@ export const updateModul = async ({
 };
 
 // chapter
+export const fetchChapter = async (chapterId?: string | null) => {
+  if (chapterId) {
+    const response = await backOfficeAPI.get('/chapter/' + chapterId);
+    return response.data;
+  }
+  return null;
+};
 export const createChapter = async ({
   moduleId,
   title,
@@ -47,5 +54,13 @@ export const createChapter = async ({
   title: string;
 }) => {
   const response = await backOfficeAPI.post('/chapter', { moduleId, title });
+  return response.data;
+};
+
+// content
+export const createContent = async (
+  payload: Omit<APIContentChapter, 'id' | 'order'>,
+) => {
+  const response = await backOfficeAPI.post('/content', payload);
   return response.data;
 };

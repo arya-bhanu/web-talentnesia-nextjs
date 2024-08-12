@@ -7,6 +7,27 @@ export interface APIResponseManageModul {
   active: number;
 }
 
+export interface APIContentChapter {
+  chapterId: string;
+  title: string;
+  type: string;
+  duration: string;
+  body: string;
+  id: string;
+  isexam: 0 | 1;
+  order: number;
+}
+
+export interface APIChapterModul {
+  description: string | null;
+  duration: string | null;
+  id: string;
+  moduleId: string;
+  order: number;
+  title: string;
+  contents: APIContentChapter[];
+}
+
 export interface IManageModulView {
   data?: APIResponseManageModul[];
   openPopoverIndex: number;
