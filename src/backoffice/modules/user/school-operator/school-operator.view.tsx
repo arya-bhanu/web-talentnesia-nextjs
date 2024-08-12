@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { religions, maritalStatus, provinces, cityDistrict, subDistrict, placesOfBirth, schoolOfOrigin } from './school-operator.data';
+import { religions, provinces, districts, subDistrict, placesOfBirth, schools } from './school-operator.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useSchoolOperatorForm } from "./school-operator";
@@ -126,10 +126,10 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                         </div>
                         <div>
                             <label className="flex mb-1">City/District<div className='text-red-600'>*</div></label>
-                            <select name="city" value={form.city || ""} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins">
+                            <select name="district" value={form.district || ""} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins">
                                 <option className='hidden' value={''} disabled>Select City/District</option>
-                                {cityDistrict.map((city, index) => (
-                                    <option key={index} value={city}>{city}</option>
+                                {districts.map((district, index) => (
+                                    <option key={index} value={district}>{district}</option>
                                 ))}
                             </select>
                         </div>
@@ -159,9 +159,9 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                     <div className="grid grid-cols-1 gap-4">
                                 <div>
                                     <label className="flex mb-1">School of origin<div className='text-red-600'>*</div></label>
-                                    <select name="schoolOfOrigin" value={form.schoolOfOrigin || ""} onChange={handleInputChange}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins ">
+                                    <select name="schoolOfOrigin" value={form.school || ""} onChange={handleInputChange}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins ">
                                     <option className='hidden' value="" disabled>Select School</option>
-                                        {schoolOfOrigin.map((school, idx) => (
+                                        {schools.map((school, idx) => (
                                             <option key={idx} value={school}>{school}</option>
                                         ))}
                                     </select>

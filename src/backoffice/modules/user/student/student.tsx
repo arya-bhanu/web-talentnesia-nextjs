@@ -8,6 +8,7 @@ export const useStudentForm = () => {
   const [form, setForm] = useState<StudentFormData>({
     // Section A
     profilePicture: "",
+
     name: "",
     nik: "",
     fotoKtp: "",
@@ -17,22 +18,22 @@ export const useStudentForm = () => {
     gender: "",
 
     // Section B
-    phoneNumber: "",
+    phone: "",
     email: "",
 
     // Section C
     province: "",
-    city: "",
+    district: "",
     subDistrict: "",
     zipCode: "",
     addressKtp: "",
     addressDomicile: "",
 
     // Section D
-    institutionName: "",
-    academicLevel: "",
-    startFrom: "",
-    Until: "",
+    educationName: "",
+    educationLevel: "",
+    start: "",
+    end: "",
   });
 
   const handleInputChange = (
@@ -69,22 +70,22 @@ export const useStudentForm = () => {
     gender: "",
 
     // Section B
-    phoneNumber: "",
+    phone: "",
     email: "",
 
     // Section C
     province: "",
-    city: "",
+    district: "",
     subDistrict: "",
     zipCode: "",
     addressKtp: "",
     addressDomicile: "",
 
     // Section D
-    institutionName: "",
-    academicLevel: "",
-    startFrom: "",
-    Until: "",
+    educationName: "",
+    educationLevel: "",
+    start: "",
+    end: "",
     });
   };
   

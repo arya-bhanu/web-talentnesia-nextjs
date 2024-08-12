@@ -11,9 +11,9 @@ export interface SchoolOperatorFormData {
   phoneNumber: string;
   email: string;
   province: string;
-  city: string;
+  district: string;
   subDistrict: string;
   zipCode: string;
   addressDomicile: string;
-  schoolOfOrigin: string;
+  school: string;
 }

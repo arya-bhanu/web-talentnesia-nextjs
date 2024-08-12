@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { religions, maritalStatus, academicTitles, provinces, cityDistrict, subDistrict, placesOfBirth } from './admin.data';
+import { religions, isMarried, titles, provinces, districts, subDistrict, placesOfBirth } from './admin.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useAdminForm } from "./admin";
@@ -115,10 +115,10 @@ export const AdminView: React.FC<AdminViewProps> = ({
                         </div>
                         <div>
                             <label className="flex mb-1">Mariage Status<div className='text-red-600'>*</div></label>
-                            <select name="maritalStatus" onChange={handleInputChange}
-                            value={form.maritalStatus || ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins ">
+                            <select name="isMarried" onChange={handleInputChange}
+                            value={form.isMarried || ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins ">
                             <option className='hidden' value="" disabled>Select Mariage Status</option>
-                                {maritalStatus.map((status, index) => (
+                                {isMarried.map((status, index) => (
                                     <option key={index} value={status}>{status}</option>
                                 ))}
                             </select>
@@ -172,10 +172,10 @@ export const AdminView: React.FC<AdminViewProps> = ({
                         </div>
                         <div>
                             <label className="flex mb-1">City/District<div className='text-red-600'>*</div></label>
-                            <select name="city" value={form.city || ""} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins">
+                            <select name="district" value={form.district || ""} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins">
                                 <option className='hidden' value={''} disabled>Select City/District</option>
-                                {cityDistrict.map((city, index) => (
-                                    <option key={index} value={city}>{city}</option>
+                                {districts.map((district, index) => (
+                                    <option key={index} value={district}>{district}</option>
                                 ))}
                             </select>
                         </div>
@@ -246,9 +246,9 @@ export const AdminView: React.FC<AdminViewProps> = ({
                                 </div>
                                 <div>
                                     <label className="flex mb-1">Academic Title<div className='text-red-600'>*</div></label>
-                                    <select name={`academicTitle-${index}`} value={education.academicTitle || ""} onChange={handleInputChange}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins ">
+                                    <select name={`title-${index}`} value={education.title || ""} onChange={handleInputChange}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins ">
                                         <option className='hidden' value="" disabled>Select Academic Title</option>
-                                        {academicTitles.map((title, idx) => (
+                                        {titles.map((title, idx) => (
                                             <option key={idx} value={title}>{title}</option>
                                         ))}
                                     </select>

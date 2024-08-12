@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { religions, maritalStatus, provinces, cityDistrict, subDistrict, placesOfBirth, academicLevels } from './student.data';
+import { religions, provinces, districts, subDistrict, placesOfBirth, educationLevels } from './student.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useStudentForm } from "./student";
@@ -136,10 +136,10 @@ export const StudentView: React.FC<StudentViewProps> = ({
                         </div>
                         <div>
                             <label className="flex mb-1">City/District<div className='text-red-600'>*</div></label>
-                            <select name="city" value={form.city || ""} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins">
+                            <select name="district" value={form.district || ""} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins">
                                 <option className='hidden' value={''} disabled>Select City/District</option>
-                                {cityDistrict.map((city, index) => (
-                                    <option key={index} value={city}>{city}</option>
+                                {districts.map((district, index) => (
+                                    <option key={index} value={district}>{district}</option>
                                 ))}
                             </select>
                         </div>
@@ -177,9 +177,9 @@ export const StudentView: React.FC<StudentViewProps> = ({
                                 </div>
                                 <div>
                                     <label className="flex mb-1">Academic Level<div className='text-red-600'>*</div></label>
-                                    <select name="academicLevel" value={form.academicLevel || ""} onChange={handleInputChange}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins ">
+                                    <select name="academicLevel" value={form.educationLevel || ""} onChange={handleInputChange}  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins ">
                                     <option className='hidden' value="" disabled>Select Academic Level</option>
-                                        {academicLevels.map((level, idx) => (
+                                        {educationLevels.map((level, idx) => (
                                             <option key={idx} value={level}>{level}</option>
                                         ))}
                                     </select>
