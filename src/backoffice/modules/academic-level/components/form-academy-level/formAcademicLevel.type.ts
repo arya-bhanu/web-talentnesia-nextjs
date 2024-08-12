@@ -6,6 +6,6 @@ export interface IAcademicLevelForm {
 }
 
 export interface AcademicLevelObject {
-  levelName: string;
-  status: string;
+  code: number;
+  name: string;
 }

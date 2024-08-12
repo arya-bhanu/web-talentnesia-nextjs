@@ -1,10 +1,12 @@
-'use client';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
-const AddAcademicTitleView: React.FC = () => {
-  const router = useRouter();
+interface ModalAddAcademicProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (code: string, name: string) => void;
+}
+
+const ModalAddAcademic: React.FC<ModalAddAcademicProps> = ({ isOpen, onClose, onSave }) => {
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [hasError, setHasError] = useState(false);
@@ -14,13 +16,18 @@ const AddAcademicTitleView: React.FC = () => {
       setHasError(true);
       return;
     }
-    console.log({ code, name });
-    window.location.href = '/backoffice/master-data/academic-level';
+    onSave(code, name);
+    onClose();
   };
-  
+
   const handleCancel = () => {
-    window.location.href = '/backoffice/master-data/academic-level';
+    setCode('');
+    setName('');
+    setHasError(false);
+    onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
@@ -76,4 +83,4 @@ const AddAcademicTitleView: React.FC = () => {
   );
 };
 
-export default AddAcademicTitleView;
+export default ModalAddAcademic;
