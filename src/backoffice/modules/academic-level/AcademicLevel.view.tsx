@@ -1,24 +1,94 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { 
+  useReactTable, 
+  getCoreRowModel, 
+  flexRender,
+  createColumnHelper,
+  ColumnOrderState
+} from '@tanstack/react-table';
 import Search from '../../../../public/icons/iconamoon_search-bold.svg';
 import Add from '../../../../public/icons/add.svg';
 import IconLeft from '../../../../public/icons/btn-left.svg';
 import IconRight from '../../../../public/icons/btn-right.svg';
-import Link from 'next/link';
 import { IAcademicLevelView } from './academicLevel.type';
-import Popover from '@/backoffice/components/popover';
-import AddAcademicTitleView from '@/backoffice/components/add-academic-title/AddAcademicTitle.view';
+import PopoverAcademic from '@/backoffice/components/modal-academic';
+import ModalAddAcademic from '@/backoffice/components/modal-add-academic/ModalAddAcademic';
+import { academicLevelAPI } from './api/academicLevelApi';
+
+const columnHelper = createColumnHelper<any>();
 
 const AcademicLevelView: React.FC<IAcademicLevelView> = ({
-  data,
+  initialData,
   handleActionButtonRow,
   setOpenPopoverIndex,
   openPopoverIndex,
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [data, setData] = useState(initialData || []);
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(['code', 'name', 'action']);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const updatedData = await academicLevelAPI.fetch();
+      setData(updatedData);
+    } catch (error) {
+      console.error('Failed to fetch data', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const columns = useMemo(() => [
+    columnHelper.accessor('code', {
+      header: 'Code',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('name', {
+      header: 'Level Name',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('id', {
+      id: 'action',
+      header: 'Action',
+      cell: info => (
+        <PopoverAcademic
+          handleActionButtonRow={handleActionButtonRow}
+          id={info.getValue()}
+          index={info.row.index}
+          openPopoverIndex={openPopoverIndex}
+          setOpenPopoverIndex={setOpenPopoverIndex}
+          onUpdate={fetchData}
+          onDelete={fetchData}
+        />
+      ),
+    }),
+  ], [handleActionButtonRow, openPopoverIndex, setOpenPopoverIndex, fetchData]);
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      columnOrder,
+    },
+    onColumnOrderChange: setColumnOrder,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   const openPopup = () => {
     setIsPopupOpen(true);
+  };
+
+  const handleAddAcademicLevel = async (code: string, name: string) => {
+    try {
+      await academicLevelAPI.add({ code, name });
+      fetchData();  // Refresh data after adding
+      setIsPopupOpen(false);
+    } catch (error) {
+      console.error('Failed to add academic level', error);
+    }
   };
 
   return (
@@ -43,58 +113,58 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         </form>
         <button
           onClick={openPopup}
-          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
         >
           <Add />
           <span className="text-black"> Add Academic Level</span>
         </button>
-
-        {isPopupOpen && <AddAcademicTitleView />}
+        <ModalAddAcademic
+          isOpen={isPopupOpen}
+          onClose={() => setIsPopupOpen(false)}
+          onSave={handleAddAcademicLevel}
+        />
       </div>
       <div className="overflow-x-auto max-h-[60vh] overflow-y-auto shadow-md sm:rounded-lg mt-5">
-        {data ? (
+        {data.length > 0 ? (
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  <div className="flex items-center">Code</div>
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  <div className="flex items-center">Level Name</div>
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  <div>Action</div>
-                </th>
-              </tr>
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map(header => (
+                    <th key={header.id} scope="col" className="px-6 py-3">
+                      <div className="flex items-center">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
             </thead>
             <tbody>
-              {data.map((el, index) => {
-                return (
-                  <tr
-                    key={el.code}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  >
-                    <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4">{el.name}</td>
-                    <Popover
-                      handleActionButtonRow={handleActionButtonRow}
-                      id={el.code}
-                      index={index}
-                      openPopoverIndex={openPopoverIndex}
-                      setOpenPopoverIndex={setOpenPopoverIndex}
-                    />
-                  </tr>
-                );
-              })}
+              {table.getRowModel().rows.map(row => (
+                <tr key={row.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} className="px-6 py-4">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         ) : (
-          <p>Loading ...</p>
+          <p>No data available</p>
         )}
       </div>
       <div className="flex justify-between items-center w-full mt-5">
         <div className="flex items-center gap-2 text-[#667085]">
-          <label htmlFor="" className="block">
+          <label htmlFor="pagination" className="block">
             Showing
           </label>
           <select
@@ -109,7 +179,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
             <option value={30}>30</option>
             <option value={50}>50</option>
           </select>
-          <p className="w-full min-w-max">data out of 100</p>
+          <p className="w-full min-w-max">data out of {data.length}</p>
         </div>
         <div className="flex items-center gap-2">
           <p className="text-[#667085]">Data per page</p>

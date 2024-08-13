@@ -1,10 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { issues } from './contactForm.data';
 import './contactForm.style.css';
+import { ContactFormViewProps } from './contactForm.type';
 
-export const ContactFormView = ({ className }: { className?: string }) => {
+export const ContactFormView: React.FC<ContactFormViewProps> = ({
+  className,
+  selectedIssue,
+  onIssueChange,
+  issues,
+}) => {
   return (
     <section
       className={clsx(
@@ -36,9 +41,11 @@ export const ContactFormView = ({ className }: { className?: string }) => {
         <div className="mt-4">
           <select
             className="mt-1 block w-full font-poppins px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
+            value={selectedIssue}
+            onChange={onIssueChange}
             required
           >
-            <option className="hidden" value="" disabled selected>
+            <option value="" disabled>
               Select an issue
             </option>
             {issues.map((issue) => (
