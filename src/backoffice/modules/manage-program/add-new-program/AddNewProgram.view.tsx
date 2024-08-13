@@ -11,6 +11,9 @@ import dynamic from 'next/dynamic';
 import Add from '@/../public/icons/add.svg';
 import TableStudents from './components/table-students';
 import ModalSelect from '@/backoffice/components/modal-select/ModalSelect';
+import ModulProgress from './components/modul-progress';
+import AccordionPanelDraggable from '@/backoffice/modules/manage-program/components/accordion-panel-draggable';
+import { IAccordionPanelDraggable } from '@/backoffice/modules/manage-program/components/accordion-panel-draggable/accordionPanelDraggable.type';
 
 const Datepicker = dynamic(
   () =>
@@ -31,7 +34,10 @@ function AddNewProgramView({
   setSelected,
   columns,
   rows,
-}: IAddNewProgramView) {
+  activeAccordion,
+  setActiveAccordion,
+}: IAddNewProgramView &
+  Pick<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'>) {
   const handleMentorChange = (mentor: string) => {
     setMentors((prev) =>
       prev.includes(mentor)
@@ -134,7 +140,50 @@ function AddNewProgramView({
     },
     {
       title: 'Course',
-      content: <div>{/* Content for Course Tab */}</div>,
+      content: (
+        <div>
+          <div className="flex items-center justify-between gap-10">
+            <ModulProgress
+              progress={50}
+              title="UI/UX Designer"
+              className="flex-1"
+            />
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                className="text-yellow-400 group hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+              >
+                <span className="text-black group-hover:text-white">
+                  Add Chapter
+                </span>
+              </button>
+              <button className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-3 me-2 mb-2 dark:focus:ring-yellow-900">
+                <span className="text-black font-semibold"> Select Module</span>
+              </button>
+            </div>
+          </div>
+          <div className="mt-5">
+            <AccordionPanelDraggable
+              key={1}
+              activeAccordion={activeAccordion}
+              setActiveAccordion={setActiveAccordion}
+              title="UX Design Principles"
+              index={1}
+              totalCurriculum={6}
+              totalMinuteDuration={58}
+            />
+            <AccordionPanelDraggable
+              key={2}
+              activeAccordion={activeAccordion}
+              setActiveAccordion={setActiveAccordion}
+              title="UI Design Principles"
+              index={2}
+              totalCurriculum={6}
+              totalMinuteDuration={45}
+            />
+          </div>
+        </div>
+      ),
     },
     {
       title: 'Student',

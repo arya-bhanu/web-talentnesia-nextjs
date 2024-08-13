@@ -66,6 +66,7 @@ const AddNewProgram = () => {
   const [mentors, setMentors] = useState(['Mentor 1', 'Mentor 2']);
   const [status, setStatus] = useState('On Going');
   const [selectedStudents, setSelectedStudents] = useState(['']);
+  const [activeAccordion, setActiveAccordion] = useState(-1);
   const [openModal, setOpenModal] = useState(false);
   return (
     <AddNewProgramView
@@ -79,6 +80,8 @@ const AddNewProgram = () => {
       setOpen={setOpenModal}
       columns={columns}
       rows={mappedNumberRows}
+      activeAccordion={activeAccordion}
+      setActiveAccordion={setActiveAccordion}
     />
   );
 };
