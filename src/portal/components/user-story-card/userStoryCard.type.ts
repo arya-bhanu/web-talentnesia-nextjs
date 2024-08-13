@@ -2,10 +2,10 @@ export interface UserStoryCardViewProps {
   className?: string;
   activeNumber?: number;
   setActiveNumber?: React.Dispatch<React.SetStateAction<number>>;
-  testimonials?: testimonials[];
+  testimonials?: Testimonials[];
 }
 
-export interface testimonials {
+export interface Testimonials {
   photo?: string;
   fullName?: string;
   statusUser?: string;

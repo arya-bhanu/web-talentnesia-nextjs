@@ -6,11 +6,11 @@ export const dataNavs = [
     links: [
       {
         label: 'Tentang Kami',
-        link: 'tentang-kami',
+        link: '/tentang-kami',
       },
       {
         label: 'FAQ',
-        link: 'faq',
+        link: '/faq',
       },
     ] as ILink[],
   },
@@ -19,15 +19,15 @@ export const dataNavs = [
     links: [
       {
         label: 'E-Learning',
-        link: 'e-learning',
+        link: '/e-learning',
       },
       {
         label: 'Bootcamp',
-        link: 'bootcamp',
+        link: '/bootcamp',
       },
       {
         label: 'IICP',
-        link: 'iicp',
+        link: '/iicp',
       },
     ] as ILink[],
   },
@@ -36,23 +36,23 @@ export const dataNavs = [
     links: [
       {
         label: 'Privacy Policy',
-        link: 'privacy-policy',
+        link: '/privacy-policy',
       },
       {
         label: 'Term and Condition',
-        link: 'term-and-condition',
+        link: '/terms',
       },
       {
         label: 'Cookies',
-        link: 'cookies',
+        link: '/cookies',
       },
       {
         label: 'Blog',
-        link: 'blog',
+        link: '/blog',
       },
       {
         label: 'Career',
-        link: 'career',
+        link: '/career',
       },
     ] as ILink[],
   },

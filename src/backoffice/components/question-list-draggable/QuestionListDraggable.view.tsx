@@ -12,8 +12,12 @@ import PopoverAction from '../popover-action';
 import { IQuestionListDraggable } from './questionListDraggable.type';
 import QuestionFieldProject from './question-field-project';
 import { QuestionType } from './questionListDraggable.enum';
-import ReactQuill from 'react-quill';
+// import ReactQuill from 'react-quill';
 import clsx from 'clsx';
+import dynamic from 'next/dynamic';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
 const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
   openPopover,
   setOpenPopover,
