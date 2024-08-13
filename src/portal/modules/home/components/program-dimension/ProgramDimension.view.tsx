@@ -3,7 +3,9 @@ import ProgramDimensionCard from '@/portal/components/program-dimension-card/Pro
 import RoundedPrimaryButton from '@/portal/components/rounded-primary-button/RoundedPrimaryButton';
 import { ProgramDimensionSectionViewProps } from './programDimension.type';
 
-const ProgramDimensionSectionView: React.FC<ProgramDimensionSectionViewProps> = ({ className, programs }) => {
+const ProgramDimensionSectionView: React.FC<
+  ProgramDimensionSectionViewProps
+> = ({ className, programs }) => {
   return (
     <section className={className}>
       <h2 className="font-poppins md:text-start text-center font-semibold text-xl md:text-2xl lg:text-3xl">

@@ -5,7 +5,7 @@ export const programData: ProgramProps[] = [
     logoprogram: '/img/iicp/program/logo-program.svg',
     title: 'Rekayasa Perangkat Lunak',
     description:
-      'Dengan fokus pada pemrograman, analisis sistem, dan desain aplikasi, program ini mempersiapkan siswa untuk menjadi ahli dalam menciptakan solusi perangkat lunak inovatif.' + 
+      'Dengan fokus pada pemrograman, analisis sistem, dan desain aplikasi, program ini mempersiapkan siswa untuk menjadi ahli dalam menciptakan solusi perangkat lunak inovatif.' +
       '\n \nKurikulum kami dirancang untuk memadukan teori dengan proyek dunia nyata, memungkinkan siswa untuk mengasah keterampilan teknis mereka sambil mendapatkan pengalaman praktis industri.',
     check: '/img/iicp/program/circle-check.svg',
     course: [

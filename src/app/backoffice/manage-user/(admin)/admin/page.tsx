@@ -1,7 +1,6 @@
 import React from 'react';
 import { Admin } from '@/backoffice/modules/user/admin/admin';
 
-
 const AdminPage = () => {
   return (
     <>
@@ -11,4 +10,3 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
-

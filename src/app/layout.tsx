@@ -8,7 +8,7 @@ import GlobalProvider from '@/utils/GlobalProvider';
 import { ThemeModeScript } from 'flowbite-react';
 import Head from 'next/head';
 import Script from 'next/script';
-import "flatpickr/dist/flatpickr.css";
+import 'flatpickr/dist/flatpickr.css';
 import 'react-quill/dist/quill.core.css';
 import 'react-quill/dist/quill.snow.css';
 

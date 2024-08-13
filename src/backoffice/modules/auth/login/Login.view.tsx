@@ -84,7 +84,10 @@ export const LoginView: React.FC<Partial<LoginViewProps>> = (
             </button>
           </div>
           <div className="flex items-center justify-end">
-            <Link href={'/auth/forgot-password'} className="text-sm text-[#219EBC] hover:underline">
+            <Link
+              href={'/auth/forgot-password'}
+              className="text-sm text-[#219EBC] hover:underline"
+            >
               Lupa Kata Sandi?
             </Link>
           </div>
@@ -97,7 +100,10 @@ export const LoginView: React.FC<Partial<LoginViewProps>> = (
         </form>
         <p className="mt-10 text-center text-sm text-gray-500">
           Belum punya akun?{' '}
-          <Link href={'/auth/register'} className="text-sm text-[#219EBC] hover:underline">
+          <Link
+            href={'/auth/register'}
+            className="text-sm text-[#219EBC] hover:underline"
+          >
             Daftar sekarang
           </Link>
         </p>

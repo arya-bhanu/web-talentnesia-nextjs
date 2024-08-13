@@ -1,4 +1,4 @@
-import { BenefitsProps } from "./benefits.type";
+import { BenefitsProps } from './benefits.type';
 
 export const benefitsData: BenefitsProps[] = [
   {

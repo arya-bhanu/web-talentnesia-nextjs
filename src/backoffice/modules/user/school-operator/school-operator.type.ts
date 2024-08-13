@@ -1,5 +1,3 @@
-
-
 export interface SchoolOperatorFormData {
   profilePicture: string | null;
   name: string;

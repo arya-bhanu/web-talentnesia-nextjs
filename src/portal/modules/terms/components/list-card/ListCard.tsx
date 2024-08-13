@@ -4,7 +4,5 @@ import { ListCardData } from './listCard.data';
 import clsx from 'clsx';
 
 export const ListCard = ({ className }: { className?: string }) => {
-  return (
-    <ListCardView cards={ListCardData} className={clsx(className)} />
-  );
+  return <ListCardView cards={ListCardData} className={clsx(className)} />;
 };

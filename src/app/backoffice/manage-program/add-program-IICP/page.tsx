@@ -1,14 +1,12 @@
 import React from 'react';
-import { SchoolOperator } from '@/backoffice/modules/user/school-operator/school-operator';
-
+import AddNewProgram from '@/backoffice/modules/manage-program/add-new-program';
 
 const SchoolOperatorPage = () => {
   return (
     <>
-      <SchoolOperator />
+      <AddNewProgram />
     </>
   );
 };
 
 export default SchoolOperatorPage;
-

@@ -1,24 +1,24 @@
-import { ListCardProps } from './listCard.type'
+import { ListCardProps } from './listCard.type';
 
 export const ListCardData: ListCardProps[] = [
   {
     title: 'Persyaratan Penggunaan',
-    url: '#'
+    url: '#',
   },
   {
     title: 'Privacy Policy',
-    url: '#'
+    url: '#',
   },
   {
     title: 'Term & Condition',
-    url: '#'
+    url: '#',
   },
   {
     title: 'Cookies',
-    url: '#'
+    url: '#',
   },
   {
     title: 'Persyaratan dan Ketentuan Talentnesia',
-    url: '#'
+    url: '#',
   },
-]
+];

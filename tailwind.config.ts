@@ -12,7 +12,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/flowbite-react/lib/**/*.js',
     './node_modules/flowbite/**/*.js',
-    flowbite.content()
+    flowbite.content(),
   ],
   theme: {
     extend: {

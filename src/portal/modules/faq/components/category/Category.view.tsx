@@ -10,7 +10,6 @@ export const CategoryView: React.FC<CategoryViewProps> = ({
   setHoveredCategory,
   handleCategoryClick,
 }) => {
-
   return (
     <div className="bg-[#F9FAFB] rounded-lg shadow-sm">
       <ul className="">
@@ -33,13 +32,13 @@ export const CategoryView: React.FC<CategoryViewProps> = ({
                   selectedCategory === category.title
                     ? '/img/faq/category/arrow-right-white.svg'
                     : hoveredCategory === category.title
-                    ? '/img/faq/category/arrow-right-white.svg'
-                    : '/img/faq/category/arrow-right-black.svg'
+                      ? '/img/faq/category/arrow-right-white.svg'
+                      : '/img/faq/category/arrow-right-black.svg'
                 }
                 width={6}
                 height={6}
                 alt="arrow-right"
-                className='ml-1'
+                className="ml-1"
               />
             </button>
           </li>

@@ -1,38 +1,38 @@
 'use client';
 
-import { useState } from "react";
-import { SchoolOperatorView } from "./school-operator.view";
-import { SchoolOperatorFormData } from "./school-operator.type";
+import { useState } from 'react';
+import { SchoolOperatorView } from './school-operator.view';
+import { SchoolOperatorFormData } from './school-operator.type';
 
 export const useSchoolOperatorForm = () => {
   const [form, setForm] = useState<SchoolOperatorFormData>({
     // Section A
-    profilePicture: "",
+    profilePicture: '',
 
-    name: "",
-    nik: "",
-    placeOfBirth: "",
-    dateOfBirth: "",
-    religion: "",
-    gender: "",
+    name: '',
+    nik: '',
+    placeOfBirth: '',
+    dateOfBirth: '',
+    religion: '',
+    gender: '',
 
     // Section B
-    phoneNumber: "",
-    email: "",
+    phoneNumber: '',
+    email: '',
 
     // Section C
-    province: "",
-    district: "",
-    subDistrict: "",
-    zipCode: "",
-    addressDomicile: "",
+    province: '',
+    district: '',
+    subDistrict: '',
+    zipCode: '',
+    addressDomicile: '',
 
     // Section D
-    school: ""
+    school: '',
   });
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = event.target;
     setForm((prevForm) => ({
@@ -43,7 +43,7 @@ export const useSchoolOperatorForm = () => {
 
   const handleEducationChange = (
     index: number,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, value } = event.target;
     setForm((prevForm) => ({
@@ -55,30 +55,30 @@ export const useSchoolOperatorForm = () => {
     setForm({
       // Reset all fields to their initial state
       // Section A
-    profilePicture: "",
-    name: "",
-    nik: "",
-    placeOfBirth: "",
-    dateOfBirth: "",
-    religion: "",
-    gender: "",
+      profilePicture: '',
+      name: '',
+      nik: '',
+      placeOfBirth: '',
+      dateOfBirth: '',
+      religion: '',
+      gender: '',
 
-    // Section B
-    phoneNumber: "",
-    email: "",
+      // Section B
+      phoneNumber: '',
+      email: '',
 
-    // Section C
-    province: "",
-    district: "",
-    subDistrict: "",
-    zipCode: "",
-    addressDomicile: "",
+      // Section C
+      province: '',
+      district: '',
+      subDistrict: '',
+      zipCode: '',
+      addressDomicile: '',
 
-    // Section D
-    school: ""
+      // Section D
+      school: '',
     });
   };
-  
+
   return {
     form,
     handleInputChange,

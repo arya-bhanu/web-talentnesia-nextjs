@@ -1,35 +1,35 @@
 /*  */
-input[type="text"],
-input[type="email"],
-input[type="password"],
+input[type='text'],
+input[type='email'],
+input[type='password'],
 select,
 textarea {
-  margin-top: 0.25rem; 
+  margin-top: 0.25rem;
   display: block;
   width: 100%;
-  padding-left: 0.75rem; 
-  padding-right: 0.75rem; 
-  padding-top: 0.5rem; 
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   border-bottom-width: 1px;
-  border-bottom-color: #d1d5db; 
+  border-bottom-color: #d1d5db;
   border-top: none;
   border-right: none;
   border-left: none;
-  outline: none; 
-  font-size: 0.875rem; 
-  color: #4b5563; 
+  outline: none;
+  font-size: 0.875rem;
+  color: #4b5563;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='password']:focus,
 select:focus,
 textarea:focus {
   border-top: none;
   border-right: none;
   border-left: none;
   outline: none;
-  border-bottom-color: #219EBC; 
+  border-bottom-color: #219ebc;
   box-shadow: none;
 }

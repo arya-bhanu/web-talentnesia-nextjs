@@ -19,25 +19,32 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
   currentPath,
 }) => {
   const filteredSegments = pathSegments.filter(
-    (segment) => segment !== '' && segment.toLowerCase() !== 'backoffice'
+    (segment) => segment !== '' && segment.toLowerCase() !== 'backoffice',
   );
 
   return (
-    <nav aria-label="breadcrumb" className={clsx(className, 'font-poppins text-sm')}>
+    <nav
+      aria-label="breadcrumb"
+      className={clsx(className, 'font-poppins text-sm')}
+    >
       <div className="">
         <ol className="flex text-md text-[#989FAD] items-center">
           {filteredSegments.map((segment, index) => {
-            const path = '/' + pathSegments
-              .slice(0, pathSegments.indexOf(segment) + 1)
-              .filter((seg) => seg !== '' && seg.toLowerCase() !== 'backoffice')
-              .join('/');
+            const path =
+              '/' +
+              pathSegments
+                .slice(0, pathSegments.indexOf(segment) + 1)
+                .filter(
+                  (seg) => seg !== '' && seg.toLowerCase() !== 'backoffice',
+                )
+                .join('/');
             const isLast = index === filteredSegments.length - 1;
             const displayName = formattedSegments[index];
             return (
               <React.Fragment key={path}>
                 {isLast ? (
                   <li className="font-semibold text-[#219EBC]">
-                    <Link href={path} className='hover:underline'>
+                    <Link href={path} className="hover:underline">
                       {currentPath || displayName}
                     </Link>
                   </li>

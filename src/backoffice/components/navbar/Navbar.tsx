@@ -16,9 +16,12 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users/2', {
-          cache: 'force-cache',
-        });
+        const response = await fetch(
+          'https://jsonplaceholder.typicode.com/users/2',
+          {
+            cache: 'force-cache',
+          },
+        );
         const data = await response.json();
         setUser({
           name: data.name,
