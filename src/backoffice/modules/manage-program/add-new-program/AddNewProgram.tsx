@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import AddNewProgramView from './AddNewProgram.view';
 import SintiaPic from '@/../public/icons/sintia-pic.svg';
 
@@ -68,8 +68,12 @@ const AddNewProgram = () => {
   const [selectedStudents, setSelectedStudents] = useState(['']);
   const [activeAccordion, setActiveAccordion] = useState(-1);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalModul, setOpenModalModul] = useState(false);
+
+  const handleSubmitSelectedModul = (e: FormEvent<HTMLFormElement>) => {};
   return (
     <AddNewProgramView
+      handleSubmitSelectedModul={handleSubmitSelectedModul}
       mentors={mentors}
       setMentors={setMentors}
       setStatus={setStatus}
@@ -82,6 +86,8 @@ const AddNewProgram = () => {
       rows={mappedNumberRows}
       activeAccordion={activeAccordion}
       setActiveAccordion={setActiveAccordion}
+      openModalModul={openModalModul}
+      setOpenModalModul={setOpenModalModul}
     />
   );
 };

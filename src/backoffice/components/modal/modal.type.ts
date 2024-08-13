@@ -10,4 +10,5 @@ export interface IModal {
   children: ReactNode;
   title: string;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  buttonConfirmTitle?: string;
 }

@@ -9,6 +9,7 @@ const ModalView: React.FC<IModal> = ({
   children,
   title,
   handleSubmit,
+  buttonConfirmTitle = 'Submit',
 }) => {
   return (
     <Modal show={state.openModal} onClose={() => state.setOpenModal(false)}>
@@ -30,7 +31,7 @@ const ModalView: React.FC<IModal> = ({
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >
-            Submit
+            {buttonConfirmTitle}
           </Button>
         </Modal.Footer>
       </form>

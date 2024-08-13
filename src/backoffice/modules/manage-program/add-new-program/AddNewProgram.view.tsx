@@ -14,6 +14,8 @@ import ModalSelect from '@/backoffice/components/modal-select/ModalSelect';
 import ModulProgress from './components/modul-progress';
 import AccordionPanelDraggable from '@/backoffice/modules/manage-program/components/accordion-panel-draggable';
 import { IAccordionPanelDraggable } from '@/backoffice/modules/manage-program/components/accordion-panel-draggable/accordionPanelDraggable.type';
+import Modal from '@/backoffice/components/modal';
+import { Dispatch, FormEvent, SetStateAction } from 'react';
 
 const Datepicker = dynamic(
   () =>
@@ -36,8 +38,15 @@ function AddNewProgramView({
   rows,
   activeAccordion,
   setActiveAccordion,
+  openModalModul,
+  setOpenModalModul,
+  handleSubmitSelectedModul,
 }: IAddNewProgramView &
-  Pick<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'>) {
+  Pick<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'> & {
+    openModalModul: boolean;
+    setOpenModalModul: Dispatch<SetStateAction<boolean>>;
+    handleSubmitSelectedModul: (e: FormEvent<HTMLFormElement>) => void;
+  }) {
   const handleMentorChange = (mentor: string) => {
     setMentors((prev) =>
       prev.includes(mentor)
@@ -142,6 +151,27 @@ function AddNewProgramView({
       title: 'Course',
       content: (
         <div>
+          <Modal
+            title="Select Modul"
+            state={{
+              openModal: openModalModul,
+              setOpenModal: setOpenModalModul,
+            }}
+            buttonConfirmTitle='Save'
+            handleSubmit={handleSubmitSelectedModul}
+            children={
+              <div>
+                <LabelForm isImportant htmlFor="modul">
+                  Modul Name
+                </LabelForm>
+                <Select id="modul" name="modul">
+                  <option value={1}>Modul 1</option>
+                  <option value={2}>Modul 2</option>
+                  <option value={3}>Modul 3</option>
+                </Select>
+              </div>
+            }
+          />
           <div className="flex items-center justify-between gap-10">
             <ModulProgress
               progress={50}
@@ -157,7 +187,10 @@ function AddNewProgramView({
                   Add Chapter
                 </span>
               </button>
-              <button className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-3 me-2 mb-2 dark:focus:ring-yellow-900">
+              <button
+                onClick={() => setOpenModalModul(true)}
+                className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-3 me-2 mb-2 dark:focus:ring-yellow-900"
+              >
                 <span className="text-black font-semibold"> Select Module</span>
               </button>
             </div>
