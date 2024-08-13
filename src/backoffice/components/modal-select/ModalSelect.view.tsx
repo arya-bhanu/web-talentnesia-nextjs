@@ -3,6 +3,7 @@ import { Modal } from 'flowbite-react/components/Modal';
 import React from 'react';
 import { IModalSelect } from './modalSelect.type';
 import { sortRowsKeyColumnTable } from '@/helpers/sort.helper';
+import { Checkbox } from 'flowbite-react';
 
 const ModalSelectView: React.FC<IModalSelect> = ({
   open,
@@ -43,15 +44,16 @@ const ModalSelectView: React.FC<IModalSelect> = ({
                     >
                       {columns.map((column) => {
                         return (
-                          <>
-                            <td className="px-6 py-4" key={column.key}>
-                              {typeof row[column.key] === 'function'
-                                ? row[column.key]()
-                                : row[column.key]}
-                            </td>
-                          </>
+                          <td className="px-6 py-4" key={column.key}>
+                            {typeof row[column.key] === 'function'
+                              ? row[column.key]()
+                              : row[column.key]}
+                          </td>
                         );
                       })}
+                      <td className="px-6 py-4">
+                        <Checkbox value={row.id} id={row.id} name="student" />
+                      </td>
                     </tr>
                   );
                 })}
