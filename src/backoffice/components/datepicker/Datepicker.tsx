@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Datepicker as FlowbiteDatepicker } from "flowbite-react";
+import React, { useEffect } from 'react';
+import { Datepicker as FlowbiteDatepicker } from 'flowbite-react';
 import Image from 'next/image';
 
 interface DatepickerProps {
   onReset?: (resetFunction: () => void) => void;
+  selectedDate?: string;
+  setSelectedDate?: (arg: string) => void;
 }
 
 const CalendarIcon = () => (
@@ -15,12 +17,14 @@ const CalendarIcon = () => (
   />
 );
 
-export function Component({ onReset }: DatepickerProps) {
-  const [selectedDate, setSelectedDate] = useState<string>("");
-
+export function Component({
+  onReset,
+  selectedDate,
+  setSelectedDate,
+}: DatepickerProps) {
   useEffect(() => {
-    if (onReset) {
-      onReset(() => setSelectedDate(""));
+    if (onReset && setSelectedDate) {
+      onReset(() => setSelectedDate(''));
     }
   }, [onReset]);
 
@@ -28,7 +32,11 @@ export function Component({ onReset }: DatepickerProps) {
     <FlowbiteDatepicker
       icon={CalendarIcon}
       value={selectedDate}
-      onSelectedDateChanged={(date) => setSelectedDate(date ? date.toDateString() : "")}
+      onSelectedDateChanged={(date) => {
+        if (setSelectedDate) {
+          setSelectedDate(date ? date.toDateString() : '');
+        }
+      }}
       placeholder="Select Date"
     />
   );
