@@ -36,8 +36,8 @@ const PopoverAcademicView: React.FC<IPopoverAcademic> = ({
       await academicLevelAPI.delete(id);
       handleActionButtonRow(id, 'delete');
       await onDelete();
-    } catch (error: any) {
-      console.error('Failed to delete academic level', error.response?.data || error.message);
+    } catch (error) {
+      console.error('Failed to delete academic level', error);
     }
   };
 
@@ -63,7 +63,7 @@ const PopoverAcademicView: React.FC<IPopoverAcademic> = ({
   };
 
   return (
-    <td className="px-6 py-4">
+    <td className="px-2 py-2">
       <AlertModal
         openModal={openModal}
         setOpenModal={setOpenModal}
