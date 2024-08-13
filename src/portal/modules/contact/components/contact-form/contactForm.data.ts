@@ -1,4 +1,4 @@
-import { ContactFormProps } from "./contactForm.type";
+import { ContactFormProps } from './contactForm.type';
 
 export const issues: ContactFormProps[] = [
   { id: 'issue1', label: 'Issue 1' },

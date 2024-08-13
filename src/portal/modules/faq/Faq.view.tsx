@@ -10,7 +10,9 @@ export const FaqView = () => {
       <HeroSection />
       <main className="container mx-auto space-y-8">
         <HeroCard className="mb-10" />
-        <h2 className="text-xl font-semibold text-[#344054] mb-4">Kategori FAQ</h2>
+        <h2 className="text-xl font-semibold text-[#344054] mb-4">
+          Kategori FAQ
+        </h2>
         <div className="space-y-8 md:flex">
           <div className="md:w-[40%] xl:w-[30%] md:mr-4 xl:mr-8">
             <Category />

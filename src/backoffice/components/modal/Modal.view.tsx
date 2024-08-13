@@ -16,7 +16,7 @@ const ModalView: React.FC<IModal> = ({
       <form onSubmit={handleSubmit}>
         <Modal.Body>{children}</Modal.Body>
 
-        <Modal.Footer className='w-full justify-end'>
+        <Modal.Footer className="w-full justify-end">
           <Button
             onClick={() => state.setOpenModal(false)}
             type="button"

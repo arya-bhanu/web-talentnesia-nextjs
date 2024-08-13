@@ -1,10 +1,8 @@
-import AcademicLevel from '@/backoffice/modules/academic-level'
-import React from 'react'
+import AcademicLevel from '@/backoffice/modules/academic-level';
+import React from 'react';
 
 const AcademicLevelPage = () => {
-  return (
-    <AcademicLevel />
-  )
-}
+  return <AcademicLevel />;
+};
 
-export default AcademicLevelPage
+export default AcademicLevelPage;

@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 import Example from '@/backoffice/modules/example';
 
 const ExampleIndex = () => {
-  return <Example/>
-}
+  return <Example />;
+};
 
-export default ExampleIndex
+export default ExampleIndex;

@@ -1,6 +1,6 @@
-import { Tabs } from "flowbite-react";
-import { IconType } from "react-icons";
-import React from "react";
+import { Tabs } from 'flowbite-react';
+import { IconType } from 'react-icons';
+import React from 'react';
 
 interface TabItem {
   title: string;
@@ -32,7 +32,11 @@ export function TabFlex({ tabs }: TabFlexProps) {
           }
         `}
       </style>
-      <Tabs aria-label="Tabs with underline" variant="underline" className="custom-tabs">
+      <Tabs
+        aria-label="Tabs with underline"
+        variant="underline"
+        className="custom-tabs"
+      >
         {tabs.map((tab, index) => (
           <Tabs.Item
             key={index}

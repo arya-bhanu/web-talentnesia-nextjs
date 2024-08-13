@@ -1,5 +1,3 @@
-
-
 export interface StudentFormData {
   profilePicture: string | null;
   name: string;

@@ -12,7 +12,7 @@ export const Accordion = () => {
   };
 
   return (
-    <AccordionView 
+    <AccordionView
       accordionData={AccordionData}
       activeIndex={activeIndex}
       toggleAccordion={toggleAccordion}

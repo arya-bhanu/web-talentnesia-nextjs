@@ -36,7 +36,6 @@ const FormChapter = () => {
   const handleSubmitAddContent = async (
     e: React.FormEvent<HTMLFormElement>,
   ) => {
-   
     try {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);

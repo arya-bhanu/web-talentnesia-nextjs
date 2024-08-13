@@ -5,13 +5,19 @@ function MentorSelector() {
   const [selectedMentors, setSelectedMentors] = useState<string[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const allMentors = ["Mentor 1", "Mentor 2", "Mentor 3", "Mentor 4", "Mentor 5"];
+  const allMentors = [
+    'Mentor 1',
+    'Mentor 2',
+    'Mentor 3',
+    'Mentor 4',
+    'Mentor 5',
+  ];
 
   const toggleMentorSelection = (mentor: string) => {
     setSelectedMentors((prev) =>
       prev.includes(mentor)
         ? prev.filter((m) => m !== mentor)
-        : [...prev, mentor]
+        : [...prev, mentor],
     );
   };
 
@@ -24,11 +30,7 @@ function MentorSelector() {
       >
         {selectedMentors.length > 0 ? (
           selectedMentors.map((mentor) => (
-            <Badge
-              key={mentor}
-              color="info"
-              className="flex items-center mr-2"
-            >
+            <Badge key={mentor} color="info" className="flex items-center mr-2">
               <span className="flex items-center">
                 {mentor}
                 <span
@@ -77,7 +79,9 @@ function MentorSelector() {
           {/* Mentor List with Checkboxes */}
           <div className="p-2 max-h-40 overflow-y-auto">
             {allMentors
-              .filter(mentor => mentor.toLowerCase().includes(searchTerm.toLowerCase()))
+              .filter((mentor) =>
+                mentor.toLowerCase().includes(searchTerm.toLowerCase()),
+              )
               .map((mentor) => (
                 <div key={mentor} className="flex items-center mb-2">
                   <Checkbox

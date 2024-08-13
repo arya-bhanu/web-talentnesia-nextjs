@@ -9,9 +9,8 @@ import clsx from 'clsx';
 export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
   pathSegments,
   className,
-  currentPath
+  currentPath,
 }) => {
-
   return (
     <nav aria-label="breadcrumb" className={clsx(className, 'font-inter')}>
       <div className="mb-4">

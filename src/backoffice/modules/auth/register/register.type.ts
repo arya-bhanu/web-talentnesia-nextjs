@@ -1,5 +1,4 @@
 export interface RegisterViewProps {
-    showPassword: boolean;
-    togglePasswordVisibility: () => void;
-  }
-  
+  showPassword: boolean;
+  togglePasswordVisibility: () => void;
+}

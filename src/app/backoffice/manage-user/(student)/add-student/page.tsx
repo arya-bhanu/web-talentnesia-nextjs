@@ -1,7 +1,6 @@
 import React from 'react';
 import { Student } from '@/backoffice/modules/user/student/student';
 
-
 const StudentPage = () => {
   return (
     <>
@@ -11,4 +10,3 @@ const StudentPage = () => {
 };
 
 export default StudentPage;
-

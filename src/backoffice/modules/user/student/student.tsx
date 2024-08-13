@@ -1,43 +1,43 @@
 'use client';
 
-import { useState } from "react";
-import { StudentView } from "./student.view";
-import { StudentFormData } from "./student.type";
+import { useState } from 'react';
+import { StudentView } from './student.view';
+import { StudentFormData } from './student.type';
 
 export const useStudentForm = () => {
   const [form, setForm] = useState<StudentFormData>({
     // Section A
-    profilePicture: "",
+    profilePicture: '',
 
-    name: "",
-    nik: "",
-    fotoKtp: "",
-    placeOfBirth: "",
-    dateOfBirth: "",
-    religion: "",
-    gender: "",
+    name: '',
+    nik: '',
+    fotoKtp: '',
+    placeOfBirth: '',
+    dateOfBirth: '',
+    religion: '',
+    gender: '',
 
     // Section B
-    phone: "",
-    email: "",
+    phone: '',
+    email: '',
 
     // Section C
-    province: "",
-    district: "",
-    subDistrict: "",
-    zipCode: "",
-    addressKtp: "",
-    addressDomicile: "",
+    province: '',
+    district: '',
+    subDistrict: '',
+    zipCode: '',
+    addressKtp: '',
+    addressDomicile: '',
 
     // Section D
-    educationName: "",
-    educationLevel: "",
-    start: "",
-    end: "",
+    educationName: '',
+    educationLevel: '',
+    start: '',
+    end: '',
   });
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = event.target;
     setForm((prevForm) => ({
@@ -48,7 +48,7 @@ export const useStudentForm = () => {
 
   const handleEducationChange = (
     index: number,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, value } = event.target;
     setForm((prevForm) => ({
@@ -60,35 +60,35 @@ export const useStudentForm = () => {
     setForm({
       // Reset all fields to their initial state
       // Section A
-    profilePicture: "",
-    name: "",
-    nik: "",
-    fotoKtp: "",
-    placeOfBirth: "",
-    dateOfBirth: "",
-    religion: "",
-    gender: "",
+      profilePicture: '',
+      name: '',
+      nik: '',
+      fotoKtp: '',
+      placeOfBirth: '',
+      dateOfBirth: '',
+      religion: '',
+      gender: '',
 
-    // Section B
-    phone: "",
-    email: "",
+      // Section B
+      phone: '',
+      email: '',
 
-    // Section C
-    province: "",
-    district: "",
-    subDistrict: "",
-    zipCode: "",
-    addressKtp: "",
-    addressDomicile: "",
+      // Section C
+      province: '',
+      district: '',
+      subDistrict: '',
+      zipCode: '',
+      addressKtp: '',
+      addressDomicile: '',
 
-    // Section D
-    educationName: "",
-    educationLevel: "",
-    start: "",
-    end: "",
+      // Section D
+      educationName: '',
+      educationLevel: '',
+      start: '',
+      end: '',
     });
   };
-  
+
   return {
     form,
     handleInputChange,

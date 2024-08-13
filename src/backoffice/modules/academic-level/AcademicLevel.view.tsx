@@ -42,29 +42,25 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
           </div>
         </form>
         <button
-        onClick={openPopup}
-        className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-      >
-        <Add />
-        <span className="text-black"> Add Academic Level</span>
-      </button>
+          onClick={openPopup}
+          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+        >
+          <Add />
+          <span className="text-black"> Add Academic Level</span>
+        </button>
 
-      {isPopupOpen && <AddAcademicTitleView />}
-    </div>
+        {isPopupOpen && <AddAcademicTitleView />}
+      </div>
       <div className="overflow-x-auto max-h-[60vh] overflow-y-auto shadow-md sm:rounded-lg mt-5">
         {data ? (
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  <div className="flex items-center">   
-                    Code
-                  </div>
+                  <div className="flex items-center">Code</div>
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  <div className="flex items-center">
-                    Level Name
-                  </div>
+                  <div className="flex items-center">Level Name</div>
                 </th>
                 <th scope="col" className="px-6 py-3">
                   <div>Action</div>

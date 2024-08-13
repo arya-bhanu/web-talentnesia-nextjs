@@ -74,7 +74,10 @@ const SidebarView = () => {
                       height={8}
                       className="transition-transform"
                       style={{
-                        transform: expandedIndex === index ? 'rotate(0deg)' : 'rotate(180deg)',
+                        transform:
+                          expandedIndex === index
+                            ? 'rotate(0deg)'
+                            : 'rotate(180deg)',
                         filter:
                           expandedIndex === index
                             ? 'brightness(0) saturate(100%) invert(49%) sepia(85%) saturate(433%) hue-rotate(144deg) brightness(91%) contrast(88%)'
@@ -91,7 +94,9 @@ const SidebarView = () => {
                           href={link.link}
                           onClick={() => handleSubItemClick(subIndex)}
                           className={`flex items-center p-2 pl-8 rounded-lg hover:bg-gray-100 ${
-                            activeSubIndex === subIndex ? 'text-[#219EBC]' : 'text-gray-700'
+                            activeSubIndex === subIndex
+                              ? 'text-[#219EBC]'
+                              : 'text-gray-700'
                           }`}
                         >
                           <Image

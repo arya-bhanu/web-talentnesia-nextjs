@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 import { HeroSection } from './components/hero-section';
@@ -24,13 +24,16 @@ export const IicpView: React.FC = () => {
     <>
       <HeroSection />
       <main className="container">
-        <PartnersSection className="py-10 md:py-20" partners={data.partners}/>
+        <PartnersSection className="py-10 md:py-20" partners={data.partners} />
         <Benefits className="py-10 md:py-20" />
         <Divider className="py-5" />
         <Features className="py-10 md:py-20" />
         <Program className="py-10 md:py-10" />
         <PartnersCarousel className="py-5 md:py-10" partners={data.partners} />
-        <UserStoryCard className="mt-16 md:mt-20 lg:mt-32" testimonials={data.testimonials} />
+        <UserStoryCard
+          className="mt-16 md:mt-20 lg:mt-32"
+          testimonials={data.testimonials}
+        />
         <Divider className="py-10 md:mt-20" />
         <Contact className="py-10 md:py-15" />
       </main>

@@ -54,7 +54,13 @@ export function DropFile() {
           </svg>
           <p className="mb-2 font-medium">Drag file here</p>
           <p className="text-sm text-gray-500 mb-2">or</p>
-          <Button className="text-blue-500 border-spacing-2 border-blue-500" color="light" onClick={handleClick}>Browse Files</Button>
+          <Button
+            className="text-blue-500 border-spacing-2 border-blue-500"
+            color="light"
+            onClick={handleClick}
+          >
+            Browse Files
+          </Button>
         </div>
       ) : (
         <div className="text-center p-4">

@@ -1,10 +1,10 @@
-import React from 'react'
-import { TermsView } from './Terms.view'
+import React from 'react';
+import { TermsView } from './Terms.view';
 
 export const Terms = () => {
   return (
     <>
       <TermsView />
     </>
-  )
-}
+  );
+};

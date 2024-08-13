@@ -1,7 +1,6 @@
 import React from 'react';
 import { SchoolOperator } from '@/backoffice/modules/user/school-operator/school-operator';
 
-
 const SchoolOperatorPage = () => {
   return (
     <>
@@ -11,4 +10,3 @@ const SchoolOperatorPage = () => {
 };
 
 export default SchoolOperatorPage;
-
