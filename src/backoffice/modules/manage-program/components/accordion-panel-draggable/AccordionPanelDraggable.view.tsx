@@ -11,6 +11,7 @@ import ClarityCertificate from '@/../public/icons/manage-program/clarity_certifi
 import FluentShiftTeam from '@/../public/icons/manage-program/fluent_shifts-team-20-regular.svg';
 
 import ListDraggable from '../list-draggable';
+
 import {
   IAccordionPanelDraggable,
   IPopoverState,
@@ -29,6 +30,7 @@ const AccordionPanelDraggableView: React.FC<
   setActiveAccordion,
   open,
   setOpen,
+  contents,
 }) => {
   return (
     <div
@@ -126,9 +128,9 @@ const AccordionPanelDraggableView: React.FC<
           index === activeAccordion ? 'block' : 'hidden',
         )}
       >
-        {/* {contents.map((el, index) => (
+        {contents.map((el, index) => (
           <ListDraggable key={index} {...el} />
-        ))} */}
+        ))}
       </div>
     </div>
   );

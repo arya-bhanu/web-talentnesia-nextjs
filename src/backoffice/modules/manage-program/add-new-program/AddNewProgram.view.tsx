@@ -170,6 +170,20 @@ function AddNewProgramView({
               title="UX Design Principles"
               index={1}
               totalCurriculum={6}
+              contents={[
+                {
+                  date: new Date(),
+                  durationMinute: 30,
+                  title: 'Law',
+                  type: '1',
+                },
+                {
+                  date: new Date(),
+                  durationMinute: 20,
+                  title: 'Law Hick',
+                  type: '2',
+                },
+              ]}
               totalMinuteDuration={58}
             />
             <AccordionPanelDraggable
@@ -180,6 +194,20 @@ function AddNewProgramView({
               index={2}
               totalCurriculum={6}
               totalMinuteDuration={45}
+              contents={[
+                {
+                  date: new Date(),
+                  durationMinute: 30,
+                  title: 'Law',
+                  type: '1',
+                },
+                {
+                  date: new Date(),
+                  durationMinute: 20,
+                  title: 'Law Hick',
+                  type: '2',
+                },
+              ]}
             />
           </div>
         </div>
