@@ -1,5 +1,3 @@
-import { SetStateAction } from 'react';
-
 export interface APIResponseAcademicLevel {
   id: string;
   code: string;
@@ -8,13 +6,17 @@ export interface APIResponseAcademicLevel {
   updatedAt: Date;
 }
 
-// academicLevel.type.ts
 export interface IAcademicLevelView {
-  data?: APIResponseAcademicLevel[];
-  initialData?: any[];
+  data: APIResponseAcademicLevel[];
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit') => void;
-  handleAddAcademicLevel: (code: string, name: string) => Promise<void>; // Tambahkan ini
+  handleAddAcademicLevel: (code: string, name: string) => Promise<void>;
+  globalFilter: string;
+  setGlobalFilter: (value: string) => void;
+  isPopupOpen: boolean;
+  setIsPopupOpen: (isOpen: boolean) => void;
+  fetchData: () => Promise<void>;
 }
+
 

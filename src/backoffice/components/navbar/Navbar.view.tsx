@@ -29,7 +29,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
       <div className="flex justify-between items-center py-4 px-6">
         <div>
           <TitleNavbar />
-          <Breadcrumb pathSegments={[]} className="" />
+          <Breadcrumb pathSegments={['']} className='' formattedSegments={['']}/>
         </div>
         <div className="flex items-center space-x-4">
           <div className="relative flex items-center">

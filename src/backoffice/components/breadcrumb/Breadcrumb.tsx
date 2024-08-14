@@ -4,27 +4,37 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { BreadcrumbView } from './Breadcrumb.view';
 import { BreadcrumbViewProps } from './breadcrumb.type';
+import { customBreadcrumbs } from './breadcrumb.data';
 
 export const Breadcrumb: React.FC<BreadcrumbViewProps> = (props) => {
   const pathname = usePathname();
   const pathSegments = pathname.split('/').filter(Boolean);
 
-  // Ambil dua segmen terakhir untuk ditampilkan
-  const lastSegments = pathSegments.slice(-2);
+  const filteredSegments = pathSegments.filter(segment => segment.toLowerCase() !== 'backoffice');
 
-  // Format segmen hanya untuk tampilan
-  const formattedSegments = lastSegments.map(
-    (segment) =>
-      segment
-        .replace(/-/g, ' ') // Mengganti "-" dengan " "
-        .replace(/\b\w/g, (char) => char.toUpperCase()), // Membuat huruf awal setiap kata menjadi kapital
-  );
+  const getCustomOrFormattedName = (segment: string, fullPath: string) => {
+    if (customBreadcrumbs[fullPath]) {
+      return customBreadcrumbs[fullPath];
+    }
+    if (customBreadcrumbs[segment]) {
+      return customBreadcrumbs[segment];
+    }
+    return segment
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  // Format segmen yang tersisa
+  const formattedSegments = filteredSegments.map((segment, index) => {
+    const fullPath = filteredSegments.slice(0, index + 1).join('/');
+    return getCustomOrFormattedName(segment, fullPath);
+  });
 
   return (
     <BreadcrumbView
       {...props}
-      pathSegments={lastSegments} // Kirim segmen asli untuk digunakan dalam href
-      formattedSegments={formattedSegments} // Kirim segmen yang diformat untuk tampilan
+      pathSegments={filteredSegments}
+      formattedSegments={formattedSegments}
     />
   );
 };

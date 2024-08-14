@@ -4,6 +4,6 @@ export interface IPopoverAcademic {
   index: number;
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  onUpdate: () => Promise<void>; // Tambahkan onUpdate
-  onDelete: () => Promise<void>; // Tambahkan onDelete
+  onUpdate: () => Promise<void>;
+  onDelete: () => Promise<void>;
 }
