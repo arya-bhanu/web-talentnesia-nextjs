@@ -1,4 +1,4 @@
-import { IBenefitCard } from "@/portal/components/benefit-card/benefitCard.type";
+import { IBenefitCard } from '@/portal/components/benefit-card/benefitCard.type';
 
 export const dataBenefits: IBenefitCard[] = [
   {

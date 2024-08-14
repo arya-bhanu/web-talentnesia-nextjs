@@ -9,7 +9,6 @@ import { HeaderViewProps } from './header.type';
 import { programLinks } from '../dropdown/dropdown.data';
 
 const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
-
   return (
     <header
       className={clsx(
@@ -39,7 +38,12 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
       </div>
       <nav className=" lg:flex hidden items-center w-[60%] 2xl:w-[50%] ml-auto justify-end gap-2 lg:gap-3 xl:gap-8">
         <Dropdown links={programLinks}>Program</Dropdown>
-        <Link href={'/contact'} className='font-inter font-medium lg:text-base text-sm'>Kontak Kami</Link>
+        <Link
+          href={'/contact'}
+          className="font-inter font-medium lg:text-base text-sm"
+        >
+          Kontak Kami
+        </Link>
         <div className="flex items-center gap-2 lg:gap-3">
           <Link
             className="px-4 lg:px-5 xl:px-8 py-1.5 lg:py-2 xl:py-3 border border-[#D0D5DD] rounded-full font-inter font-semibold"

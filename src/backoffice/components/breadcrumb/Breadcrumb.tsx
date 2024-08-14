@@ -13,10 +13,11 @@ export const Breadcrumb: React.FC<BreadcrumbViewProps> = (props) => {
   const lastSegments = pathSegments.slice(-2);
 
   // Format segmen hanya untuk tampilan
-  const formattedSegments = lastSegments.map(segment =>
-    segment
-      .replace(/-/g, ' ') // Mengganti "-" dengan " "
-      .replace(/\b\w/g, (char) => char.toUpperCase()) // Membuat huruf awal setiap kata menjadi kapital
+  const formattedSegments = lastSegments.map(
+    (segment) =>
+      segment
+        .replace(/-/g, ' ') // Mengganti "-" dengan " "
+        .replace(/\b\w/g, (char) => char.toUpperCase()), // Membuat huruf awal setiap kata menjadi kapital
   );
 
   return (

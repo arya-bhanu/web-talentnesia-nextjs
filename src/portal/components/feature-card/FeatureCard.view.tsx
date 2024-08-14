@@ -43,10 +43,14 @@ const FeatureCardView = (props: courses) => {
         <figcaption className="text-base sm:text-lg md:text-xl font-poppins font-semibold line-clamp-2">
           {props.title}
         </figcaption>
-        <p className="text-xs text-[#667085] mt-1 md:mt-3">{props.description}</p>
+        <p className="text-xs text-[#667085] mt-1 md:mt-3">
+          {props.description}
+        </p>
         <div className="flex items-center gap-2 mt-1 md:mt-3">
           <p className="text-xs text-[#344054] ">{props.rating}</p>
-          <div className="flex items-center gap-1 ">{renderStar(parseFloat(props.rating))}</div>
+          <div className="flex items-center gap-1 ">
+            {renderStar(parseFloat(props.rating))}
+          </div>
         </div>
         <div className="flex items-center gap-2 mt-2 sm:mt-3 md:mt-5">
           <p className="text-base md:text-lg lg:text-xl font-semibold">

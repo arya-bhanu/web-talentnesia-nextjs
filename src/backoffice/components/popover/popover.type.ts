@@ -1,7 +1,7 @@
 export interface IPopover {
   index: number;
   openPopoverIndex: number;
-  handleActionButtonRow: (id: number, action: 'delete' | 'edit') => void;
-  id: number;
+  handleActionButtonRow: (id: string, action: 'delete' | 'edit') => void;
+  id: string;
   setOpenPopoverIndex: (id: number) => void;
 }

@@ -1,56 +1,56 @@
 'use client';
 
-import { useState } from "react";
-import { MentorView } from "./mentor.view";
-import { Education, MentorFormData } from "./mentor.type";
+import { useState } from 'react';
+import { MentorView } from './mentor.view';
+import { Education, MentorFormData } from './mentor.type';
 
 export const useMentorForm = () => {
   const [form, setForm] = useState<MentorFormData>({
     // Section A
     profilePicture: null,
-    name: "",
-    nik: "",
-    npwp: "",
+    name: '',
+    nik: '',
+    npwp: '',
     fotoKtp: null,
     fotoNpwp: null,
-    placeOfBirth: "",
-    dateOfBirth: "",
-    religion: "",
-    gender: "",
-    isMarried: "",
-    numberOfChildren: "",
+    placeOfBirth: '',
+    dateOfBirth: '',
+    religion: '',
+    gender: '',
+    isMarried: '',
+    numberOfChildren: '',
     contract: null,
 
     // Section B
-    phone: "",
-    linkedin: "",
-    email: "",
-    emergencyContact: "",
+    phone: '',
+    linkedin: '',
+    email: '',
+    emergencyContact: '',
 
     // Section C
-    province: "",
-    district: "",
-    subDistrict: "",
-    zipCode: "",
-    addressKtp: "",
-    addressDomicile: "",
+    province: '',
+    district: '',
+    subDistrict: '',
+    zipCode: '',
+    addressKtp: '',
+    addressDomicile: '',
 
     // Section D
     education: [
       {
-        name: "",
-        title: "",
-        major: "",
-        gpa: "",
-        yearGraduated: "",
-        certificateNumber: "",
+        name: '',
+        title: '',
+        major: '',
+        gpa: '',
+        yearGraduated: '',
+        certificateNumber: '',
         certificate: null,
       },
     ],
   });
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = event.target;
     setForm((prevForm) => ({
@@ -61,7 +61,7 @@ export const useMentorForm = () => {
 
   const handleEducationChange = (
     index: number,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const { name, value } = event.target;
     const newEducation = [...form.education];
@@ -77,21 +77,21 @@ export const useMentorForm = () => {
 
   const addEducation = () => {
     if (form.education.length < 3) {
-    setForm((prevForm) => ({
-      ...prevForm,
-      education: [
-        ...prevForm.education,
-        {
-            name: "",
-            title: "",
-            major: "",
-            gpa: "",
-            yearGraduated: "",
-            certificateNumber: "",
+      setForm((prevForm) => ({
+        ...prevForm,
+        education: [
+          ...prevForm.education,
+          {
+            name: '',
+            title: '',
+            major: '',
+            gpa: '',
+            yearGraduated: '',
+            certificateNumber: '',
             certificate: null,
-        },
-      ],
-    }));
+          },
+        ],
+      }));
     }
   };
 
@@ -107,42 +107,44 @@ export const useMentorForm = () => {
       // Reset all fields to their initial state
       profilePicture: null,
 
-      name: "",
-      nik: "",
-      npwp: "",
+      name: '',
+      nik: '',
+      npwp: '',
       fotoKtp: null,
       fotoNpwp: null,
-      placeOfBirth: "date",
-      dateOfBirth: "date",
-      religion: "",
-      gender: "",
-      isMarried: "",
-      numberOfChildren: "",
+      placeOfBirth: 'date',
+      dateOfBirth: 'date',
+      religion: '',
+      gender: '',
+      isMarried: '',
+      numberOfChildren: '',
       contract: null,
 
-      phone: "",
-      linkedin: "",
-      email: "",
-      emergencyContact: "",
+      phone: '',
+      linkedin: '',
+      email: '',
+      emergencyContact: '',
 
-      province: "",
-      district: "",
-      subDistrict: "",
-      zipCode: "",
-      addressKtp: "",
-      addressDomicile: "",
-      education: [{
-          name: "",
-          title: "",
-          major: "",
-          gpa: "",
-          yearGraduated: "date",
-          certificateNumber: "",
+      province: '',
+      district: '',
+      subDistrict: '',
+      zipCode: '',
+      addressKtp: '',
+      addressDomicile: '',
+      education: [
+        {
+          name: '',
+          title: '',
+          major: '',
+          gpa: '',
+          yearGraduated: 'date',
+          certificateNumber: '',
           certificate: null,
-      }],
+        },
+      ],
     });
   };
-  
+
   return {
     form,
     handleInputChange,

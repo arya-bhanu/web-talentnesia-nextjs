@@ -10,11 +10,7 @@ const Dropdown = (props: IDropdown) => {
   };
 
   return (
-    <DropdownView
-      {...props}
-      isOpen={isOpen}
-      toggleDropdown={toggleDropdown}
-    />
+    <DropdownView {...props} isOpen={isOpen} toggleDropdown={toggleDropdown} />
   );
 };
 

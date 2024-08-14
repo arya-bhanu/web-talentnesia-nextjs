@@ -11,6 +11,7 @@ import Chapter from '../chapter';
 const FormManageModulView: React.FC<IManageModulForm> = ({
   handleSubmitForm,
   populatedDatas,
+  id,
 }) => {
   return (
     <section>
@@ -29,8 +30,8 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                 type="text"
                 placeholder="UI/UX Designer"
                 required
-                defaultValue={populatedDatas?.modulName}
-                key={populatedDatas?.modulName}
+                defaultValue={populatedDatas?.data?.name}
+                key={populatedDatas?.data?.name}
               />
             </div>
           </div>
@@ -41,11 +42,13 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                 <Radio
                   id="status-1"
                   name="status"
-                  value="active"
+                  value={1}
                   defaultChecked={
-                    populatedDatas ? populatedDatas.status === 'active' : true
+                    populatedDatas?.data
+                      ? populatedDatas.data?.active === 1
+                      : true
                   }
-                  key={populatedDatas?.status}
+                  key={populatedDatas?.data?.active}
                 />
                 <Label htmlFor="status-1">Active</Label>
               </div>
@@ -53,20 +56,43 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
                 <Radio
                   id="status-2"
                   name="status"
-                  value="inactive"
+                  value={0}
                   defaultChecked={
-                    populatedDatas
-                      ? populatedDatas.status === 'inactive'
+                    populatedDatas?.data
+                      ? populatedDatas.data?.active === 0
                       : false
                   }
-                  key={populatedDatas?.status}
+                  key={populatedDatas?.data?.active}
                 />
                 <Label htmlFor="status-2">Inactive</Label>
               </div>
             </div>
           </div>
         </div>
-        <Chapter className="mt-10" />
+        <Chapter
+          data={{
+            chapters: populatedDatas?.data?.chapters,
+            isLoading: populatedDatas?.isLoading,
+          }}
+        />
+        <div className="flex gap-5 w-fit ml-auto mt-14">
+          <Button
+            type="button"
+            outline
+            className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+          >
+            <Link className="" href={'/backoffice/manage-modul'}>
+              Cancel
+            </Link>
+          </Button>
+          <Button
+            type="submit"
+            color={'warning'}
+            className="bg-[#FFC862] text-black"
+          >
+            {id ? 'Update' : 'Submit'}
+          </Button>
+        </div>
       </form>
     </section>
   );

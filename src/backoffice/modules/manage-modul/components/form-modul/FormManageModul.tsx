@@ -1,6 +1,6 @@
 import React from 'react';
 import FormManageModulView from './FormManageModul.view';
-import { IManageModulForm, ModuleObject } from './formManageModul.type';
+import { IManageModulForm } from './formManageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import {
@@ -8,14 +8,15 @@ import {
   fetchModule,
   updateModul,
 } from '../../api/manageModelApi';
+import { APIResponseManageModul } from '../../manageModul.type';
 
-const FormManageModul = ({ slug }: { slug?: number }) => {
+const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
   const queryClient = useQueryClient();
 
   const router = useRouter();
 
   // edit
-  const { mutateAsync : createAsync } = useMutation({
+  const { mutateAsync: createAsync } = useMutation({
     mutationKey: ['modules'],
     mutationFn: createModul,
   });
@@ -26,9 +27,9 @@ const FormManageModul = ({ slug }: { slug?: number }) => {
     mutationFn: updateModul,
   });
 
-  const { data } = useQuery({
+  const { data: dataModule, isLoading } = useQuery({
     queryKey: ['module'],
-    queryFn: () => fetchModule(slug),
+    queryFn: () => fetchModule(moduleId),
   });
 
   const handleSubmitForm: IManageModulForm['handleSubmitForm'] = async (e) => {
@@ -36,22 +37,21 @@ const FormManageModul = ({ slug }: { slug?: number }) => {
     const formData = new FormData(e.currentTarget);
     const modul = formData.get('modul');
     const status = formData.get('status');
-    const modulObject = {
-      modulName: modul as string,
-      status: status as string,
-    };
+    const modulObject = { active: Number(status), name: modul } as Pick<
+      APIResponseManageModul,
+      'active' | 'name'
+    >;
     try {
-      if (slug) {
-        await updateAsync({ data: modulObject, id: slug });
+      if (moduleId) {
+        await updateAsync({ data: modulObject, moduleId });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         router.push('/backoffice/manage-modul');
       } else {
-        await createAsync({ ...modulObject });
+        const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
-        router.push('/backoffice/manage-modul/create/chapter');
+        const id = responseCreate.data.id;
+        router.push(`/backoffice/manage-modul/create/chapter?modulId=${id}`);
       }
-
-      
     } catch (err) {
       console.error(err);
     }
@@ -60,7 +60,11 @@ const FormManageModul = ({ slug }: { slug?: number }) => {
   return (
     <FormManageModulView
       handleSubmitForm={handleSubmitForm}
-      populatedDatas={data?.data}
+      populatedDatas={{
+        data: dataModule?.data,
+        isLoading,
+      }}
+      id={moduleId}
     />
   );
 };

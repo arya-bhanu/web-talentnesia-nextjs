@@ -1,57 +1,57 @@
 stages:
- - cloning
- - preparation
- - build
- - deploy
+  - cloning
+  - preparation
+  - build
+  - deploy
 
 cloning_repository:
- stage: cloning
- tags:
-  - pjt2
- only:
-  - dev
- script:
-  - cd /home/talentnesia-dev
-  - if [ -d "web-next-js-talentnesia" ]; then sudo rm -rf web-next-js-talentnesia; fi
-  - sudo git clone -b dev https://oauth2:glpat-NqAr-cgZ73G5DCWw22P1@gitlab.skwn.dev/talentnesia/web-next-js-talentnesia.git
-  - sudo chmod -R 777 web-next-js-talentnesia 
+  stage: cloning
+  tags:
+    - pjt2
+  only:
+    - dev
+  script:
+    - cd /home/talentnesia-dev
+    - if [ -d "web-next-js-talentnesia" ]; then sudo rm -rf web-next-js-talentnesia; fi
+    - sudo git clone -b dev https://oauth2:glpat-NqAr-cgZ73G5DCWw22P1@gitlab.skwn.dev/talentnesia/web-next-js-talentnesia.git
+    - sudo chmod -R 777 web-next-js-talentnesia
 
 preparing_env:
- stage: preparation
- tags:  
-  - pjt2
- only:
-  - dev
- script:
-  - cd /home/talentnesia-dev/web-next-js-talentnesia
-  - touch .env  
+  stage: preparation
+  tags:
+    - pjt2
+  only:
+    - dev
+  script:
+    - cd /home/talentnesia-dev/web-next-js-talentnesia
+    - touch .env
 
 build_app:
- stage: build
- tags:
-  - pjt2
- only:
-  - dev
- script:
-  - cd /home/talentnesia-dev/web-next-js-talentnesia
-  - sudo docker build -t $STAGING_REGISTRY_NAME .
-  - sudo docker push $STAGING_REGISTRY_NAME
+  stage: build
+  tags:
+    - pjt2
+  only:
+    - dev
+  script:
+    - cd /home/talentnesia-dev/web-next-js-talentnesia
+    - sudo docker build -t $STAGING_REGISTRY_NAME .
+    - sudo docker push $STAGING_REGISTRY_NAME
 
 deploy_app:
- stage: deploy
- tags:
-  - pjt2
- only:
-  - dev
- script:
-  - cd /home/talentnesia-dev
-  - sudo docker --context project-talentnesia pull $STAGING_REGISTRY_NAME
-  - sudo docker-compose --context project-talentnesia up -d
-  - |
-    DELETABLE_IMAGES=$(sudo docker --context project-ci images --filter "reference=$STAGING_REGISTRY_NAME_NOTAG" --filter "dangling=true" -q)
-    if [ -n "$DELETABLE_IMAGES" ]; then
-      sudo docker --context project-ci rmi $DELETABLE_IMAGES
-    else
-      echo "No deletable images found."
-    fi
-  - sudo docker system prune -f
+  stage: deploy
+  tags:
+    - pjt2
+  only:
+    - dev
+  script:
+    - cd /home/talentnesia-dev
+    - sudo docker --context project-talentnesia pull $STAGING_REGISTRY_NAME
+    - sudo docker-compose --context project-talentnesia up -d
+    - |
+      DELETABLE_IMAGES=$(sudo docker --context project-ci images --filter "reference=$STAGING_REGISTRY_NAME_NOTAG" --filter "dangling=true" -q)
+      if [ -n "$DELETABLE_IMAGES" ]; then
+        sudo docker --context project-ci rmi $DELETABLE_IMAGES
+      else
+        echo "No deletable images found."
+      fi
+    - sudo docker system prune -f

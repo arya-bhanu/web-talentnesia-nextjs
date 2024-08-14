@@ -1,9 +1,6 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react';
-import { IListDraggable } from '../list-draggable/listDraggable.type';
+import { APIChapterModul } from '@/backoffice/modules/manage-modul/manageModul.type';
 
-export interface IAccordionPanelDraggable {
-  panelTitle: string;
-  totalMinuteDuration: number;
-  totalCurriculum: number;
-  contents: IListDraggable[];
-}
+export type IAccordionPanelDraggable = APIChapterModul & {
+  totalMinuteDuration?: number;
+  totalCurriculum?: number;
+};

@@ -58,7 +58,7 @@ export const ForgotPasswordView: React.FC<ForgotPasswordViewProps> = ({
         </form>
         <p className="mt-10 text-sm text-gray-500">
           Kembali ke halaman{' '}
-          <Link href={"/auth/login"} className="text-[#219EBC] hover:underline">
+          <Link href={'/auth/login'} className="text-[#219EBC] hover:underline">
             Login
           </Link>
         </p>

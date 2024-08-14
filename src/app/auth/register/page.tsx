@@ -1,10 +1,8 @@
-import { Register } from '@/backoffice/modules/auth/register/Register'
-import React from 'react'
+import { Register } from '@/backoffice/modules/auth/register/Register';
+import React from 'react';
 
 const RegisterPage = () => {
-  return (
-    <Register />
-  )
-}
+  return <Register />;
+};
 
-export default RegisterPage
+export default RegisterPage;
