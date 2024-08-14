@@ -13,18 +13,17 @@ import IconLeft from '../../../../public/icons/btn-left.svg';
 import IconRight from '../../../../public/icons/btn-right.svg';
 import { TableProps } from './Table.type';
 
-// Tanstack table
-export function UniversalTableView<T>({ 
+export function TableView<T>({ 
   data, 
   columns, 
-  Sorting = [], 
+  sorting = [], 
   initialColumnOrder,
   filter: { Filter, setFilter }
 }: TableProps<T>) {
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>(initialColumnOrder || []);
   const [pageSize, setPageSize] = React.useState(5);
   const [pageIndex, setPageIndex] = React.useState(0);
-  const [sorting, setSorting] = React.useState<SortingState>(Sorting);
+  const [Sorting, setSorting] = React.useState<SortingState>(sorting);
 
   const table = useReactTable({
     data,

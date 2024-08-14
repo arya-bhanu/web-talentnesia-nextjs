@@ -1,1 +1,1 @@
-export { UniversalTable } from './Table';
+export { Table } from './Table';

@@ -6,7 +6,7 @@ import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import SortArrow from '../../../../../public/icons/sort-arrow.svg';
 import SortArrowUp from '../../../../../public/icons/sort-arrow-up.svg';
-import { UniversalTable } from '@/backoffice/components/table';
+import { Table } from '@/backoffice/components/table';
 import { academicLevelAPI } from './api/academicLevelApi';
 import ActionCell from '@/backoffice/components/action-cell/ActionCell';
 import Link from 'next/link';
@@ -145,10 +145,10 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
           onSave={handleAddAcademicLevel}
         />
       </div>
-      <UniversalTable
+      <Table
         data={data}
         columns={columns}
-        Sorting={[{ id: 'code', desc: false }]}
+        sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
       />
     </div>
