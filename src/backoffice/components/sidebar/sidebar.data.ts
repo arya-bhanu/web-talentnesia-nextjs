@@ -1,4 +1,4 @@
-import { SidebarProps } from "./sidebar.type";
+import { SidebarProps } from './sidebar.type';
 
 export const sidebarData: SidebarProps[] = [
   {
@@ -25,7 +25,10 @@ export const sidebarData: SidebarProps[] = [
     icon: '/icons/sidebar/setting.svg',
     title: 'Master Data',
     links: [
-      { label: 'Academic Level', link: '/backoffice/master-data/academic-level' },
+      {
+        label: 'Academic Level',
+        link: '/backoffice/master-data/academic-level',
+      },
       { label: 'Academic Title', link: '#' },
       { label: 'Category', link: '#' },
       { label: 'Certificate', link: '#' },

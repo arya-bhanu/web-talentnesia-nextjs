@@ -1,7 +1,7 @@
 export interface ProgramProps {
-    logoprogram: string;
-    title: string;
-    description: string;
-    check: string;
-    course: string[];
+  logoprogram: string;
+  title: string;
+  description: string;
+  check: string;
+  course: string[];
 }

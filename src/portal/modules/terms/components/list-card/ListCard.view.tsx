@@ -3,9 +3,20 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { ListCardProps } from './listCard.type';
 
-const ListCardView = ({ cards, className }: { cards: ListCardProps[], className?: string }) => {
+const ListCardView = ({
+  cards,
+  className,
+}: {
+  cards: ListCardProps[];
+  className?: string;
+}) => {
   return (
-    <div className={clsx(className, "bg-[#F9FAFB] rounded-lg shadow-sm max-w-md w-full")}>
+    <div
+      className={clsx(
+        className,
+        'bg-[#F9FAFB] rounded-lg shadow-sm max-w-md w-full',
+      )}
+    >
       <ul>
         {cards.map((card, index) => (
           <li key={index}>

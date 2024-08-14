@@ -1,9 +1,9 @@
 'use client';
-import React from 'react';
-import Search from '../../../../public/icons/iconamoon_search-bold.svg';
-import Add from '../../../../public/icons/add.svg';
-import IconLeft from '../../../../public/icons/btn-left.svg';
-import IconRight from '../../../../public/icons/btn-right.svg';
+import React, { useCallback } from 'react';
+import Search from '@/../public/icons/iconamoon_search-bold.svg';
+import Add from '@/../public/icons/add.svg';
+import IconLeft from '@/../public/icons/btn-left.svg';
+import IconRight from '@/../public/icons/btn-right.svg';
 import Link from 'next/link';
 import { IManageModulView } from './manageModul.type';
 import Popover from '@/backoffice/components/popover';
@@ -14,6 +14,12 @@ const ManageModulView: React.FC<IManageModulView> = ({
   setOpenPopoverIndex,
   openPopoverIndex,
 }) => {
+  const renderStatus = useCallback(
+    (isActive: number) => {
+      return isActive === 0 ? 'Inactive' : 'Active';
+    },
+    [data],
+  );
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -108,8 +114,8 @@ const ManageModulView: React.FC<IManageModulView> = ({
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
                     <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4">{el.modulName}</td>
-                    <td className="px-6 py-4">{el.status}</td>
+                    <td className="px-6 py-4">{el.name}</td>
+                    <td className="px-6 py-4">{renderStatus(el.active)}</td>
                     <Popover
                       handleActionButtonRow={handleActionButtonRow}
                       id={el.id}

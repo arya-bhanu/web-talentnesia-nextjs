@@ -5,7 +5,7 @@ import { Content } from './components/content';
 
 export const TermsView = () => {
   return (
-    <main className='container mt-28'>
+    <main className="container mt-28">
       <Breadcrumb pathSegments={['']} />
       <div className="flex flex-col md:flex-row gap-8 mx-auto">
         <div className="order-2 md:order-1 flex-1 min-w-[300px] md:w-2/3">

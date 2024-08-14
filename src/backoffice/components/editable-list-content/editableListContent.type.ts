@@ -1,7 +1,3 @@
-export interface IEditableListContent {
-  id: number;
-  title: string;
-  urlImg: string;
-  durationMinute: number;
-  className?: string;
-}
+import { APIContentChapter } from '@/backoffice/modules/manage-modul/manageModul.type';
+
+export type IEditableListContent = APIContentChapter;

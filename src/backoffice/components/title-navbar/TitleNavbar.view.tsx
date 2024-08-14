@@ -9,7 +9,12 @@ export const TitleNavbarView: React.FC<TitleNavbarViewProps> = ({
   className,
 }) => {
   return (
-    <div className={clsx(className, 'text-xl  md:text-2xl font-bold text-[#323232] font-poppins mb-0.5')}>
+    <div
+      className={clsx(
+        className,
+        'text-2xl font-bold text-[#323232] font-poppins mb-0.5',
+      )}
+    >
       {title}
     </div>
   );

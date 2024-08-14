@@ -2,7 +2,10 @@ import FeatureCard from '@/portal/components/feature-card/FeatureCard';
 import React from 'react';
 import { EliteClassSectionViewProps } from './eliteClass.type';
 
-const EliteClassSectionView: React.FC<EliteClassSectionViewProps> = ({ className, courses }) => {
+const EliteClassSectionView: React.FC<EliteClassSectionViewProps> = ({
+  className,
+  courses,
+}) => {
   return (
     <section className={className}>
       <h2 className="font-poppins font-semibold md:text-start text-center text-xl md:text-2xl lg:text-3xl">
