@@ -1,9 +1,9 @@
 import React from 'react';
 import { Breadcrumb } from '@/portal/components/breadcrumb';
 import { IoEyeOutline } from 'react-icons/io5';
-import SocialMedia from '../../social-media';
+import SocialMedia from '@/portal/components/social-media/SocialMedia';
 import Image from 'next/image';
-import { relatedArticles } from './SingleBlog.data';
+import { relatedArticles } from './singleblog.data';
 import { FaArrowRightLong } from 'react-icons/fa6';
 
 const SingleBlogview = () => {
