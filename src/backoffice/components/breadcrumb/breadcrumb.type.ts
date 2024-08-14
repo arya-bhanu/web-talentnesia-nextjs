@@ -1,5 +1,6 @@
 export interface BreadcrumbViewProps {
-  pathSegments?: string[];
+  pathSegments: string[];
+  formattedSegments: string[];
   className?: string;
   currentPath?: string;
 }

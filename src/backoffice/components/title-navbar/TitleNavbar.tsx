@@ -4,15 +4,30 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { TitleNavbarView } from './TitleNavbar.view';
 import { TitleNavbarViewProps } from './titleNavbar.type';
+import { customTitles } from './titleNavbar.data';
 
 export const TitleNavbar: React.FC<TitleNavbarViewProps> = (props) => {
   const pathname = usePathname();
-  const lastSegment = pathname.split('/').filter(Boolean).pop();
+  const pathSegments = pathname.split('/').filter(Boolean);
   
-  // Format lastSegment sesuai dengan permintaan
-  const formattedTitle = lastSegment
-    ?.replace(/-/g, ' ') // Mengganti "-" dengan " "
-    .replace(/\b\w/g, (char) => char.toUpperCase()); // Membuat huruf awal setiap kata menjadi kapital
+  const filteredSegments = pathSegments.filter(segment => segment.toLowerCase() !== 'backoffice');
+
+  const lastSegment = filteredSegments[filteredSegments.length - 1];
+  const fullPath = filteredSegments.join('/');
+
+  const getCustomOrFormattedTitle = (segment: string, path: string) => {
+    if (customTitles[path]) {
+      return customTitles[path];
+    }
+    if (customTitles[segment]) {
+      return customTitles[segment];
+    }
+    return segment
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  const formattedTitle = getCustomOrFormattedTitle(lastSegment, fullPath);
 
   return (
     <TitleNavbarView

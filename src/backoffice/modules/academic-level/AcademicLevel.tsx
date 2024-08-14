@@ -17,7 +17,7 @@ const AcademicLevel = () => {
   });
 
   const handleActionButtonRow = useCallback((id: string, action: "delete" | "edit") => {
-    // Implement action logic here
+    // Logic to handle action button row
   }, []);
 
   const handleAddAcademicLevel = useCallback(async (code: string, name: string) => {
