@@ -13,6 +13,7 @@ import IconLeft from '../../../../public/icons/btn-left.svg';
 import IconRight from '../../../../public/icons/btn-right.svg';
 import { TableProps } from './Table.type';
 
+// Tanstack table
 export function UniversalTableView<T>({ 
   data, 
   columns, 
