@@ -3,11 +3,11 @@ import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { IAcademicLevelView } from './academicLevel.type';
 import PopoverAcademic from '@/backoffice/components/modal-academic';
 import ModalAddAcademic from '@/backoffice/components/modal-add-academic/ModalAddAcademic';
-import { UniversalTable } from '@/backoffice/components/universal-table';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import SortArrow from '../../../../public/icons/sort-arrow.svg';
 import SortArrowUp from '../../../../public/icons/sort-arrow-up.svg';
+import { UniversalTable } from '@/backoffice/components/table';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -17,14 +17,12 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   setOpenPopoverIndex,
   handleActionButtonRow,
   handleAddAcademicLevel,
-  globalFilter,
-  setGlobalFilter,
+  Filter,
+  setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
 }) => {
-
-
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {
@@ -91,7 +89,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
-        <SearchTable value={globalFilter} onChange={setGlobalFilter} />
+        <SearchTable value={Filter} onChange={setFilter} />
         <AddButton onClick={() => setIsPopupOpen(true)} text="Add Academic Level" />
         <ModalAddAcademic
           isOpen={isPopupOpen}
@@ -100,11 +98,10 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         />
       </div>
       <UniversalTable
-        data={data}
-        columns={columns}
-        initialSorting={[{ id: 'code', desc: false }]}
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
+      data={data}
+      columns={columns}
+      initialSorting={[{ id: 'code', desc: false }]}
+      filter={{ Filter, setFilter }}
       />
     </div>
   );

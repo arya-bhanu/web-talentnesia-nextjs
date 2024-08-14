@@ -8,7 +8,7 @@ import { academicLevelAPI } from './api/academicLevelApi';
 const AcademicLevel = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
@@ -44,8 +44,8 @@ const AcademicLevel = () => {
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
       handleAddAcademicLevel={handleAddAcademicLevel}
-      globalFilter={globalFilter}
-      setGlobalFilter={setGlobalFilter}
+      Filter={Filter}
+      setFilter={setFilter}
       isPopupOpen={isPopupOpen}
       setIsPopupOpen={setIsPopupOpen}
       fetchData={fetchData}

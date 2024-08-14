@@ -11,15 +11,14 @@ import {
 } from '@tanstack/react-table';
 import IconLeft from '../../../../public/icons/btn-left.svg';
 import IconRight from '../../../../public/icons/btn-right.svg';
-import { TableProps } from './universalTable.type';
+import { TableProps } from './Table.type';
 
 export function UniversalTableView<T>({ 
   data, 
   columns, 
   initialSorting = [], 
   initialColumnOrder,
-  globalFilter,
-  setGlobalFilter
+  filter: { Filter, setFilter }
 }: TableProps<T>) {
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>(initialColumnOrder || []);
   const [pageSize, setPageSize] = React.useState(5);
@@ -31,7 +30,7 @@ export function UniversalTableView<T>({
     columns,
     state: {
       columnOrder,
-      globalFilter,
+      globalFilter: Filter,
       sorting,
       pagination: {
         pageIndex,
@@ -39,7 +38,7 @@ export function UniversalTableView<T>({
       },
     },
     onColumnOrderChange: setColumnOrder,
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: setFilter,
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onPaginationChange: (updater) => {

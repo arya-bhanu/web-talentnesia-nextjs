@@ -5,6 +5,8 @@ export interface TableProps<T> {
   columns: ColumnDef<T>[];
   initialSorting?: SortingState;
   initialColumnOrder?: ColumnOrderState;
-  globalFilter: string;
-  setGlobalFilter: (value: string) => void;
+  filter: {
+    Filter: string;
+    setFilter: (value: string) => void;
+  };
 }

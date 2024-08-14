@@ -1,14 +1,13 @@
 import React from 'react'
-import { UniversalTableView } from './UniversalTable.view'
-import { TableProps } from './universalTable.type'
+import { UniversalTableView } from './Table.view'
+import { TableProps } from './Table.type'
 
 export function UniversalTable<T>({ 
   data, 
   columns, 
   initialSorting, 
   initialColumnOrder,
-  globalFilter,
-  setGlobalFilter
+  filter: { Filter, setFilter }
 }: TableProps<T>) {
   return (
     <UniversalTableView
@@ -16,8 +15,7 @@ export function UniversalTable<T>({
       columns={columns}
       initialSorting={initialSorting}
       initialColumnOrder={initialColumnOrder}
-      globalFilter={globalFilter}
-      setGlobalFilter={setGlobalFilter}
+      filter={{ Filter, setFilter }} 
     />
   )
 }

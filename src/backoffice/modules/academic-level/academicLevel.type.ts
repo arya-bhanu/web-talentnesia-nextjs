@@ -12,8 +12,8 @@ export interface IAcademicLevelView {
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit') => void;
   handleAddAcademicLevel: (code: string, name: string) => Promise<void>;
-  globalFilter: string;
-  setGlobalFilter: (value: string) => void;
+  Filter: string;
+  setFilter: (value: string) => void;
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   fetchData: () => Promise<void>;

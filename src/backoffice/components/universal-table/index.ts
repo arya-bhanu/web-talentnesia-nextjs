@@ -1,1 +1,0 @@
-export { UniversalTable } from './UniversalTable';
