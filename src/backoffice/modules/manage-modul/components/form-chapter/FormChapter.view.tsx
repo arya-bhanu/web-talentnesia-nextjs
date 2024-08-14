@@ -1,17 +1,20 @@
 import LabelForm from '@/backoffice/components/label-form/LabelForm';
 import { Button } from 'flowbite-react/components/Button';
 import { TextInput } from 'flowbite-react/components/TextInput';
-import React, { useCallback, useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import Add from '@/../public/icons/add.svg';
 import AddWhite from '@/../public/icons/add-white.svg';
 import EditableListContent from '@/backoffice/components/editable-list-content';
 import Modal from '@/backoffice/components/modal';
 import FormContent from '../form-content';
-import { IFormChapter } from './formChapter.type';
+import { IFormChapter, ISubmitType } from './formChapter.type';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-const FormChapterView: React.FC<IFormChapter> = ({
+const FormChapterView: React.FC<
+  IFormChapter &
+    ISubmitType & { setSubmitType: Dispatch<SetStateAction<ISubmitType>> }
+> = ({
   handleSubmitAddContent,
   stateFormAddContent,
   id,
@@ -19,6 +22,7 @@ const FormChapterView: React.FC<IFormChapter> = ({
   setActionSubChapter,
   defaultValueData,
   contents,
+  setSubmitType,
 }) => {
   const renderContents = useMemo(() => {
     if (contents.isLoading) {
@@ -105,6 +109,7 @@ const FormChapterView: React.FC<IFormChapter> = ({
             </Link>
           </Button>
           <Button
+            onClick={() => setSubmitType({ type: 'defaultSubmit' })}
             type="submit"
             color={'warning'}
             className="bg-[#FFC862] text-black"

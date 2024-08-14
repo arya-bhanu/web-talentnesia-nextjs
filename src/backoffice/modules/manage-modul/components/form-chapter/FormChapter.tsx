@@ -9,6 +9,7 @@ import {
   fetchChapter,
 } from '../../api/manageModelApi';
 import useCreateQueryParams from '@/hooks/useCreateQueryParams';
+import { ISubmitType } from './formChapter.type';
 
 const FormChapter = () => {
   const params = useSearchParams();
@@ -20,6 +21,10 @@ const FormChapter = () => {
   const [actionSubChapter, setActionSubChapter] = useState<'exam' | 'content'>(
     'exam',
   );
+
+  const [submitType, setSubmitType] = useState<ISubmitType>({
+    type: 'nextSubmit',
+  });
   const [openModalAddContent, setOpenModalAddContent] = useState(false);
   const { mutateAsync: createChapterAsync } = useMutation({
     mutationKey: ['chapter'],
@@ -33,6 +38,7 @@ const FormChapter = () => {
     queryKey: ['chapter'],
     queryFn: () => fetchChapter(params.get('chapterId')),
   });
+
   const handleSubmitAddContent = async (
     e: React.FormEvent<HTMLFormElement>,
   ) => {
@@ -61,10 +67,10 @@ const FormChapter = () => {
       console.error(err);
     }
   };
+
   const handleSubmitCreateChapter = async (
     e: React.FormEvent<HTMLFormElement>,
   ) => {
-    console.log('add chapter');
     try {
       e.preventDefault();
       const moduleId = params.get('modulId');
@@ -77,6 +83,10 @@ const FormChapter = () => {
         // get chapterId from  created chapter
         const chapterId = response.data.id;
 
+        if (submitType.type === 'defaultSubmit') {
+          return router.replace(`/backoffice/manage-modul`);
+        }
+
         if (actionSubChapter === 'exam') {
           router.replace(
             pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
@@ -86,6 +96,11 @@ const FormChapter = () => {
           setOpenModalAddContent(true);
         }
       } else if (moduleId && chapterId) {
+        
+        if (submitType.type === 'defaultSubmit') {
+          return router.replace(`/backoffice/manage-modul`);
+        }
+
         if (actionSubChapter === 'exam') {
           router.push(
             pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
@@ -104,6 +119,8 @@ const FormChapter = () => {
       defaultValueData={dataChapter?.data}
       setActionSubChapter={setActionSubChapter}
       handleSubmitAddContent={handleSubmitAddContent}
+      setSubmitType={setSubmitType}
+      type={submitType.type}
       stateFormAddContent={{
         openModal: openModalAddContent,
         setOpenModal: setOpenModalAddContent,

@@ -5,21 +5,37 @@ import clsx from 'clsx';
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import Edit from '@/../public/icons/edit.svg';
 import Trash from '@/../public/icons/trash.svg';
+import PlayCircle from '@/../public/icons/play-circle.svg';
+import Edit2 from '@/../public/icons/edit-2.svg';
+import Book from '@/../public/icons/manage-program/book.svg';
+import Video from '@/../public/icons/videocam.svg';
 
 const EditableListContentView: React.FC<
   IEditableListContent & { className?: string }
-> = ({ duration, title, className }) => {
+> = ({ duration, title, className, type }) => {
   const renderMinuteTime = useMemo(() => {
     const [hours, minutes] = duration.split(':');
     return parseInt(hours) * 60 + parseInt(minutes);
   }, [duration]);
+  const Icon = useMemo(() => {
+    switch (type) {
+      case '1':
+        return <Book />;
+      case '2':
+        return <Video />;
+      case '3':
+        return <PlayCircle />;
+      case '4':
+        return <Edit2 />;
+    }
+  }, [type]);
   return (
     <div className={clsx('flex items-center justify-between py-3', className)}>
       <div className="flex items-center gap-2">
         <button type="button">
           <DragIndicator />
         </button>
-        {/* <Image width={24} height={24} alt="icon chapter" src={urlImg} /> */}
+        {Icon}
         <h3 className="font-medium font-lato">{title}</h3>
       </div>
       <div className="flex items-center gap-3">
