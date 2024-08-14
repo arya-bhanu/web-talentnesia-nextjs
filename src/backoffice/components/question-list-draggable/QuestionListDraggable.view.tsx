@@ -24,7 +24,6 @@ const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
   questionType,
   setQuestionType,
 }) => {
-  console.log(questionType);
   const renderFieldOption = useCallback(() => {
     switch (questionType) {
       case QuestionType.Essay.value:
@@ -61,10 +60,10 @@ const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
               defaultValue={questionType}
               onChange={(e) => setQuestionType(e.target.value)}
             >
-              {Object.keys(QuestionType).map((val) => {
+              {Object.keys(QuestionType).map((val, index) => {
                 return (
                   <option
-                    key={val}
+                    key={val + index}
                     value={
                       QuestionType[
                         val as 'MultipleChoice' | 'Essay' | 'MiniProject'

@@ -7,8 +7,13 @@ interface ProgramDimensionProps {
   programs: Programs[];
 }
 
-const ProgramDimension: React.FC<ProgramDimensionProps> = ({ className, programs }) => {
-  return <ProgramDimensionSectionView className={className} programs={programs} />;
+const ProgramDimension: React.FC<ProgramDimensionProps> = ({
+  className,
+  programs,
+}) => {
+  return (
+    <ProgramDimensionSectionView className={className} programs={programs} />
+  );
 };
 
 export default ProgramDimension;

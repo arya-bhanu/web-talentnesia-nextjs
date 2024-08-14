@@ -4,7 +4,13 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import { Partners } from './partners.type';
 
-export const PartnerView = ({ className, partners }: { className?: string, partners: Partners[]; }) => {
+export const PartnerView = ({
+  className,
+  partners,
+}: {
+  className?: string;
+  partners: Partners[];
+}) => {
   return (
     <section className={clsx(className, (className = 'bg-white'))}>
       <div className="flex flex-col lg:flex-row items-center lg:items-start text-center lg:text-left">

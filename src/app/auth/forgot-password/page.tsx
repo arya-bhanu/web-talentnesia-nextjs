@@ -1,10 +1,8 @@
-import { ForgotPassword } from '@/backoffice/modules/auth/forgot-password'
-import React from 'react'
+import { ForgotPassword } from '@/backoffice/modules/auth/forgot-password';
+import React from 'react';
 
 const ForgotPasswordpage = () => {
-  return (
-    <ForgotPassword />
-  )
-}
+  return <ForgotPassword />;
+};
 
-export default ForgotPasswordpage
+export default ForgotPasswordpage;

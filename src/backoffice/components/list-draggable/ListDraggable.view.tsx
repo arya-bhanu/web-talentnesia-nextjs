@@ -5,10 +5,9 @@ import Image from 'next/image';
 import clsx from 'clsx';
 
 const ListDraggableView: React.FC<IListDraggable> = ({
-  durationMinute,
-  iconSrc,
-  title,
   className,
+  title,
+  durationMinute,
 }) => {
   return (
     <div className={clsx('flex items-center justify-between', className)}>
@@ -16,7 +15,7 @@ const ListDraggableView: React.FC<IListDraggable> = ({
         <button>
           <DragIndicator />
         </button>
-        <Image width={24} height={24} alt="icon chapter" src={iconSrc} />
+        {/* <Image width={24} height={24} alt="icon chapter" src={iconSrc} /> */}
         <h3 className="font-medium font-lato">{title}</h3>
       </div>
       <p className="font-semibold font-lato text-xs">{durationMinute} minute</p>

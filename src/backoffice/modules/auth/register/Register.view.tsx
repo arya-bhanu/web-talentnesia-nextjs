@@ -1,6 +1,6 @@
 'use client';
 
-// 
+//
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -47,7 +47,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
         <form className="space-y-6">
           <div className="relative">
             <input
-              type='text'
+              type="text"
               placeholder="First Name"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
@@ -55,7 +55,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
           </div>
           <div className="relative">
             <input
-              type='text'
+              type="text"
               placeholder="Last Name"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
@@ -63,7 +63,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
           </div>
           <div className="relative">
             <input
-              type='email'
+              type="email"
               placeholder="Email"
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
@@ -102,7 +102,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
         </form>
         <p className="mt-10 text-center text-sm text-gray-500">
           Already have an account?{' '}
-          <Link href={"/auth/login"} className="text-[#219EBC] hover:underline">
+          <Link href={'/auth/login'} className="text-[#219EBC] hover:underline">
             Login now
           </Link>
         </p>

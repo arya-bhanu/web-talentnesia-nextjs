@@ -27,14 +27,14 @@ export const AccordionView: React.FC<AccordionViewProps> = ({
               alt="arrow-right"
               className={clsx(
                 'w-4 h-4 transition-transform rotate-[-90deg] ml-2',
-                activeIndex === index ? 'transform rotate-[180deg]' : ''
+                activeIndex === index ? 'transform rotate-[180deg]' : '',
               )}
             />
           </button>
           <div
             className={clsx(
               'px-6 overflow-hidden transition-max-height',
-              activeIndex === index ? 'max-h-screen' : 'max-h-0'
+              activeIndex === index ? 'max-h-screen' : 'max-h-0',
             )}
           >
             <p className="py-4 text-[#455A64]">{item.answer}</p>
@@ -42,7 +42,7 @@ export const AccordionView: React.FC<AccordionViewProps> = ({
         </div>
       ))}
       <div className="border-t border-gray-200"></div>
-      
+
       <button className="w-full py-3 mt-8 text-base font-semibold text-center text-[#344054] border rounded-full border-[#FFC862] bg-white hover:bg-[#FFC862] hover:text-white transition-colors">
         Lihat Selengkapnya
       </button>
