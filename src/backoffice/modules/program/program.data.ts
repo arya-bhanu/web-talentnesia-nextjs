@@ -1,6 +1,6 @@
 export const programsData = [
     {
-      id: "testingtestingtesting",
+      id: "Kelas-A-Tefa-SMK",
       imgSrc: "/img/program-card/card-sample-1.svg",
       status: "Finished" as const,
       title: "Kelas A Tefa SMK",
@@ -9,7 +9,7 @@ export const programsData = [
       description: "Deskripsi lengkap mengenai program Kelas A Tefa SMK."
     },
     {
-      id: "ba6c0d5e-f725-4b6c-8f8f-6bff1f7de1c3",
+      id: "Kelas-B-Tefa-SMK",
       imgSrc: "/img/program-card/card-sample-2.svg",
       status: "On Going" as const,
       title: "Kelas B Tefa SMK",
@@ -18,7 +18,7 @@ export const programsData = [
       description: "Deskripsi lengkap mengenai program Kelas B Tefa SMK."
     },
     {
-      id: "7f3b1bc9-c7c3-42c3-9a9d-5a0b1d3e2f17",
+      id: "Kelas-C-Tefa-SMK",
       imgSrc: "/img/program-card/card-sample-3.svg",
       status: "Not Started" as const,
       title: "Kelas C Tefa SMK",
