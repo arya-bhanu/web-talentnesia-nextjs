@@ -13,9 +13,7 @@ const SingleBlogLayout = ({ children }: { children: ReactNode }) => {
     <ObserverProvider>
       <section>
         <div ref={ref} className="w-full absolute top-0 h-2 bg-white opacity-0" />
-        <Header isTopView={inView} />
         <main>{children}</main>
-        <Footer className="mt-24" />
       </section>
     </ObserverProvider>
   );
