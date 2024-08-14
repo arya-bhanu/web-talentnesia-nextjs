@@ -7,6 +7,7 @@ const useCreateQueryParams = () => {
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set(name, value);
+      console.log(params.toString());
       return params.toString();
     },
     [searchParams],

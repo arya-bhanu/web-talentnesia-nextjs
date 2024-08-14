@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { IEditableListContent } from './editableListContent.type';
 import Image from 'next/image';
 import clsx from 'clsx';
@@ -9,10 +9,24 @@ import PlayCircle from '@/../public/icons/play-circle.svg';
 import Edit2 from '@/../public/icons/edit-2.svg';
 import Book from '@/../public/icons/manage-program/book.svg';
 import Video from '@/../public/icons/videocam.svg';
+import AlertModal from '../alert-modal';
 
 const EditableListContentView: React.FC<
-  IEditableListContent & { className?: string }
-> = ({ duration, title, className, type }) => {
+  IEditableListContent & { className?: string } & {
+    openModal: boolean;
+    setOpenModal: Dispatch<SetStateAction<boolean>>;
+    isConfirmed: boolean;
+    setIsConfirmed: Dispatch<SetStateAction<boolean>>;
+  }
+> = ({
+  duration,
+  title,
+  className,
+  type,
+  setIsConfirmed,
+  setOpenModal,
+  openModal,
+}) => {
   const renderMinuteTime = useMemo(() => {
     const [hours, minutes] = duration.split(':');
     return parseInt(hours) * 60 + parseInt(minutes);
@@ -31,6 +45,11 @@ const EditableListContentView: React.FC<
   }, [type]);
   return (
     <div className={clsx('flex items-center justify-between py-3', className)}>
+      <AlertModal
+        openModal={openModal}
+        setIsConfirmed={setIsConfirmed}
+        setOpenModal={setOpenModal}
+      />
       <div className="flex items-center gap-2">
         <button type="button">
           <DragIndicator />
@@ -46,7 +65,12 @@ const EditableListContentView: React.FC<
           <button>
             <Edit />
           </button>
-          <button>
+          <button
+            type="button"
+            onClick={() => {
+              setOpenModal(true);
+            }}
+          >
             <Trash />
           </button>
         </div>

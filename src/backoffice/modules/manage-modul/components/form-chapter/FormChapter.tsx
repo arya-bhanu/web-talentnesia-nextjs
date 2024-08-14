@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createChapter,
   createContent,
+  editChapter,
   fetchChapter,
 } from '../../api/manageModelApi';
 import useCreateQueryParams from '@/hooks/useCreateQueryParams';
@@ -29,6 +30,10 @@ const FormChapter = () => {
   const { mutateAsync: createChapterAsync } = useMutation({
     mutationKey: ['chapter'],
     mutationFn: createChapter,
+  });
+  const { mutateAsync: editChapterAsync } = useMutation({
+    mutationKey: ['chapter'],
+    mutationFn: editChapter,
   });
   const { mutateAsync: createContentAsync } = useMutation({
     mutationKey: ['content', 'chapter'],
@@ -68,14 +73,13 @@ const FormChapter = () => {
     }
   };
 
-  const handleSubmitCreateChapter = async (
-    e: React.FormEvent<HTMLFormElement>,
-  ) => {
+  const handleSubmitChapter = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
       const moduleId = params.get('modulId');
       const formData = new FormData(e.currentTarget);
       const chapter = formData.get('chapter') as string;
+
       // current chapterId
       const chapterId = params.get('chapterId');
       if (moduleId && chapter && !chapterId) {
@@ -96,7 +100,8 @@ const FormChapter = () => {
           setOpenModalAddContent(true);
         }
       } else if (moduleId && chapterId) {
-        
+        await editChapterAsync({ chapterId, title: chapter });
+
         if (submitType.type === 'defaultSubmit') {
           return router.replace(`/backoffice/manage-modul`);
         }
@@ -125,7 +130,7 @@ const FormChapter = () => {
         openModal: openModalAddContent,
         setOpenModal: setOpenModalAddContent,
       }}
-      handleSubmitCreateChapter={handleSubmitCreateChapter}
+      handleSubmitCreateChapter={handleSubmitChapter}
       contents={{
         data: dataChapter?.data?.contents,
         isLoading: isLoadingChapter,

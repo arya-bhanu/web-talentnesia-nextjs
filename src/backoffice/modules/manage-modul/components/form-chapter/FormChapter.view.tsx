@@ -62,15 +62,15 @@ const FormChapterView: React.FC<
             className={clsx('w-full')}
             defaultValue={defaultValueData?.title}
             key={defaultValueData?.title}
-            disabled={defaultValueData?.title ? true : false}
+            // disabled={defaultValueData?.title ? true : false}
           />
-          <input
+          {/* <input
             type="hidden"
             name="chapter"
             id="chapter"
             defaultValue={defaultValueData?.title}
             key={defaultValueData?.title + ' hidden'}
-          />
+          /> */}
         </div>
         <div className="mt-14">
           <div className="flex items-center justify-between">

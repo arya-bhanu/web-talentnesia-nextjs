@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import ArrowUp from '@/../public/icons/arrow-up.svg';
@@ -7,9 +7,19 @@ import Trash from '@/../public/icons/trash.svg';
 import clsx from 'clsx';
 import { IStateChapter } from '@/backoffice/modules/manage-modul/components/chapter/chapter.type';
 import ListDraggable from '../list-draggable';
+import AlertModal from '../alert-modal/AlertModal';
 
 const AccordionPanelDraggableView: React.FC<
-  IAccordionPanelDraggable & IStateChapter & { index: number }
+  IAccordionPanelDraggable &
+    IStateChapter & { index: number } & {
+      openModal: boolean;
+      setOpenModal: Dispatch<SetStateAction<boolean>>;
+      isConfirmed: boolean;
+      setIsConfirmed: Dispatch<SetStateAction<boolean>>;
+      idDelete: string;
+      setIdDelete: Dispatch<SetStateAction<string>>;
+      handleEdit: () => void;
+    }
 > = ({
   totalCurriculum,
   totalMinuteDuration,
@@ -18,9 +28,20 @@ const AccordionPanelDraggableView: React.FC<
   setActiveAccordion,
   title,
   contents,
+  setIdDelete,
+  setOpenModal,
+  id,
+  openModal,
+  setIsConfirmed,
+  handleEdit,
 }) => {
   return (
     <div className="py-3">
+      <AlertModal
+        openModal={openModal}
+        setIsConfirmed={setIsConfirmed}
+        setOpenModal={setOpenModal}
+      />
       <div className="flex items-center gap-4">
         <button>
           <DragIndicator />
@@ -56,10 +77,16 @@ const AccordionPanelDraggableView: React.FC<
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <button>
+          <button type="button" onClick={handleEdit}>
             <Edit />
           </button>
-          <button>
+          <button
+            type="button"
+            onClick={() => {
+              setOpenModal(true);
+              setIdDelete(id);
+            }}
+          >
             <Trash />
           </button>
         </div>

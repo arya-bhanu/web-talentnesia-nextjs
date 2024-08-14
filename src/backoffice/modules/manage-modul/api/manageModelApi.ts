@@ -56,11 +56,30 @@ export const createChapter = async ({
   const response = await backOfficeAPI.post('/chapter', { moduleId, title });
   return response.data;
 };
+export const editChapter = async ({
+  chapterId,
+  title,
+}: {
+  chapterId: string;
+  title: string;
+}) => {
+  const response = await backOfficeAPI.put('/chapter/' + chapterId, { title });
+  return response.data;
+};
+export const deleteChapter = async (id: string) => {
+  const response = await backOfficeAPI.delete('/chapter/' + id);
+  return response.data;
+};
 
 // content
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
 ) => {
   const response = await backOfficeAPI.post('/content', payload);
+  return response.data;
+};
+
+export const deleteContent = async (id: string) => {
+  const response = await backOfficeAPI.delete('/content/' + id);
   return response.data;
 };
