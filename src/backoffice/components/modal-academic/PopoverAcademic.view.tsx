@@ -1,5 +1,5 @@
 import { Popover } from 'flowbite-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import MoreHoriz from '../../../../public/icons/more_horiz.svg';
 import { IPopoverAcademic } from './popoverAcademic.type';
 import AlertModal from '../alert-modal';
@@ -20,26 +20,27 @@ const PopoverAcademicView: React.FC<IPopoverAcademic> = ({
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
-
+  
+  const handleDelete = useCallback(async () => {
+    try {
+      await academicLevelAPI.delete(id);
+      handleActionButtonRow(id, 'delete');
+      await onDelete();
+    } catch (error) {
+      console.error('Failed to delete academic level', error);
+    }
+  }, [id, handleActionButtonRow, onDelete]);
+  
   useEffect(() => {
     if (isConfirmed) {
       handleDelete();
     }
-  }, [isConfirmed]);
+  }, [isConfirmed, handleDelete]);
 
   useEffect(() => {
     setOpen(openPopoverIndex === index);
   }, [openPopoverIndex, index]);
 
-  const handleDelete = async () => {
-    try {
-      await academicLevelAPI.delete(id);
-      handleActionButtonRow(id, 'delete');
-      await onDelete();
-    } catch (error: any) {
-      console.error('Failed to delete academic level', error.response?.data || error.message);
-    }
-  };
 
   const handleSave = async () => {
     try {
@@ -63,7 +64,7 @@ const PopoverAcademicView: React.FC<IPopoverAcademic> = ({
   };
 
   return (
-    <td className="px-6 py-4">
+    <td className="px-2 py-2">
       <AlertModal
         openModal={openModal}
         setOpenModal={setOpenModal}

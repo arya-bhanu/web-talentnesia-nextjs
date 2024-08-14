@@ -48,7 +48,7 @@ const SidebarView = () => {
                     type="button"
                     onClick={() => handleItemClick(index, true)}
                     className={`flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-100 ${
-                      activeIndex === index ? 'text-[#219EBC]' : 'text-gray-900'
+                      activeIndex === index ? 'text-[#219EBC]' : 'text-[#667085]'
                     }`}
                   >
                     <div className="flex items-center">
@@ -94,9 +94,7 @@ const SidebarView = () => {
                           href={link.link}
                           onClick={() => handleSubItemClick(subIndex)}
                           className={`flex items-center p-2 pl-8 rounded-lg hover:bg-gray-100 ${
-                            activeSubIndex === subIndex
-                              ? 'text-[#219EBC]'
-                              : 'text-gray-700'
+                            activeSubIndex === subIndex ? 'text-[#219EBC]' : 'text-[#667085]'
                           }`}
                         >
                           <Image
@@ -123,7 +121,7 @@ const SidebarView = () => {
                   href={item.path || '#'}
                   onClick={() => handleItemClick(index)}
                   className={`flex items-center p-2 rounded-lg hover:bg-gray-100 ${
-                    activeIndex === index ? 'text-[#219EBC]' : 'text-gray-900'
+                    activeIndex === index ? 'text-[#219EBC]' : 'text-[#667085]'
                   }`}
                 >
                   <Image
