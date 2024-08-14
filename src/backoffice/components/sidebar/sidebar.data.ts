@@ -29,7 +29,10 @@ export const sidebarData: SidebarProps[] = [
         label: 'Academic Level',
         link: '/backoffice/master-data/academic-level',
       },
-      { label: 'Academic Title', link: '#' },
+      {
+        label: 'Academic Title',
+        link: '/backoffice/master-data/academic-title',
+      },
       { label: 'Category', link: '#' },
       { label: 'Certificate', link: '#' },
       { label: 'Discount', link: '#' },

@@ -17,14 +17,14 @@ import { TableProps } from './Table.type';
 export function UniversalTableView<T>({ 
   data, 
   columns, 
-  initialSorting = [], 
+  Sorting = [], 
   initialColumnOrder,
   filter: { Filter, setFilter }
 }: TableProps<T>) {
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>(initialColumnOrder || []);
   const [pageSize, setPageSize] = React.useState(5);
   const [pageIndex, setPageIndex] = React.useState(0);
-  const [sorting, setSorting] = React.useState<SortingState>(initialSorting);
+  const [sorting, setSorting] = React.useState<SortingState>(Sorting);
 
   const table = useReactTable({
     data,

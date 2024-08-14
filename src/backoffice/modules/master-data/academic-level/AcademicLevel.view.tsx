@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { IAcademicLevelView } from './academicLevel.type';
-import PopoverAcademic from '@/backoffice/components/modal-academic';
-import ModalAddAcademic from '@/backoffice/components/modal-add-academic/ModalAddAcademic';
+import PopoverAcademic from '@/backoffice/components/popover-academic';
+import ModalAddAcademic from '@/backoffice/components/modal-form-add/ModalAddAcademic';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
-import SortArrow from '../../../../public/icons/sort-arrow.svg';
-import SortArrowUp from '../../../../public/icons/sort-arrow-up.svg';
+import SortArrow from '../../../../../public/icons/sort-arrow.svg';
+import SortArrowUp from '../../../../../public/icons/sort-arrow-up.svg';
 import { UniversalTable } from '@/backoffice/components/table';
 
 const columnHelper = createColumnHelper<any>();
@@ -74,8 +74,8 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
               handleActionButtonRow={handleActionButtonRow}
               id={info.getValue() as string}
               index={info.row.index}
-              openPopoverIndex={openPopoverIndex}
-              setOpenPopoverIndex={setOpenPopoverIndex}
+              openModalIndex={openPopoverIndex}
+              setOpenModalIndex={setOpenPopoverIndex}
               onUpdate={fetchData}
               onDelete={fetchData}
             />
@@ -100,7 +100,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
       <UniversalTable
       data={data}
       columns={columns}
-      initialSorting={[{ id: 'code', desc: false }]}
+      Sorting={[{ id: 'code', desc: false }]}
       filter={{ Filter, setFilter }}
       />
     </div>

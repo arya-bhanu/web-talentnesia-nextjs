@@ -1,16 +1,9 @@
 import React from 'react';
 import { ModalAddAcademicLevelViewProps } from './modalAddAcademic.type';
 
-export const ModalAddAcademicLevelView: React.FC<ModalAddAcademicLevelViewProps> = ({
-  isOpen,
-  onClose,
-  onSave,
-  code,
-  setCode,
-  name,
-  setName,
-  hasError,
-}) => {
+export const ModalAddAcademicLevelView: React.FC<
+  ModalAddAcademicLevelViewProps
+> = ({ isOpen, onClose, onSave, code, setCode, name, setName, hasError }) => {
   if (!isOpen) return null;
 
   return (
@@ -48,12 +41,17 @@ export const ModalAddAcademicLevelView: React.FC<ModalAddAcademicLevelViewProps>
             required
           />
           {hasError && !name && (
-            <p className="text-red-500 text-sm mt-1">Academic Level Name is required.</p>
+            <p className="text-red-500 text-sm mt-1">
+              Academic Level Name is required.
+            </p>
           )}
         </div>
         <div className="flex justify-end gap-4">
-          <button onClick={onClose} className="px-4 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-              Cancel
+          <button
+            onClick={onClose}
+            className="px-4 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Cancel
           </button>
           <button
             onClick={onSave}
@@ -66,4 +64,3 @@ export const ModalAddAcademicLevelView: React.FC<ModalAddAcademicLevelViewProps>
     </div>
   );
 };
-

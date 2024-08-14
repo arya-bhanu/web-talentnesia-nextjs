@@ -5,7 +5,7 @@ import { TableProps } from './Table.type'
 export function UniversalTable<T>({ 
   data, 
   columns, 
-  initialSorting, 
+  Sorting, 
   initialColumnOrder,
   filter: { Filter, setFilter }
 }: TableProps<T>) {
@@ -13,7 +13,7 @@ export function UniversalTable<T>({
     <UniversalTableView
       data={data}
       columns={columns}
-      initialSorting={initialSorting}
+      Sorting={Sorting}
       initialColumnOrder={initialColumnOrder}
       filter={{ Filter, setFilter }} 
     />
