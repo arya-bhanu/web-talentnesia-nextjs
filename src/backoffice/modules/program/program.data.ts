@@ -1,6 +1,8 @@
+import { registerCustomizations } from '@/backoffice/components/global-customization/globalCustomizations';
+
 export const programsData = [
     {
-      id: "Kelas-A-Tefa-SMK",
+      id: "XfEzCNkwE0blm5L8",
       imgSrc: "/img/program-card/card-sample-1.svg",
       status: "Finished" as const,
       title: "Kelas A Tefa SMK",
@@ -9,7 +11,7 @@ export const programsData = [
       description: "Deskripsi lengkap mengenai program Kelas A Tefa SMK."
     },
     {
-      id: "Kelas-B-Tefa-SMK",
+      id: "hh75psQyGuuhCUll",
       imgSrc: "/img/program-card/card-sample-2.svg",
       status: "On Going" as const,
       title: "Kelas B Tefa SMK",
@@ -18,7 +20,7 @@ export const programsData = [
       description: "Deskripsi lengkap mengenai program Kelas B Tefa SMK."
     },
     {
-      id: "Kelas-C-Tefa-SMK",
+      id: "jpsnv9vyQcs3Ydp6",
       imgSrc: "/img/program-card/card-sample-3.svg",
       status: "Not Started" as const,
       title: "Kelas C Tefa SMK",
@@ -27,4 +29,20 @@ export const programsData = [
       description: "Deskripsi lengkap mengenai program Kelas C Tefa SMK."
     }
   ];
+
+
+ 
+
+  const programCustomTitles = {
+    'XfEzCNkwE0blm5L8': 'Kelas A Tefa SMK',
+    'hh75psQyGuuhCUll': 'Kelas B Tefa SMK',
+    'jpsnv9vyQcs3Ydp6': 'Kelas C Tefa SMK'
+  };
   
+  const programCustomBreadcrumbs = {
+    'XfEzCNkwE0blm5L8': 'Kelas A Tefa SMK',
+    'hh75psQyGuuhCUll': 'Kelas B Tefa SMK',
+    'jpsnv9vyQcs3Ydp6': 'Kelas C Tefa SMK'
+  };
+  
+  registerCustomizations('program', programCustomTitles, programCustomBreadcrumbs);

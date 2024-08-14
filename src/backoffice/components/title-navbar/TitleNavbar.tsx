@@ -3,10 +3,10 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { TitleNavbarView } from './TitleNavbar.view';
-import { TitleNavbarViewProps } from './titleNavbar.type';
-import { customTitles } from './titleNavbar.data';
+import { TitleNavbarViewProps, CustomTitles } from './titleNavbar.type';
+import { getCustomTitle } from '@/backoffice/components/global-customization/globalCustomizations';
 
-export const TitleNavbar: React.FC<TitleNavbarViewProps> = (props) => {
+export const TitleNavbar: React.FC<TitleNavbarViewProps & { customTitles?: CustomTitles }> = ({ customTitles = {}, ...props }) => {
   const pathname = usePathname();
   const pathSegments = pathname.split('/').filter(Boolean);
   
@@ -16,12 +16,8 @@ export const TitleNavbar: React.FC<TitleNavbarViewProps> = (props) => {
   const fullPath = filteredSegments.join('/');
 
   const getCustomOrFormattedTitle = (segment: string, path: string) => {
-    if (customTitles[path]) {
-      return customTitles[path];
-    }
-    if (customTitles[segment]) {
-      return customTitles[segment];
-    }
+    const customTitle = getCustomTitle(path) || getCustomTitle(segment) || customTitles[path] || customTitles[segment];
+    if (customTitle) return customTitle;
     return segment
       .replace(/-/g, ' ')
       .replace(/\b\w/g, (char) => char.toUpperCase());
