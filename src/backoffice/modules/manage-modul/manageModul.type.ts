@@ -29,6 +29,24 @@ export interface APIChapterModul {
   contents: APIContentChapter[];
 }
 
+export interface APIExamChapter {
+  chapterId: string;
+  title: string;
+  duration: string;
+  exams: ExamQuestion[];
+}
+
+export interface ExamQuestion {
+  question: string;
+  type: 'radio' | 'textarea' | 'file';
+  options:
+    | {
+        value: string;
+        text: string;
+      }[]
+    | null;
+}
+
 export interface IManageModulView {
   data?: APIResponseManageModul[];
   openPopoverIndex: number;

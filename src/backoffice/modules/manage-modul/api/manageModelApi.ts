@@ -1,5 +1,9 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
-import { APIContentChapter, APIResponseManageModul } from '../manageModul.type';
+import {
+  APIContentChapter,
+  APIExamChapter,
+  APIResponseManageModul,
+} from '../manageModul.type';
 
 // modul
 export const fetchModules = async () => {
@@ -97,5 +101,11 @@ export const editContent = async ({
 };
 export const deleteContent = async (id: string) => {
   const response = await backOfficeAPI.delete('/content/' + id);
+  return response.data;
+};
+
+// exam
+export const createExam = async (data: APIExamChapter) => {
+  const response = await backOfficeAPI.post('/exam', data);
   return response.data;
 };
