@@ -13,7 +13,7 @@ export interface APIContentChapter {
   title: string;
   type: string;
   duration: string;
-  body: string;
+  body?: string;
   id: string;
   isexam: 0 | 1;
   order: number;

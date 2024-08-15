@@ -82,9 +82,15 @@ export const createContent = async (
   const response = await backOfficeAPI.post('/content', payload);
   return response.data;
 };
-export const editContent = async (id?: string) => {
+export const editContent = async ({
+  id,
+  data,
+}: {
+  id?: string;
+  data: Pick<APIContentChapter, 'title' | 'body' | 'type' | 'duration'>;
+}) => {
   if (id) {
-    const response = await backOfficeAPI.get('/content/' + id);
+    const response = await backOfficeAPI.put('/content/' + id, data);
     return response.data;
   }
   return null;

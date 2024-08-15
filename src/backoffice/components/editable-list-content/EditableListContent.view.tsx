@@ -49,6 +49,11 @@ const EditableListContentView: React.FC<
     return parseInt(hours) * 60 + parseInt(minutes);
   }, [duration]);
 
+  const [injectId, setInjectId] = useState(id);
+  useEffect(() => {
+    setInjectId(id);
+  }, [openModalEdit]);
+
   const Icon = useMemo(() => {
     switch (type) {
       case '1':
@@ -76,7 +81,7 @@ const EditableListContentView: React.FC<
         handleSubmit={handleSubmitEdit}
         title="Update Content"
       >
-        <FormContent contentId={id} />
+        {openModalEdit && <FormContent contentId={injectId} />}
       </Modal>
       <div className="flex items-center gap-2">
         <button type="button">
@@ -90,7 +95,7 @@ const EditableListContentView: React.FC<
           {renderMinuteTime} minute
         </p>
         <div className="flex items-center gap-2.5">
-          <button>
+          <button onClick={() => setOpenModalEdit(true)} type="button">
             <Edit />
           </button>
           <button

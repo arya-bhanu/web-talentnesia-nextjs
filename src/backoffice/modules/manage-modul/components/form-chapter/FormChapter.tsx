@@ -49,6 +49,7 @@ const FormChapter = () => {
   ) => {
     try {
       e.preventDefault();
+      e.stopPropagation();
       const formData = new FormData(e.currentTarget);
       const time = formData.get('time') as string;
       const title = formData.get('title') as string;
@@ -65,8 +66,8 @@ const FormChapter = () => {
           chapterId,
           isexam: 0,
         });
-        await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         setOpenModalAddContent(false);
+        await queryClient.invalidateQueries({ queryKey: ['chapter'] });
       }
     } catch (err) {
       console.error(err);
