@@ -72,13 +72,23 @@ export const deleteChapter = async (id: string) => {
 };
 
 // content
+export const fetchContent = async (id?: string) => {
+  const response = await backOfficeAPI.get('/content/' + id);
+  return response.data;
+};
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
 ) => {
   const response = await backOfficeAPI.post('/content', payload);
   return response.data;
 };
-
+export const editContent = async (id?: string) => {
+  if (id) {
+    const response = await backOfficeAPI.get('/content/' + id);
+    return response.data;
+  }
+  return null;
+};
 export const deleteContent = async (id: string) => {
   const response = await backOfficeAPI.delete('/content/' + id);
   return response.data;

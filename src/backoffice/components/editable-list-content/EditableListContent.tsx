@@ -1,16 +1,14 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import EditableListContentView from './EditableListContent.view';
 import { IEditableListContent } from './editableListContent.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  deleteChapter,
-  deleteContent,
-} from '../../modules/manage-modul/api/manageModelApi';
+import { deleteContent } from '../../modules/manage-modul/api/manageModelApi';
 
 const EditableListContent: React.FC<IEditableListContent> = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [isConfirmDel, setIsConfirmDel] = useState(false);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -29,8 +27,13 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
       }
     })();
   }, [isConfirmDel]);
+
+  const handleEditContent = (e: FormEvent<HTMLFormElement>) => {};
   return (
     <EditableListContentView
+      handleSubmitEdit={handleEditContent}
+      openModalEdit={openModalEdit}
+      setOpenModalEdit={setOpenModalEdit}
       {...props}
       isConfirmed={isConfirmDel}
       openModal={openModal}

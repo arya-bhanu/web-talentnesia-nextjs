@@ -1,6 +1,16 @@
-import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
-import { IEditableListContent } from './editableListContent.type';
-import Image from 'next/image';
+'use client';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  IEditableListContent,
+  IEditHandler,
+  IEditOpenModalState,
+} from './editableListContent.type';
 import clsx from 'clsx';
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import Edit from '@/../public/icons/edit.svg';
@@ -10,6 +20,8 @@ import Edit2 from '@/../public/icons/edit-2.svg';
 import Book from '@/../public/icons/manage-program/book.svg';
 import Video from '@/../public/icons/videocam.svg';
 import AlertModal from '../alert-modal';
+import Modal from '@/backoffice/components/modal';
+import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
 
 const EditableListContentView: React.FC<
   IEditableListContent & { className?: string } & {
@@ -17,7 +29,8 @@ const EditableListContentView: React.FC<
     setOpenModal: Dispatch<SetStateAction<boolean>>;
     isConfirmed: boolean;
     setIsConfirmed: Dispatch<SetStateAction<boolean>>;
-  }
+  } & IEditOpenModalState &
+    IEditHandler
 > = ({
   duration,
   title,
@@ -26,11 +39,16 @@ const EditableListContentView: React.FC<
   setIsConfirmed,
   setOpenModal,
   openModal,
+  openModalEdit,
+  setOpenModalEdit,
+  handleSubmitEdit,
+  id,
 }) => {
   const renderMinuteTime = useMemo(() => {
     const [hours, minutes] = duration.split(':');
     return parseInt(hours) * 60 + parseInt(minutes);
   }, [duration]);
+
   const Icon = useMemo(() => {
     switch (type) {
       case '1':
@@ -50,6 +68,16 @@ const EditableListContentView: React.FC<
         setIsConfirmed={setIsConfirmed}
         setOpenModal={setOpenModal}
       />
+      <Modal
+        state={{
+          openModal: openModalEdit,
+          setOpenModal: setOpenModalEdit,
+        }}
+        handleSubmit={handleSubmitEdit}
+        title="Update Content"
+      >
+        <FormContent contentId={id} />
+      </Modal>
       <div className="flex items-center gap-2">
         <button type="button">
           <DragIndicator />
