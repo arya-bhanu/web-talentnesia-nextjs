@@ -13,3 +13,15 @@
 #icon-sidebar {
   -ms-overflow-style: none; /* IE and Edge */
 }
+
+.sidebar {
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-open {
+  background-color: #f8f9fa; /* Example background color when open */
+}
+
+.sidebar-closed {
+  background-color: transparent; /* Or maintain the same color */
+}

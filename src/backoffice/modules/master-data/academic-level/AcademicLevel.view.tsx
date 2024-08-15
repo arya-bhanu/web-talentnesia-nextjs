@@ -19,7 +19,6 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   setIsPopupOpen,
   fetchData,
 }) => {
-  const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
@@ -30,16 +29,16 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
     handleDeleteAcademicLevel,
   } = useAcademicLevelActions();
 
-  const handleEdit = (id: string, rowData: any) => {
+  const handleEdit = useCallback((id: string, rowData: any) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
     setIsPopupOpen(true);
-  };
+  }, [setIsPopupOpen]);
 
-  const handleDelete = (id: string) => {
+  const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
     setDeleteModalOpen(true);
-  };
+  }, []);
 
   const handleAddOrEditAcademicLevel = useCallback(
     async (id: string | undefined, data: { code: string; name: string }) => {
@@ -49,7 +48,6 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         await handleAddAcademicLevel(data.code, data.name);
       }
       fetchData();
-      setIsPopupOpen(false);
       setSelectedId(null);
       setSelectedRowData(null);
     },
@@ -74,7 +72,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-
+  
           return (
             <div className="flex justify-end space-x-2">
               <button
@@ -94,7 +92,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         },
       }),
     ],
-    [fetchData],
+    [handleEdit, handleDelete]
   );
 
   return (

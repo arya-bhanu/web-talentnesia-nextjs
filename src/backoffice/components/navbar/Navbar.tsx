@@ -4,7 +4,11 @@ import React, { useState, useEffect } from 'react';
 import NavbarView from './Navbar.view';
 import { User, NavbarState } from './navbar.type';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  toggleSidebar?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
   const [user, setUser] = useState<User>({
     name: '',
     email: '',
