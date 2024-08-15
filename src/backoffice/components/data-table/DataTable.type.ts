@@ -1,10 +1,12 @@
 import { ColumnDef, ColumnOrderState, SortingState } from "@tanstack/react-table";
 
-export interface TableProps<T> {
+export interface DataTableProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
-  initialSorting?: SortingState;
+  sorting?: SortingState;
   initialColumnOrder?: ColumnOrderState;
-  globalFilter: string;
-  setGlobalFilter: (value: string) => void;
+  filter: {
+    Filter: string;
+    setFilter: (value: string) => void;
+  };
 }

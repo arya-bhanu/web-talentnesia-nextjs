@@ -29,7 +29,10 @@ export const sidebarData: SidebarProps[] = [
         label: 'Academic Level',
         link: '/backoffice/master-data/academic-level',
       },
-      { label: 'Academic Title', link: '#' },
+      {
+        label: 'Academic Title',
+        link: '/backoffice/master-data/academic-title',
+      },
       { label: 'Category', link: '#' },
       { label: 'Certificate', link: '#' },
       { label: 'Discount', link: '#' },
@@ -48,6 +51,16 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/faq.svg',
     title: 'FAQ',
+    path: '#',
+  },
+  {
+    icon: '/icons/sidebar/report.svg',
+    title: 'Report',
+    path: '#',
+  },
+  {
+    icon: '/icons/sidebar/school.svg',
+    title: 'School',
     path: '#',
   },
 ];

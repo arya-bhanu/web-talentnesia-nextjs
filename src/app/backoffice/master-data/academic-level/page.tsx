@@ -1,4 +1,4 @@
-import AcademicLevel from '@/backoffice/modules/academic-level';
+import AcademicLevel from '@/backoffice/modules/master-data/academic-level';
 import React from 'react';
 
 const AcademicLevelPage = () => {

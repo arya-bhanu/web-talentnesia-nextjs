@@ -8,17 +8,34 @@ import { academicLevelAPI } from './api/academicLevelApi';
 const AcademicLevel = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['academicLevels'],
     queryFn: academicLevelAPI.fetch,
   });
-
-  const handleActionButtonRow = useCallback((id: string, action: "delete" | "edit") => {
-    // Logic to handle action button row
-  }, []);
+  
+  const fetchData = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ['academicLevels'] });
+  }, [queryClient]);
+  
+  const handleActionButtonRow = useCallback((id: string, action: "delete" | "edit", rowData?: any) => {
+    if (action === "delete") {
+      academicLevelAPI.delete(id).then(() => {
+        fetchData();
+      }).catch(error => {
+        console.error('Failed to delete academic level', error);
+      });
+    } else if (action === "edit") {
+      academicLevelAPI.update(id, rowData).then(() => {
+        fetchData();
+      }).catch(error => {
+        console.error('Failed to update academic level', error);
+      });
+    }
+  }, [fetchData]);
+  
 
   const handleAddAcademicLevel = useCallback(async (code: string, name: string) => {
     try {
@@ -30,9 +47,6 @@ const AcademicLevel = () => {
     }
   }, [queryClient]);
 
-  const fetchData = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey: ['academicLevels'] });
-  }, [queryClient]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
@@ -44,8 +58,8 @@ const AcademicLevel = () => {
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
       handleAddAcademicLevel={handleAddAcademicLevel}
-      globalFilter={globalFilter}
-      setGlobalFilter={setGlobalFilter}
+      Filter={Filter}
+      setFilter={setFilter}
       isPopupOpen={isPopupOpen}
       setIsPopupOpen={setIsPopupOpen}
       fetchData={fetchData}
