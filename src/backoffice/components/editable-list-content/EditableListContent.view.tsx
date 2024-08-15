@@ -43,10 +43,14 @@ const EditableListContentView: React.FC<
   setOpenModalEdit,
   handleSubmitEdit,
   id,
+  isexam,
 }) => {
   const renderMinuteTime = useMemo(() => {
-    const [hours, minutes] = duration.split(':');
-    return parseInt(hours) * 60 + parseInt(minutes);
+    if (duration) {
+      const [hours, minutes] = duration.split(':');
+      return parseInt(hours) * 60 + parseInt(minutes);
+    }
+    return 0;
   }, [duration]);
 
   const [injectId, setInjectId] = useState(id);
@@ -55,15 +59,19 @@ const EditableListContentView: React.FC<
   }, [openModalEdit]);
 
   const Icon = useMemo(() => {
-    switch (type) {
-      case '1':
-        return <Book />;
-      case '2':
-        return <Video />;
-      case '3':
-        return <PlayCircle />;
-      case '4':
-        return <Edit2 />;
+    if (isexam) {
+      return <Edit2 />;
+    } else {
+      switch (type) {
+        case '1':
+          return <Book />;
+        case '2':
+          return <Video />;
+        case '3':
+          return <PlayCircle />;
+        case '4':
+          return <Edit2 />;
+      }
     }
   }, [type]);
   return (
