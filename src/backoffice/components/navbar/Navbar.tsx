@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
           profilePicture: `https://i.pravatar.cc/150?u=${data.email}`,
         });
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        // Handle error
       }
     };
 

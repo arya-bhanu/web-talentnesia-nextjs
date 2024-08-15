@@ -1,21 +1,18 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { IAcademicLevelView } from './academicLevel.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
-import { academicLevelAPI } from './api/academicLevelApi';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
-import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
-import FormAdd from './components/modal-form-add/ModalAddForm';
 import AlertModal from '@/backoffice/components/alert-modal';
-import { ModalFormEdit } from '@/backoffice/modules/master-data/academic-level/components/modal-form-edit/ModalFormEdit';
+import ModalForm from './components/modal-form/ModalForm';
+import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
 
 const columnHelper = createColumnHelper<any>();
 
 const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   data,
-  handleActionButtonRow,
   Filter,
   setFilter,
   isPopupOpen,
@@ -26,6 +23,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
+
   const {
     handleAddAcademicLevel,
     handleEditAcademicLevel,
@@ -35,13 +33,28 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   const handleEdit = (id: string, rowData: any) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
-    setEditModalOpen(true);
+    setIsPopupOpen(true);
   };
 
   const handleDelete = (id: string) => {
     setSelectedId(id);
     setDeleteModalOpen(true);
   };
+
+  const handleAddOrEditAcademicLevel = useCallback(
+    async (id: string | undefined, data: { code: string; name: string }) => {
+      if (id) {
+        await handleEditAcademicLevel(id, data);
+      } else {
+        await handleAddAcademicLevel(data.code, data.name);
+      }
+      fetchData();
+      setIsPopupOpen(false);
+      setSelectedId(null);
+      setSelectedRowData(null);
+    },
+    [handleEditAcademicLevel, handleAddAcademicLevel, fetchData],
+  );
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -74,14 +87,14 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
                 onClick={() => handleDelete(id)}
                 className="hover:text-red-700 hover:underline"
               >
-                Hapus
+                Delete
               </button>
             </div>
           );
         },
       }),
     ],
-    [fetchData, handleActionButtonRow],
+    [fetchData],
   );
 
   return (
@@ -89,13 +102,11 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
         <AddButton
-          onClick={() => setIsPopupOpen(true)}
+          onClick={() => {
+            setSelectedId(null);
+            setIsPopupOpen(true);
+          }}
           text="Add Academic Level"
-        />
-        <FormAdd
-          isOpen={isPopupOpen}
-          onClose={() => setIsPopupOpen(false)}
-          onSave={handleAddAcademicLevel}
         />
       </div>
       <DataTable
@@ -104,28 +115,29 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
       />
-      <ModalFormEdit
-        isOpen={editModalOpen}
-        onClose={() => setEditModalOpen(false)}
-        onSave={async (updatedData) => {
-          await handleActionButtonRow(selectedId!, 'edit', updatedData);
-          setEditModalOpen(false);
+      <ModalForm
+        isOpen={isPopupOpen}
+        onClose={() => {
+          setIsPopupOpen(false);
+          setSelectedId(null); 
+          setSelectedRowData(null); 
         }}
+        onSave={handleAddOrEditAcademicLevel}
         initialData={selectedRowData}
-        id={selectedId!}
-        title="Edit Academic Level"
+        id={selectedId || undefined}
+        title={selectedId ? 'Edit Academic Level' : 'Add Academic Level'}
         fields={[
           { name: 'code', label: 'Code' },
           { name: 'name', label: 'Academic Level Name' },
         ]}
-        apiUpdate={academicLevelAPI.update}
       />
 
       <AlertModal
         openModal={deleteModalOpen}
         setOpenModal={setDeleteModalOpen}
         setIsConfirmed={async () => {
-          await handleActionButtonRow(selectedId!, 'delete');
+          await handleDeleteAcademicLevel(selectedId!);
+          fetchData();
           setDeleteModalOpen(false);
         }}
       />
