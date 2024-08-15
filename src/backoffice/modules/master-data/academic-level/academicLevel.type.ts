@@ -10,7 +10,7 @@ export interface IAcademicLevelView {
   data: APIResponseAcademicLevel[];
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  handleActionButtonRow: (id: string, action: 'delete' | 'edit') => void;
+  handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
   handleAddAcademicLevel: (code: string, name: string) => Promise<void>;
   Filter: string;
   setFilter: (value: string) => void;

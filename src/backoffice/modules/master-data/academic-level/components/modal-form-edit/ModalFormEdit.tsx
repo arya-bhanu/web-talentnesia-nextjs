@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface ModalFormEditProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (data: any) => Promise<void>;
-  initialData: { [key: string]: string };
+  initialData: { [key: string]: string } | null;
   id: string;
   title: string;
   fields: Array<{ name: string; label: string }>;
@@ -21,10 +21,24 @@ export const ModalFormEdit: React.FC<ModalFormEditProps> = ({
   fields, 
   apiUpdate 
 }) => {
-  const [formData, setFormData] = useState(initialData);
+  const initialFormState = fields.reduce((acc, field) => {
+    acc[field.name] = initialData?.[field.name] || '';
+    return acc;
+  }, {} as { [key: string]: string });
+
+  const [formData, setFormData] = useState(initialFormState);
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData(fields.reduce((acc, field) => {
+        acc[field.name] = initialData[field.name] || '';
+        return acc;
+      }, {} as { [key: string]: string }));
+    }
+  }, [initialData, fields]);
 
   const handleInputChange = (name: string, value: string) => {
-    setFormData(prevData => ({ ...prevData, [name]: value }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSave = async () => {
@@ -53,7 +67,7 @@ export const ModalFormEdit: React.FC<ModalFormEditProps> = ({
               type="text"
               className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder={`Input ${field.label.toLowerCase()}`}
-              value={formData[field.name]}
+              value={formData[field.name] || ''}
               onChange={(e) => handleInputChange(field.name, e.target.value)}
               required
             />

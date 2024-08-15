@@ -1,6 +1,6 @@
 import { ColumnDef, ColumnOrderState, SortingState } from "@tanstack/react-table";
 
-export interface TableProps<T> {
+export interface DataTableProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
   sorting?: SortingState;

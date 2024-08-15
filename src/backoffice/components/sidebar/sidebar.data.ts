@@ -53,4 +53,14 @@ export const sidebarData: SidebarProps[] = [
     title: 'FAQ',
     path: '#',
   },
+  {
+    icon: '/icons/sidebar/report.svg',
+    title: 'Report',
+    path: '#',
+  },
+  {
+    icon: '/icons/sidebar/school.svg',
+    title: 'School',
+    path: '#',
+  },
 ];

@@ -1,134 +1,87 @@
 import React, { useMemo, useState } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { IAcademicLevelView } from './academicLevel.type';
-import ModalAddAcademic from '@/backoffice/components/modal-form-add/ModalAddAcademic';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
-import SortArrow from '../../../../../public/icons/sort-arrow.svg';
-import SortArrowUp from '../../../../../public/icons/sort-arrow-up.svg';
-import { Table } from '@/backoffice/components/table';
+import { DataTable } from '@/backoffice/components/data-table';
 import { academicLevelAPI } from './api/academicLevelApi';
-import ActionCell from '@/backoffice/components/action-cell/ActionCell';
-import Link from 'next/link';
+import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
+import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
+import FormAdd from './components/modal-form-add/ModalAddForm';
+import AlertModal from '@/backoffice/components/alert-modal';
+import { ModalFormEdit } from '@/backoffice/modules/master-data/academic-level/components/modal-form-edit/ModalFormEdit';
 
 const columnHelper = createColumnHelper<any>();
 
 const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   data,
   handleActionButtonRow,
-  handleAddAcademicLevel,
   Filter,
   setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
 }) => {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedRowData, setSelectedRowData] = useState<any>(null);
+  const {
+    handleAddAcademicLevel,
+    handleEditAcademicLevel,
+    handleDeleteAcademicLevel,
+  } = useAcademicLevelActions();
+
+  const handleEdit = (id: string, rowData: any) => {
+    setSelectedId(id);
+    setSelectedRowData(rowData);
+    setEditModalOpen(true);
+  };
+
+  const handleDelete = (id: string) => {
+    setSelectedId(id);
+    setDeleteModalOpen(true);
+  };
+
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {
-        header: ({ column }) => (
-          <div className="flex items-center w-[50px]">
-            <p>Code</p>
-            {!column.getIsSorted() ? (
-              <SortArrow
-                className="ml-2 cursor-pointer"
-                onClick={() => column.toggleSorting()}
-              />
-            ) : (
-              <SortArrowUp
-                className={`ml-2 cursor-pointer ${
-                  column.getIsSorted() === 'desc' ? 'rotate-180' : ''
-                }`}
-                onClick={() => column.toggleSorting()}
-              />
-            )}
-          </div>
-        ),
+        header: ({ column }) => <SortingTable column={column} title="Code" />,
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('name', {
         header: ({ column }) => (
-          <div className="flex items-center w-[200px]">
-            <p>Level Name</p>
-            {!column.getIsSorted() ? (
-              <SortArrow
-                className="ml-2 transition-transform cursor-pointer"
-                onClick={() => column.toggleSorting()}
-              />
-            ) : (
-              <SortArrowUp
-                className={`ml-2 cursor-pointer ${
-                  column.getIsSorted() === 'desc' ? 'rotate-180' : ''
-                }`}
-                onClick={() => column.toggleSorting()}
-              />
-            )}
-          </div>
+          <SortingTable column={column} title="Level Name" />
         ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('id', {
         id: 'action',
-        header: ({ column }) => (
-          <div className="flex items-center text-center w-[100px] ">
-            <p>Action</p>
-          </div>
-        ),
+        header: 'Action',
         cell: (info) => {
+          const id = info.getValue() as string;
+          const rowData = info.row.original;
+
           return (
-            <ActionCell
-              id={info.getValue() as string}
-              fetchData={fetchData}
-              apiGetById={academicLevelAPI.getById}
-              apiDelete={academicLevelAPI.delete}
-              apiUpdate={academicLevelAPI.update}
-              fields={[
-                { name: 'code', label: 'Code' },
-                { name: 'name', label: 'Academic Level Name' },
-              ]}
-              title="Edit Academic Level"
-              actions={[
-                {
-                  name: 'Edit',
-                  render: (id) => (
-                    <button
-                      onClick={() => handleActionButtonRow(id, 'edit')}
-                      className="hover:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </button>
-                  ),
-                },
-                {
-                  name: 'Delete',
-                  render: (id) => (
-                    <button
-                      onClick={() => handleActionButtonRow(id, 'delete')}
-                      className="hover:text-red-500 hover:underline"
-                    >
-                      Delete
-                    </button>
-                  ),
-                },
-                // Test action
-                // {
-                //   name: 'Update',
-                //   render: (id) => (
-                //     <Link
-                //       href={`/backoffice/manage-modul/update?modulId=${id}`}
-                //       className="hover:text-blue-500 hover:underline"
-                //     >
-                //       Update
-                //     </Link>
-                //   ),
-                // },
-              ]}
-            />
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => handleEdit(id, rowData)}
+                className="hover:text-blue-700 hover:underline"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(id)}
+                className="hover:text-red-700 hover:underline"
+              >
+                Hapus
+              </button>
+            </div>
           );
         },
       }),
     ],
-    [fetchData],
+    [fetchData, handleActionButtonRow],
   );
 
   return (
@@ -139,17 +92,42 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
           onClick={() => setIsPopupOpen(true)}
           text="Add Academic Level"
         />
-        <ModalAddAcademic
+        <FormAdd
           isOpen={isPopupOpen}
           onClose={() => setIsPopupOpen(false)}
           onSave={handleAddAcademicLevel}
         />
       </div>
-      <Table
+      <DataTable
         data={data}
         columns={columns}
         sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
+      />
+      <ModalFormEdit
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        onSave={async (updatedData) => {
+          await handleActionButtonRow(selectedId!, 'edit', updatedData);
+          setEditModalOpen(false);
+        }}
+        initialData={selectedRowData}
+        id={selectedId!}
+        title="Edit Academic Level"
+        fields={[
+          { name: 'code', label: 'Code' },
+          { name: 'name', label: 'Academic Level Name' },
+        ]}
+        apiUpdate={academicLevelAPI.update}
+      />
+
+      <AlertModal
+        openModal={deleteModalOpen}
+        setOpenModal={setDeleteModalOpen}
+        setIsConfirmed={async () => {
+          await handleActionButtonRow(selectedId!, 'delete');
+          setDeleteModalOpen(false);
+        }}
       />
     </div>
   );

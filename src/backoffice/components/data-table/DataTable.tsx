@@ -1,16 +1,16 @@
 import React from 'react'
-import { TableView } from './Table.view'
-import { TableProps } from './Table.type'
+import { DataTableView } from './DataTable.view'
+import { DataTableProps } from './DataTable.type'
 
-export function Table<T>({ 
+export function DataTable<T>({ 
   data, 
   columns, 
   sorting, 
   initialColumnOrder,
   filter: { Filter, setFilter }
-}: TableProps<T>) {
+}: DataTableProps<T>) {
   return (
-    <TableView
+    <DataTableView
       data={data}
       columns={columns}
       sorting={sorting}

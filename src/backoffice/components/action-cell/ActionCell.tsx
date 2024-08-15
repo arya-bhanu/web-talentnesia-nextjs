@@ -1,59 +1,53 @@
 import React, { useState } from 'react';
 import AlertModal from '../alert-modal';
 import { Popover } from 'flowbite-react';
-import { ModalFormEdit } from '../modal-form-edit/ModalFormEdit';
+import { ModalFormEdit } from '../../modules/master-data/academic-level/components/modal-form-edit/ModalFormEdit';
 import MoreHoriz from '../../../../public/icons/more_horiz.svg';
+
+// interface ActionCellProps {
+//   id: string;
+//   rowData: any;
+//   fetchData: () => void;
+//   apiGetById: (id: string) => Promise<{ code: string; name: string }>;
+//   apiDelete: (id: string) => Promise<void>;
+//   apiUpdate: (id: string, updatedData: any) => Promise<void>;
+//   fields: { name: string; label: string }[];
+//   title: string;
+//   actions: Array<{
+//     name: string;
+//     render: (id: string) => React.ReactNode;
+//   }>;
+// }
 
 interface ActionCellProps {
   id: string;
+  rowData: any;
   fetchData: () => void;
-  apiGetById: (id: string) => Promise<{ code: string; name: string }>;
-  apiDelete: (id: string) => Promise<void>;
-  apiUpdate: (id: string, updatedData: any) => Promise<void>;
-  fields: { name: string; label: string }[];
-  title: string;
-  actions: Array<{
-    name: string;
-    render: (id: string) => React.ReactNode;
-  }>;
+  handleActionButtonRow: (id: string, action: "edit" | "delete", rowData?: any) => void;
+  fields?: { name: string; label: string }[];
+  title?: string;
+  actions: { name: string; render: (id: string) => React.ReactNode }[];
 }
 
 const ActionCell: React.FC<ActionCellProps> = ({
   id,
-  fetchData,
-  apiGetById,
-  apiDelete,
-  apiUpdate,
-  fields,
-  title,
+  rowData,
+  handleActionButtonRow,
   actions,
 }) => {
   const [open, setOpen] = useState(false);
-  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [initialData, setInitialData] = useState({ code: '', name: '' });
-
-  const openEditModal = async () => {
-    try {
-      const data = await apiGetById(id);
-      setInitialData(data);
-      setShowEditModal(true);
-    } catch (error) {
-      console.error('Failed to fetch details', error);
-    }
-  };
 
   const handleAction = (actionName: string) => {
-    setOpen(false); // Close the popover
-    if (actionName === 'Edit') {
-      openEditModal();
-    } else if (actionName === 'Delete') {
-      setShowDeleteAlert(true);
+    if (actionName === "edit" || actionName === "delete") {
+      handleActionButtonRow(id, actionName, rowData);
+    } else {
+      console.warn(`Unsupported action: ${actionName}`);
     }
+    setOpen(false);
   };
 
   return (
-    <div className="w-[100px] items-center text-center">
+    <div className="">
       <Popover
         open={open}
         onOpenChange={setOpen}
@@ -72,38 +66,6 @@ const ActionCell: React.FC<ActionCellProps> = ({
           <MoreHoriz />
         </button>
       </Popover>
-
-      {showDeleteAlert && (
-        <AlertModal
-          openModal={showDeleteAlert}
-          setOpenModal={setShowDeleteAlert}
-          setIsConfirmed={async (confirmed) => {
-            if (confirmed) {
-              try {
-                await apiDelete(id);
-                await fetchData();
-              } catch (error) {
-                console.error('Failed to delete item', error);
-              }
-            }
-          }}
-        />
-      )}
-
-      <ModalFormEdit
-        isOpen={showEditModal}
-        onClose={() => setShowEditModal(false)}
-        onSave={async (updatedData) => {
-          await apiUpdate(id, updatedData);
-          await fetchData();
-          setShowEditModal(false);
-        }}
-        initialData={initialData}
-        id={id}
-        title={title}
-        fields={fields}
-        apiUpdate={apiUpdate}
-      />
     </div>
   );
 };
