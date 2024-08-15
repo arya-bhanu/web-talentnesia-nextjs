@@ -1,4 +1,4 @@
-import AcademicTitle from '@/backoffice/modules/master-data/academic-title';
+import AcademicTitle from '@/backoffice/modules/master-data/academic-level';
 import React from 'react';
 
 const AcademicTitlePage = () => {

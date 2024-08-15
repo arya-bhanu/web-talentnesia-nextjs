@@ -1,12 +1,8 @@
-import React from 'react'
-import Blog from '@/portal/components/Blog'
+import React from 'react';
+// import Blog from '@/portal/components/Blog';
 
 const page = () => {
-  return (
-    <>
-    <Blog />
-    </>
-  )
-}
+  return <>{/* <Blog /> */}</>;
+};
 
-export default page
+export default page;

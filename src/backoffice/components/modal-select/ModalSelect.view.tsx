@@ -25,7 +25,7 @@ const ModalSelectView: React.FC<IModalSelect> = ({
                 <tr>
                   {columns.map((el) => {
                     return (
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3" key={el.key}>
                         {el.val}
                       </th>
                     );

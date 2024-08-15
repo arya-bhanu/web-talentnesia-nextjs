@@ -1,14 +1,7 @@
-import React from 'react'
-import SingleBlog from '@/portal/components/Blog/SingleBlog'
-import SingleBlogview from '@/portal/components/Blog/SingleBlog/SingleBlog.view'
-import BlogLayout from '../layout'
+// import SingleBlogview from '@/portal/components/Blog/SingleBlog/SingleBlog.view';
 
 const page = () => {
-  return (
-    <>
-    <SingleBlogview />
-    </>
-  )
-}
+  return <>{/* <SingleBlogview /> */}</>;
+};
 
-export default page
+export default page;
