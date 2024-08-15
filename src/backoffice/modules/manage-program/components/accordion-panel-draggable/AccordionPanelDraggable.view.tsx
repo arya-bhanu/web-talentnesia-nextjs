@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, FormEvent, SetStateAction } from 'react';
 
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import ArrowUp from '@/../public/icons/arrow-up.svg';
@@ -18,12 +18,21 @@ import {
 } from './accordionPanelDraggable.type';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import PopoverAction from '@/backoffice/components/popover-action/PopoverAction';
+import Modal from '@/backoffice/components/modal';
 
 const AccordionPanelDraggableView: React.FC<
-  IAccordionPanelDraggable & { index: number } & IPopoverState
+  IAccordionPanelDraggable &
+    IPopoverState & {
+      index: number;
+      handleOpenModalMentoring: (action: 'open' | 'close') => void;
+      handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
+      setOpenModalMentoring: Dispatch<SetStateAction<boolean>>;
+      openModalMentoring: boolean;
+    }
 > = ({
   title,
   index,
+
   totalCurriculum,
   totalMinuteDuration,
   activeAccordion,
@@ -31,11 +40,26 @@ const AccordionPanelDraggableView: React.FC<
   open,
   setOpen,
   contents,
+  handleOpenModalMentoring,
+  openModalMentoring,
+  handleSubmitModalMentoring,
+  setOpenModalMentoring,
 }) => {
   return (
     <div
       className={clsx('p-4', index === activeAccordion ? 'bg-[#219EBC0F]' : '')}
     >
+      <Modal
+        title="Mentoring"
+        buttonConfirmTitle="Submit"
+        handleSubmit={handleSubmitModalMentoring}
+        state={{
+          openModal: openModalMentoring,
+          setOpenModal: setOpenModalMentoring,
+        }}
+      >
+        <>hello</>
+      </Modal>
       <div className="flex items-center gap-4">
         <button>
           <DragIndicator />
@@ -68,39 +92,42 @@ const AccordionPanelDraggableView: React.FC<
             setOpenPopover={setOpen}
             content={
               <ul className="p-3 flex flex-col gap-3">
-                <li className="flex items-center gap-2">
-                  <FluentShiftTeam />
-                  <button className="text-sm font-lato font-normal">
+                <li>
+                  <button
+                    onClick={() => handleOpenModalMentoring('open')}
+                    className="text-sm font-lato flex items-center gap-2 font-normal"
+                  >
+                    <FluentShiftTeam />
                     Mentoring
                   </button>
                 </li>
-                <li className="flex items-center gap-2">
-                  <AddXs />
-                  <button className="text-sm font-lato font-normal">
+                <li>
+                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                    <AddXs />
                     Add File Content
                   </button>
                 </li>
-                <li className="flex items-center gap-2">
-                  <AddXs />
-                  <button className="text-sm font-lato font-normal">
+                <li>
+                  <button className="text-sm flex items-center gap-2 font-lato font-normal">
+                    <AddXs />
                     Add Exam
                   </button>
                 </li>
-                <li className="flex items-center gap-2">
-                  <ClarityCertificate />
-                  <button className="text-sm font-lato font-normal">
+                <li>
+                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                    <ClarityCertificate />
                     Certificate
                   </button>
                 </li>
-                <li className="flex items-center gap-2">
-                  <Edit />
-                  <button className="text-sm font-lato font-normal">
+                <li>
+                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                    <Edit />
                     Edit
                   </button>
                 </li>
-                <li className="flex items-center gap-2">
-                  <TrashXs />
-                  <button className="text-sm font-lato font-normal">
+                <li>
+                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                    <TrashXs />
                     Delete
                   </button>
                 </li>

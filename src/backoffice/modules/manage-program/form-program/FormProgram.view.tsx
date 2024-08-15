@@ -5,7 +5,7 @@ import { TabFlex } from '@/backoffice/components/tabs/tabs';
 import MentorSelector from '@/backoffice/components/mentor-selector/mentorSelector';
 import { DropFile } from '@/backoffice/components/drop-files-input/dropFilesInput'; // Mengimpor dropFile
 import LabelForm from '@/backoffice/components/label-form';
-import { IAddNewProgramView } from './addNewProgram.type';
+import { IFormProgram } from './formProgram.type';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
 import dynamic from 'next/dynamic';
 import Add from '@/../public/icons/add.svg';
@@ -25,7 +25,7 @@ const Datepicker = dynamic(
   { ssr: false },
 );
 
-function AddNewProgramView({
+function FormProgramView({
   mentors,
   setMentors,
   setStatus,
@@ -41,7 +41,7 @@ function AddNewProgramView({
   openModalModul,
   setOpenModalModul,
   handleSubmitSelectedModul,
-}: IAddNewProgramView &
+}: IFormProgram &
   Pick<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'> & {
     openModalModul: boolean;
     setOpenModalModul: Dispatch<SetStateAction<boolean>>;
@@ -298,4 +298,4 @@ function AddNewProgramView({
   );
 }
 
-export default AddNewProgramView;
+export default FormProgramView;
