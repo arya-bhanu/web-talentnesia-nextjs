@@ -1,17 +1,19 @@
-export interface APIResponseCertificate {
+export interface APIResponseCategory {
   id: string;
   code: string;
   name: string;
+  description?: string;
+  active: number;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface ICertificateView {
-  data: APIResponseCertificate[];
+export interface ICategoryView {
+  data: APIResponseCategory[];
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
-  handleAddCertificate: (code: string, name: string) => Promise<void>;
+  handleAddCategory: (name: string) => Promise<void>;
   Filter: string;
   setFilter: (value: string) => void;
   isPopupOpen: boolean;

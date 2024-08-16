@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { academicTitleAPI } from '../api/academicTitleApi';
 
 export const useAcademicTitleActions = () => {
-  const handleAddAcademicTitle = useCallback(async (code: string, name: string) => {
+  const handleAddAcademicTitle = useCallback(async (name: string) => {
     try {
-      await academicTitleAPI.add({ code, name });
+      await academicTitleAPI.add(name);
     } catch (error) {
       console.error('Failed to add academic title');
     }

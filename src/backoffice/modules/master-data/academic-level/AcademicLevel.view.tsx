@@ -6,7 +6,7 @@ import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-modal';
-import ModalForm from './components/modal-form/ModalForm';
+import ModalForm from './components/modal-form-level/ModalForm';
 import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
 
 const columnHelper = createColumnHelper<any>();
@@ -103,7 +103,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         <AddButton
           onClick={() => {
             setSelectedId(null);
-            setSelectedRowData(null); // Reset data saat membuka modal untuk penambahan
+            setSelectedRowData(null);
             setIsPopupOpen(true);
           }}
           text="Add Academic Level"

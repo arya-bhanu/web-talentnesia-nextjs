@@ -5,7 +5,7 @@ const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
 export const categoryAPI = {
   fetch: async () => {
     try {
-      const response = await axios.get(`${API_URL}/course-category`);
+      const response = await axios.get(`${API_URL}/category`);
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch category');
@@ -15,7 +15,7 @@ export const categoryAPI = {
 
   getById: async (id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/course-category/${id}`);
+      const response = await axios.get(`${API_URL}/category/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch category details');
@@ -31,7 +31,7 @@ export const categoryAPI = {
         createdBy: ""
       };
 
-      const response = await axios.post(`${API_URL}/course-category`, requestData);
+      const response = await axios.post(`${API_URL}/category`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to add category');
@@ -46,7 +46,7 @@ export const categoryAPI = {
         active: 1
       };
 
-      const response = await axios.put(`${API_URL}/course-category/${id}`, requestData);
+      const response = await axios.put(`${API_URL}/category/${id}`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to update category');

@@ -12,31 +12,28 @@ const ModalForm: React.FC<ModalFormProps> = ({
 }) => {
 
   const [formData, setFormData] = useState({
-    code: '',
-    name: '',
+    certificate: '',
   });
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        code: initialData.code || '',
-        name: initialData.name || '',
+        certificate: initialData.certificate || '',
       });
     } else {
       setFormData({
-        code: '',
-        name: '',
+        certificate: '',
       });
     }
   }, [initialData]);
 
-  const handleInputChange = (name: string, value: string) => {
-    setFormData(prevData => ({ ...prevData, [name]: value }));
+  const handleInputChange = (certificate: string, value: string) => {
+    setFormData(prevData => ({ ...prevData, [certificate]: value }));
   };
 
   const handleSave = async () => {
-    if (!formData.code || !formData.name) {
+    if (!formData.certificate) {
       setHasError(true);
       return;
     }
@@ -45,7 +42,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
       await onSave(id, formData);
       onClose();
     } catch (error) {
-      console.error('Failed to save data', error);
+      console.error('Failed to save data');
     }
   };
 

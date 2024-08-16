@@ -5,17 +5,17 @@ const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
 export const certificateAPI = {
   fetch: async () => {
     try {
-      const response = await axios.get(`${API_URL}/certificates`);
+      const response = await axios.get(`${API_URL}/certificate`);
       return response.data.data.items;
     } catch (error) {
-      console.error('Failed to fetch certificates');
+      console.error('Failed to fetch certificate');
       return [];
     }
   },
 
   getById: async (id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/certificates/${id}`);
+      const response = await axios.get(`${API_URL}/certificate/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch certificate details');
@@ -31,7 +31,7 @@ export const certificateAPI = {
         createdBy: ""
       };
 
-      const response = await axios.post(`${API_URL}/certificates`, requestData);
+      const response = await axios.post(`${API_URL}/certificate`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to add certificate');
@@ -46,7 +46,7 @@ export const certificateAPI = {
         active: 1
       };
 
-      const response = await axios.put(`${API_URL}/certificates/${id}`, requestData);
+      const response = await axios.put(`${API_URL}/certificate/${id}`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to update certificate');
@@ -60,7 +60,7 @@ export const certificateAPI = {
         throw new Error('Invalid ID format');
       }
 
-      const response = await axios.delete(`${API_URL}/certificates/${id}`);
+      const response = await axios.delete(`${API_URL}/certificate/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to delete certificate');

@@ -6,7 +6,7 @@ import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-modal';
-import ModalForm from './components/modal-form/ModalForm';
+import ModalForm from './components/modal-form-category/ModalForm';
 import { useCategoryActions } from './hooks/useCategoryAction';
 
 const columnHelper = createColumnHelper<any>();
@@ -60,15 +60,15 @@ const CategoryView: React.FC<ICategoryView> = ({
         header: ({ column }) => <SortingTable column={column} title="Code" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('name', {
+      columnHelper.accessor('category', {
         header: ({ column }) => (
-          <SortingTable column={column} title="Title Name" />
+          <SortingTable column={column} title="Category" />
         ),
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('active', {
+      columnHelper.accessor('status', {
         header: ({ column }) => (
-          <SortingTable column={column} title="Active" />
+          <SortingTable column={column} title="Status" />
         ),
         cell: (info) => info.getValue(),
       }),
@@ -130,9 +130,6 @@ const CategoryView: React.FC<ICategoryView> = ({
         initialData={selectedRowData}
         id={selectedId || undefined}
         title={selectedId ? 'Edit Category' : 'Add Category'}
-        fields={[
-          { name: 'name', label: 'Category Name' },
-        ]}
       />
 
       <AlertModal

@@ -15,7 +15,7 @@ const AcademicTitle = () => {
   const { handleAddAcademicTitle, handleEditAcademicTitle, handleDeleteAcademicTitle } = useAcademicTitleActions();
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['academicTitles'],
+    queryKey: ['academicTitle'],
     queryFn: async () => {
       const response = await academicTitleAPI.fetch();
       return response;
@@ -23,21 +23,21 @@ const AcademicTitle = () => {
   });
   
   const fetchData = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey: ['academicTitles'] });
+    await queryClient.invalidateQueries({ queryKey: ['academicTitle'] });
   }, [queryClient]);
 
   const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
-      await handleDeleteAcademicTitle(id); // Using the hook method
+      await handleDeleteAcademicTitle(id); 
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditAcademicTitle(id, rowData); // Using the hook method
+      await handleEditAcademicTitle(id, rowData); 
       fetchData();
     }
   }, [fetchData, handleDeleteAcademicTitle, handleEditAcademicTitle]);
 
-  const handleAdd = useCallback(async (code: string, name: string) => {
-    await handleAddAcademicTitle(code, name); // Using the hook method
+  const handleAdd = useCallback(async (name: string) => {
+    await handleAddAcademicTitle(name); 
     fetchData();
     setIsPopupOpen(false);
   }, [fetchData, handleAddAcademicTitle]);

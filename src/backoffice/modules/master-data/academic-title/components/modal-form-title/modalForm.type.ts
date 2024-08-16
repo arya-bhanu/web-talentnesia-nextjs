@@ -5,13 +5,11 @@ export interface ModalFormProps {
   initialData?: { [key: string]: string } | null;
   id?: string;
   title: string;
-  fields: Array<{ name: string; label: string }>;
 }
 
 export interface ModalFormViewProps {
   isOpen: boolean;
   title: string;
-  fields: Array<{ name: string; label: string }>;
   formData: { [key: string]: string };
   hasError: boolean;
   handleInputChange: (name: string, value: string) => void;

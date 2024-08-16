@@ -28,16 +28,16 @@ const Category = () => {
 
   const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
-      await handleDeleteCategory(id); // Using the hook method
+      await handleDeleteCategory(id); 
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditCategory(id, rowData); // Using the hook method
+      await handleEditCategory(id, rowData); 
       fetchData();
     }
   }, [fetchData, handleDeleteCategory, handleEditCategory]);
 
   const handleAdd = useCallback(async (name: string) => {
-    await handleAddCategory(name); // Using the hook method
+    await handleAddCategory(name); 
     fetchData();
     setIsPopupOpen(false);
   }, [fetchData, handleAddCategory]);

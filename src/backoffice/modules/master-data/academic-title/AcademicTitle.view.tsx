@@ -6,7 +6,7 @@ import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-modal';
-import ModalForm from './components/modal-form-test/ModalForm';
+import ModalForm from './components/modal-form-title/ModalForm';
 import { useAcademicTitleActions } from './hooks/useAcademicTitleAction';
 
 const columnHelper = createColumnHelper<any>();
@@ -41,11 +41,11 @@ const AcademicTitleView: React.FC<IAcademicTitleView> = ({
   }, []);
 
   const handleAddOrEditAcademicTitle = useCallback(
-    async (id: string | undefined, data: { code: string; name: string }) => {
+    async (id: string | undefined, data: { name: string }) => {
       if (id) {
         await handleEditAcademicTitle(id, data);
       } else {
-        await handleAddAcademicTitle(data.code, data.name);
+        await handleAddAcademicTitle(data.name);
       }
       fetchData();
       setSelectedId(null);
@@ -124,10 +124,6 @@ const AcademicTitleView: React.FC<IAcademicTitleView> = ({
         initialData={selectedRowData}
         id={selectedId || undefined}
         title={selectedId ? 'Edit Academic Title' : 'Add Academic Title'}
-        fields={[
-          { name: 'code', label: 'Code' },
-          { name: 'name', label: 'Academic Title Name' },
-        ]}
       />
 
       <AlertModal

@@ -11,7 +11,7 @@ export interface IAcademicTitleView {
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
-  handleAddAcademicTitle: (code: string, name: string) => Promise<void>;
+  handleAddAcademicTitle: (name: string) => Promise<void>;
   Filter: string;
   setFilter: (value: string) => void;
   isPopupOpen: boolean;

@@ -23,10 +23,10 @@ export const academicTitleAPI = {
     }
   },
 
-  add: async (data: { code: string; name: string }) => {
+  add: async ( name: string ) => {
     try {
       const requestData = {
-        ...data,
+        name,
         active: 1,
         createdBy: ""
       };
@@ -39,10 +39,10 @@ export const academicTitleAPI = {
     }
   },
 
-  update: async (id: string, data: { code: string; name: string }) => {
+  update: async (id: string, name: string ) => {
     try {
         const requestData = {
-        ...data,
+        name,
         active: 1
       };
 
