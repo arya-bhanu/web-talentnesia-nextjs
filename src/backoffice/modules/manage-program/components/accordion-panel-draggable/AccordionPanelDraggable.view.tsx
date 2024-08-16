@@ -19,6 +19,8 @@ import {
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import PopoverAction from '@/backoffice/components/popover-action/PopoverAction';
 import Modal from '@/backoffice/components/modal';
+import FormProgram from '../../form-program';
+import FormMentoring from '../../form-program/components/form-mentoring';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -58,7 +60,7 @@ const AccordionPanelDraggableView: React.FC<
           setOpenModal: setOpenModalMentoring,
         }}
       >
-        <>hello</>
+        <FormMentoring />
       </Modal>
       <div className="flex items-center gap-4">
         <button>

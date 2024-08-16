@@ -16,7 +16,10 @@ const AccordionPanelDraggable: React.FC<
     }
   };
 
-  const handleSubmitModalMentoring = (e: FormEvent<HTMLFormElement>) => {};
+  const handleSubmitModalMentoring = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   return (
     <AccordionPanelDraggableView
