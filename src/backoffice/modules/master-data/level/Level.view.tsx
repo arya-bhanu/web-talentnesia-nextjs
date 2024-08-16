@@ -8,6 +8,8 @@ import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-modal';
 import ModalForm from './components/modal-form-level';
 import { useLevelActions } from './hooks/useLevelAction';
+import { Popover } from 'flowbite-react';
+import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -80,20 +82,28 @@ const LevelView: React.FC<ILevelView> = ({
           const rowData = info.row.original;
   
           return (
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => handleEdit(id, rowData)}
-                className="hover:text-blue-700 hover:underline"
-              >
-                Edit
+            <Popover
+              content={
+                <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
+                  <button
+                    onClick={() => handleEdit(id, rowData)}
+                    className="hover:text-blue-700 hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(id)}
+                    className="hover:text-red-700 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              }
+            >
+              <button type="button">
+                <MoreHoriz />
               </button>
-              <button
-                onClick={() => handleDelete(id)}
-                className="hover:text-red-700 hover:underline"
-              >
-                Delete
-              </button>
-            </div>
+            </Popover>
           );
         },
       }),

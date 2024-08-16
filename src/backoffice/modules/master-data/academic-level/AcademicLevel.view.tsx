@@ -8,6 +8,8 @@ import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-modal';
 import ModalForm from './components/modal-form-level/ModalForm';
 import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
+import { Popover } from 'flowbite-react';
+import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -29,11 +31,14 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
     handleDeleteAcademicLevel,
   } = useAcademicLevelActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
-    setSelectedId(id);
-    setSelectedRowData(rowData);
-    setIsPopupOpen(true);
-  }, [setIsPopupOpen]);
+  const handleEdit = useCallback(
+    (id: string, rowData: any) => {
+      setSelectedId(id);
+      setSelectedRowData(rowData);
+      setIsPopupOpen(true);
+    },
+    [setIsPopupOpen],
+  );
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
@@ -72,27 +77,35 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-  
+
           return (
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => handleEdit(id, rowData)}
-                className="hover:text-blue-700 hover:underline"
-              >
-                Edit
+            <Popover
+              content={
+                <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
+                  <button
+                    onClick={() => handleEdit(id, rowData)}
+                    className="hover:text-blue-700 hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(id)}
+                    className="hover:text-red-700 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              }
+            >
+              <button type="button">
+                <MoreHoriz />
               </button>
-              <button
-                onClick={() => handleDelete(id)}
-                className="hover:text-red-700 hover:underline"
-              >
-                Delete
-              </button>
-            </div>
+            </Popover>
           );
         },
       }),
     ],
-    [handleEdit, handleDelete]
+    [handleEdit, handleDelete],
   );
 
   return (
@@ -114,13 +127,13 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
       />
-      
+
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
           setIsPopupOpen(false);
-          setSelectedId(null); 
-          setSelectedRowData(null); 
+          setSelectedId(null);
+          setSelectedRowData(null);
         }}
         onSave={handleAddOrEditAcademicLevel}
         initialData={selectedRowData}

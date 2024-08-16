@@ -1,22 +1,22 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { ICertificateView } from './certificate.type';
+import { ICityView } from './city.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-modal';
-import ModalForm from './components/modal-form-certificate';
-import { useCertificateActions } from './hooks/useCertificateAction';
+import ModalForm from './components/modal-form-city';
+import { useCityActions } from './hooks/useCityAction';
 import { Popover } from 'flowbite-react';
-import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import MoreHoriz from '../../../../../../public/icons/more_horiz.svg';
 
 const columnHelper = createColumnHelper<any>();
 
-const CertificateView: React.FC<ICertificateView> = ({
+const CityView: React.FC<ICityView> = ({
   data,
   Filter,
-  setFilter,  
+  setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
@@ -25,59 +25,50 @@ const CertificateView: React.FC<ICertificateView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const {
-    handleAddCertificate,
-    handleEditCertificate,
-    handleDeleteCertificate,
-  } = useCertificateActions();
+  const { handleAddCity, handleEditCity, handleDeleteCity } = useCityActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
-    setSelectedId(id);
-    setSelectedRowData(rowData);
-    setIsPopupOpen(true);
-  }, [setIsPopupOpen]);
+  const handleEdit = useCallback(
+    (id: string, rowData: any) => {
+      setSelectedId(id);
+      setSelectedRowData(rowData);
+      setIsPopupOpen(true);
+    },
+    [setIsPopupOpen],
+  );
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
     setDeleteModalOpen(true);
   }, []);
 
-  const handleAddOrEditCertificate = useCallback(
+  const handleAddOrEditCity = useCallback(
     async (id: string | undefined, data: { name: string }) => {
       if (id) {
-        await handleEditCertificate(id, data);
+        await handleEditCity(id, data);
       } else {
-        await handleAddCertificate(data.name);
+        await handleAddCity(data.name);
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditCertificate, handleAddCertificate, fetchData],
+    [handleEditCity, handleAddCity, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      columnHelper.accessor('template-name', {
-        header: ({ column }) => <SortingTable column={column} title="Template Name" />,
+      columnHelper.accessor('code', {
+        header: ({ column }) => <SortingTable column={column} title="City Code" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('template', {
+      columnHelper.accessor('City-name', {
         header: ({ column }) => (
-          <SortingTable column={column} title="Template" />
+          <SortingTable column={column} title="City Name" />
         ),
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('data-uploaded', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Data Uploaded" />
-        ),
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor('status', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Status" />
-        ),
+      columnHelper.accessor('province', {
+        header: ({ column }) => <SortingTable column={column} title="Province" />,
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('id', {
@@ -86,7 +77,7 @@ const CertificateView: React.FC<ICertificateView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-  
+
           return (
             <Popover
               content={
@@ -114,7 +105,7 @@ const CertificateView: React.FC<ICertificateView> = ({
         },
       }),
     ],
-    [handleEdit, handleDelete]
+    [handleEdit, handleDelete],
   );
 
   return (
@@ -126,33 +117,33 @@ const CertificateView: React.FC<ICertificateView> = ({
             setSelectedId(null);
             setIsPopupOpen(true);
           }}
-          text="Add Certificate"
+          text="Add City"
         />
       </div>
       <DataTable
         data={data}
         columns={columns}
-        sorting={[{ id: 'template-name', desc: false }]}
+        sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
       />
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
           setIsPopupOpen(false);
-          setSelectedId(null); 
-          setSelectedRowData(null); 
+          setSelectedId(null);
+          setSelectedRowData(null);
         }}
-        onSave={handleAddOrEditCertificate}
+        onSave={handleAddOrEditCity}
         initialData={selectedRowData}
         id={selectedId || undefined}
-        title={selectedId ? 'Edit Certificate' : 'Add Certificate'}
+        title={selectedId ? 'Edit City' : 'Add City'}
       />
 
       <AlertModal
         openModal={deleteModalOpen}
         setOpenModal={setDeleteModalOpen}
         setIsConfirmed={async () => {
-          await handleDeleteCertificate(selectedId!);
+          await handleDeleteCity(selectedId!);
           fetchData();
           setDeleteModalOpen(false);
         }}
@@ -161,4 +152,4 @@ const CertificateView: React.FC<ICertificateView> = ({
   );
 };
 
-export default CertificateView;
+export default CityView;
