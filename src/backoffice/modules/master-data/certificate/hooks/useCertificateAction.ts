@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { certificateAPI } from '../api/certificateApi';
 
 export const useCertificateActions = () => {
-  const handleAddCertificate = useCallback(async (code: string, name: string) => {
+  const handleAddCertificate = useCallback(async (name: string) => {
     try {
-      await certificateAPI.add({ code, name });
+      await certificateAPI.add({name});
     } catch (error) {
       console.error('Failed to add certificate');
     }

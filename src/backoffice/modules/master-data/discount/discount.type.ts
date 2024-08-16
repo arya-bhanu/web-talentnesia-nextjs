@@ -1,4 +1,4 @@
-export interface APIResponseCertificate {
+export interface APIResponseDiscount {
   id: string;
   code: string;
   name: string;
@@ -8,12 +8,12 @@ export interface APIResponseCertificate {
   updatedAt: Date;
 }
 
-export interface ICertificateView {
-  data: APIResponseCertificate[];
+export interface IDiscountView {
+  data: APIResponseDiscount[];
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
-  handleAddCertificate: (name: string) => Promise<void>;
+  handleAddDiscount: (name: string) => Promise<void>;
   Filter: string;
   setFilter: (value: string) => void;
   isPopupOpen: boolean;

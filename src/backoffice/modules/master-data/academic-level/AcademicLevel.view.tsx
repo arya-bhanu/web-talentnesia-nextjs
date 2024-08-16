@@ -50,7 +50,6 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
-      setIsPopupOpen(false);
     },
     [handleEditAcademicLevel, handleAddAcademicLevel, fetchData],
   );

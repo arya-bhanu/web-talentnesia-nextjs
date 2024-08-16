@@ -1,9 +1,8 @@
-
-import Certificate from '@/backoffice/modules/master-data/certificate';
+import Discount from '@/backoffice/modules/master-data/discount';
 import React from 'react';
 
 const AcademicTitlePage = () => {
-  return <Certificate />;
+  return <Discount />;
 };
 
 export default AcademicTitlePage;

@@ -1,17 +1,17 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { ICertificateView } from './certificate.type';
+import { ILevelView } from './level.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-modal';
-import ModalForm from './components/modal-form-certificate';
-import { useCertificateActions } from './hooks/useCertificateAction';
+import ModalForm from './components/modal-form-level';
+import { useLevelActions } from './hooks/useLevelAction';
 
 const columnHelper = createColumnHelper<any>();
 
-const CertificateView: React.FC<ICertificateView> = ({
+const LevelView: React.FC<ILevelView> = ({
   data,
   Filter,
   setFilter,  
@@ -24,10 +24,10 @@ const CertificateView: React.FC<ICertificateView> = ({
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
   const {
-    handleAddCertificate,
-    handleEditCertificate,
-    handleDeleteCertificate,
-  } = useCertificateActions();
+    handleAddLevel,
+    handleEditLevel,
+    handleDeleteLevel,
+  } = useLevelActions();
 
   const handleEdit = useCallback((id: string, rowData: any) => {
     setSelectedId(id);
@@ -40,35 +40,29 @@ const CertificateView: React.FC<ICertificateView> = ({
     setDeleteModalOpen(true);
   }, []);
 
-  const handleAddOrEditCertificate = useCallback(
+  const handleAddOrEditLevel = useCallback(
     async (id: string | undefined, data: { name: string }) => {
       if (id) {
-        await handleEditCertificate(id, data);
+        await handleEditLevel(id, data);
       } else {
-        await handleAddCertificate(data.name);
+        await handleAddLevel(data.name);
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditCertificate, handleAddCertificate, fetchData],
+    [handleEditLevel, handleAddLevel, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      columnHelper.accessor('template-name', {
-        header: ({ column }) => <SortingTable column={column} title="Template Name" />,
+      columnHelper.accessor('code', {
+        header: ({ column }) => <SortingTable column={column} title="Code" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('template', {
+      columnHelper.accessor('level-name', {
         header: ({ column }) => (
-          <SortingTable column={column} title="Template" />
-        ),
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor('data-uploaded', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Data Uploaded" />
+          <SortingTable column={column} title="Level Name" />
         ),
         cell: (info) => info.getValue(),
       }),
@@ -116,13 +110,13 @@ const CertificateView: React.FC<ICertificateView> = ({
             setSelectedId(null);
             setIsPopupOpen(true);
           }}
-          text="Add Certificate"
+          text="Add Level"
         />
       </div>
       <DataTable
         data={data}
         columns={columns}
-        sorting={[{ id: 'template-name', desc: false }]}
+        sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
       />
       <ModalForm
@@ -132,17 +126,17 @@ const CertificateView: React.FC<ICertificateView> = ({
           setSelectedId(null); 
           setSelectedRowData(null); 
         }}
-        onSave={handleAddOrEditCertificate}
+        onSave={handleAddOrEditLevel}
         initialData={selectedRowData}
         id={selectedId || undefined}
-        title={selectedId ? 'Edit Certificate' : 'Add Certificate'}
+        title={selectedId ? 'Edit Level' : 'Add Level'}
       />
 
       <AlertModal
         openModal={deleteModalOpen}
         setOpenModal={setDeleteModalOpen}
         setIsConfirmed={async () => {
-          await handleDeleteCertificate(selectedId!);
+          await handleDeleteLevel(selectedId!);
           fetchData();
           setDeleteModalOpen(false);
         }}
@@ -151,4 +145,4 @@ const CertificateView: React.FC<ICertificateView> = ({
   );
 };
 
-export default CertificateView;
+export default LevelView;

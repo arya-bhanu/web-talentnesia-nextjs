@@ -1,57 +1,57 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import CertificateView from './Certificate.view';
+import DiscountView from './Discount.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCertificateActions } from './hooks/useCertificateAction';
-import { certificateAPI } from './api/certificateApi';
+import { useDiscountActions } from './hooks/useDiscountAction';
+import { discountAPI } from './api/discountApi';
 
-const Certificate = () => {
+const Discount = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const { handleAddCertificate, handleEditCertificate, handleDeleteCertificate } = useCertificateActions();
+  const { handleAddDiscount, handleEditDiscount, handleDeleteDiscount } = useDiscountActions();
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['certificate'],
+    queryKey: ['Discount'],
     queryFn: async () => {
-      const response = await certificateAPI.fetch();
+      const response = await discountAPI.fetch();
       return response;
     },
   });
   
   const fetchData = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey: ['certificate'] });
+    await queryClient.invalidateQueries({ queryKey: ['Discount'] });
   }, [queryClient]);
 
   const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
-      await handleDeleteCertificate(id);
+      await handleDeleteDiscount(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditCertificate(id, rowData);
+      await handleEditDiscount(id, rowData);
       fetchData();
     }
-  }, [fetchData, handleDeleteCertificate, handleEditCertificate]);
+  }, [fetchData, handleDeleteDiscount, handleEditDiscount]);
 
   const handleAdd = useCallback(async (name: string) => {
-    await handleAddCertificate(name);
+    await handleAddDiscount(name);
     fetchData();
     setIsPopupOpen(false);
-  }, [fetchData, handleAddCertificate]);
+  }, [fetchData, handleAddDiscount]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <CertificateView
+    <DiscountView
       data={data}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
-      handleAddCertificate={handleAdd}
+      handleAddDiscount={handleAdd}
       Filter={Filter}
       setFilter={setFilter}
       isPopupOpen={isPopupOpen}
@@ -61,4 +61,4 @@ const Certificate = () => {
   );
 };
 
-export default Certificate;
+export default Discount;

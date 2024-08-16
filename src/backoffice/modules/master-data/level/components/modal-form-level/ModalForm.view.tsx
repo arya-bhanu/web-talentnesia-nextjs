@@ -18,17 +18,17 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
         <Modal.Body>
           <div className="space-y-4">
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900">Category name<label className="text-red-500">*</label></label>
+              <label className="block mb-2 text-sm font-medium text-gray-900">Level name<label className="text-red-500">*</label></label>
               <input
                 type="text"
-                placeholder="Input category name"
-                value={formData.category || ''}
-                onChange={(e) => handleInputChange('category', e.target.value)}
+                placeholder="Input level name"
+                value={formData.level || ''}
+                onChange={(e) => handleInputChange('level', e.target.value)}
                 required
-                className={`block w-full p-2 border ${hasError && !formData.name ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+                className={`block w-full p-2 border ${hasError && !formData.level ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
               />
-              {hasError && !formData.category && (
-                <p className="text-red-500 text-xs mt-1">Category name is required.</p>
+              {hasError && !formData.level && (
+                <p className="text-red-500 text-xs mt-1">level name is required.</p>
               )}
             </div>
           </div>

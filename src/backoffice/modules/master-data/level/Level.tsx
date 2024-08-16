@@ -1,57 +1,57 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import CertificateView from './Certificate.view';
+import LevelView from './Level.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCertificateActions } from './hooks/useCertificateAction';
-import { certificateAPI } from './api/certificateApi';
+import { useLevelActions } from './hooks/useLevelAction';
+import { levelAPI } from './api/levelApi';
 
-const Certificate = () => {
+const Level = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const { handleAddCertificate, handleEditCertificate, handleDeleteCertificate } = useCertificateActions();
+  const { handleAddLevel, handleEditLevel, handleDeleteLevel } = useLevelActions();
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['certificate'],
+    queryKey: ['level'],
     queryFn: async () => {
-      const response = await certificateAPI.fetch();
+      const response = await levelAPI.fetch();
       return response;
     },
   });
   
   const fetchData = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey: ['certificate'] });
+    await queryClient.invalidateQueries({ queryKey: ['level'] });
   }, [queryClient]);
 
   const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
-      await handleDeleteCertificate(id);
+      await handleDeleteLevel(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditCertificate(id, rowData);
+      await handleEditLevel(id, rowData);
       fetchData();
     }
-  }, [fetchData, handleDeleteCertificate, handleEditCertificate]);
+  }, [fetchData, handleDeleteLevel, handleEditLevel]);
 
   const handleAdd = useCallback(async (name: string) => {
-    await handleAddCertificate(name);
+    await handleAddLevel(name);
     fetchData();
     setIsPopupOpen(false);
-  }, [fetchData, handleAddCertificate]);
+  }, [fetchData, handleAddLevel]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <CertificateView
+    <LevelView
       data={data}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
-      handleAddCertificate={handleAdd}
+      handleAddLevel={handleAdd}
       Filter={Filter}
       setFilter={setFilter}
       isPopupOpen={isPopupOpen}
@@ -61,4 +61,4 @@ const Certificate = () => {
   );
 };
 
-export default Certificate;
+export default Level;

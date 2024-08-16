@@ -1,9 +1,9 @@
 
-import Certificate from '@/backoffice/modules/master-data/certificate';
+import Level from '@/backoffice/modules/master-data/level';
 import React from 'react';
 
 const AcademicTitlePage = () => {
-  return <Certificate />;
+  return <Level />;
 };
 
 export default AcademicTitlePage;
