@@ -1,8 +1,11 @@
 'use client';
 
 import Navbar from '@/backoffice/components/navbar';
-import Sidebar from '@/backoffice/components/sidebar';
 import React, { ReactNode, useEffect, useState } from 'react';
+
+import dynamic from 'next/dynamic'
+
+const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), { ssr: false })
 
 const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
