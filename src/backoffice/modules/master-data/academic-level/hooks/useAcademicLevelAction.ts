@@ -6,7 +6,7 @@ export const useAcademicLevelActions = () => {
     try {
       await academicLevelAPI.add({ code, name });
     } catch (error) {
-      console.error('Failed to add academic level');
+      console.error('Failed to add academic level', error);
     }
   }, []);
 

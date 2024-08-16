@@ -1,0 +1,64 @@
+'use client';
+
+import React, { useState, useCallback } from 'react';
+import AcademicTitleView from './AcademicTitle.view';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { academicTitleAPI } from './api/academicTitleApi';
+import { useAcademicTitleActions } from './hooks/useAcademicTitleAction';
+
+const AcademicTitle = () => {
+  const queryClient = useQueryClient();
+  const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
+  const [Filter, setFilter] = useState('');
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const { handleAddAcademicTitle, handleEditAcademicTitle, handleDeleteAcademicTitle } = useAcademicTitleActions();
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['academicTitles'],
+    queryFn: async () => {
+      const response = await academicTitleAPI.fetch();
+      return response;
+    },
+  });
+  
+  const fetchData = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ['academicTitles'] });
+  }, [queryClient]);
+
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+    if (action === "delete") {
+      await handleDeleteAcademicTitle(id); // Using the hook method
+      fetchData();
+    } else if (action === "edit" && rowData) {
+      await handleEditAcademicTitle(id, rowData); // Using the hook method
+      fetchData();
+    }
+  }, [fetchData, handleDeleteAcademicTitle, handleEditAcademicTitle]);
+
+  const handleAdd = useCallback(async (code: string, name: string) => {
+    await handleAddAcademicTitle(code, name); // Using the hook method
+    fetchData();
+    setIsPopupOpen(false);
+  }, [fetchData, handleAddAcademicTitle]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+
+  return (
+    <AcademicTitleView
+      data={data}
+      openPopoverIndex={openPopoverIndex}
+      setOpenPopoverIndex={setOpenPopoverIndex}
+      handleActionButtonRow={handleActionButtonRow}
+      handleAddAcademicTitle={handleAdd}
+      Filter={Filter}
+      setFilter={setFilter}
+      isPopupOpen={isPopupOpen}
+      setIsPopupOpen={setIsPopupOpen}
+      fetchData={fetchData}
+    />
+  );
+};
+
+export default AcademicTitle;

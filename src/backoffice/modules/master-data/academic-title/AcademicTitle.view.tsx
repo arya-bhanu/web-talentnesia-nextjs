@@ -1,20 +1,20 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { IAcademicLevelView } from './academicLevel.type';
+import { IAcademicTitleView } from './academicTitle.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-modal';
-import ModalForm from './components/modal-form/ModalForm';
-import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
+import ModalForm from './components/modal-form-test/ModalForm';
+import { useAcademicTitleActions } from './hooks/useAcademicTitleAction';
 
 const columnHelper = createColumnHelper<any>();
 
-const AcademicLevelView: React.FC<IAcademicLevelView> = ({
+const AcademicTitleView: React.FC<IAcademicTitleView> = ({
   data,
   Filter,
-  setFilter,
+  setFilter,  
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
@@ -24,10 +24,10 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
   const {
-    handleAddAcademicLevel,
-    handleEditAcademicLevel,
-    handleDeleteAcademicLevel,
-  } = useAcademicLevelActions();
+    handleAddAcademicTitle,
+    handleEditAcademicTitle,
+    handleDeleteAcademicTitle,
+  } = useAcademicTitleActions();
 
   const handleEdit = useCallback((id: string, rowData: any) => {
     setSelectedId(id);
@@ -40,19 +40,18 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
     setDeleteModalOpen(true);
   }, []);
 
-  const handleAddOrEditAcademicLevel = useCallback(
+  const handleAddOrEditAcademicTitle = useCallback(
     async (id: string | undefined, data: { code: string; name: string }) => {
       if (id) {
-        await handleEditAcademicLevel(id, data);
+        await handleEditAcademicTitle(id, data);
       } else {
-        await handleAddAcademicLevel(data.code, data.name);
+        await handleAddAcademicTitle(data.code, data.name);
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
-      setIsPopupOpen(false);
     },
-    [handleEditAcademicLevel, handleAddAcademicLevel, fetchData],
+    [handleEditAcademicTitle, handleAddAcademicTitle, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(
@@ -63,7 +62,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
       }),
       columnHelper.accessor('name', {
         header: ({ column }) => (
-          <SortingTable column={column} title="Level Name" />
+          <SortingTable column={column} title="Title Name" />
         ),
         cell: (info) => info.getValue(),
       }),
@@ -103,10 +102,9 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         <AddButton
           onClick={() => {
             setSelectedId(null);
-            setSelectedRowData(null); // Reset data saat membuka modal untuk penambahan
             setIsPopupOpen(true);
           }}
-          text="Add Academic Level"
+          text="Add Academic Title"
         />
       </div>
       <DataTable
@@ -115,7 +113,6 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
         sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
       />
-      
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
@@ -123,17 +120,21 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
           setSelectedId(null); 
           setSelectedRowData(null); 
         }}
-        onSave={handleAddOrEditAcademicLevel}
+        onSave={handleAddOrEditAcademicTitle}
         initialData={selectedRowData}
         id={selectedId || undefined}
-        title={selectedId ? 'Edit Academic Level' : 'Add Academic Level'}
+        title={selectedId ? 'Edit Academic Title' : 'Add Academic Title'}
+        fields={[
+          { name: 'code', label: 'Code' },
+          { name: 'name', label: 'Academic Title Name' },
+        ]}
       />
 
       <AlertModal
         openModal={deleteModalOpen}
         setOpenModal={setDeleteModalOpen}
         setIsConfirmed={async () => {
-          await handleDeleteAcademicLevel(selectedId!);
+          await handleDeleteAcademicTitle(selectedId!);
           fetchData();
           setDeleteModalOpen(false);
         }}
@@ -142,4 +143,4 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   );
 };
 
-export default AcademicLevelView;
+export default AcademicTitleView;

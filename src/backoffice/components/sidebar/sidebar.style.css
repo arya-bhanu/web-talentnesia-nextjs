@@ -1,17 +1,12 @@
-/* Menghilangkan tampilan scrollbar untuk sidebar pada WebKit browsers (Chrome, Safari, dll.) */
-#icon-sidebar::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
-/* Menghilangkan tampilan scrollbar untuk sidebar pada Firefox */
-#icon-sidebar {
-  scrollbar-width: none; /* Firefox */
-}
-
-/* Menghilangkan tampilan scrollbar untuk sidebar pada Internet Explorer dan Edge */
-#icon-sidebar {
+* {
   -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  overflow: hidden; /* Pastikan overflow disembunyikan */
+}
+
+#icon-sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  width: 0; /* Chrome, Safari, Opera */
 }
 
 .sidebar {
