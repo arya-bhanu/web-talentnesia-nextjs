@@ -6,7 +6,7 @@ export const useAcademicLevelActions = () => {
     try {
       await academicLevelAPI.add({ code, name });
     } catch (error) {
-      console.error('Failed to add academic level', error);
+      console.error('Failed to add academic level');
     }
   }, []);
 
@@ -14,7 +14,7 @@ export const useAcademicLevelActions = () => {
     try {
       await academicLevelAPI.update(id, data);
     } catch (error) {
-      console.error('Failed to edit academic level', error);
+      console.error('Failed to edit academic level');
     }
   }, []);
 
@@ -22,7 +22,7 @@ export const useAcademicLevelActions = () => {
     try {
       await academicLevelAPI.delete(id);
     } catch (error) {
-      console.error('Failed to delete academic level', error);
+      console.error('Failed to delete academic level');
     }
   }, []);
 

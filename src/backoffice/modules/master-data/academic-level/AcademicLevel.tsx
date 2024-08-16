@@ -4,6 +4,7 @@ import React, { useState, useCallback } from 'react';
 import AcademicLevelView from './AcademicLevel.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { academicLevelAPI } from './api/academicLevelApi';
+import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
 
 const AcademicLevel = () => {
   const queryClient = useQueryClient();
@@ -11,42 +12,35 @@ const AcademicLevel = () => {
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const { handleAddAcademicLevel, handleEditAcademicLevel, handleDeleteAcademicLevel } = useAcademicLevelActions();
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['academicLevels'],
-    queryFn: academicLevelAPI.fetch,
+    queryFn: async () => {
+      const response = await academicLevelAPI.fetch();
+      return response;
+    },
   });
   
   const fetchData = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: ['academicLevels'] });
   }, [queryClient]);
-  
-  const handleActionButtonRow = useCallback((id: string, action: "delete" | "edit", rowData?: any) => {
+
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
-      academicLevelAPI.delete(id).then(() => {
-        fetchData();
-      }).catch(error => {
-        console.error('Failed to delete academic level', error);
-      });
-    } else if (action === "edit") {
-      academicLevelAPI.update(id, rowData).then(() => {
-        fetchData();
-      }).catch(error => {
-        console.error('Failed to update academic level', error);
-      });
+      await handleDeleteAcademicLevel(id); // Using the hook method
+      fetchData();
+    } else if (action === "edit" && rowData) {
+      await handleEditAcademicLevel(id, rowData); // Using the hook method
+      fetchData();
     }
-  }, [fetchData]);
-  
+  }, [fetchData, handleDeleteAcademicLevel, handleEditAcademicLevel]);
 
-  const handleAddAcademicLevel = useCallback(async (code: string, name: string) => {
-    try {
-      await academicLevelAPI.add({ code, name });
-      queryClient.invalidateQueries({ queryKey: ['academicLevels'] });
-      setIsPopupOpen(false);
-    } catch (error) {
-      console.error('Failed to add academic level', error);
-    }
-  }, [queryClient]);
-
+  const handleAdd = useCallback(async (code: string, name: string) => {
+    await handleAddAcademicLevel(code, name); // Using the hook method
+    fetchData();
+    setIsPopupOpen(false);
+  }, [fetchData, handleAddAcademicLevel]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
@@ -57,7 +51,7 @@ const AcademicLevel = () => {
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
-      handleAddAcademicLevel={handleAddAcademicLevel}
+      handleAddAcademicLevel={handleAdd}
       Filter={Filter}
       setFilter={setFilter}
       isPopupOpen={isPopupOpen}

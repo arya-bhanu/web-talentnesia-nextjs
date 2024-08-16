@@ -59,39 +59,39 @@ export function DataTableView<T>({
   return (
     <>
       <div className="overflow-x-auto shadow-sm sm:rounded-lg mt-5">
-        {data.length > 0 ? (
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-md font-bold text-[#323232] bg-[#FFFFFF] border-b">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header, index) => (
-                    <th
-                      key={header.id}
-                      scope="col"
-                      className={
-                        index === headerGroup.headers.length - 1
-                          ? 'px-6 py-3 text-right'
-                          : 'px-6 py-3'
-                      }
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row) => (
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-md font-bold text-[#323232] bg-[#FFFFFF] border-b">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header, index) => (
+                  <th
+                    key={header.id}
+                    scope="col"
+                    className={
+                      index === headerGroup.headers.length - 1
+                        ? 'px-6 py-3 text-center'
+                        : 'px-6 py-3'
+                    }
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {data.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="bg-[#FFFFFF] border-b">
                   {row.getVisibleCells().map((cell, cellIndex) => (
                     <td
                       key={cell.id}
                       className={
                         cellIndex === row.getVisibleCells().length - 1
-                          ? 'px-6 py-4 text-right'
+                          ? 'px-6 py-4 text-center'
                           : 'px-6 py-4'
                       }
                     >
@@ -102,12 +102,19 @@ export function DataTableView<T>({
                     </td>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No data available</p>
-        )}
+              ))
+            ) : (
+              <tr className="bg-[#FFFFFF] border-b">
+                <td
+                  colSpan={table.getAllColumns().length}
+                  className="px-6 py-4 text-center text-gray-500"
+                >
+                  No Data Available
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
       <div className="flex justify-between items-center w-full mt-5">
         <div className="flex items-center gap-2 text-[#667085]">

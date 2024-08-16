@@ -8,7 +8,7 @@ export const academicLevelAPI = {
       const response = await axios.get(`${API_URL}/example`);
       return response.data.data.items;
     } catch (error) {
-      console.error('Failed to fetch academic levels', error);
+      console.error('Failed to fetch academic levels');
       throw new Error('Failed to fetch academic levels');
     }
   },
@@ -18,7 +18,7 @@ export const academicLevelAPI = {
       const response = await axios.get(`${API_URL}/example/${id}`);
       return response.data;
     } catch (error) {
-      console.error('Failed to fetch academic level details', error);
+      console.error('Failed to fetch academic level details');
       throw new Error('Failed to fetch academic level details');
     }
   },
@@ -34,7 +34,7 @@ export const academicLevelAPI = {
       const response = await axios.post(`${API_URL}/example`, requestData);
       return response.data;
     } catch (error) {
-      console.error('Failed to add academic level', error);
+      console.error('Failed to add academic level');
       throw new Error('Failed to add academic level');
     }
   },
@@ -49,7 +49,7 @@ export const academicLevelAPI = {
       const response = await axios.put(`${API_URL}/example/${id}`, requestData);
       return response.data;
     } catch (error) {
-      console.error('Failed to update academic level', error);
+      console.error('Failed to update academic level');
       throw new Error('Failed to update academic level');
     }
   },
@@ -63,7 +63,7 @@ export const academicLevelAPI = {
       const response = await axios.delete(`${API_URL}/example/${id}`);
       return response.data;
     } catch (error) {
-      console.error('Failed to delete academic level', error);
+      console.error('Failed to delete academic level');
       console.log('ID:', id)
       throw new Error('Failed to delete academic level');
     }
