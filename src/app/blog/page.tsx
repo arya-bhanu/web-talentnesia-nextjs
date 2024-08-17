@@ -1,5 +1,5 @@
 import React from 'react'
-import Blog from '@/portal/components/Blog'
+import Blog from '@/portal/modules/blog'
 
 const page = () => {
   return (

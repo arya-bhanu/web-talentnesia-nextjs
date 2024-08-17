@@ -1,18 +1,18 @@
 'use client';
-import Header from '@/portal/components/header/Header';
-import Footer from '@/portal/components/footer';
-import React, { ReactNode } from 'react';
-import ObserverProvider from '@/utils/portal/ObserverProvider';
-import { useInView } from 'react-intersection-observer';
-import SingleBlog from '@/portal/components/Blog/SingleBlog';
 
+import ObserverProvider from '@/utils/portal/ObserverProvider';
+import { ReactNode } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const SingleBlogLayout = ({ children }: { children: ReactNode }) => {
   const { ref, inView } = useInView({ threshold: 1 });
   return (
     <ObserverProvider>
       <section>
-        <div ref={ref} className="w-full absolute top-0 h-2 bg-white opacity-0" />
+        <div
+          ref={ref}
+          className="w-full absolute top-0 h-2 bg-white opacity-0"
+        />
         <main>{children}</main>
       </section>
     </ObserverProvider>

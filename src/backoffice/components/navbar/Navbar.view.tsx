@@ -24,9 +24,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
 
   return (
     <nav
-      className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 dark:border-gray-700"
-      style={{ paddingLeft: '16rem' }}
-    >
+      className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 pl-12 md:pl-64">
       <div className="flex justify-between items-center py-4 px-6">
         <div>
           <TitleNavbar customTitles={globalCustomTitles} />
