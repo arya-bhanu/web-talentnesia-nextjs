@@ -46,11 +46,11 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   }, []);
 
   const handleAddOrEditAcademicLevel = useCallback(
-    async (id: string | undefined, data: { code: string; name: string }) => {
+    async (id: string | undefined, data: { name: string }) => {
       if (id) {
         await handleEditAcademicLevel(id, data);
       } else {
-        await handleAddAcademicLevel(data.code, data.name);
+        await handleAddAcademicLevel(data.name);
       }
       fetchData();
       setSelectedId(null);
@@ -63,7 +63,10 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
     () => [
       columnHelper.accessor('code', {
         header: ({ column }) => <SortingTable column={column} title="Code" />,
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+          const index = info.row.index + 1;
+          return index.toString().padStart(3, '0');
+        },
       }),
       columnHelper.accessor('name', {
         header: ({ column }) => (

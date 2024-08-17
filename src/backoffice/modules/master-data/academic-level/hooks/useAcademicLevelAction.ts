@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { academicLevelAPI } from '../api/academicLevelApi';
 
 export const useAcademicLevelActions = () => {
-  const handleAddAcademicLevel = useCallback(async (code: string, name: string) => {
+  const handleAddAcademicLevel = useCallback(async (name: string) => {
     try {
-      await academicLevelAPI.add({ code, name });
+      await academicLevelAPI.add({ name });
     } catch (error) {
       console.error('Failed to add academic level');
     }

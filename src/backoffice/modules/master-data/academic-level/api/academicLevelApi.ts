@@ -5,7 +5,7 @@ const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
 export const academicLevelAPI = {
   fetch: async () => {
     try {
-      const response = await axios.get(`${API_URL}/example`);
+      const response = await axios.get(`${API_URL}/education-level`);
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch academic levels');
@@ -15,7 +15,7 @@ export const academicLevelAPI = {
 
   getById: async (id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/example/${id}`);
+      const response = await axios.get(`${API_URL}/education-level/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch academic level details');
@@ -23,7 +23,7 @@ export const academicLevelAPI = {
     }
   },
 
-  add: async (data: { code: string; name: string }) => {
+  add: async (data: { name: string }) => {
     try {
       const requestData = {
         ...data,
@@ -31,7 +31,7 @@ export const academicLevelAPI = {
         createdBy: ""
       };
 
-      const response = await axios.post(`${API_URL}/example`, requestData);
+      const response = await axios.post(`${API_URL}/education-level`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to add academic level');
@@ -39,14 +39,14 @@ export const academicLevelAPI = {
     }
   },
 
-  update: async (id: string, data: { code: string; name: string }) => {
+  update: async (id: string, data: { name: string }) => {
     try {
         const requestData = {
         ...data,
         active: 1
       };
 
-      const response = await axios.put(`${API_URL}/example/${id}`, requestData);
+      const response = await axios.put(`${API_URL}/education-level/${id}`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to update academic level');
@@ -60,7 +60,7 @@ export const academicLevelAPI = {
         throw new Error('Invalid ID format');
       }
 
-      const response = await axios.delete(`${API_URL}/example/${id}`);
+      const response = await axios.delete(`${API_URL}/education-level/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to delete academic level');
