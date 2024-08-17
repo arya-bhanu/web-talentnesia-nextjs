@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { programsData } from '../program.data';
 import { TabFlex } from '@/backoffice/components/tabs/tabs';
 import TableStudents from '@/backoffice/modules/manage-program/add-new-program/components/table-students';
@@ -17,10 +18,15 @@ export default function ProgramDetail({ params }: ProgramDetailProps) {
   const { id } = params;
   const programDetails = programsData.find(program => program.id === id);
   const [activeAccordion, setActiveAccordion] = useState<number>(-1);
+  const router = useRouter();
 
   if (!programDetails) {
     return <div>Program not found</div>;
   }
+
+  const handlePreviewClick = () => {
+    router.push(`/backoffice/program/${id}/detail`);
+  };
 
   const tabs = [
     {
@@ -43,6 +49,7 @@ export default function ProgramDetail({ params }: ProgramDetailProps) {
               Courses Detail
             </h1>
             <button
+              onClick={handlePreviewClick}
               className="flex items-center focus:outline-none text-black bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-3 me-2 dark:focus:ring-yellow-900"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
