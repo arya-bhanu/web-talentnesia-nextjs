@@ -11,29 +11,43 @@ import TrashSm from '@/../public/icons/trash-sm.svg';
 import PopoverAction from '../popover-action';
 import { IQuestionListDraggable } from './questionListDraggable.type';
 import QuestionFieldProject from './question-field-project';
-import { QuestionType } from './questionListDraggable.enum';
-// import ReactQuill from 'react-quill';
 import clsx from 'clsx';
 import dynamic from 'next/dynamic';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
+const QuestionListDraggableView: React.FC<
+  IQuestionListDraggable & {
+    handleChangeType: (
+      keyId: string,
+      newType: 'radio' | 'textarea' | 'file',
+    ) => void;
+  }
+> = ({
   openPopover,
   setOpenPopover,
   questionType,
-  setQuestionType,
+  keyId,
+  handleChangeType,
+  options,
 }) => {
-  const renderFieldOption = useCallback(() => {
-    switch (questionType) {
-      case QuestionType.Essay.value:
-        return <QuestionFieldTextarea />;
-      case QuestionType.MiniProject.value:
-        return <QuestionFieldProject />;
-      default:
-        return <QuestionFieldOption />;
-    }
-  }, [questionType]);
+  const renderFieldOption = useCallback(
+    (questions?: { text: string; value: string }[]) => {
+      switch (questionType.type) {
+        case 'textarea':
+          return <QuestionFieldTextarea />;
+        case 'file':
+          return <QuestionFieldProject />;
+        default:
+          
+          if (questions) {
+            return <QuestionFieldOption questionOptions={questions} />;
+          }
+          return <></>;
+      }
+    },
+    [questionType],
+  );
   return (
     <div className={clsx('flex items-start gap-5')}>
       <button>
@@ -46,7 +60,7 @@ const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
           </LabelForm>
           <ReactQuill />
         </div>
-        <div className="mt-5">{renderFieldOption()}</div>
+        <div className="mt-5">{renderFieldOption(options)}</div>
       </div>
       <div className="flex-1 flex items-center gap-3">
         <div className="flex flex-col w-full gap-1">
@@ -57,27 +71,17 @@ const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
             <Select
               id="type"
               className="w-full max-w-none"
-              defaultValue={questionType}
-              onChange={(e) => setQuestionType(e.target.value)}
-            >
-              {Object.keys(QuestionType).map((val, index) => {
-                return (
-                  <option
-                    key={val + index}
-                    value={
-                      QuestionType[
-                        val as 'MultipleChoice' | 'Essay' | 'MiniProject'
-                      ].value
-                    }
-                  >
-                    {
-                      QuestionType[
-                        val as 'MultipleChoice' | 'Essay' | 'MiniProject'
-                      ].label
-                    }
-                  </option>
+              onChange={(e) => {
+                handleChangeType(
+                  keyId,
+                  e.target.value as 'radio' | 'textarea' | 'file',
                 );
-              })}
+              }}
+              defaultValue={questionType.type}
+            >
+              <option value="textarea">Essay</option>
+              <option value="file">Mini Project</option>
+              <option value="radio">Multiple Choice</option>
             </Select>
             <PopoverAction
               openPopover={openPopover}

@@ -1,8 +1,10 @@
+import { ExamQuestion } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface IQuestionListDraggable {
   openPopover: boolean;
   setOpenPopover: Dispatch<SetStateAction<boolean>>;
-  questionType: string;
-  setQuestionType: Dispatch<SetStateAction<string>>;
+  keyId: string;
+  questionType: Pick<ExamQuestion, 'type'>;
+  options?: { value: string; text: string }[];
 }

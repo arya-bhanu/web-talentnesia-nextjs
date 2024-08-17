@@ -3,27 +3,22 @@ import { Radio } from 'flowbite-react/components/Radio';
 import React from 'react';
 import Add from '@/../public/icons/add-sm.svg';
 
-const QuestionFieldOptionView = () => {
+const QuestionFieldOptionView: React.FC<{
+  questions: { text: string; value: string }[];
+}> = (props) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-3">
-        <Radio id={'1'} name="option" value={'1'} />
-        <Label className="font-lato text-sm font-normal" htmlFor="1">
-          Option 1
-        </Label>
-      </div>
-      <div className="flex items-center gap-3">
-        <Radio id={'2'} name="option" value={'2'} />
-        <Label className="font-lato text-sm font-normal" htmlFor="2">
-          Option 2
-        </Label>
-      </div>
-      <div className="flex items-center gap-3">
-        <Radio id={'3'} name="option" value={'3'} />
-        <Label className="font-lato text-sm font-normal" htmlFor="3">
-          Option 3
-        </Label>
-      </div>
+      {props.questions.map((el, index) => {
+        return (
+          <div key={el.text + index} className="flex items-center gap-3">
+            <Radio id={el.value + index} name="option" value={el.value} />
+            <Label className="font-lato text-sm font-normal" htmlFor="1">
+              {el.text}
+            </Label>
+          </div>
+        );
+      })}
+
       <button
         type="button"
         className="flex text-sm font-lato font-medium items-center gap-1"

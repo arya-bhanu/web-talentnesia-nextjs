@@ -37,6 +37,7 @@ export interface APIExamChapter {
 }
 
 export interface ExamQuestion {
+  keyId: string;
   question: string;
   type: 'radio' | 'textarea' | 'file';
   options:
@@ -44,7 +45,7 @@ export interface ExamQuestion {
         value: string;
         text: string;
       }[]
-    | null;
+    | undefined;
 }
 
 export interface IManageModulView {
