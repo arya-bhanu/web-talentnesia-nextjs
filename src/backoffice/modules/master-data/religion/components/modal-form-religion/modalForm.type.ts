@@ -12,7 +12,7 @@ export interface ModalFormViewProps {
   title: string;
   formData: { [key: string]: string };
   hasError: boolean;
-  handleInputChange: (religion: string, value: string) => void;
+  handleInputChange: (name: string, value: string) => void;
   handleSave: () => void;
   onClose: () => void;
 }

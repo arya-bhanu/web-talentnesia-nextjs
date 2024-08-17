@@ -22,12 +22,12 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
               <input
                 type="text"
                 placeholder="Input religion name"
-                value={formData.religion || ''}
-                onChange={(e) => handleInputChange('religion', e.target.value)}
+                value={formData.name || ''}
+                onChange={(e) => handleInputChange('name', e.target.value)}
                 required
-                className={`block w-full p-2 border ${hasError && !formData.religion ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+                className={`block w-full p-2 border ${hasError && !formData.name ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
               />
-              {hasError && !formData.religion && (
+              {hasError && !formData.name && (
                 <p className="text-red-500 text-xs mt-1">Religion name is required.</p>
               )}
             </div>

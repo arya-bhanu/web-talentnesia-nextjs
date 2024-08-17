@@ -63,10 +63,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
     () => [
       columnHelper.accessor('code', {
         header: ({ column }) => <SortingTable column={column} title="Code" />,
-        cell: (info) => {
-          const index = info.row.index + 1;
-          return index.toString().padStart(3, '0');
-        },
+        cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('name', {
         header: ({ column }) => (

@@ -62,7 +62,7 @@ const ReligionView: React.FC<IReligionView> = ({
         header: ({ column }) => <SortingTable column={column} title="Code" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('Religion-name', {
+      columnHelper.accessor('name', {
         header: ({ column }) => (
           <SortingTable column={column} title="Religion Name" />
         ),
