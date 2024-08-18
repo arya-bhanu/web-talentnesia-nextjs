@@ -5,6 +5,7 @@ import { IEditableListContent } from './editableListContent.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   deleteContent,
+  deleteExam,
   editContent,
 } from '../../modules/manage-modul/api/manageModelApi';
 
@@ -20,6 +21,11 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     mutationKey: ['content'],
   });
 
+  const { mutateAsync: deleteExamAsync } = useMutation({
+    mutationKey: ['content'],
+    mutationFn: deleteExam,
+  });
+
   const { mutateAsync: editContentAsync } = useMutation({
     mutationFn: editContent,
     mutationKey: ['content'],
@@ -28,13 +34,17 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
   useEffect(() => {
     (async function () {
       if (isConfirmDel) {
-        await deleteContentAsync(props.id);
+        await handleDeleteContent(Boolean(props.isexam), props.id);
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['content'] });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
       }
     })();
   }, [isConfirmDel]);
+
+  const handleDeleteContent = async (isexam: boolean, id: string) => {
+    isexam ? await deleteContentAsync(id) : await deleteExamAsync(id);
+  };
 
   const handleEditContent = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

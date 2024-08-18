@@ -12,18 +12,23 @@ const ListDraggableView: React.FC<IListDraggable> = ({
   className,
   title,
   durationMinute,
+  isexam,
   type,
 }) => {
   const Icon = useMemo(() => {
-    switch (type) {
-      case '1':
-        return <Book />;
-      case '2':
-        return <Video />;
-      case '3':
-        return <PlayCircle />;
-      case '4':
-        return <Edit2 />;
+    if (isexam) {
+      return <Edit2 />;
+    } else {
+      switch (type) {
+        case '1':
+          return <Book />;
+        case '2':
+          return <Video />;
+        case '3':
+          return <PlayCircle />;
+        case '4':
+          return <Edit2 />;
+      }
     }
   }, [type]);
   return (

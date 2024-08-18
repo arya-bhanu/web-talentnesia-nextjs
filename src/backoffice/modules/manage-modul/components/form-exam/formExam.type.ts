@@ -1,7 +1,9 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, FormEvent, SetStateAction } from 'react';
 import { ExamQuestion } from '../../manageModul.type';
 
-export interface IFormExam {}
+export interface IFormExam {
+  handleSubmitExam: (e: FormEvent<HTMLFormElement>) => void;
+}
 
 export interface IFormExamState {
   time: Date;

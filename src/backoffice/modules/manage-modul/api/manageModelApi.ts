@@ -109,3 +109,8 @@ export const createExam = async (data: APIExamChapter) => {
   const response = await backOfficeAPI.post('/exam', data);
   return response.data;
 };
+
+export const deleteExam = async (id: string) => {
+  const response = await backOfficeAPI.delete('/exam/' + id);
+  return response.data;
+};

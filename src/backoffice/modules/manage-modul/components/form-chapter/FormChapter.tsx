@@ -77,6 +77,7 @@ const FormChapter = () => {
   const handleSubmitChapter = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
+
       const moduleId = params.get('modulId');
       const formData = new FormData(e.currentTarget);
       const chapter = formData.get('chapter') as string;

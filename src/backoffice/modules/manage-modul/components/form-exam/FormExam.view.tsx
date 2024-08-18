@@ -1,5 +1,5 @@
 import LabelForm from '@/backoffice/components/label-form';
-import { TextInput } from 'flowbite-react';
+import { Button, TextInput } from 'flowbite-react';
 import React from 'react';
 import { IFormExam, IFormExamState } from './formExam.type';
 import TimeInput from '@/backoffice/components/time-input';
@@ -8,13 +8,14 @@ import QuestionListDraggable from '@/backoffice/components/question-list-draggab
 import { defaultQuestionRadio } from './formExam.data';
 import { useQuestionExamStore } from '@/lib/store';
 import { uuid } from 'uuidv4';
+import Link from 'next/link';
 
 const FormExamView: React.FC<
   IFormExam &
     IFormExamState & {
       className?: string;
     }
-> = ({ className, setTime, time }) => {
+> = ({ className, setTime, time, handleSubmitExam }) => {
   const { question, setNewQuestion: setQuestion } = useQuestionExamStore();
   const handleAddQuestion = () => {
     const { keyId, ...rest } = defaultQuestionRadio;
@@ -23,13 +24,13 @@ const FormExamView: React.FC<
   };
 
   return (
-    <form className={className}>
+    <form onSubmit={handleSubmitExam} className={className}>
       <div className="flex gap-5 items-stretch">
         <div className="flex-1">
           <LabelForm isImportant htmlFor="exam_name">
             Exam Name
           </LabelForm>
-          <TextInput id="exam_name" placeholder="UI/UX Designer" />
+          <TextInput id="exam_name" name='exam_name' placeholder="UI/UX Designer" required />
         </div>
         <div className="flex-1 ">
           <TimeInput
@@ -65,6 +66,25 @@ const FormExamView: React.FC<
               />
             );
           })}
+        </div>
+        <div className="flex gap-5 w-fit ml-auto mt-24">
+          <Button
+            type="button"
+            outline
+            className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+          >
+            <Link className="" href={'/backoffice/manage-modul'}>
+              Cancel
+            </Link>
+          </Button>
+          <Button
+            type="submit"
+            color={'warning'}
+            className="bg-[#FFC862] text-black"
+          >
+            {/* {id ? 'Update' : 'Submit'} */}
+            Submit
+          </Button>
         </div>
       </div>
     </form>

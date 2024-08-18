@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import LabelForm from '../label-form';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
@@ -13,6 +13,7 @@ import { IQuestionListDraggable } from './questionListDraggable.type';
 import QuestionFieldProject from './question-field-project';
 import clsx from 'clsx';
 import dynamic from 'next/dynamic';
+import { useQuestionExamStore } from '@/lib/store';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -24,6 +25,7 @@ const QuestionListDraggableView: React.FC<
     ) => void;
     handleDeleteList: (keyId: string) => void;
     handleDuplicateItem: (keyId: string) => void;
+    handleChangeTextQuestion: (text: string, keyId: string) => void;
   }
 > = ({
   openPopover,
@@ -34,9 +36,13 @@ const QuestionListDraggableView: React.FC<
   options,
   handleDeleteList,
   handleDuplicateItem,
+  handleChangeTextQuestion,
 }) => {
+  const { question } = useQuestionExamStore();
   const renderFieldOption = useCallback(
-    (questions?: { text: string; value: string }[]) => {
+    (
+      questions: { text: string; value: string; keyOption: string }[] | null,
+    ) => {
       switch (questionType.type) {
         case 'textarea':
           return <QuestionFieldTextarea />;
@@ -44,13 +50,20 @@ const QuestionListDraggableView: React.FC<
           return <QuestionFieldProject />;
         default:
           if (questions) {
-            return <QuestionFieldOption questionOptions={questions} />;
+            return (
+              <QuestionFieldOption keyId={keyId} questionOptions={questions} />
+            );
           }
           return <></>;
       }
     },
     [questionType],
   );
+
+  const defaultQuestionField = useMemo(() => {
+    return question.find((el) => el.keyId === keyId)?.question;
+  }, [question]);
+
   return (
     <div className={clsx('flex items-start gap-5')}>
       <button>
@@ -61,9 +74,13 @@ const QuestionListDraggableView: React.FC<
           <LabelForm htmlFor="question" isImportant className="w-fit">
             Question
           </LabelForm>
-          <ReactQuill />
+          <ReactQuill
+            key={keyId}
+            defaultValue={defaultQuestionField}
+            onChange={(el) => handleChangeTextQuestion(el, keyId)}
+          />
         </div>
-        <div className="mt-5">{renderFieldOption(options)}</div>
+        <div className="mt-5">{renderFieldOption(options || null)}</div>
       </div>
       <div className="flex-1 flex items-center gap-3">
         <div className="flex flex-col w-full gap-1">

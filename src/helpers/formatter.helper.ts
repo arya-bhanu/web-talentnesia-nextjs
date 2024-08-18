@@ -32,6 +32,12 @@ export const formatDateIndonesian = (date: Date) => {
   return formattedDate;
 };
 
-// Example usage
-const now = new Date();
-console.log(formatDateIndonesian(now)); // Output: "13 Agustus 2024 Pukul 15:30" (for example)
+export const convertHHmmTime = (date: Date) => {
+  const timeHHmm = date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  console.log(timeHHmm);
+  return timeHHmm;
+};

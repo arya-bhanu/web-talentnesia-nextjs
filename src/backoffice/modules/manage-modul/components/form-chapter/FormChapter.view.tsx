@@ -24,6 +24,13 @@ const FormChapterView: React.FC<
   contents,
   setSubmitType,
 }) => {
+  const isHasExam = useMemo(() => {
+    if (contents.data && contents.data.length > 0) {
+      const findExam = contents.data.find((el) => el.isexam);
+      return findExam ? true : false;
+    }
+    return false;
+  }, [contents.data]);
   const renderContents = useMemo(() => {
     if (contents.isLoading) {
       return <h1>Loading...</h1>;
@@ -37,6 +44,7 @@ const FormChapterView: React.FC<
       <EditableListContent {...el} key={el.id} />
     ));
   }, [contents]);
+
   return (
     <div>
       <Modal
@@ -46,7 +54,16 @@ const FormChapterView: React.FC<
       >
         <FormContent />
       </Modal>
-      <form onSubmit={handleSubmitCreateChapter}>
+      <form
+        onSubmit={(el) => {
+          if (isHasExam) {
+            el.preventDefault();
+            el.stopPropagation();
+            return;
+          }
+          handleSubmitCreateChapter(el);
+        }}
+      >
         <div>
           <div className="mb-2 block">
             <LabelForm aria-required htmlFor="chapter" isImportant>
@@ -79,6 +96,7 @@ const FormChapterView: React.FC<
               <Button
                 onClick={() => setActionSubChapter('exam')}
                 type="submit"
+                disabled={isHasExam}
                 className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
               >
                 <AddWhite />

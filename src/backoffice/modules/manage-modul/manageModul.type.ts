@@ -44,8 +44,9 @@ export interface ExamQuestion {
     | {
         value: string;
         text: string;
+        keyOption: string;
       }[]
-    | undefined;
+    | null;
 }
 
 export interface IManageModulView {

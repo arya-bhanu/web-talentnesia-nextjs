@@ -15,7 +15,6 @@ const FormManageModulView: React.FC<
   handleSubmitForm,
   populatedDatas,
   id,
-  type: submitType,
   setSubmitType,
 }) => {
   return (

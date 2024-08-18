@@ -5,14 +5,7 @@ import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import { IStateChapter } from '@/backoffice/modules/manage-modul/components/chapter/chapter.type';
 import { deleteChapter } from '@/backoffice/modules/manage-modul/api/manageModelApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation';
-import useCreateQueryParams from '@/hooks/useCreateQueryParams';
-import useCreateQueries from '@/hooks/useCreateQueries';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const AccordionPanelDraggable: React.FC<
   IAccordionPanelDraggable & IStateChapter & { index: number }
@@ -23,7 +16,6 @@ const AccordionPanelDraggable: React.FC<
   const pathname = usePathname();
   const params = useSearchParams();
   const router = useRouter();
-  const createQuery = useCreateQueryParams();
 
   const queryClient = useQueryClient();
 

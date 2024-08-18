@@ -6,5 +6,5 @@ export interface IQuestionListDraggable {
   setOpenPopover: Dispatch<SetStateAction<boolean>>;
   keyId: string;
   questionType: Pick<ExamQuestion, 'type'>;
-  options?: { value: string; text: string }[];
+  options: { value: string; text: string; keyOption: string }[] | null;
 }

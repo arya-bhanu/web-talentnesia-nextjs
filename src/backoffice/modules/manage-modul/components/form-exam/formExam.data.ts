@@ -6,11 +6,10 @@ export const defaultQuestionRadio: ExamQuestion = {
     {
       text: 'Option 1',
       value: 'option_1',
+      keyOption: uuid().toString(),
     },
   ],
   question: '',
   type: 'radio',
-  keyId: "",
+  keyId: uuid().toString(),
 };
-
-
