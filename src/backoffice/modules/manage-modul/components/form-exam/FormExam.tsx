@@ -13,7 +13,10 @@ const timeDate = new Date();
 timeDate.setHours(1);
 timeDate.setMinutes(0);
 
-const FormExam: React.FC<{ className?: string }> = ({ className }) => {
+const FormExam: React.FC<{ className?: string; chapterId?: string | null }> = ({
+  className,
+  chapterId,
+}) => {
   const params = useSearchParams();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -42,10 +45,10 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         await createExamAsync(dataExam);
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['exam'] });
-        updateQuestion([defaultQuestionRadio]);
         router.replace(
           `/backoffice/manage-modul/create/chapter/?modulId=${modulId}&chapterId=${chapterId}`,
         );
+        updateQuestion([defaultQuestionRadio]);
       }
     } catch (err) {
       console.error(err);

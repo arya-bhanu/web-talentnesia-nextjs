@@ -22,6 +22,8 @@ import Video from '@/../public/icons/videocam.svg';
 import AlertModal from '../alert-modal';
 import Modal from '@/backoffice/components/modal';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
+import { useRouter } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const EditableListContentView: React.FC<
   IEditableListContent & { className?: string } & {
@@ -45,6 +47,9 @@ const EditableListContentView: React.FC<
   id,
   isexam,
 }) => {
+  const params = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
   const renderMinuteTime = useMemo(() => {
     if (duration) {
       const [hours, minutes] = duration.split(':');
@@ -103,7 +108,20 @@ const EditableListContentView: React.FC<
           {renderMinuteTime} minute
         </p>
         <div className="flex items-center gap-2.5">
-          <button onClick={() => setOpenModalEdit(true)} type="button">
+          <button
+            onClick={() => {
+              const modulId = params.get('modulId');
+              const chapterId = params.get('chapterId');
+              if (isexam) {
+                router.push(
+                  `${pathname}/update-exam/?modulId=${modulId}&chapterId=${chapterId}&examId=${id}`,
+                );
+              } else {
+                setOpenModalEdit(true);
+              }
+            }}
+            type="button"
+          >
             <Edit />
           </button>
           <button

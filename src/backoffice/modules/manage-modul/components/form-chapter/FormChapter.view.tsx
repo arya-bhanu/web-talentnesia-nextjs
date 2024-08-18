@@ -40,6 +40,8 @@ const FormChapterView: React.FC<
       return <p>Empty content</p>;
     }
 
+    console.log(contents.data);
+
     return contents.data.map((el) => (
       <EditableListContent {...el} key={el.id} />
     ));

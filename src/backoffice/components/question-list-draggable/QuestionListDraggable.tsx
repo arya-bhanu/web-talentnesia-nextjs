@@ -57,7 +57,6 @@ const QuestionListDraggable: React.FC<
           options: type === 'radio' ? el.options : null,
           ...rest,
         };
-        console.log(newData)
         return newData;
       } else {
         return el;
