@@ -3,13 +3,13 @@ import { ExamQuestion } from '@/backoffice/modules/manage-modul/manageModul.type
 import { create } from 'zustand';
 interface QuestionExamState {
   question: ExamQuestion[];
-  setQuestion: (newQuestion: ExamQuestion) => void;
+  setNewQuestion: (newQuestion: ExamQuestion) => void;
   updateQuestion: (newQuestions: ExamQuestion[]) => void;
 }
 
 export const useQuestionExamStore = create<QuestionExamState>()((set) => ({
   question: [defaultQuestionRadio],
-  setQuestion: (newQuestion) =>
+  setNewQuestion: (newQuestion) =>
     set((prev) => {
       const old = [...prev.question];
       old.push(newQuestion);

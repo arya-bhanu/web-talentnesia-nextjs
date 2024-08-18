@@ -22,6 +22,8 @@ const QuestionListDraggableView: React.FC<
       keyId: string,
       newType: 'radio' | 'textarea' | 'file',
     ) => void;
+    handleDeleteList: (keyId: string) => void;
+    handleDuplicateItem: (keyId: string) => void;
   }
 > = ({
   openPopover,
@@ -30,6 +32,8 @@ const QuestionListDraggableView: React.FC<
   keyId,
   handleChangeType,
   options,
+  handleDeleteList,
+  handleDuplicateItem,
 }) => {
   const renderFieldOption = useCallback(
     (questions?: { text: string; value: string }[]) => {
@@ -39,7 +43,6 @@ const QuestionListDraggableView: React.FC<
         case 'file':
           return <QuestionFieldProject />;
         default:
-          
           if (questions) {
             return <QuestionFieldOption questionOptions={questions} />;
           }
@@ -89,13 +92,20 @@ const QuestionListDraggableView: React.FC<
               content={
                 <ul className="p-3 flex flex-col gap-3 w-36">
                   <li>
-                    <button className="flex items-center gap-2 font-lato text-sm">
+                    <button
+                      type="button"
+                      onClick={() => handleDuplicateItem(keyId)}
+                      className="flex items-center gap-2 font-lato text-sm"
+                    >
                       <Copy />
                       <span>Duplicate</span>
                     </button>
                   </li>
                   <li>
-                    <button className="flex items-center gap-2 font-lato text-sm">
+                    <button
+                      onClick={() => handleDeleteList(keyId)}
+                      className="flex items-center gap-2 font-lato text-sm"
+                    >
                       <TrashSm />
                       <span>Delete</span>
                     </button>

@@ -1,7 +1,7 @@
 import LabelForm from '@/backoffice/components/label-form';
 import { TextInput } from 'flowbite-react';
 import React from 'react';
-import { IFormExam, IFormExamState, IQuestionExamState } from './formExam.type';
+import { IFormExam, IFormExamState } from './formExam.type';
 import TimeInput from '@/backoffice/components/time-input';
 import Add from '@/../public/icons/add.svg';
 import QuestionListDraggable from '@/backoffice/components/question-list-draggable';
@@ -15,7 +15,7 @@ const FormExamView: React.FC<
       className?: string;
     }
 > = ({ className, setTime, time }) => {
-  const { question, setQuestion } = useQuestionExamStore();
+  const { question, setNewQuestion: setQuestion } = useQuestionExamStore();
   const handleAddQuestion = () => {
     const { keyId, ...rest } = defaultQuestionRadio;
     const id = uuid().toString();
