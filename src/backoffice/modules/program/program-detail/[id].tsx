@@ -1,12 +1,21 @@
-"use client";
+'use client';
 
-import React, { useState } from 'react';
+import RedTrash from '@/../public/icons/red-trash.svg';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { programsData } from '../program.data';
+import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { DataTable } from '@/backoffice/components/data-table';
+import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import { TabFlex } from '@/backoffice/components/tabs/tabs';
-import TableStudents from '@/backoffice/modules/manage-program/add-new-program/components/table-students';
 import CoursesProgress from '@/backoffice/modules/program/components/courses-progres/CoursesProgress';
-import AccordionPanelDraggable from '@/backoffice/modules/manage-program/components/accordion-panel-draggable';
+import AccordionPanelDraggable from '@/backoffice/modules/program/components/accordion-panel-draggable';
+import { ProgramData, programData } from './[id].data';
+import { Popover } from 'flowbite-react';
+import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import { useProgramIdAction } from './hooks/useProgramIdAction';
+import Search from '@/../public/icons/iconamoon_search-bold.svg';
+import Add from '@/../public/icons/add.svg';
+import IdModal from './IdModal';
 
 interface ProgramDetailProps {
   params: {
@@ -14,29 +23,99 @@ interface ProgramDetailProps {
   };
 }
 
+const columnHelper = createColumnHelper<ProgramData>();
+
 export default function ProgramDetail({ params }: ProgramDetailProps) {
   const { id } = params;
-  const programDetails = programsData.find(program => program.id === id);
+  const [filter, setFilter] = useState('');
   const [activeAccordion, setActiveAccordion] = useState<number>(-1);
+  const [openModal, setOpenModal] = useState(false);
   const router = useRouter();
 
-  if (!programDetails) {
-    return <div>Program not found</div>;
-  }
+  const { handleDeleteProgram } = useProgramIdAction();
 
-  const handlePreviewClick = () => {
+  const columns = useMemo<ColumnDef<ProgramData, any>[]>(
+    () => [
+      columnHelper.accessor((row, index) => index + 1, {
+        id: 'no',
+        header: ({ column }) => <SortingTable column={column} title="No" />,
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor('name', {
+        header: ({ column }) => <SortingTable column={column} title="Name" />,
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor('email', {
+        header: ({ column }) => <SortingTable column={column} title="Email" />,
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor('nis', {
+        header: ({ column }) => <SortingTable column={column} title="NIS" />,
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor('id', {
+        id: 'action',
+        header: 'Action',
+        cell: (info) => {
+          const id = info.getValue();
+          return (
+            <button onClick={() => handleDeleteProgram(id)} className="hover:opacity-80">
+              <RedTrash />
+            </button>
+          );
+        },
+      }),
+    ],
+    [handleDeleteProgram]
+  );
+
+  const handlePreviewClick = useCallback(() => {
     router.push(`/backoffice/program/${id}/detail`);
-  };
+  }, [router, id]);
 
   const tabs = [
     {
       title: 'Student',
       content: (
         <div>
-          <h1 className="font-poppins font-semibold text-[25px] mb-6">
+          <h1 className="font-poppins font-semibold text-[25px] mb-12">
             List Student
           </h1>
-          <TableStudents className="mt-5" />
+          <div className="flex justify-between mb-4">
+            <div className="flex items-center max-w-xs w-full">
+              <label htmlFor="simple-search" className="sr-only">
+                Search
+              </label>
+              <div className="relative w-full">
+                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <Search />
+                </div>
+                <input
+                  type="text"
+                  id="simple-search"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search ..."
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <button
+              onClick={() => setOpenModal(true)}
+              className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+            >
+              <Add />
+              <span className="text-black"> Browse All</span>
+            </button>
+          </div>
+          <DataTable
+            data={programData}
+            columns={columns}
+            sorting={[{ id: 'name', desc: false }]}
+            filter={{ Filter: filter, setFilter }}
+          />
+          <IdModal open={openModal} setOpen={setOpenModal} />
         </div>
       ),
     },
