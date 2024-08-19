@@ -1,9 +1,8 @@
-import React from 'react'
+import React from 'react';
+import { IListMentoring } from './listMentoring.type';
 
-const ListMentoringView = () => {
-  return (
-    <div>ListMentoringView</div>
-  )
-}
+const ListMentoringView: React.FC<IListMentoring> = () => {
+  return <div>ListMentoringView</div>;
+};
 
-export default ListMentoringView
+export default ListMentoringView;
