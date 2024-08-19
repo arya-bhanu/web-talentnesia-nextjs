@@ -4,9 +4,9 @@ import React from 'react';
 import Add from '@/../public/icons/add-sm.svg';
 
 const QuestionFieldOptionView: React.FC<{
-  questions: { text: string; value: string; keyOption: string }[];
+  questions: { text: string; value: string; id: string }[];
   handleAddNewOption: () => void;
-  handleChangeOption: (text: string, keyOption: string) => void;
+  handleChangeOption: (text: string, id: string) => void;
   keyId: string;
 }> = (props) => {
   return (
@@ -21,11 +21,11 @@ const QuestionFieldOptionView: React.FC<{
             >
               <input
                 onChange={(elInput) =>
-                  props.handleChangeOption(elInput.target.value, el.keyOption)
+                  props.handleChangeOption(elInput.target.value, el.id)
                 }
                 type="text"
                 defaultValue={el.text}
-                key={el.keyOption}
+                key={el.id}
                 className="p-0 border-b border-t-0 border-x-0 focus:ring-transparent focus:ring-offset-transparent"
               />
             </Label>

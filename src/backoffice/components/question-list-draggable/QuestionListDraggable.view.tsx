@@ -20,29 +20,27 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const QuestionListDraggableView: React.FC<
   IQuestionListDraggable & {
     handleChangeType: (
-      keyId: string,
+      id: string,
       newType: 'radio' | 'textarea' | 'file',
     ) => void;
-    handleDeleteList: (keyId: string) => void;
-    handleDuplicateItem: (keyId: string) => void;
-    handleChangeTextQuestion: (text: string, keyId: string) => void;
+    handleDeleteList: (id: string) => void;
+    handleDuplicateItem: (id: string) => void;
+    handleChangeTextQuestion: (text: string, id: string) => void;
   }
 > = ({
   openPopover,
   setOpenPopover,
   questionType,
-  keyId,
   handleChangeType,
   options,
   handleDeleteList,
   handleDuplicateItem,
   handleChangeTextQuestion,
+  id,
 }) => {
   const { question } = useQuestionExamStore();
   const renderFieldOption = useCallback(
-    (
-      questions: { text: string; value: string; keyOption: string }[] | null,
-    ) => {
+    (questions: { text: string; value: string; id: string }[] | null) => {
       switch (questionType.type) {
         case 'textarea':
           return <QuestionFieldTextarea />;
@@ -50,9 +48,7 @@ const QuestionListDraggableView: React.FC<
           return <QuestionFieldProject />;
         default:
           if (questions) {
-            return (
-              <QuestionFieldOption keyId={keyId} questionOptions={questions} />
-            );
+            return <QuestionFieldOption id={id} questionOptions={questions} />;
           }
           return <></>;
       }
@@ -61,8 +57,13 @@ const QuestionListDraggableView: React.FC<
   );
 
   const defaultQuestionField = useMemo(() => {
-    return question.find((el) => el.keyId === keyId)?.question;
-  }, [question]);
+    if (id && question) {
+      return question.find((el) => el.id === id)?.question;
+    }
+  }, [question, id]);
+
+  console.log(question);
+  console.log(defaultQuestionField);
 
   return (
     <div className={clsx('flex items-start gap-5')}>
@@ -75,9 +76,9 @@ const QuestionListDraggableView: React.FC<
             Question
           </LabelForm>
           <ReactQuill
-            key={keyId}
+            key={id}
             defaultValue={defaultQuestionField}
-            onChange={(el) => handleChangeTextQuestion(el, keyId)}
+            onChange={(el) => handleChangeTextQuestion(el, id)}
           />
         </div>
         <div className="mt-5">{renderFieldOption(options || null)}</div>
@@ -93,7 +94,7 @@ const QuestionListDraggableView: React.FC<
               className="w-full max-w-none"
               onChange={(e) => {
                 handleChangeType(
-                  keyId,
+                  id,
                   e.target.value as 'radio' | 'textarea' | 'file',
                 );
               }}
@@ -111,7 +112,7 @@ const QuestionListDraggableView: React.FC<
                   <li>
                     <button
                       type="button"
-                      onClick={() => handleDuplicateItem(keyId)}
+                      onClick={() => handleDuplicateItem(id)}
                       className="flex items-center gap-2 font-lato text-sm"
                     >
                       <Copy />
@@ -120,7 +121,7 @@ const QuestionListDraggableView: React.FC<
                   </li>
                   <li>
                     <button
-                      onClick={() => handleDeleteList(keyId)}
+                      onClick={() => handleDeleteList(id)}
                       className="flex items-center gap-2 font-lato text-sm"
                     >
                       <TrashSm />

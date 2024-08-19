@@ -1,15 +1,17 @@
+'use client';
 import React from 'react';
 import FormExam from '../components/form-exam';
+import { useSearchParams } from 'next/navigation';
 
-const AddExamView: React.FC<{ chapterId?: string | null }> = ({
-  chapterId,
-}) => {
+const AddExamView: React.FC<{}> = ({}) => {
+  const params = useSearchParams();
+  const examId = params.get('examId');
   return (
     <section>
       <h1 className="font-poppins font-semibold text-lg">
-        {chapterId ? 'Edit Exam' : 'Add Exam'}
+        {examId ? 'Edit Exam' : 'Add Exam'}
       </h1>
-      <FormExam className="mt-5" chapterId={chapterId} />
+      <FormExam className="mt-5" />
     </section>
   );
 };

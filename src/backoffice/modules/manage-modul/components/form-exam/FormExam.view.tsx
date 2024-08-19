@@ -18,9 +18,9 @@ const FormExamView: React.FC<
 > = ({ className, setTime, time, handleSubmitExam }) => {
   const { question, setNewQuestion: setQuestion } = useQuestionExamStore();
   const handleAddQuestion = () => {
-    const { keyId, ...rest } = defaultQuestionRadio;
-    const id = uuid().toString();
-    setQuestion({ ...rest, keyId: id });
+    const { id, ...rest } = defaultQuestionRadio;
+    const createdId = uuid().toString();
+    setQuestion({ ...rest, id: createdId });
   };
 
   return (
@@ -30,7 +30,12 @@ const FormExamView: React.FC<
           <LabelForm isImportant htmlFor="exam_name">
             Exam Name
           </LabelForm>
-          <TextInput id="exam_name" name='exam_name' placeholder="UI/UX Designer" required />
+          <TextInput
+            id="exam_name"
+            name="exam_name"
+            placeholder="UI/UX Designer"
+            required
+          />
         </div>
         <div className="flex-1 ">
           <TimeInput
@@ -54,14 +59,14 @@ const FormExamView: React.FC<
           </button>
         </div>
         <div className="mt-10 flex flex-col gap-14">
-          {question.map((el) => {
+          {question.map((el, index) => {
             return (
               <QuestionListDraggable
                 questionType={{
                   type: el.type,
                 }}
-                keyId={el.keyId}
-                key={el.keyId}
+                id={el.id}
+                key={el.id + index}
                 options={el.options}
               />
             );

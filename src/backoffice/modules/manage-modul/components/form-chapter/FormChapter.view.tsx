@@ -40,8 +40,6 @@ const FormChapterView: React.FC<
       return <p>Empty content</p>;
     }
 
-    console.log(contents.data);
-
     return contents.data.map((el) => (
       <EditableListContent {...el} key={el.id} />
     ));
@@ -58,11 +56,6 @@ const FormChapterView: React.FC<
       </Modal>
       <form
         onSubmit={(el) => {
-          if (isHasExam) {
-            el.preventDefault();
-            el.stopPropagation();
-            return;
-          }
           handleSubmitCreateChapter(el);
         }}
       >
@@ -81,29 +74,23 @@ const FormChapterView: React.FC<
             className={clsx('w-full')}
             defaultValue={defaultValueData?.title}
             key={defaultValueData?.title}
-            // disabled={defaultValueData?.title ? true : false}
           />
-          {/* <input
-            type="hidden"
-            name="chapter"
-            id="chapter"
-            defaultValue={defaultValueData?.title}
-            key={defaultValueData?.title + ' hidden'}
-          /> */}
         </div>
         <div className="mt-14">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-semibold font-poppins">Content</h3>
             <div className="flex items-center gap-2">
-              <Button
-                onClick={() => setActionSubChapter('exam')}
-                type="submit"
-                disabled={isHasExam}
-                className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
-              >
-                <AddWhite />
-                <span>Add Exam</span>
-              </Button>
+              {!isHasExam && (
+                <Button
+                  onClick={() => setActionSubChapter('exam')}
+                  type="submit"
+                  disabled={isHasExam}
+                  className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
+                >
+                  <AddWhite />
+                  <span>Add Exam</span>
+                </Button>
+              )}
               <button
                 onClick={() => setActionSubChapter('content')}
                 type="submit"

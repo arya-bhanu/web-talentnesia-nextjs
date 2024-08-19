@@ -30,6 +30,8 @@ export interface APIChapterModul {
 }
 
 export interface APIExamChapter {
+  id: string;
+  order: number;
   chapterId: string;
   title: string;
   duration: string;
@@ -37,16 +39,21 @@ export interface APIExamChapter {
 }
 
 export interface ExamQuestion {
-  keyId: string;
-  question: string;
+  id: string;
+  title: string;
   type: 'radio' | 'textarea' | 'file';
+  chapterId: string;
   options:
     | {
         value: string;
         text: string;
-        keyOption: string;
+        id: string;
+        order: number;
+        questionId: string;
       }[]
     | null;
+  order: number;
+  active: null | any;
 }
 
 export interface IManageModulView {

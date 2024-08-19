@@ -1,27 +1,45 @@
 'use client';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useQuestionExamStore } from '@/lib/store';
+import { useExamStore, useQuestionExamStore } from '@/lib/store';
 import { APIExamChapter } from '../../manageModul.type';
 import { convertHHmmTime } from '@/helpers/formatter.helper';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createExam } from '../../api/manageModelApi';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { createExam, getExam } from '../../api/manageModelApi';
 import { defaultQuestionRadio } from './formExam.data';
 
 const timeDate = new Date();
 timeDate.setHours(1);
 timeDate.setMinutes(0);
 
-const FormExam: React.FC<{ className?: string; chapterId?: string | null }> = ({
-  className,
-  chapterId,
-}) => {
+const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   const params = useSearchParams();
   const router = useRouter();
   const queryClient = useQueryClient();
   const [time, setTime] = useState(timeDate);
   const { question, updateQuestion } = useQuestionExamStore();
+  const { setDataExam } = useExamStore();
+  const examId = params.get('examId');
+
+  const { data: dataExam } = useQuery({
+    queryKey: ['exam', 'chapter', examId],
+    queryFn: () => getExam(examId),
+  });
+
+  useEffect(() => {
+    if (dataExam?.data) {
+      setDataExam({
+        chapterId: dataExam.data?.chapterId,
+        duration: dataExam.data?.duration,
+        id: dataExam.data?.id,
+        order: dataExam.data?.order,
+        title: dataExam.data?.title,
+      });
+      updateQuestion([dataExam.data?.exams]);
+    }
+  }, [dataExam?.data]);
+  
   const { mutateAsync: createExamAsync } = useMutation({
     mutationFn: createExam,
     mutationKey: ['exam'],

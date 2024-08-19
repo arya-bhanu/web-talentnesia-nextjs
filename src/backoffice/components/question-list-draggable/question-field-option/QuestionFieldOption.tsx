@@ -6,22 +6,22 @@ import debounce from 'lodash.debounce';
 import { createOptionId } from './questionFieldOption.helper';
 
 const QuestionFieldOption: React.FC<{
-  questionOptions: { text: string; value: string; keyOption: string }[];
-  keyId: string;
+  questionOptions: { text: string; value: string; id: string }[];
+  id: string;
 }> = (props) => {
   const { question, updateQuestion } = useQuestionExamStore();
 
   const handleAddNewOption = () => {
     const old = [...question];
     const newMapped = old.map((el) => {
-      if (el.keyId === props.keyId) {
+      if (el.id === props.id) {
         const { options, ...rest } = el;
         if (options) {
           const oldOption = [...options];
           oldOption.push({
             text: 'Option',
             value: `option_${new Date().getTime()}`,
-            keyOption: uuid().toString(),
+            id: uuid().toString(),
           });
           const newData = {
             ...rest,
@@ -38,15 +38,15 @@ const QuestionFieldOption: React.FC<{
   };
 
   const debouncedHandleChangeOption = debounce(
-    (newText: string, keyOption: string) => {
+    (newText: string, id: string) => {
       const old = [...question];
-      const index = old.findIndex((el) => el.keyId === props.keyId);
+      const index = old.findIndex((el) => el.id === props.id);
       if (index !== -1) {
         const item = old[index];
         const options = item.options;
         if (options && Array.isArray(options)) {
           const optionIndex = options.findIndex(
-            (elOption) => elOption.keyOption === keyOption,
+            (elOption) => elOption.id === id,
           );
           if (optionIndex !== -1) {
             const newOptions = [...options];
@@ -75,7 +75,7 @@ const QuestionFieldOption: React.FC<{
       handleChangeOption={debouncedHandleChangeOption}
       handleAddNewOption={handleAddNewOption}
       questions={props.questionOptions}
-      keyId={props.keyId}
+      keyId={props.id}
     />
   );
 };
