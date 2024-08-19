@@ -23,7 +23,7 @@ export const academicTitleAPI = {
     }
   },
 
-  add: async ( name: string ) => {
+  add: async (name: string) => {
     try {
       const requestData = {
         name,
@@ -39,7 +39,7 @@ export const academicTitleAPI = {
     }
   },
 
-  update: async (id: string, name: string ) => {
+  update: async (id: string, name: string) => {
     try {
         const requestData = {
         name,

@@ -41,6 +41,8 @@ failure_handling:
   stage: build
   tags:
     - pjt2
+  only:
+    - dev
   script:
     - docker system prune -f
   when: on_failure

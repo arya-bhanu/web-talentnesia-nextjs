@@ -3,9 +3,11 @@
 import Navbar from '@/backoffice/components/navbar';
 import React, { ReactNode, useEffect, useState } from 'react';
 
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
-const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), { ssr: false })
+const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
+  ssr: false,
+});
 
 const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
@@ -26,16 +28,18 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <Navbar />
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
-      <div
-        className={`px-8 py-16 bg-[#FAFAFA] min-h-screen transition-all duration-300 md:ml-64`}
-      >
-        <div className="p-4 bg-[#FFFFFF] mt-14 rounded-xl shadow-sm">
-          {children}
+      <div className="bg-[#FAFAFA]">
+        <Navbar />
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        />
+        <div
+          className={`px-8 py-16 bg-[#FAFAFA] min-h-screen transition-all duration-300 md:ml-64`}
+        >
+          <div className="p-4 bg-[#FFFFFF] mt-14 rounded-xl shadow-sm">
+            {children}
+          </div>
         </div>
       </div>
     </>

@@ -12,34 +12,35 @@ const ModalForm: React.FC<ModalFormProps> = ({
 }) => {
 
   const [formData, setFormData] = useState({
-    religion: '',
+    name: '',
   });
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        religion: initialData.religion || '',
+        name: initialData.name || '',
       });
     } else {
       setFormData({
-        religion: '',
+        name: '',
       });
     }
   }, [initialData]);
 
-  const handleInputChange = (religion: string, value: string) => {
-    setFormData(prevData => ({ ...prevData, [religion]: value }));
+  const handleInputChange = (name: string, value: string) => {
+    setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
   const handleSave = async () => {
-    if (!formData.religion) {
+    if (!formData.name) {
       setHasError(true);
       return;
     }
 
     try {
       await onSave(id, formData);
+      setFormData({name: ''});
       onClose();
     } catch (error) {
       console.error('Failed to save data');
