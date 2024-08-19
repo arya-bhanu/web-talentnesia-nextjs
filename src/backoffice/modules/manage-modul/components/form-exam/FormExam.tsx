@@ -39,7 +39,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
       updateQuestion([dataExam.data?.exams]);
     }
   }, [dataExam?.data]);
-  
+
   const { mutateAsync: createExamAsync } = useMutation({
     mutationFn: createExam,
     mutationKey: ['exam'],

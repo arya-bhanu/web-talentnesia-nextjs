@@ -48,8 +48,8 @@ export interface ExamQuestion {
         value: string;
         text: string;
         id: string;
-        order: number;
-        questionId: string;
+        order?: number;
+        questionId?: string;
       }[]
     | null;
   order: number;

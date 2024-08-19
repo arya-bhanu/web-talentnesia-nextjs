@@ -8,18 +8,19 @@ import { uuid } from 'uuidv4';
 const QuestionListDraggable: React.FC<
   Pick<IQuestionListDraggable, 'questionType' | 'id' | 'options'>
 > = ({ questionType, id, options }) => {
-  
   const { updateQuestion, question } = useQuestionExamStore();
   const [openPopover, setOpenPopover] = useState(false);
+
+  console.log(id);
 
   const handleChangeTextQuestion = (text: string, id: string) => {
     const old = [...question];
     const newMapped = old.map((el) => {
       if (el.id === id) {
-        const { question, ...rest } = el;
+        const { title, ...rest } = el;
         return {
           ...rest,
-          question: text,
+          title: text,
         };
       } else {
         return el;
@@ -65,7 +66,6 @@ const QuestionListDraggable: React.FC<
     });
     updateQuestion(newMapped);
   };
-
 
   return (
     <QuestionListDraggableView

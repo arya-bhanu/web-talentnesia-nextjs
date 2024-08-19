@@ -58,12 +58,9 @@ const QuestionListDraggableView: React.FC<
 
   const defaultQuestionField = useMemo(() => {
     if (id && question) {
-      return question.find((el) => el.id === id)?.question;
+      return question.find((el) => el.id === id)?.title;
     }
   }, [question, id]);
-
-  console.log(question);
-  console.log(defaultQuestionField);
 
   return (
     <div className={clsx('flex items-start gap-5')}>

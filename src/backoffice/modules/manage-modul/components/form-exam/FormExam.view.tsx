@@ -58,19 +58,22 @@ const FormExamView: React.FC<
             <span className="text-black"> Add Question</span>
           </button>
         </div>
+
         <div className="mt-10 flex flex-col gap-14">
-          {question.map((el, index) => {
-            return (
-              <QuestionListDraggable
-                questionType={{
-                  type: el.type,
-                }}
-                id={el.id}
-                key={el.id + index}
-                options={el.options}
-              />
-            );
-          })}
+          {question &&
+            question.map((el, index) => {
+              console.log(el);
+              return (
+                <QuestionListDraggable
+                  questionType={{
+                    type: el.type,
+                  }}
+                  id={el.id}
+                  key={el.id + index}
+                  options={el.options}
+                />
+              );
+            })}
         </div>
         <div className="flex gap-5 w-fit ml-auto mt-24">
           <Button
