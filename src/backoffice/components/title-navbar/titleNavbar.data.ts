@@ -1,7 +1,5 @@
-//Customize Title Navbar
+import { CustomTitles } from './titleNavbar.type';
 
-export const customTitles: Record<string, string> = {
-  'manage-modul': 'Manage Modul',
-  'create': 'Add Modul',
-  'academic-level': 'Academic Levels',
-};
+export const customTitles: CustomTitles = {};
+
+//you can custom it in component/global-customization/globalCustomizations.ts

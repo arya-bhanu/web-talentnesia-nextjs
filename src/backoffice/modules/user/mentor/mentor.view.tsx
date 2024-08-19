@@ -12,7 +12,7 @@ import {
 } from './mentor.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useMentorForm } from './mentor';
+import { useMentorForm } from './Mentor';
 import './mentor.style.css';
 
 const Datepicker = dynamic(

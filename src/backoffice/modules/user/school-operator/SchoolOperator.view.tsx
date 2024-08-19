@@ -8,10 +8,10 @@ import {
   subDistrict,
   placesOfBirth,
   schools,
-} from './school-operator.data';
+} from './schoolOperator.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useSchoolOperatorForm } from './school-operator';
+import { useSchoolOperatorForm } from './SchoolOperator';
 import './schoolOperator.style.css';
 
 const Datepicker = dynamic(
