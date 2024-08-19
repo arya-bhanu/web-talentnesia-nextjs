@@ -4,10 +4,18 @@ import Search from '@/../public/icons/iconamoon_search-bold.svg';
 import Image from 'next/image';
 import { AttendanceData, attendanceData, columns } from './mentoring.data';
 
-const Mentoring = () => {
+interface MentoringProps {
+  meetLink: string;
+}
+
+const Mentoring: React.FC<MentoringProps> = ({ meetLink }) => {
   const [filter, setFilter] = useState('');
 
   const data = attendanceData;
+
+  const handleJoinNow = () => {
+    window.open(meetLink, '_blank');
+  };
 
   const renderContent = () => {
     return (
@@ -45,12 +53,15 @@ const Mentoring = () => {
     <div>
       <div className="bg-[#323232] rounded-lg px-8 py-[100px] text-white mb-8 flex flex-col items-center">
         <h1 className="text-xl font-bold mb-2 text-center">Join Mentoring</h1>
-        <h3 className="text-sm mb-10 text-center">Mentoring available on March 23, 2024 at 15.00</h3>
+        <h3 className="text-md mb-10 text-center">Mentoring available on March 23, 2024 at 15.00</h3>
         <div className="flex space-x-4 justify-center">
           <button className="px-4 py-2 rounded-md border border-[#B9BDC7] text-[#B9BDC7]">
             Input Presence
           </button>
-          <button className="px-4 py-2 rounded-md bg-[#B9BDC7] text-white">
+          <button 
+            className="px-4 py-2 rounded-md bg-[#B9BDC7] text-white"
+            onClick={handleJoinNow}
+          >
             Join Now
           </button>
         </div>
