@@ -2,8 +2,9 @@ export interface APIResponseAcademicLevel {
   id: string;
   code: string;
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  active?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface IAcademicLevelView {
@@ -11,7 +12,7 @@ export interface IAcademicLevelView {
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
-  handleAddAcademicLevel: (code: string, name: string) => Promise<void>;
+  handleAddAcademicLevel: (name: string) => Promise<void>;
   Filter: string;
   setFilter: (value: string) => void;
   isPopupOpen: boolean;

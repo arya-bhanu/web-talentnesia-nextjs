@@ -46,11 +46,11 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   }, []);
 
   const handleAddOrEditAcademicLevel = useCallback(
-    async (id: string | undefined, data: { code: string; name: string }) => {
+    async (id: string | undefined, data: { name: string }) => {
       if (id) {
         await handleEditAcademicLevel(id, data);
       } else {
-        await handleAddAcademicLevel(data.code, data.name);
+        await handleAddAcademicLevel(data.name);
       }
       fetchData();
       setSelectedId(null);

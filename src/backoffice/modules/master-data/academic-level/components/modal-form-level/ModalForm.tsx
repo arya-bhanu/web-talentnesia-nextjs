@@ -2,47 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { ModalFormProps } from './modalForm.type';
 import { ModalFormView } from './ModalForm.view';
 
-const ModalForm: React.FC<ModalFormProps> = ({ 
-  isOpen, 
-  onClose, 
-  onSave, 
+const ModalForm: React.FC<ModalFormProps> = ({
+  isOpen,
+  onClose,
+  onSave,
   initialData = null,
   id = undefined,
-  title, 
+  title,
 }) => {
-
-  const [formData, setFormData] = useState({
-    code: '',
-    name: '',
-  });
+  const [formData, setFormData] = useState({ name: '' });
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        code: initialData.code || '',
         name: initialData.name || '',
       });
     } else {
       setFormData({
-        code: '',
         name: '',
       });
     }
   }, [initialData]);
 
   const handleInputChange = (name: string, value: string) => {
-    setFormData(prevData => ({ ...prevData, [name]: value }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSave = async () => {
-    if (!formData.code || !formData.name) {
+    if (!formData.name) {
       setHasError(true);
       return;
     }
 
     try {
       await onSave(id, formData);
+      setFormData({ name: '' });
       onClose();
     } catch (error) {
       console.error('Failed to save data');

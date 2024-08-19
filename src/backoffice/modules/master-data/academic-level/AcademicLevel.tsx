@@ -15,7 +15,7 @@ const AcademicLevel = () => {
   const { handleAddAcademicLevel, handleEditAcademicLevel, handleDeleteAcademicLevel } = useAcademicLevelActions();
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['academicLevels'],
+    queryKey: ['academicLevel'],
     queryFn: async () => {
       const response = await academicLevelAPI.fetch();
       return response;
@@ -23,21 +23,21 @@ const AcademicLevel = () => {
   });
   
   const fetchData = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey: ['academicLevels'] });
+    await queryClient.invalidateQueries({ queryKey: ['academicLevel'] });
   }, [queryClient]);
 
   const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
-      await handleDeleteAcademicLevel(id); // Using the hook method
+      await handleDeleteAcademicLevel(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditAcademicLevel(id, rowData); // Using the hook method
+      await handleEditAcademicLevel(id, rowData);
       fetchData();
     }
   }, [fetchData, handleDeleteAcademicLevel, handleEditAcademicLevel]);
 
-  const handleAdd = useCallback(async (code: string, name: string) => {
-    await handleAddAcademicLevel(code, name); // Using the hook method
+  const handleAdd = useCallback(async (name: string) => {
+    await handleAddAcademicLevel(name);
     fetchData();
     setIsPopupOpen(false);
   }, [fetchData, handleAddAcademicLevel]);
