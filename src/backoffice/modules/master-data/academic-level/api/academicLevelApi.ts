@@ -23,10 +23,10 @@ export const academicLevelAPI = {
     }
   },
 
-  add: async (data: { name: string }) => {
+  add: async (name: string) => {
     try {
       const requestData = {
-        ...data,
+        name,
         active: 1,
         createdBy: ""
       };
@@ -39,10 +39,10 @@ export const academicLevelAPI = {
     }
   },
 
-  update: async (id: string, data: { name: string }) => {
+  update: async (id: string, name: string ) => {
     try {
         const requestData = {
-        ...data,
+        name,
         active: 1
       };
 
@@ -64,7 +64,6 @@ export const academicLevelAPI = {
       return response.data;
     } catch (error) {
       console.error('Failed to delete academic level');
-      console.log('ID:', id)
       throw new Error('Failed to delete academic level');
     }
   }
