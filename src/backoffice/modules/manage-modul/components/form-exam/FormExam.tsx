@@ -1,5 +1,5 @@
 'use client';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState, useTransition } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useExamStore, useQuestionExamStore } from '@/lib/store';
@@ -18,6 +18,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [time, setTime] = useState(timeDate);
+  const [isPending, startTransition] = useTransition();
   const { question, updateQuestion } = useQuestionExamStore();
   const { setDataExam } = useExamStore();
   const examId = params.get('examId');
@@ -26,6 +27,12 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
     queryKey: ['exam', 'chapter', examId],
     queryFn: () => getExam(examId),
   });
+
+  useEffect(() => {
+    if (!isPending) {
+      updateQuestion([defaultQuestionRadio]);
+    }
+  }, [isPending]);
 
   useEffect(() => {
     if (dataExam?.data) {
@@ -63,10 +70,11 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         await createExamAsync(dataExam);
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['exam'] });
-        router.replace(
-          `/backoffice/manage-modul/create/chapter/?modulId=${modulId}&chapterId=${chapterId}`,
-        );
-        updateQuestion([defaultQuestionRadio]);
+        startTransition(() => {
+          router.replace(
+            `/backoffice/manage-modul/create/chapter/?modulId=${modulId}&chapterId=${chapterId}`,
+          );
+        });
       }
     } catch (err) {
       console.error(err);

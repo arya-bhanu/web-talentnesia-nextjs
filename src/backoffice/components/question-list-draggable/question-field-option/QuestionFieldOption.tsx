@@ -37,42 +37,37 @@ const QuestionFieldOption: React.FC<{
     updateQuestion(newMapped);
   };
 
-  const debouncedHandleChangeOption = debounce(
-    (newText: string, id: string) => {
-      const old = [...question];
-      const index = old.findIndex((el) => el.id === props.id);
-      if (index !== -1) {
-        const item = old[index];
-        const options = item.options;
-        if (options && Array.isArray(options)) {
-          const optionIndex = options.findIndex(
-            (elOption) => elOption.id === id,
-          );
-          if (optionIndex !== -1) {
-            const newOptions = [...options];
-            const { text, value, ...rest } = newOptions[optionIndex];
-            newOptions[optionIndex] = {
-              ...rest,
-              text: newText,
-              value: createOptionId(newText),
-            };
-            const newItem = { ...item, options: newOptions };
-            const newQuestion = [
-              ...old.slice(0, index),
-              newItem,
-              ...old.slice(index + 1),
-            ];
-            updateQuestion(newQuestion);
-          }
+  const handleChangeOptionText = (newText: string, id: string) => {
+    const old = [...question];
+    const index = old.findIndex((el) => el.id === props.id);
+    if (index !== -1) {
+      const item = old[index];
+      const options = item.options;
+      if (options && Array.isArray(options)) {
+        const optionIndex = options.findIndex((elOption) => elOption.id === id);
+        if (optionIndex !== -1) {
+          const newOptions = [...options];
+          const { text, value, ...rest } = newOptions[optionIndex];
+          newOptions[optionIndex] = {
+            ...rest,
+            text: newText,
+            value: createOptionId(newText),
+          };
+          const newItem = { ...item, options: newOptions };
+          const newQuestion = [
+            ...old.slice(0, index),
+            newItem,
+            ...old.slice(index + 1),
+          ];
+          updateQuestion(newQuestion);
         }
       }
-    },
-    700,
-  );
+    }
+  };
 
   return (
     <QuestionFieldOptionView
-      handleChangeOption={debouncedHandleChangeOption}
+      handleChangeOption={handleChangeOptionText}
       handleAddNewOption={handleAddNewOption}
       questions={props.questionOptions}
       keyId={props.id}

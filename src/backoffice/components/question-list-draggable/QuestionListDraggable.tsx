@@ -11,8 +11,6 @@ const QuestionListDraggable: React.FC<
   const { updateQuestion, question } = useQuestionExamStore();
   const [openPopover, setOpenPopover] = useState(false);
 
-  console.log(id);
-
   const handleChangeTextQuestion = (text: string, id: string) => {
     const old = [...question];
     const newMapped = old.map((el) => {

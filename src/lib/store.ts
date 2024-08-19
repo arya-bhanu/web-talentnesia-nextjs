@@ -11,12 +11,18 @@ interface QuestionExamState {
 }
 
 type ExamStore = {
-  dataExam: Omit<APIExamChapter, 'exams'> | null | undefined;
+  dataExam: Omit<APIExamChapter, 'exams'>;
   setDataExam: (data: Omit<APIExamChapter, 'exams'>) => void;
 };
 
 export const useExamStore = create<ExamStore>()((set) => ({
-  dataExam: null,
+  dataExam: {
+    chapterId: '',
+    duration: '01:00',
+    id: '',
+    order: -1,
+    title: '',
+  },
   setDataExam: (newData) =>
     set((data) => ({
       dataExam: newData,

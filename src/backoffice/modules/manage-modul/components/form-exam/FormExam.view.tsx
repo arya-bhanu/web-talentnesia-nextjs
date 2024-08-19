@@ -62,7 +62,6 @@ const FormExamView: React.FC<
         <div className="mt-10 flex flex-col gap-14">
           {question &&
             question.map((el, index) => {
-              console.log(el);
               return (
                 <QuestionListDraggable
                   questionType={{

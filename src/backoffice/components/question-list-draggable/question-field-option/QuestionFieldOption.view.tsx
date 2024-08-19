@@ -20,7 +20,7 @@ const QuestionFieldOptionView: React.FC<{
               htmlFor={el.value + index}
             >
               <input
-                onChange={(elInput) =>
+                onBlur={(elInput) =>
                   props.handleChangeOption(elInput.target.value, el.id)
                 }
                 type="text"
