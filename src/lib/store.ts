@@ -3,7 +3,12 @@ import {
   APIExamChapter,
   ExamQuestion,
 } from '@/backoffice/modules/manage-modul/manageModul.type';
+import { convertHHmmTime } from '@/helpers/formatter.helper';
 import { create } from 'zustand';
+
+const timeDate = new Date();
+timeDate.setHours(1);
+timeDate.setMinutes(0);
 interface QuestionExamState {
   question: ExamQuestion[];
   setNewQuestion: (newQuestion: ExamQuestion) => void;
@@ -13,6 +18,7 @@ interface QuestionExamState {
 type ExamStore = {
   dataExam: Omit<APIExamChapter, 'exams'>;
   setDataExam: (data: Omit<APIExamChapter, 'exams'>) => void;
+  setTime: (time: Date) => void;
 };
 
 export const useExamStore = create<ExamStore>()((set) => ({
@@ -27,6 +33,17 @@ export const useExamStore = create<ExamStore>()((set) => ({
     set((data) => ({
       dataExam: newData,
     })),
+
+  setTime: (time: Date) =>
+    set((prev) => {
+      const { duration, ...rest } = prev.dataExam;
+      return {
+        dataExam: {
+          duration: convertHHmmTime(time),
+          ...rest,
+        },
+      };
+    }),
 }));
 
 export const useQuestionExamStore = create<QuestionExamState>()((set) => ({

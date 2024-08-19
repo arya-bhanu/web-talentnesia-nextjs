@@ -4,23 +4,18 @@ import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useExamStore, useQuestionExamStore } from '@/lib/store';
 import { APIExamChapter } from '../../manageModul.type';
-import { convertHHmmTime } from '@/helpers/formatter.helper';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createExam, getExam } from '../../api/manageModelApi';
+import { createExam, getExam, updateExam } from '../../api/manageModelApi';
 import { defaultQuestionRadio } from './formExam.data';
-
-const timeDate = new Date();
-timeDate.setHours(1);
-timeDate.setMinutes(0);
 
 const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   const params = useSearchParams();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [time, setTime] = useState(timeDate);
+
   const [isPending, startTransition] = useTransition();
   const { question, updateQuestion } = useQuestionExamStore();
-  const { setDataExam } = useExamStore();
+  const { setDataExam, dataExam: dataExamStore } = useExamStore();
   const examId = params.get('examId');
 
   const { data: dataExam } = useQuery({
@@ -43,12 +38,17 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         order: dataExam.data?.order,
         title: dataExam.data?.title,
       });
-      updateQuestion([dataExam.data?.exams]);
+      updateQuestion(dataExam.data?.exams);
     }
   }, [dataExam?.data]);
 
   const { mutateAsync: createExamAsync } = useMutation({
     mutationFn: createExam,
+    mutationKey: ['exam'],
+  });
+
+  const { mutateAsync: updateExamAsync } = useMutation({
+    mutationFn: updateExam,
     mutationKey: ['exam'],
   });
 
@@ -59,15 +59,24 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
     const examName = formData.get('exam_name');
     const chapterId = params.get('chapterId');
     const modulId = params.get('modulId');
+    const examId = params.get('examId');
     try {
       if (examName && chapterId && modulId) {
         const dataExam = {
           chapterId,
-          duration: convertHHmmTime(time),
+          duration: dataExamStore.duration,
           exams: question,
           title: examName,
         } as APIExamChapter;
-        await createExamAsync(dataExam);
+
+        if (examId) {
+          console.log('updating ...');
+          await updateExamAsync({ data: dataExam, id: examId });
+        } else {
+          console.log('creating ...');
+          await createExamAsync(dataExam);
+        }
+
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['exam'] });
         startTransition(() => {
@@ -82,12 +91,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   };
 
   return (
-    <FormExamView
-      handleSubmitExam={handleSubmitExam}
-      className={className}
-      setTime={setTime}
-      time={time}
-    />
+    <FormExamView handleSubmitExam={handleSubmitExam} className={className} />
   );
 };
 

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const formatDateIndonesian = (date: Date) => {
   // Define an array of Indonesian month names
   const months = [
@@ -38,6 +40,11 @@ export const convertHHmmTime = (date: Date) => {
     minute: '2-digit',
     hour12: false,
   });
-  console.log(timeHHmm);
   return timeHHmm;
+};
+
+export const convertStrToDate = (str: string) => {
+  const timeString = str;
+  const date = moment(timeString, 'HH:mm').toDate();
+  return date;
 };

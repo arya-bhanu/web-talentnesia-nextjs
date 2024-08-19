@@ -112,6 +112,17 @@ export const createExam = async (
   return response.data;
 };
 
+export const updateExam = async ({
+  data,
+  id,
+}: {
+  data: Omit<APIExamChapter, 'id' | 'order'>;
+  id: string;
+}) => {
+  const response = await backOfficeAPI.put(`/exam/${id}`, data);
+  return response.data;
+};
+
 export const getExam = async (id: string | null | undefined) => {
   if (id) {
     const response = await backOfficeAPI.get('/exam/' + id);

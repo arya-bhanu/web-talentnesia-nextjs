@@ -1,22 +1,36 @@
 import LabelForm from '@/backoffice/components/label-form';
 import { Button, TextInput } from 'flowbite-react';
-import React from 'react';
-import { IFormExam, IFormExamState } from './formExam.type';
+import React, { useEffect, useState } from 'react';
+import { IFormExam } from './formExam.type';
 import TimeInput from '@/backoffice/components/time-input';
 import Add from '@/../public/icons/add.svg';
 import QuestionListDraggable from '@/backoffice/components/question-list-draggable';
 import { defaultQuestionRadio } from './formExam.data';
-import { useQuestionExamStore } from '@/lib/store';
+import { useExamStore, useQuestionExamStore } from '@/lib/store';
 import { uuid } from 'uuidv4';
 import Link from 'next/link';
+import { convertStrToDate } from '@/helpers/formatter.helper';
+import { useSearchParams } from 'next/navigation';
 
 const FormExamView: React.FC<
-  IFormExam &
-    IFormExamState & {
-      className?: string;
-    }
-> = ({ className, setTime, time, handleSubmitExam }) => {
+  IFormExam & {
+    className?: string;
+  }
+> = ({ className, handleSubmitExam }) => {
+  const params = useSearchParams();
+  const examId = params.get('examId');
   const { question, setNewQuestion: setQuestion } = useQuestionExamStore();
+  const { dataExam, setTime } = useExamStore();
+  const [timeState, setTimeState] = useState<Date>(
+    convertStrToDate(dataExam.duration),
+  );
+
+  useEffect(() => {
+    if (timeState) {
+      setTime(timeState);
+    }
+  }, [timeState]);
+
   const handleAddQuestion = () => {
     const { id, ...rest } = defaultQuestionRadio;
     const createdId = uuid().toString();
@@ -34,14 +48,16 @@ const FormExamView: React.FC<
             id="exam_name"
             name="exam_name"
             placeholder="UI/UX Designer"
+            defaultValue={dataExam.title}
+            key={dataExam.title}
             required
           />
         </div>
         <div className="flex-1 ">
           <TimeInput
             label={{ isImportant: true, text: 'Duration' }}
-            setTime={setTime}
-            time={time}
+            setTime={setTimeState}
+            time={convertStrToDate(dataExam.duration || '01:00')}
             className="h-full"
           />
         </div>
@@ -89,8 +105,7 @@ const FormExamView: React.FC<
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >
-            {/* {id ? 'Update' : 'Submit'} */}
-            Submit
+            {examId ? 'Update' : 'Submit'}
           </Button>
         </div>
       </div>
