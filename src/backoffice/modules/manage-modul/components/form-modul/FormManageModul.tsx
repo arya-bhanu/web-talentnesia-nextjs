@@ -49,9 +49,9 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
         await updateModulAsync({ data: modulObject, moduleId });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         if (submitType.type === 'defaultSubmit') {
-          router.replace('/backoffice/manage-modul');
+          router.push('/backoffice/manage-modul');
         } else {
-          router.replace(
+          router.push(
             '/backoffice/manage-modul/update/chapter?modulId=' + moduleId,
           );
         }
@@ -60,9 +60,9 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         const id = responseCreate.data.id;
         if (submitType.type === 'defaultSubmit') {
-          router.replace(`/backoffice/manage-modul`);
+          router.push(`/backoffice/manage-modul`);
         } else {
-          router.replace(
+          router.push(
             `/backoffice/manage-modul/create/chapter?modulId=${id}`,
           );
         }

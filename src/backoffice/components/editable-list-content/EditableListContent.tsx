@@ -43,7 +43,11 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
   }, [isConfirmDel]);
 
   const handleDeleteContent = async (isexam: boolean, id: string) => {
-    isexam ? await deleteContentAsync(id) : await deleteExamAsync(id);
+    try {
+      isexam ? await deleteContentAsync(id) : await deleteExamAsync(id);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleEditContent = async (e: FormEvent<HTMLFormElement>) => {

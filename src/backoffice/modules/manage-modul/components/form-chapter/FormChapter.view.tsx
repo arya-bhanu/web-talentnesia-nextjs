@@ -10,6 +10,7 @@ import FormContent from '../form-content';
 import { IFormChapter, ISubmitType } from './formChapter.type';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { useSearchParams } from 'next/navigation';
 
 const FormChapterView: React.FC<
   IFormChapter &
@@ -24,13 +25,8 @@ const FormChapterView: React.FC<
   contents,
   setSubmitType,
 }) => {
-  const isHasExam = useMemo(() => {
-    if (contents.data && contents.data.length > 0) {
-      const findExam = contents.data.find((el) => el.isexam);
-      return findExam ? true : false;
-    }
-    return false;
-  }, [contents.data]);
+  const params = useSearchParams();
+  const chapterId = params.get('chapterId');
   const renderContents = useMemo(() => {
     if (contents.isLoading) {
       return <h1>Loading...</h1>;
@@ -80,17 +76,14 @@ const FormChapterView: React.FC<
           <div className="flex items-center justify-between">
             <h3 className="text-base font-semibold font-poppins">Content</h3>
             <div className="flex items-center gap-2">
-              {!isHasExam && (
-                <Button
-                  onClick={() => setActionSubChapter('exam')}
-                  type="submit"
-                  disabled={isHasExam}
-                  className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
-                >
-                  <AddWhite />
-                  <span>Add Exam</span>
-                </Button>
-              )}
+              <Button
+                onClick={() => setActionSubChapter('exam')}
+                type="submit"
+                className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
+              >
+                <AddWhite />
+                <span>Add Exam</span>
+              </Button>
               <button
                 onClick={() => setActionSubChapter('content')}
                 type="submit"
@@ -121,7 +114,7 @@ const FormChapterView: React.FC<
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >
-            {id ? 'Update' : 'Submit'}
+            {chapterId ? 'Update' : 'Submit'}
           </Button>
         </div>
       </form>

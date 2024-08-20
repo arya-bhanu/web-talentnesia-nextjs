@@ -81,16 +81,16 @@ const FormChapter = () => {
       const moduleId = params.get('modulId');
       const formData = new FormData(e.currentTarget);
       const chapter = formData.get('chapter') as string;
-
       // current chapterId
       const chapterId = params.get('chapterId');
+
       if (moduleId && chapter && !chapterId) {
         const response = await createChapterAsync({ moduleId, title: chapter });
         // get chapterId from  created chapter
         const chapterId = response.data.id;
 
         if (submitType.type === 'defaultSubmit') {
-          return router.replace(`/backoffice/manage-modul`);
+          return router.back();
         }
 
         if (actionSubChapter === 'exam') {
@@ -105,7 +105,7 @@ const FormChapter = () => {
         await editChapterAsync({ chapterId, title: chapter });
 
         if (submitType.type === 'defaultSubmit') {
-          return router.replace(`/backoffice/manage-modul`);
+          return router.back();
         }
 
         if (actionSubChapter === 'exam') {

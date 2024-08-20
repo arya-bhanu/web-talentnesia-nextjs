@@ -60,6 +60,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
     const chapterId = params.get('chapterId');
     const modulId = params.get('modulId');
     const examId = params.get('examId');
+
     try {
       if (examName && chapterId && modulId) {
         const dataExam = {
@@ -69,11 +70,13 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
           title: examName,
         } as APIExamChapter;
 
+        console.log(dataExam);
+
         if (examId) {
-          console.log('updating ...');
+          console.log('updating exam...');
           await updateExamAsync({ data: dataExam, id: examId });
         } else {
-          console.log('creating ...');
+          console.log('creating exam...');
           await createExamAsync(dataExam);
         }
 
