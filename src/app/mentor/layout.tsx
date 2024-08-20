@@ -19,7 +19,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkAuth = async () => {
       const session = await getSession();
-      if (!session.isLoggedIn || session.role !== 1) {
+      if (!session.isLoggedIn || session.role !== 3) {
         router.push('/auth/login');
       } else {
         setUser({

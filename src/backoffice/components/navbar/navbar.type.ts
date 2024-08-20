@@ -1,7 +1,9 @@
 export interface User {
+  userId: string;
   name: string;
   email: string;
-  profilePicture: string;
+  role: number;
+  profilePicture?: string;
 }
 
 export interface NavbarState {
