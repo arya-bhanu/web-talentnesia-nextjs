@@ -1,0 +1,1 @@
+export { SchoolOperator } from './SchoolOperator';
