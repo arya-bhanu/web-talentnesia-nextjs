@@ -1,0 +1,60 @@
+import { PaymentCardProps } from './payment.type';
+
+export const paymentData: PaymentCardProps[] = [
+  {
+    title: "Web Development Course",
+    status: "success",
+    price: 2750000,
+    downloadLink: "/receipts/web-dev-course.pdf",
+    discount: 250000,
+    tax: 275000,
+  },
+  {
+    title: "Data Science Fundamentals",
+    status: "process",
+    price: 3500000,
+    downloadLink: "/receipts/data-science-course.pdf",
+    discount: 300000,
+    tax: 350000,
+  },
+  {
+    title: "Mobile App Development",
+    status: "success",
+    price: 3000000,
+    downloadLink: "/receipts/mobile-app-dev.pdf",
+    discount: 200000,
+    tax: 300000,
+  },
+  {
+    title: "UI/UX Design Masterclass",
+    status: "failed",
+    price: 2000000,
+    downloadLink: "/receipts/uiux-masterclass.pdf",
+    discount: 150000,
+    tax: 200000,
+  },
+  {
+    title: "Machine Learning Bootcamp",
+    status: "process",
+    price: 4000000,
+    downloadLink: "/receipts/ml-bootcamp.pdf",
+    discount: 400000,
+    tax: 400000,
+  },
+  {
+    title: "Cybersecurity Essentials",
+    status: "success",
+    price: 3250000,
+    downloadLink: "/receipts/cybersecurity-course.pdf",
+    discount: 325000,
+    tax: 325000,
+  },
+  {
+    title: "Cloud Computing Certification",
+    status: "process",
+    price: 3750000,
+    downloadLink: "/receipts/cloud-computing-cert.pdf",
+    discount: 375000,
+    tax: 375000,
+  },
+];

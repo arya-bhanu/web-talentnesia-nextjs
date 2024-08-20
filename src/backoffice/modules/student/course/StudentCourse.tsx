@@ -2,15 +2,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Badge, Button, Progress } from 'flowbite-react';
+import { StudentCourseCardProps } from './studentCourse.type';
 
-interface StudentCourseCardProps {
-  title: string;
-  status: 'On Going' | 'Complete';
-  startDate: string;
-  endDate: string;
-  progress: number;
-  image: string;
-}
 
 const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
   title,

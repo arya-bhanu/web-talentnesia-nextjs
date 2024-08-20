@@ -26,12 +26,21 @@ const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
         <div className="flex-grow flex flex-col justify-center ml-4">
           <div className="flex items-center">
             <h3 className="text-lg font-semibold">{title}</h3>
-            <Badge
-              color={status === 'On Going' ? 'warning' : 'success'}
-              className="ml-2"
+            <div 
+            className={`inline-block px-3 ml-3 py-1 text-xs font-semibold rounded-full ${
+                status === 'On Going' 
+                ? 'bg-yellow-100 text-[#F79009]' 
+                : status === 'Complete'
+                ? 'bg-green-100 text-[#10A760]'
+                : 'bg-gray-100 text-gray-800'
+            }`}
+            style={{ 
+                borderRadius: '9999px',
+                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+            }}
             >
-              {status}
-            </Badge>
+            {status}
+            </div>
           </div>
           <p className="text-sm text-gray-600">
             {new Date(startDate).toLocaleDateString('id-ID', {
@@ -56,9 +65,12 @@ const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
           </div>
         </div>
         <div className="flex items-center">
-          <Button color="warning" pill className="text-black">
-            See Details
-          </Button>
+            
+        <button
+        className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-transparent font-medium rounded-[20px] text-sm px-5 py-2.5 me-2 mb-2"
+      >
+        <span className="text-[#344054]">See Detail</span>
+      </button>
         </div>
       </div>
     );
