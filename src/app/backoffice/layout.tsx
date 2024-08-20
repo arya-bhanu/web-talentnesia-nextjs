@@ -1,7 +1,7 @@
 'use client';
 
 import Navbar from '@/backoffice/components/navbar';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { getSession } from '@/lib/action';
 import { useRouter } from 'next/navigation';
@@ -14,10 +14,11 @@ const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
 const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
+    try {
       const session = await getSession();
       if (!session.isLoggedIn || session.role !== 1) {
         router.push('/auth/login');
@@ -29,10 +30,19 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
           role: session.role
         });
       }
-    };
-
-    checkAuth();
+    } catch (error) {
+      console.error('Authentication error:', error);
+      router.push('/auth/login');
+    } finally {
+      setIsLoading(false);
+    }
   }, [router]);
+
+  useEffect(() => {
+    checkAuth();
+    const intervalId = setInterval(checkAuth, 5 * 60 * 1000);
+    return () => clearInterval(intervalId);
+  }, [checkAuth]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,8 +54,12 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  if (isLoading) {
+    return; 
+  }
+
   if (!user) {
-    return null; // or a loading spinner
+    return null;
   }
 
   return (

@@ -62,12 +62,6 @@ export const login = async (formData: FormData) => {
   session.isLoggedIn = true;
 
   await session.save();
-  
-  const logSession = async () => {
-    const session = await getSession();
-    console.log(session);
-  };
-  logSession();
 
   if (user.role === 1) {
     return { redirectTo: '/backoffice/example' };
