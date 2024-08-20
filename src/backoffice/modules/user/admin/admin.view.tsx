@@ -12,7 +12,7 @@ import {
 } from './admin.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useAdminForm } from './admin';
+import { useAdminForm } from './Admin';
 import './admin.style.css';
 
 const Datepicker = dynamic(

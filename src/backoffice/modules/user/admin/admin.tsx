@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AdminView } from './admin.view';
+import { AdminView } from './Admin.view';
 import { AdminFormData } from './admin.type';
 
 export const useAdminForm = () => {
