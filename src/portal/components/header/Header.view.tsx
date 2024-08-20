@@ -44,6 +44,12 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
         >
           Kontak Kami
         </Link>
+        <Link
+          href={'/blog'}
+          className="font-inter font-medium lg:text-base text-sm hover:text-blue-600"
+        >
+          Blog
+        </Link>
         <div className="flex items-center gap-2 lg:gap-3">
           <Link
             className="px-4 lg:px-5 xl:px-8 py-1.5 lg:py-2 xl:py-3 border border-[#D0D5DD] rounded-full font-inter font-semibold"

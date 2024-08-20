@@ -6,13 +6,11 @@ import clsx from 'clsx';
 import DocumentUpload from '@/../public/icons/document-upload.svg';
 import { IFormContent } from './formContent.type';
 import TimeInput from '@/backoffice/components/time-input';
+import { APIContentChapter } from '../../manageModul.type';
 
-const FormContentView: React.FC<IFormContent> = ({
-  setTime,
-  time,
-  setFile,
-  file,
-}) => {
+const FormContentView: React.FC<
+  IFormContent & { populatedData?: APIContentChapter }
+> = ({ setTime, time, setFile, file, populatedData }) => {
   return (
     <div className="flex flex-col gap-6">
       <input
@@ -28,13 +26,27 @@ const FormContentView: React.FC<IFormContent> = ({
           <LabelForm isImportant htmlFor="title">
             Name
           </LabelForm>
-          <TextInput required id="title" name="title" className="w-full" />
+          <TextInput
+            required
+            id="title"
+            name="title"
+            defaultValue={populatedData?.title}
+            key={populatedData?.title}
+            className="w-full"
+          />
         </div>
         <div className="flex-1">
           <LabelForm isImportant htmlFor="type">
             Type
           </LabelForm>
-          <Select required id="type" name="type" className="w-full">
+          <Select
+            defaultValue={populatedData?.type}
+            key={populatedData?.type}
+            required
+            id="type"
+            name="type"
+            className="w-full"
+          >
             <option value={1}>Document</option>
             <option value={2}>Video</option>
             <option value={3}>Image (png, jpg, gif)</option>

@@ -4,14 +4,18 @@ import { Label } from 'flowbite-react/components/Label';
 import { Radio } from 'flowbite-react/components/Radio';
 import { TextInput } from 'flowbite-react/components/TextInput';
 import Link from 'next/link';
-import React from 'react';
-import { IManageModulForm } from './formManageModul.type';
+import React, { Dispatch, SetStateAction } from 'react';
+import { IManageModulForm, ISubmitType } from './formManageModul.type';
 import Chapter from '../chapter';
 
-const FormManageModulView: React.FC<IManageModulForm> = ({
+const FormManageModulView: React.FC<
+  IManageModulForm &
+    ISubmitType & { setSubmitType: Dispatch<SetStateAction<ISubmitType>> }
+> = ({
   handleSubmitForm,
   populatedDatas,
   id,
+  setSubmitType,
 }) => {
   return (
     <section>
@@ -86,6 +90,9 @@ const FormManageModulView: React.FC<IManageModulForm> = ({
             </Link>
           </Button>
           <Button
+            onClick={() => {
+              setSubmitType({ type: 'defaultSubmit' });
+            }}
             type="submit"
             color={'warning'}
             className="bg-[#FFC862] text-black"

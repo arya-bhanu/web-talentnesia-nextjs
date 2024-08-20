@@ -11,7 +11,7 @@ import {
 } from './student.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useStudentForm } from './student';
+import { useStudentForm } from './Student';
 import './student.style.css';
 
 const Datepicker = dynamic(
