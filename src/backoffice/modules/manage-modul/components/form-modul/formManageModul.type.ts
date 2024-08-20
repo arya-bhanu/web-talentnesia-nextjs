@@ -9,3 +9,7 @@ export interface IManageModulForm {
   };
   id?: string;
 }
+
+export interface ISubmitType {
+  type: 'nextSubmit' | 'defaultSubmit';
+}

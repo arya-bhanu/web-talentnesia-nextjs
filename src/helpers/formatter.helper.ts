@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const formatDateIndonesian = (date: Date) => {
   // Define an array of Indonesian month names
   const months = [
@@ -32,6 +34,17 @@ export const formatDateIndonesian = (date: Date) => {
   return formattedDate;
 };
 
-// Example usage
-const now = new Date();
-console.log(formatDateIndonesian(now)); // Output: "13 Agustus 2024 Pukul 15:30" (for example)
+export const convertHHmmTime = (date: Date) => {
+  const timeHHmm = date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+  return timeHHmm;
+};
+
+export const convertStrToDate = (str: string) => {
+  const timeString = str;
+  const date = moment(timeString, 'HH:mm').toDate();
+  return date;
+};

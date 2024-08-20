@@ -5,4 +5,5 @@ export interface IFormContent {
   setTime: Dispatch<SetStateAction<Date>>;
   file: File | null;
   setFile: Dispatch<SetStateAction<File | null>>;
+  contentId?: string;
 }
