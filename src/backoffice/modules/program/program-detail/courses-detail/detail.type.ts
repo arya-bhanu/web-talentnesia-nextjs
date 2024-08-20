@@ -12,3 +12,7 @@ export interface SectionItem {
   tabs: TabItem[];
   isOpen: boolean;
 }
+
+export interface DetailViewParams {
+  params: { id: string };
+}

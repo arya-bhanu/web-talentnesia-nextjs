@@ -4,8 +4,9 @@ import React from 'react';
 import Image from 'next/image';
 import useDetail from './Detail';
 import CourseSidebar from '@/backoffice/components/course-sidebar/CourseSidebar';
+import { DetailViewParams } from './detail.type';
 
-const DetailView = () => {
+const DetailView: React.FC<DetailViewParams> = ({ params }) => {
   const {
     selectedTab,
     isSidebarVisible,
