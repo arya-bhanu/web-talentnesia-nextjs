@@ -20,7 +20,8 @@ const PopoverView: React.FC<IPopover> = ({
     if (isConfirmed) {
       handleActionButtonRow(id, 'delete');
     }
-  }, [isConfirmed, handleActionButtonRow, id]);
+    // dont change dependencies
+  }, [isConfirmed]);
 
   return (
     <td className="px-6 py-4">

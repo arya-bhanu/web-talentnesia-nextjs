@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { StudentView } from './student.view';
+import { StudentView } from './Student.view';
 import { StudentFormData } from './student.type';
 
 export const useStudentForm = () => {

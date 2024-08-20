@@ -4,3 +4,7 @@ export interface BreadcrumbViewProps {
   className?: string;
   currentPath?: string;
 }
+
+export interface CustomBreadcrumbs {
+  [key: string]: string;
+}

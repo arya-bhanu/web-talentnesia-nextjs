@@ -40,25 +40,27 @@ const SidebarView: React.FC<SidebarProps> = ({
       } ${isSidebarOpen ? 'bg-[#FFFFFF] shadow-md overflow-y-auto' : 'bg-transparent'}`}
       aria-label="Sidebar"
     >
-<div className="flex-shrink-0">
-  <div className="flex items-center justify-between py-4 px-3 md:justify-center">
-    <button
-      onClick={toggleSidebar}
-      className={`md:hidden transition-all duration-300 ${isSidebarOpen ? 'order-last ml-auto' : 'mr-auto'}`}
-    >
-      <Hamburger toggled={isSidebarOpen} toggle={toggleSidebar} />
-    </button>
-    {isSidebarOpen && (
-      <Image
-        src="/icons/backoffice-logo-company.svg"
-        alt="logo image"
-        width={144}
-        height={48}
-        className="ml-2 md:ml-0"
-      />
-    )}
-  </div>
-</div>
+      <div className="flex-shrink-0">
+        <div className="flex items-center justify-between py-4 px-3 md:justify-center">
+          <button
+            onClick={toggleSidebar}
+            className={`md:hidden transition-all duration-300 ${isSidebarOpen ? 'order-last ml-auto' : 'mr-auto'}`}
+          >
+            <Hamburger toggled={isSidebarOpen} toggle={toggleSidebar} />
+          </button>
+          {isSidebarOpen && (
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/icons/backoffice-logo-company.svg"
+                alt="logo image"
+                width={144}
+                height={48}
+                className="ml-2 md:ml-0"
+              />
+            </Link>
+          )}
+        </div>
+      </div>
       <div className="flex-grow overflow-y-auto">
         {isSidebarOpen && (
           <div className="px-3 pb-4">

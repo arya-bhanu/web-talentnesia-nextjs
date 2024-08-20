@@ -1,6 +1,5 @@
-// Custom Breadcrumb
+import { CustomBreadcrumbs } from './breadcrumb.type';
 
-export const customBreadcrumbs: Record<string, string> = {
-  'manage-modul': 'Manage Modul',
-  create: 'Add Modul',
-};
+export const customBreadcrumbs: CustomBreadcrumbs = {};
+
+//you can custom it in component/global-customization/globalCustomizations.ts

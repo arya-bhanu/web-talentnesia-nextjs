@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Breadcrumb } from '@/backoffice/components/breadcrumb'; // Asumsi Breadcrumb sudah diimport dari file yang benar
+import { Breadcrumb } from '@/backoffice/components/breadcrumb';
 import { NavbarState } from './navbar.type';
-import { TitleNavbar } from '../title-navbar';
-import { logout } from '@/lib/action';
-import { Modal, Button } from 'flowbite-react';
+import { globalCustomTitles, globalCustomBreadcrumbs } from '@/backoffice/components/global-customization/globalCustomizations';
+import { Button, Modal } from 'flowbite-react';
 import Link from 'next/link';
+import { logout } from '@/lib/action';
+import { TitleNavbar } from '@/backoffice/components/title-navbar';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
@@ -39,15 +40,16 @@ const NavbarView: React.FC<NavbarViewProps> = ({
     <nav className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 pl-12 md:pl-64">
       <div className="flex justify-between items-center py-4 px-6">
         <div>
-          <TitleNavbar />
-          <Breadcrumb
-            pathSegments={['']}
-            formattedSegments={['']}
+          <TitleNavbar customTitles={globalCustomTitles} />
+          <Breadcrumb 
+            customBreadcrumbs={globalCustomBreadcrumbs} 
+            className='' 
+            pathSegments={[]}
+            formattedSegments={[]}
           />
         </div>
         <div className="flex items-center space-x-4">
           <div className="relative flex items-center">
-            {/* Icon Notifikasi */}
             <div className="relative flex items-center">
               <button
                 onClick={toggleNotification}
@@ -61,7 +63,6 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   className="mr-4"
                 />
               </button>
-              {/* Popup Notifikasi */}
               {isNotificationOpen && (
                 <div className="absolute right-0 top-full mt-1 w-64 bg-white shadow-md rounded-md p-4 z-50">
                   <ul className="space-y-2">
@@ -80,7 +81,6 @@ const NavbarView: React.FC<NavbarViewProps> = ({
               )}
             </div>
 
-            {/* User Profile */}
             <button
               onClick={toggleMenu}
               className="flex items-center focus:outline-none"
@@ -139,11 +139,11 @@ const NavbarView: React.FC<NavbarViewProps> = ({
             <div className="flex justify-center gap-4">
               <Link href="/" passHref>
                 <Button color="failure" onClick={confirmLogout}>
-                  Yes, I'm sure
+                  <p>Yes</p>
                 </Button>
               </Link>
               <Button color="gray" onClick={() => setShowLogoutModal(false)}>
-                No, cancel
+                <p>No</p>
               </Button>
             </div>
           </div>

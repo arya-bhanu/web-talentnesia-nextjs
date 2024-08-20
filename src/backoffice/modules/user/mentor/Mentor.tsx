@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { MentorView } from './mentor.view';
+
 import { Education, MentorFormData } from './mentor.type';
+import { MentorView } from './Mentor.view';
 
 export const useMentorForm = () => {
   const [form, setForm] = useState<MentorFormData>({

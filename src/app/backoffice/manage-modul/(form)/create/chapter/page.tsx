@@ -1,12 +1,8 @@
 import FormChapter from '@/backoffice/modules/manage-modul/components/form-chapter';
 import React, { Suspense } from 'react';
 
-const ChapterPage = () => {
-  return (
-    <Suspense>
-      <FormChapter />
-    </Suspense>
-  );
+const CreateChapterPage = () => {
+  return <FormChapter />;
 };
 
-export default ChapterPage;
+export default CreateChapterPage;

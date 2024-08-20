@@ -1,5 +1,9 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
-import { APIContentChapter, APIResponseManageModul } from '../manageModul.type';
+import {
+  APIContentChapter,
+  APIExamChapter,
+  APIResponseManageModul,
+} from '../manageModul.type';
 
 // modul
 export const fetchModules = async () => {
@@ -56,11 +60,78 @@ export const createChapter = async ({
   const response = await backOfficeAPI.post('/chapter', { moduleId, title });
   return response.data;
 };
+export const editChapter = async ({
+  chapterId,
+  title,
+}: {
+  chapterId: string;
+  title: string;
+}) => {
+  const response = await backOfficeAPI.put('/chapter/' + chapterId, { title });
+  return response.data;
+};
+export const deleteChapter = async (id: string) => {
+  const response = await backOfficeAPI.delete('/chapter/' + id);
+  return response.data;
+};
 
 // content
+export const fetchContent = async (id?: string) => {
+  const response = await backOfficeAPI.get('/content/' + id);
+  return response.data;
+};
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
 ) => {
   const response = await backOfficeAPI.post('/content', payload);
+  return response.data;
+};
+export const editContent = async ({
+  id,
+  data,
+}: {
+  id?: string;
+  data: Pick<APIContentChapter, 'title' | 'body' | 'type' | 'duration'>;
+}) => {
+  if (id) {
+    const response = await backOfficeAPI.put('/content/' + id, data);
+    return response.data;
+  }
+  return null;
+};
+export const deleteContent = async (id: string) => {
+  const response = await backOfficeAPI.delete('/content/' + id);
+  return response.data;
+};
+
+// exam
+export const createExam = async (
+  data: Omit<APIExamChapter, 'id' | 'order'>,
+) => {
+  const response = await backOfficeAPI.post('/exam', data);
+  return response.data;
+};
+
+export const updateExam = async ({
+  data,
+  id,
+}: {
+  data: Omit<APIExamChapter, 'id' | 'order'>;
+  id: string;
+}) => {
+  const response = await backOfficeAPI.put(`/exam/${id}`, data);
+  return response.data;
+};
+
+export const getExam = async (id: string | null | undefined) => {
+  if (id) {
+    const response = await backOfficeAPI.get('/exam/' + id);
+    return response.data;
+  }
+  return null;
+};
+
+export const deleteExam = async (id: string) => {
+  const response = await backOfficeAPI.delete('/exam/' + id);
   return response.data;
 };

@@ -9,11 +9,11 @@ import {
   districts,
   subDistrict,
   placesOfBirth,
-} from './mentor.data';
+} from './admin.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useMentorForm } from './mentor';
-import './mentor.style.css';
+import { useAdminForm } from './Admin';
+import './admin.style.css';
 
 const Datepicker = dynamic(
   () =>
@@ -39,9 +39,9 @@ const ProfilePictureInput = dynamic(
   { ssr: false },
 );
 
-type MentorViewProps = ReturnType<typeof useMentorForm>;
+type AdminViewProps = ReturnType<typeof useAdminForm>;
 
-export const MentorView: React.FC<MentorViewProps> = ({
+export const AdminView: React.FC<AdminViewProps> = ({
   form,
   handleInputChange,
   handleEducationChange,
@@ -52,7 +52,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
   return (
     <>
       <div className="container mx-auto p-1 max-w-full">
-        {/* <h1 className="text-3xl font-bold mb-8">Add Mentor</h1>
+        {/* <h1 className="text-3xl font-bold mb-8">Add Admin</h1>
             <Breadcrumb pathSegments={[]}/> */}
         <form className="space-y-8">
           <div className="border p-6 rounded-lg shadow-sm bg-white">
@@ -550,4 +550,4 @@ export const MentorView: React.FC<MentorViewProps> = ({
   );
 };
 
-export default MentorView;
+export default AdminView;

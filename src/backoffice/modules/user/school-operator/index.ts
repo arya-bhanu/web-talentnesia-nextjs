@@ -1,1 +1,1 @@
-export { SchoolOperator } from './school-operator';
+export { SchoolOperator } from './SchoolOperator';

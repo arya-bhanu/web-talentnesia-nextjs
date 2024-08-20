@@ -3,7 +3,7 @@
 import Navbar from '@/backoffice/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession } from '@/lib/action';
+import { getSession, logout } from '@/lib/action';
 import { useRouter } from 'next/navigation';
 import { User } from '@/backoffice/components/navbar/navbar.type';
 
@@ -12,6 +12,7 @@ const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
 });
 
 const BackofficeLayout = ({ children }: { children: ReactNode }) => {
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +46,18 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   }, [checkAuth]);
 
   useEffect(() => {
+    const handleBeforeUnload = () => {
+      logout();
+    };
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleResize = () => {
       setIsSidebarOpen(window.innerWidth >= 768);
     };
@@ -53,6 +66,23 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      const session = await getSession();
+      if (session.isLoggedIn && session.role === 1) {
+        setIsAuthorized(true);
+      } else {
+        router.push('/unauthorized');
+      }
+    };
+
+    checkAuthorization();
+  }, [router]);
+
+  if (!isAuthorized) {
+    return null; // or a loading spinner
+  }
 
   if (isLoading) {
     return; 

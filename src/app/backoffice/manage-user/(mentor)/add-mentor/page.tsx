@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mentor } from '@/backoffice/modules/user/mentor/mentor';
+import { Mentor } from '@/backoffice/modules/user/mentor/Mentor';
 
 const MentorPage = () => {
   return (

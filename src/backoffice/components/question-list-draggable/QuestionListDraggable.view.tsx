@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import LabelForm from '../label-form';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
@@ -11,29 +11,57 @@ import TrashSm from '@/../public/icons/trash-sm.svg';
 import PopoverAction from '../popover-action';
 import { IQuestionListDraggable } from './questionListDraggable.type';
 import QuestionFieldProject from './question-field-project';
-import { QuestionType } from './questionListDraggable.enum';
-// import ReactQuill from 'react-quill';
 import clsx from 'clsx';
 import dynamic from 'next/dynamic';
+import { useQuestionExamStore } from '@/lib/store';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
+const QuestionListDraggableView: React.FC<
+  IQuestionListDraggable & {
+    handleChangeType: (
+      id: string,
+      newType: 'radio' | 'textarea' | 'file',
+    ) => void;
+    handleDeleteList: (id: string) => void;
+    handleDuplicateItem: (id: string) => void;
+    handleChangeTextQuestion: (text: string, id: string) => void;
+  }
+> = ({
   openPopover,
   setOpenPopover,
   questionType,
-  setQuestionType,
+  handleChangeType,
+  options,
+  handleDeleteList,
+  handleDuplicateItem,
+  handleChangeTextQuestion,
+  id,
 }) => {
-  const renderFieldOption = useCallback(() => {
-    switch (questionType) {
-      case QuestionType.Essay.value:
-        return <QuestionFieldTextarea />;
-      case QuestionType.MiniProject.value:
-        return <QuestionFieldProject />;
-      default:
-        return <QuestionFieldOption />;
+  const { question } = useQuestionExamStore();
+  const renderFieldOption = useCallback(
+    (questions: { text: string; value: string; id: string }[] | null) => {
+      switch (questionType.type) {
+        case 'textarea':
+          return <QuestionFieldTextarea />;
+        case 'file':
+          return <QuestionFieldProject />;
+        default:
+          if (questions) {
+            return <QuestionFieldOption id={id} questionOptions={questions} />;
+          }
+          return <></>;
+      }
+    },
+    [questionType],
+  );
+
+  const defaultQuestionField = useMemo(() => {
+    if (id && question) {
+      return question.find((el) => el.id === id)?.title;
     }
-  }, [questionType]);
+  }, [question, id]);
+
   return (
     <div className={clsx('flex items-start gap-5')}>
       <button>
@@ -44,9 +72,13 @@ const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
           <LabelForm htmlFor="question" isImportant className="w-fit">
             Question
           </LabelForm>
-          <ReactQuill />
+          <ReactQuill
+            key={id}
+            defaultValue={defaultQuestionField}
+            onChange={(el) => handleChangeTextQuestion(el, id)}
+          />
         </div>
-        <div className="mt-5">{renderFieldOption()}</div>
+        <div className="mt-5">{renderFieldOption(options || null)}</div>
       </div>
       <div className="flex-1 flex items-center gap-3">
         <div className="flex flex-col w-full gap-1">
@@ -57,27 +89,17 @@ const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
             <Select
               id="type"
               className="w-full max-w-none"
-              defaultValue={questionType}
-              onChange={(e) => setQuestionType(e.target.value)}
-            >
-              {Object.keys(QuestionType).map((val, index) => {
-                return (
-                  <option
-                    key={val + index}
-                    value={
-                      QuestionType[
-                        val as 'MultipleChoice' | 'Essay' | 'MiniProject'
-                      ].value
-                    }
-                  >
-                    {
-                      QuestionType[
-                        val as 'MultipleChoice' | 'Essay' | 'MiniProject'
-                      ].label
-                    }
-                  </option>
+              onChange={(e) => {
+                handleChangeType(
+                  id,
+                  e.target.value as 'radio' | 'textarea' | 'file',
                 );
-              })}
+              }}
+              defaultValue={questionType.type}
+            >
+              <option value="textarea">Essay</option>
+              <option value="file">Mini Project</option>
+              <option value="radio">Multiple Choice</option>
             </Select>
             <PopoverAction
               openPopover={openPopover}
@@ -85,13 +107,20 @@ const QuestionListDraggableView: React.FC<IQuestionListDraggable> = ({
               content={
                 <ul className="p-3 flex flex-col gap-3 w-36">
                   <li>
-                    <button className="flex items-center gap-2 font-lato text-sm">
+                    <button
+                      type="button"
+                      onClick={() => handleDuplicateItem(id)}
+                      className="flex items-center gap-2 font-lato text-sm"
+                    >
                       <Copy />
                       <span>Duplicate</span>
                     </button>
                   </li>
                   <li>
-                    <button className="flex items-center gap-2 font-lato text-sm">
+                    <button
+                      onClick={() => handleDeleteList(id)}
+                      className="flex items-center gap-2 font-lato text-sm"
+                    >
                       <TrashSm />
                       <span>Delete</span>
                     </button>

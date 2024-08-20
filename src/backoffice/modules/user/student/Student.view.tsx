@@ -7,16 +7,24 @@ import {
   districts,
   subDistrict,
   placesOfBirth,
-  schools,
-} from './school-operator.data';
+  educationLevels,
+} from './student.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useSchoolOperatorForm } from './school-operator';
-import './schoolOperator.style.css';
+import { useStudentForm } from './Student';
+import './student.style.css';
 
 const Datepicker = dynamic(
   () =>
     import('@/backoffice/components/datepicker/Datepicker').then(
+      (mod) => mod.Component,
+    ),
+  { ssr: false },
+);
+
+const FileInput = dynamic(
+  () =>
+    import('@/backoffice/components/file-input/FileInput').then(
       (mod) => mod.Component,
     ),
   { ssr: false },
@@ -30,9 +38,9 @@ const ProfilePictureInput = dynamic(
   { ssr: false },
 );
 
-type SchoolOperatorViewProps = ReturnType<typeof useSchoolOperatorForm>;
+type StudentViewProps = ReturnType<typeof useStudentForm>;
 
-export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
+export const StudentView: React.FC<StudentViewProps> = ({
   form,
   handleInputChange,
   handleEducationChange,
@@ -41,7 +49,7 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
   return (
     <>
       <div className="container mx-auto p-1 max-w-full">
-        {/* <h1 className="text-3xl font-bold mb-8">Add SchoolOperator</h1>
+        {/* <h1 className="text-3xl font-bold mb-8">Add Student</h1>
             <Breadcrumb pathSegments={[]}/> */}
         <form className="space-y-8">
           <div className="border p-6 rounded-lg shadow-sm bg-white">
@@ -69,6 +77,7 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   required
                 />
               </div>
+              <div className="rounded-lg w-full p-2.5 hidden md:block"></div>
               <div>
                 <label className="flex mb-1">
                   NIK/Identity Number<div className="text-red-600">*</div>
@@ -81,6 +90,10 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   placeholder="Input NIK"
                   required
                 />
+              </div>
+              <div>
+                <label className="block mb-1">Foto KTP</label>
+                <FileInput id="ktp-file" label="Foto KTP" />
               </div>
               <div>
                 <label className="flex mb-1">
@@ -276,6 +289,18 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
               </div>
               <div>
                 <label className="flex mb-1">
+                  Address (KTP)<div className="text-red-600">*</div>
+                </label>
+                <input
+                  type="text"
+                  name="addressKtp"
+                  placeholder="Input Address (KTP)"
+                  onChange={handleInputChange}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                />
+              </div>
+              <div>
+                <label className="flex mb-1">
                   Address (Domicile)<div className="text-red-600">*</div>
                 </label>
                 <input
@@ -291,27 +316,55 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
 
           {/* Section D: Education */}
           <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
-            <h2 className="text-lg md:text-xl font-semibold mb-4">D. School</h2>
-            <div className="grid grid-cols-1 gap-4">
+            <h2 className="text-lg md:text-xl font-semibold mb-4">
+              D. Last Education
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="flex mb-1">
-                  School of origin<div className="text-red-600">*</div>
+                  Institution Name<div className="text-red-600">*</div>
+                </label>
+                <input
+                  type="text"
+                  name={'universityName'}
+                  placeholder="University Name"
+                  onChange={handleInputChange}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                />
+              </div>
+              <div>
+                <label className="flex mb-1">
+                  Academic Level<div className="text-red-600">*</div>
                 </label>
                 <select
-                  name="schoolOfOrigin"
-                  value={form.school || ''}
+                  name="academicLevel"
+                  value={form.educationLevel || ''}
                   onChange={handleInputChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
                 >
                   <option className="hidden" value="" disabled>
-                    Select School
+                    Select Academic Level
                   </option>
-                  {schools.map((school, idx) => (
-                    <option key={idx} value={school}>
-                      {school}
+                  {educationLevels.map((level, idx) => (
+                    <option key={idx} value={level}>
+                      {level}
                     </option>
                   ))}
                 </select>
+              </div>
+              <div>
+                <label className="flex mb-1">
+                  {' '}
+                  Start From<div className="text-red-600">*</div>
+                </label>
+                <Datepicker />
+              </div>
+              <div>
+                <label className="flex mb-1">
+                  {' '}
+                  Until<div className="text-red-600">*</div>
+                </label>
+                <Datepicker />
               </div>
             </div>
           </div>
@@ -337,4 +390,4 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
   );
 };
 
-export default SchoolOperatorView;
+export default StudentView;

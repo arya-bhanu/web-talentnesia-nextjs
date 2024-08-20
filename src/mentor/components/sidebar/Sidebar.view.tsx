@@ -49,6 +49,7 @@ const SidebarView: React.FC<SidebarProps> = ({
       <Hamburger toggled={isSidebarOpen} toggle={toggleSidebar} />
     </button>
     {isSidebarOpen && (
+      <Link href="/" className="flex items-center">
       <Image
         src="/icons/backoffice-logo-company.svg"
         alt="logo image"
@@ -56,6 +57,7 @@ const SidebarView: React.FC<SidebarProps> = ({
         height={48}
         className="ml-2 md:ml-0"
       />
+    </Link>
     )}
   </div>
 </div>
