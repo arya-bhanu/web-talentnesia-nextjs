@@ -7,7 +7,7 @@ import { getSession, logout } from '@/lib/action';
 import { useRouter } from 'next/navigation';
 import { User } from '@/backoffice/components/navbar/navbar.type';
 
-const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
+const Sidebar = dynamic(() => import('@/mentor/components/sidebar'), {
   ssr: false,
 });
 
@@ -44,18 +44,6 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     const intervalId = setInterval(checkAuth, 5 * 60 * 1000);
     return () => clearInterval(intervalId);
   }, [checkAuth]);
-
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      logout();
-    };
-  
-    window.addEventListener('beforeunload', handleBeforeUnload);
-  
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {

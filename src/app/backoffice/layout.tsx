@@ -46,18 +46,6 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   }, [checkAuth]);
 
   useEffect(() => {
-    const handleBeforeUnload = () => {
-      logout();
-    };
-  
-    window.addEventListener('beforeunload', handleBeforeUnload);
-  
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
-  useEffect(() => {
     const handleResize = () => {
       setIsSidebarOpen(window.innerWidth >= 768);
     };

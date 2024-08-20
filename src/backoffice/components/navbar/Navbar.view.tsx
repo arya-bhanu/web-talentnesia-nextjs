@@ -5,10 +5,15 @@ import Image from 'next/image';
 import { Breadcrumb } from '@/backoffice/components/breadcrumb';
 import { NavbarState } from './navbar.type';
 import { TitleNavbar } from '../title-navbar';
-import { globalCustomTitles, globalCustomBreadcrumbs } from '@/backoffice/components/global-customization/globalCustomizations';
+import {
+  globalCustomTitles,
+  globalCustomBreadcrumbs,
+} from '@/backoffice/components/global-customization/globalCustomizations';
 import { Button, Modal } from 'flowbite-react';
 import Link from 'next/link';
 import { logout } from '@/lib/action';
+import { getSession } from '@/lib/action';
+import { SessionData } from '@/lib/lib';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
@@ -21,8 +26,16 @@ const NavbarView: React.FC<NavbarViewProps> = ({
 }) => {
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [sessionData, setSessionData] = useState<Partial<SessionData> | null>(null);
   const toggleNotification = () => {
     setNotificationOpen(!isNotificationOpen);
+  };
+
+  const handleProfileClick = async () => {
+    const session = await getSession();
+    setSessionData(session);
+    setShowProfileModal(true);
   };
 
   const handleLogout = async () => {
@@ -41,9 +54,9 @@ const NavbarView: React.FC<NavbarViewProps> = ({
       <div className="flex justify-between items-center py-4 px-6">
         <div>
           <TitleNavbar customTitles={globalCustomTitles} />
-          <Breadcrumb 
-            customBreadcrumbs={globalCustomBreadcrumbs} 
-            className='' 
+          <Breadcrumb
+            customBreadcrumbs={globalCustomBreadcrumbs}
+            className=""
             pathSegments={[]}
             formattedSegments={[]}
           />
@@ -111,7 +124,10 @@ const NavbarView: React.FC<NavbarViewProps> = ({
             {isMenuOpen && (
               <div className="absolute right-0 top-full mt-1 w-48 bg-white shadow-md rounded-md p-2 z-50">
                 <ul className="space-y-2">
-                  <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
+                  <li
+                    onClick={handleProfileClick}
+                    className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm"
+                  >
                     Profile
                   </li>
                   <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
@@ -129,6 +145,21 @@ const NavbarView: React.FC<NavbarViewProps> = ({
           </div>
         </div>
       </div>
+      <Modal show={showProfileModal} onClose={() => setShowProfileModal(false)}>
+        <Modal.Header>User Profile</Modal.Header>
+        <Modal.Body>
+          {sessionData && (
+            <div>
+              <p>Name: {sessionData.name}</p>
+              <p>Email: {sessionData.email}</p>
+              <p>Role: {sessionData.role}</p>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setShowProfileModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
       <Modal show={showLogoutModal} onClose={() => setShowLogoutModal(false)}>
         <Modal.Header>Confirm Logout</Modal.Header>
         <Modal.Body>

@@ -9,6 +9,6 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/program.svg',
     title: 'Program',
-    path: '/mentor/program',
+    path: '/mentor/program/add-program-iicp',
   },
 ];
