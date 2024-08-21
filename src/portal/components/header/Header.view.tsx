@@ -15,7 +15,7 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
   useEffect(() => {
     const checkSession = async () => {
       const session = await getSession();
-      if (session.isLoggedIn) {
+      if (session && session.isLoggedIn) {
         setUserRole(session.role ?? null);
       }
     };

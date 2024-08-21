@@ -20,7 +20,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const checkAuth = useCallback(async () => {
     try {
       const session = await getSession();
-      if (!session.isLoggedIn || session.role !== 2) {
+      if (!session || !session.isLoggedIn || session.role !== 2) {
         router.push('/auth/login');
       } else {
         setUser({
