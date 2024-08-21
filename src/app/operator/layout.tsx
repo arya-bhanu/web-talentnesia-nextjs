@@ -1,17 +1,17 @@
 'use client';
 
-import Navbar from '@/backoffice/components/navbar';
+import Navbar from '@/operator/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession, logout } from '@/lib/action';
+import { getSession } from '@/lib/action';
 import { useRouter } from 'next/navigation';
-import { User } from '@/backoffice/components/navbar/navbar.type';
+import { User } from '@/operator/components/navbar/navbar.type';
 
 const Sidebar = dynamic(() => import('@/operator/components/sidebar'), {
   ssr: false,
 });
 
-const BackofficeLayout = ({ children }: { children: ReactNode }) => {
+const OperatorLayout = ({ children }: { children: ReactNode }) => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [user, setUser] = useState<User | null>(null);
@@ -61,15 +61,15 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       if (session.isLoggedIn && session.role === 2) {
         setIsAuthorized(true);
       } else {
-        router.push('/unauthorized');
+        return ('unauthorized');
       }
     };
 
     checkAuthorization();
-  }, [router]);
+  });
 
   if (!isAuthorized) {
-    return null; // or a loading spinner
+    return null ;
   }
 
   if (isLoading) {
@@ -100,4 +100,4 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default BackofficeLayout;
+export default OperatorLayout;

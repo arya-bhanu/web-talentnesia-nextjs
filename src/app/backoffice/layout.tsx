@@ -3,7 +3,7 @@
 import Navbar from '@/backoffice/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession, logout } from '@/lib/action';
+import { getSession } from '@/lib/action';
 import { useRouter } from 'next/navigation';
 import { User } from '@/backoffice/components/navbar/navbar.type';
 
@@ -61,15 +61,15 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       if (session.isLoggedIn && session.role === 1) {
         setIsAuthorized(true);
       } else {
-        router.push('/unauthorized');
+        return ('unauthorized');
       }
     };
 
     checkAuthorization();
-  }, [router]);
+  });
 
   if (!isAuthorized) {
-    return null; // or a loading spinner
+    return null;
   }
 
   if (isLoading) {
