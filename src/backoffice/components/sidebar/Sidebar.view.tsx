@@ -6,13 +6,9 @@ import { useState } from 'react';
 import { sidebarData } from './sidebar.data';
 import Hamburger from 'hamburger-react';
 import './sidebar.style.css';
+import { SidebarViewProps } from './sidebar.type';
 
-interface SidebarProps {
-  isSidebarOpen: boolean;
-  toggleSidebar: () => void;
-}
-
-const SidebarView: React.FC<SidebarProps> = ({
+const SidebarView: React.FC<SidebarViewProps> = ({
   isSidebarOpen,
   toggleSidebar,
 }) => {

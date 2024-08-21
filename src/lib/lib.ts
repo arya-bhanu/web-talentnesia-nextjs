@@ -8,6 +8,7 @@ export interface SessionData {
   role?: number;
   profilePicture?: string;
   isLoggedIn?: boolean;
+  lastActivity?: number;
 }
 
 export const defaultSession: SessionData = {

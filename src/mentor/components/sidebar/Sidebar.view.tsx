@@ -6,13 +6,9 @@ import { useState } from 'react';
 import { sidebarData } from './sidebar.data';
 import Hamburger from 'hamburger-react';
 import './sidebar.style.css';
+import { SidebarViewProps } from './sidebar.type';
 
-interface SidebarProps {
-  isSidebarOpen: boolean;
-  toggleSidebar: () => void;
-}
-
-const SidebarView: React.FC<SidebarProps> = ({
+const SidebarView: React.FC<SidebarViewProps> = ({
   isSidebarOpen,
   toggleSidebar,
 }) => {
@@ -50,14 +46,14 @@ const SidebarView: React.FC<SidebarProps> = ({
     </button>
     {isSidebarOpen && (
       <Link href="/" className="flex items-center">
-      <Image
-        src="/icons/backoffice-logo-company.svg"
-        alt="logo image"
-        width={144}
-        height={48}
-        className="ml-2 md:ml-0"
-      />
-    </Link>
+        <Image
+          src="/icons/backoffice-logo-company.svg"
+          alt="logo image"
+          width={144}
+          height={48}
+          className="ml-2 md:ml-0"
+        />
+      </Link>
     )}
   </div>
 </div>

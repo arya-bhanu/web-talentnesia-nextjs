@@ -7,3 +7,8 @@ export interface SidebarProps {
     link: string;
   }[];
 }
+
+export interface SidebarViewProps {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+}

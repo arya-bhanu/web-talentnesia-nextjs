@@ -22,6 +22,18 @@ export const getSession = async (): Promise<Partial<SessionData>> => {
   };
 };
 
+export const refreshToken = async () => {
+  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
+  
+  if (session.isLoggedIn) {
+    session.lastActivity = Date.now();
+    await session.save();
+    return true;
+  }
+  
+  return false;
+};
+
 export const login = async (formData: FormData) => {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
 

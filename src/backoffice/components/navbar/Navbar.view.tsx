@@ -5,15 +5,12 @@ import Image from 'next/image';
 import { Breadcrumb } from '@/backoffice/components/breadcrumb';
 import { NavbarState } from './navbar.type';
 import { TitleNavbar } from '../title-navbar';
-import {
-  globalCustomTitles,
-  globalCustomBreadcrumbs,
-} from '@/backoffice/components/global-customization/globalCustomizations';
+import { globalCustomTitles, globalCustomBreadcrumbs } from '@/backoffice/components/global-customization/globalCustomizations';
 import { Button, Modal } from 'flowbite-react';
-import Link from 'next/link';
-import { logout } from '@/lib/action';
-import { getSession } from '@/lib/action';
+import { logout, getSession } from '@/lib/action';
 import { SessionData } from '@/lib/lib';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
@@ -28,6 +25,9 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [sessionData, setSessionData] = useState<Partial<SessionData> | null>(null);
+  const { setUser } = useAuth();
+  const router = useRouter();
+
   const toggleNotification = () => {
     setNotificationOpen(!isNotificationOpen);
   };
@@ -38,14 +38,16 @@ const NavbarView: React.FC<NavbarViewProps> = ({
     setShowProfileModal(true);
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     setShowLogoutModal(true);
   };
 
   const confirmLogout = async () => {
     const result = await logout();
     if (result.redirectTo) {
-      window.location.href = result.redirectTo;
+      setUser && setUser(null);
+      setShowLogoutModal(false);
+      router.push(result.redirectTo);
     }
   };
 
@@ -168,13 +170,11 @@ const NavbarView: React.FC<NavbarViewProps> = ({
               Are you sure you want to logout?
             </h3>
             <div className="flex justify-center gap-4">
-              <Link href="/" passHref>
-                <Button color="failure" onClick={confirmLogout}>
-                  <p>Yes</p>
-                </Button>
-              </Link>
+              <Button color="failure" onClick={confirmLogout}>
+                Yes
+              </Button>
               <Button color="gray" onClick={() => setShowLogoutModal(false)}>
-                <p>No</p>
+                No
               </Button>
             </div>
           </div>
