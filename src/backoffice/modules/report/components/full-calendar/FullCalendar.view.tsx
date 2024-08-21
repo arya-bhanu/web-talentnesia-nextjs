@@ -1,5 +1,6 @@
 import React from 'react';
 import { FullCalendarProps } from './fullCalendar.type';
+import Image from 'next/image';
 
 const FullCalendarsView: React.FC<FullCalendarProps> = ({
   currentDate,
@@ -19,8 +20,8 @@ const FullCalendarsView: React.FC<FullCalendarProps> = ({
     <div className="flex flex-col">
       <div className="bg-white rounded-lg">
         <div className="">
-          <div className="px-4 flex items-center justify-between">
-            <span className="text-base font-bold text-gray-800">
+          <div className="px-4 flex items-center justify-between pt-2">
+            <span className="text-2xl font-bold text-gray-800">
               {currentDate.toLocaleString('id-ID', { month: 'long' })}{' '}
               {currentDate.getFullYear()}
             </span>
@@ -30,42 +31,26 @@ const FullCalendarsView: React.FC<FullCalendarProps> = ({
                 className="text-gray-800 hover:text-gray-400"
                 onClick={() => changeMonth(-1)}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-chevron-left"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <polyline points="15 6 9 12 15 18" />
-                </svg>
+                <Image
+                  src="/icons/arrow-right.svg"
+                  width={24}
+                  height={24}
+                  alt="Chevron Left"
+                  className='rotate-90'
+                />
               </button>
               <button
                 aria-label="FullCalendar forward"
                 className="ml-3 text-gray-800 hover:text-gray-400"
                 onClick={() => changeMonth(1)}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-chevron-right"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <polyline points="9 6 15 12 9 18" />
-                </svg>
+                <Image
+                  src="/icons/arrow-right.svg"
+                  width={24}
+                  height={24}
+                  alt="Chevron Left"
+                  className='rotate-[-90deg]'
+                />
               </button>
             </div>
           </div>

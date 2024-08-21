@@ -1,11 +1,9 @@
 'use client';
-'use client';
 import React, { useEffect, useRef } from 'react';
 import { Calendar } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import './schedule.style.css'; // Assuming you have custom CSS for the calendar
-
 
 interface CalendarsEventProps {
   selectedDate: Date | null;
@@ -25,15 +23,9 @@ const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda })
         editable: true,
         allDaySlot: false,
         headerToolbar: {
-          left: 'agendaButton',
+          left: '',
           center: '',
-          right: 'title',
-        },
-        customButtons: {
-          agendaButton: {
-            text: "Today's Agenda",
-            click: () => {},
-          },
+          right: '',
         },
         slotLabelFormat: { hour: 'numeric', hour12: true },
         select: function(info) {
@@ -69,7 +61,8 @@ const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda })
                 <div class="custom-event-title">${arg.event.title}</div>
                 <div class="custom-event-description">${arg.event.extendedProps.description || ''}</div>
               </div>
-            `,
+              `
+            ,
           };
         },
         eventClick: function(info) {
@@ -90,9 +83,9 @@ const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda })
 
   return (
     <>
-    <div className="calendar-event-container">
-      <div id="mycalendar" ref={calendarRef}></div>
-    </div>
+      <div className="calendar-event-container">
+        <div id="mycalendar" ref={calendarRef}></div>
+      </div>
     </>
   );
 };
