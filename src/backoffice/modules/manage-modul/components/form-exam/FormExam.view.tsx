@@ -11,6 +11,9 @@ import { uuid } from 'uuidv4';
 import Link from 'next/link';
 import { convertStrToDate } from '@/helpers/formatter.helper';
 import { useSearchParams } from 'next/navigation';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { SortableContext } from '@dnd-kit/sortable';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 const FormExamView: React.FC<
   IFormExam & {
@@ -19,7 +22,11 @@ const FormExamView: React.FC<
 > = ({ className, handleSubmitExam }) => {
   const params = useSearchParams();
   const examId = params.get('examId');
-  const { question, setNewQuestion: setQuestion } = useQuestionExamStore();
+  const {
+    question,
+    setNewQuestion: setQuestion,
+    sortActionExam,
+  } = useQuestionExamStore();
   const { dataExam, setTime } = useExamStore();
   const [timeState, setTimeState] = useState<Date>(
     convertStrToDate(dataExam.duration),
@@ -36,6 +43,13 @@ const FormExamView: React.FC<
     const createdId = uuid().toString();
     setQuestion({ ...rest, id: createdId });
   };
+
+  function handleDragEnd(event: DragEndEvent): void {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      sortActionExam(active, over);
+    }
+  }
 
   return (
     <form onSubmit={handleSubmitExam} className={className}>
@@ -76,19 +90,27 @@ const FormExamView: React.FC<
         </div>
 
         <div className="mt-10 flex flex-col gap-14">
-          {question &&
-            question.map((el, index) => {
-              return (
-                <QuestionListDraggable
-                  questionType={{
-                    type: el.type,
-                  }}
-                  id={el.id}
-                  key={el.id + index}
-                  options={el.options}
-                />
-              );
-            })}
+          {question && (
+            <DndContext
+              modifiers={[restrictToVerticalAxis]}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={question}>
+                {question.map((el) => {
+                  return (
+                    <QuestionListDraggable
+                      questionType={{
+                        type: el.type,
+                      }}
+                      id={el.id}
+                      key={el.id}
+                      options={el.options}
+                    />
+                  );
+                })}
+              </SortableContext>
+            </DndContext>
+          )}
         </div>
         <div className="flex gap-5 w-fit ml-auto mt-24">
           <Button

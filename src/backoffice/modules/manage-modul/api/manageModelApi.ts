@@ -137,6 +137,21 @@ export const deleteExam = async (id: string) => {
 };
 
 // sorting request
+export const examReorder = async ({
+  examId,
+  questions,
+}: {
+  questions: string[];
+  examId: string;
+}) => {
+  const response = await backOfficeAPI.post(
+    '/exam/reorder-exams/' + examId,
+    {
+      questions,
+    },
+  );
+  return response.data;
+};
 export const contentsReorder = async ({
   contents,
   chapterId,

@@ -5,7 +5,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useExamStore, useQuestionExamStore } from '@/lib/store';
 import { APIExamChapter } from '../../manageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createExam, getExam, updateExam } from '../../api/manageModelApi';
+import {
+  createExam,
+  examReorder,
+  getExam,
+  updateExam,
+} from '../../api/manageModelApi';
 import { defaultQuestionRadio } from './formExam.data';
 
 const FormExam: React.FC<{ className?: string }> = ({ className }) => {
@@ -52,6 +57,11 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
     mutationKey: ['exam'],
   });
 
+  const { mutateAsync: reorderExamsAynsc } = useMutation({
+    mutationFn: examReorder,
+    mutationKey: ['exam'],
+  });
+
   const handleSubmitExam = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -70,14 +80,25 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
           title: examName,
         } as APIExamChapter;
 
-        console.log(dataExam);
-
         if (examId) {
           console.log('updating exam...');
           await updateExamAsync({ data: dataExam, id: examId });
+          console.log('reordering exam...');
+          await reorderExamsAynsc({
+            examId,
+            questions: question.map((el) => el.id),
+          });
         } else {
           console.log('creating exam...');
-          await createExamAsync(dataExam);
+          const response = await createExamAsync(dataExam);
+          console.log(response);
+          // console.log('reordering exam...');
+          // if (response?.data) {
+          //   await reorderExamsAynsc({
+          //     examId: response?.data.id,
+          //     questions: question.map((el) => el.id),
+          //   });
+          // }
         }
 
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });

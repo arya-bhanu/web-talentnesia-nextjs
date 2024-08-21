@@ -14,6 +14,8 @@ import QuestionFieldProject from './question-field-project';
 import clsx from 'clsx';
 import dynamic from 'next/dynamic';
 import { useQuestionExamStore } from '@/lib/store';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -39,6 +41,12 @@ const QuestionListDraggableView: React.FC<
   id,
 }) => {
   const { question } = useQuestionExamStore();
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
   const renderFieldOption = useCallback(
     (questions: { text: string; value: string; id: string }[] | null) => {
       switch (questionType.type) {
@@ -63,8 +71,12 @@ const QuestionListDraggableView: React.FC<
   }, [question, id]);
 
   return (
-    <div className={clsx('flex items-start gap-5')}>
-      <button>
+    <div
+      style={style}
+      ref={setNodeRef}
+      className={clsx('flex items-start gap-5')}
+    >
+      <button type="button" {...listeners} {...attributes}>
         <DragIndicator />
       </button>
       <div className="flex-[2]">

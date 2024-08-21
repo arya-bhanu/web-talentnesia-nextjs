@@ -17,6 +17,7 @@ interface QuestionExamState {
   question: ExamQuestion[];
   setNewQuestion: (newQuestion: ExamQuestion) => void;
   updateQuestion: (newQuestions: ExamQuestion[]) => void;
+  sortActionExam: (active: Active, over: Over) => void;
 }
 
 interface ExamStore {
@@ -29,7 +30,7 @@ interface DragContents {
   sortActionContents: (active: Active, over: Over) => void;
   setSortContents: (data: APIContentChapter[] | null | undefined) => void;
 }
-interface DragPosition {
+interface DragChapter {
   sortChapters: APIChapterModul[] | null | undefined;
   setSortChapters: (data: APIChapterModul[] | null | undefined) => void;
   sortActionChapters: (active: Active, over: Over) => void;
@@ -44,7 +45,7 @@ export const useExamStore = create<ExamStore>()((set) => ({
     title: '',
   },
   setDataExam: (newData) =>
-    set((data) => ({
+    set(() => ({
       dataExam: newData,
     })),
 
@@ -70,13 +71,31 @@ export const useQuestionExamStore = create<QuestionExamState>()((set) => ({
         question: old,
       };
     }),
+  sortActionExam: (active, over) => {
+    return set((prevData) => {
+      if (prevData.question) {
+        const oldIndex = prevData.question.findIndex(
+          (item) => item.id === active.id,
+        );
+        const newIndex = prevData.question.findIndex(
+          (item) => item.id === over.id,
+        );
+        return {
+          question: arrayMove(prevData.question, oldIndex, newIndex),
+        };
+      }
+      return {
+        ...prevData,
+      };
+    });
+  },
   updateQuestion: (newQuestions) =>
     set(() => ({
       question: newQuestions,
     })),
 }));
 
-export const useDragChapters = create<DragPosition>()((set) => ({
+export const useDragChapters = create<DragChapter>()((set) => ({
   sortChapters: null,
 
   setSortChapters: (data) =>
@@ -114,7 +133,6 @@ export const useDragContents = create<DragContents>((set) => ({
   },
 
   sortActionContents: (active, over) => {
-    console.log('action contents');
     return set((prevData) => {
       if (prevData.sortContents) {
         const oldIndex = prevData.sortContents.findIndex(
