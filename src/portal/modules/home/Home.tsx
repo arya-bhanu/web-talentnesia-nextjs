@@ -1,8 +1,14 @@
+// Home.tsx
 import React from 'react';
 import HomeView from './Home.view';
+import { getHomeData } from './hooks/getHomeData';
+import { HomeProps, HomeData } from './home.type';
 
-const Home = () => {
-  return <HomeView />;
+export const Home = async () => {
+  try {
+    const data = await getHomeData();
+    return <HomeView data={data} />;
+  } catch (error) {
+    return <div>Error loading data</div>;
+  }
 };
-
-export default Home;
