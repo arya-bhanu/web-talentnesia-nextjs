@@ -12,7 +12,7 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import { useDragpositionStore } from '@/lib/store';
+import { useDragContents, useDragpositionStore } from '@/lib/store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { contentsReorder } from '@/backoffice/modules/manage-modul/api/manageModelApi';
 
@@ -48,8 +48,8 @@ const AccordionPanelDraggableView: React.FC<
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: id });
 
-  const { sortActionContents, setSortContents, sortContents } =
-    useDragpositionStore();
+  const { setSortContents, sortContents, sortActionContents } =
+    useDragContents();
 
   const { mutateAsync: reorderContentsAsync } = useMutation({
     mutationKey: ['contents'],
@@ -62,25 +62,25 @@ const AccordionPanelDraggableView: React.FC<
   };
 
   useEffect(() => {
-    if (contents) {
+    if (contents && index === activeAccordion) {
       const sortData = contents.sort((a, b) => a.order - b.order);
       if (sortData && sortData.length > 0) {
         setSortContents(sortData);
       }
     }
-  }, [contents, index === activeAccordion]);
+  }, [JSON.stringify(contents), index === activeAccordion]);
 
   useEffect(() => {
+    console.log(chapterId);
     if (chapterId && sortContents) {
       const executeMutation = async () => {
         if (sortContents && sortContents.length > 0) {
           try {
-            const response = await reorderContentsAsync({
+            await reorderContentsAsync({
               chapterId,
               contents: sortContents.map((el) => el.id),
             });
             queryClient.invalidateQueries({ queryKey: ['module'] });
-            console.log(response);
           } catch (err) {
             console.error(err);
           }
@@ -88,7 +88,7 @@ const AccordionPanelDraggableView: React.FC<
       };
       executeMutation();
     }
-  }, [sortContents]);
+  }, [JSON.stringify(sortContents)]);
 
   const handleDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;
@@ -171,7 +171,7 @@ const AccordionPanelDraggableView: React.FC<
           >
             <SortableContext items={sortContents}>
               {sortContents.map((el, index) => (
-                <ListDraggable key={index} {...el} />
+                <ListDraggable key={el.id} {...el} />
               ))}
             </SortableContext>
           </DndContext>

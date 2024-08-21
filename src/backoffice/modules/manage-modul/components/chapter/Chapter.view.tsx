@@ -40,19 +40,18 @@ const ChapterView: React.FC<IChapter & IStateChapter> = ({
     if (modulId && sortChapters) {
       const executeMutation = async () => {
         try {
-          const response = await reorderChapterAsync({
+          await reorderChapterAsync({
             modulId,
             chapters: sortChapters.map((el) => el.id),
           });
           queryClient.invalidateQueries({ queryKey: ['module'] });
-          console.log(response);
         } catch (err) {
           console.error(err);
         }
       };
       executeMutation();
     }
-  }, [sortChapters]);
+  }, [JSON.stringify(sortChapters)]);
 
   const renderPanelDraggable = useMemo(() => {
     if (data.isLoading) {
