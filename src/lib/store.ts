@@ -76,7 +76,7 @@ export const useQuestionExamStore = create<QuestionExamState>()((set) => ({
     })),
 }));
 
-export const useDragpositionStore = create<DragPosition>()((set) => ({
+export const useDragChapters = create<DragPosition>()((set) => ({
   sortChapters: null,
 
   setSortChapters: (data) =>

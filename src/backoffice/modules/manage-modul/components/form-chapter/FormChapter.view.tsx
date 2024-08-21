@@ -1,7 +1,8 @@
+'use client';
 import LabelForm from '@/backoffice/components/label-form/LabelForm';
 import { Button } from 'flowbite-react/components/Button';
 import { TextInput } from 'flowbite-react/components/TextInput';
-import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import Add from '@/../public/icons/add.svg';
 import AddWhite from '@/../public/icons/add-white.svg';
 import EditableListContent from '@/backoffice/components/editable-list-content';
@@ -11,6 +12,12 @@ import { IFormChapter, ISubmitType } from './formChapter.type';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useSearchParams } from 'next/navigation';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import { SortableContext } from '@dnd-kit/sortable';
+import { useDragContents } from '@/lib/store';
+import { contentsReorder } from '../../api/manageModelApi';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const FormChapterView: React.FC<
   IFormChapter &
@@ -27,19 +34,72 @@ const FormChapterView: React.FC<
 }) => {
   const params = useSearchParams();
   const chapterId = params.get('chapterId');
+  const queryClient = useQueryClient();
+  const { setSortContents, sortContents, sortActionContents } =
+    useDragContents();
+
+  const { mutateAsync: reorderContentsAsync } = useMutation({
+    mutationKey: ['contents'],
+    mutationFn: contentsReorder,
+  });
+
   const renderContents = useMemo(() => {
     if (contents.isLoading) {
       return <h1>Loading...</h1>;
     }
 
-    if (contents.data?.length === 0 || !contents.data) {
+    if (sortContents?.length === 0 || !sortContents) {
       return <p>Empty content</p>;
     }
 
-    return contents.data.map((el) => (
-      <EditableListContent {...el} key={el.id} />
-    ));
-  }, [contents]);
+    return (
+      <DndContext
+        modifiers={[restrictToVerticalAxis]}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={sortContents}>
+          {sortContents.map((el) => (
+            <EditableListContent {...el} key={el.id} />
+          ))}
+        </SortableContext>
+      </DndContext>
+    );
+  }, [JSON.stringify(sortContents)]);
+
+  useEffect(() => {
+    if (contents.data) {
+      const sortData = contents.data.sort((a, b) => a.order - b.order);
+      if (sortData && sortData.length > 0) {
+        setSortContents(sortData);
+      }
+    }
+  }, [JSON.stringify(contents.data)]);
+
+  useEffect(() => {
+    if (chapterId && sortContents) {
+      const executeMutation = async () => {
+        if (sortContents && sortContents.length > 0) {
+          try {
+            await reorderContentsAsync({
+              chapterId,
+              contents: sortContents.map((el) => el.id),
+            });
+            queryClient.invalidateQueries({ queryKey: ['module'] });
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      };
+      executeMutation();
+    }
+  }, [JSON.stringify(sortContents)]);
+
+  function handleDragEnd(event: DragEndEvent): void {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      sortActionContents(active, over);
+    }
+  }
 
   return (
     <div>

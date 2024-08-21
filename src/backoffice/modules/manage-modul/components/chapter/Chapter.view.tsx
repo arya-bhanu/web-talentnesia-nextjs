@@ -6,7 +6,7 @@ import AccordionPanelDraggable from '@/backoffice/components/accordion-panel-dra
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import { useDragpositionStore } from '@/lib/store';
+import { useDragChapters } from '@/lib/store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { chapterReorder } from '../../api/manageModelApi';
 import { useSearchParams } from 'next/navigation';
@@ -18,7 +18,7 @@ const ChapterView: React.FC<IChapter & IStateChapter> = ({
   data,
 }) => {
   const { setSortChapters, sortChapters, sortActionChapters } =
-    useDragpositionStore();
+    useDragChapters();
 
   const queryClient = useQueryClient();
   const params = useSearchParams();

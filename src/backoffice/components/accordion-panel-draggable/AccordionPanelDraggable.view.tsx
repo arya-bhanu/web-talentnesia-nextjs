@@ -12,7 +12,7 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import { useDragContents, useDragpositionStore } from '@/lib/store';
+import { useDragContents, useDragChapters } from '@/lib/store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { contentsReorder } from '@/backoffice/modules/manage-modul/api/manageModelApi';
 
@@ -71,7 +71,6 @@ const AccordionPanelDraggableView: React.FC<
   }, [JSON.stringify(contents), index === activeAccordion]);
 
   useEffect(() => {
-    console.log(chapterId);
     if (chapterId && sortContents) {
       const executeMutation = async () => {
         if (sortContents && sortContents.length > 0) {
