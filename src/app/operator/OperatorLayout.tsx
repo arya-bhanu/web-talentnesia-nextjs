@@ -1,42 +1,35 @@
 'use client';
 
-import Navbar from '@/operator/components/navbar';
-import React, {
-  ReactNode,
-  useEffect,
-  useState,
-  useCallback,
-  useContext,
-} from 'react';
+import Navbar from '@/backoffice/components/navbar';
+import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession, refreshToken } from '@/lib/action';
+import { getSession } from '@/lib/action'; // Removed refreshToken
 import { useRouter } from 'next/navigation';
-import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
-const Sidebar = dynamic(() => import('@/operator/components/sidebar'), {
+const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
   ssr: false,
 });
 
-const OperatorLayout = ({ children }: { children: ReactNode }) => {
+const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { user, setUser } = useAuth();
-  const auth = useAuth();
 
   const checkAuth = useCallback(async () => {
     try {
       const session = await getSession();
-      if (!session.isLoggedIn || session.role !== 2) {
+      if (!session || !session.isLoggedIn || session.role !== 2) {
         router.push('/auth/login');
-      } else if (auth) {
-        auth.setUser({
+      } else {
+        setUser({
           userId: session.userId || '',
           name: session.name || '',
           email: session.email || '',
           role: session.role,
         });
-        await refreshToken();
+        // Removed refreshToken call
       }
     } catch (error) {
       console.error('Authentication error:', error);
@@ -44,12 +37,11 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [router, auth]);
+  }, [router, setUser]);
 
   useEffect(() => {
     checkAuth();
-    const intervalId = setInterval(checkAuth, 5 * 60 * 1000); // Re-check every 5 minutes
-    return () => clearInterval(intervalId);
+    // Removed interval for checkAuth
   }, [checkAuth]);
 
   useEffect(() => {
@@ -66,28 +58,26 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
     return <div>Loading...</div>; // Consider using a proper loading component
   }
 
-  if (!auth.user) {
+  if (!user) {
     return null;
   }
 
   return (
-    <AuthProvider>
-      <div className="bg-[#FAFAFA]">
-        {user && <Navbar user={user} />}
-        <Sidebar
-          isSidebarOpen={isSidebarOpen}
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        />
-        <div
-          className={`px-8 py-16 bg-[#FAFAFA] min-h-screen transition-all duration-300 md:ml-64`}
-        >
-          <div className="p-4 bg-[#FFFFFF] mt-14 rounded-xl shadow-sm">
-            {children}
-          </div>
+    <div className="bg-[#FAFAFA]">
+      {user && <Navbar user={user} />}
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+      <div
+        className={`px-8 py-16 bg-[#FAFAFA] min-h-screen transition-all duration-300 md:ml-64`}
+      >
+        <div className="p-4 bg-[#FFFFFF] mt-14 rounded-xl shadow-sm">
+          {children}
         </div>
       </div>
-    </AuthProvider>
+    </div>
   );
 };
 
-export default OperatorLayout;
+export default BackofficeLayout;

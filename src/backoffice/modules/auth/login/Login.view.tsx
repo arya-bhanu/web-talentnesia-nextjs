@@ -17,6 +17,19 @@ export const LoginView: React.FC<Partial<LoginViewProps>> = () => {
   const [error, setError] = useState('');
   const [showError, setShowError] = useState(false);
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const result = await login(formData);
+    if (result.error) {
+      setError(result.error);
+      setShowError(true);
+      setTimeout(() => setShowError(false), 5000);
+    } else if (result.redirectTo) {
+      window.location.href = result.redirectTo;
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-screen font-poppins">
       <div className="flex flex-col justify-center w-full md:w-1/2 lg:w-[45%] p-8 md:p-12 lg:p-20 xl:p-28 bg-white">
@@ -51,16 +64,7 @@ export const LoginView: React.FC<Partial<LoginViewProps>> = () => {
           <div className="flex-grow border-t border-gray-300 border-dashed" />
         </div>
         <form
-          action={async (formData) => {
-            const result = await login(formData);
-            if (result.error) {
-              setError(result.error);
-              setShowError(true);
-              setTimeout(() => setShowError(false), 5000);
-            } else if (result.redirectTo) {
-              window.location.href = result.redirectTo;
-            }
-          }}
+          onSubmit={handleSubmit}
           className="space-y-4"
         >
           <div className="relative">
