@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import SearchBar from '../search-bar/Searchbar';
@@ -7,8 +7,34 @@ import { Sling as Hamburger } from 'hamburger-react';
 import clsx from 'clsx';
 import { HeaderViewProps } from './header.type';
 import { programLinks } from '../dropdown/dropdown.data';
+import { getSession } from '@/lib/action';
 
 const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
+  const [userRole, setUserRole] = useState<number | null>(null);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const session = await getSession();
+      if (session.isLoggedIn) {
+        setUserRole(session.role ?? null);
+      }
+    };
+    checkSession();
+  }, []);
+
+  const getDashboardLink = () => {
+    switch (userRole) {
+      case 1:
+        return '/backoffice/example';
+      case 2:
+        return '/operator/example';
+      case 3:
+        return '/mentor/example';
+      default:
+        return '/';
+    }
+  };
+
   return (
     <header
       className={clsx(
@@ -51,6 +77,15 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
           Blog
         </Link>
         <div className="flex items-center gap-2 lg:gap-3">
+      {userRole ? (
+        <Link
+          className="px-4 lg:px-5 xl:px-8 py-1.5 lg:py-2 xl:py-3 border border-[#D0D5DD] bg-[#FFC862] rounded-full font-inter font-semibold"
+          href={getDashboardLink()}
+        >
+          Dashboard
+        </Link>
+      ) : (
+        <>
           <Link
             className="px-4 lg:px-5 xl:px-8 py-1.5 lg:py-2 xl:py-3 border border-[#D0D5DD] rounded-full font-inter font-semibold"
             href={'/auth/register'}
@@ -63,7 +98,9 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
           >
             Masuk
           </Link>
-        </div>
+        </>
+      )}
+    </div>
       </nav>
       <span className="block lg:hidden">
         <Hamburger />

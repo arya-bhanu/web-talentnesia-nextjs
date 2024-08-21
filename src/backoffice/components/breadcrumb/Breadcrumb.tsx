@@ -15,7 +15,9 @@ export const Breadcrumb: React.FC<BreadcrumbViewProps & { customBreadcrumbs?: Cu
     setIsClient(true);
   }, []);
 
-  const filteredSegments = pathSegments.filter(segment => segment.toLowerCase() !== 'backoffice');
+  const filteredSegments = pathSegments.filter(segment => 
+    !['backoffice', 'mentor', 'operator', 'student'].includes(segment.toLowerCase())
+  );
 
   const getCustomOrFormattedName = (segment: string, fullPath: string) => {
     const customName = getCustomBreadcrumb(fullPath) || getCustomBreadcrumb(segment) || customBreadcrumbs[fullPath] || customBreadcrumbs[segment];
