@@ -1,25 +1,25 @@
-import { SessionOptions } from 'iron-session'
-
 export interface SessionData {
   userId?: string;
   name?: string;
   email?: string;
-  password?: string;
   role?: number;
-  profilePicture?: string;
   isLoggedIn?: boolean;
-  lastActivity?: number;
 }
 
 export const defaultSession: SessionData = {
   isLoggedIn: false,
 }
 
-export const sessionOptions: SessionOptions = {
-  password: process.env.SESSION_PASSWORD!,
-  cookieName: "talentnesia-session",
-  cookieOptions: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-  },
+export const getStoredSession = (): SessionData => {
+  if (typeof window !== 'undefined') {
+    const storedSession = localStorage.getItem('talentnesia-session');
+    return storedSession ? JSON.parse(storedSession) : defaultSession;
+  }
+  return defaultSession;
+}
+
+export const setStoredSession = (session: SessionData) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('talentnesia-session', JSON.stringify(session));
+  }
 }

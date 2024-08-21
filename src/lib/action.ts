@@ -1,8 +1,4 @@
-'use server';
-
-import { getIronSession } from 'iron-session';
-import { sessionOptions, SessionData, defaultSession } from './lib';
-import { cookies } from 'next/headers';
+import { SessionData, defaultSession, getStoredSession, setStoredSession } from './lib';
 
 const users = [
   { userId: '4vbyzqky6yb5q0h2', name: 'admin', email: 'admin@example.com', password: 'admin', role: 1 },
@@ -10,21 +6,11 @@ const users = [
   { userId: 'xwgfok4w1uyf1ym2', name: 'mentor', email: 'mentor@example.com', password: 'mentor', role: 3 },
 ];
 
-export const getSession = async (): Promise<Partial<SessionData>> => {
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
-
-  return {
-    isLoggedIn: session.isLoggedIn || defaultSession.isLoggedIn,
-    userId: session.userId || '',
-    name: session.name || '',
-    email: session.email || '',
-    role: session.role || 0,
-  };
+export const getSession = (): SessionData => {
+  return getStoredSession();
 };
 
-export const login = async (formData: FormData) => {
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
-
+export const login = (formData: FormData) => {
   const formEmail = formData.get('email') as string;
   const formPassword = formData.get('password') as string;
   const user = users.find(u => u.email === formEmail && u.password === formPassword);
@@ -33,13 +19,15 @@ export const login = async (formData: FormData) => {
     return { error: 'Invalid credentials' };
   }
 
-  session.userId = user.userId;
-  session.name = user.name;
-  session.email = user.email;
-  session.role = user.role;
-  session.isLoggedIn = true;
+  const session: SessionData = {
+    userId: user.userId,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    isLoggedIn: true,
+  };
 
-  await session.save();
+  setStoredSession(session);
 
   const redirectMap: Record<number, string> = {
     1: '/backoffice/example',
@@ -50,8 +38,7 @@ export const login = async (formData: FormData) => {
   return { redirectTo: redirectMap[user.role] || '/' };
 };
 
-export const logout = async () => {
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
-  await session.destroy();
+export const logout = () => {
+  setStoredSession(defaultSession);
   return { redirectTo: '/' };
 };
