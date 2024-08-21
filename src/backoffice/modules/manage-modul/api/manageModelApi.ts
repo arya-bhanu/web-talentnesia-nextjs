@@ -135,3 +135,35 @@ export const deleteExam = async (id: string) => {
   const response = await backOfficeAPI.delete('/exam/' + id);
   return response.data;
 };
+
+// sorting request
+export const contentsReorder = async ({
+  contents,
+  chapterId,
+}: {
+  contents: string[];
+  chapterId: string;
+}) => {
+  const response = await backOfficeAPI.post(
+    '/content/reorder-contents/' + chapterId,
+    {
+      contents,
+    },
+  );
+  return response.data;
+};
+export const chapterReorder = async ({
+  chapters,
+  modulId,
+}: {
+  modulId: string;
+  chapters: string[];
+}) => {
+  const response = await backOfficeAPI.post(
+    '/chapter/reorder-chapters/' + modulId,
+    {
+      chapters,
+    },
+  );
+  return response.data;
+};

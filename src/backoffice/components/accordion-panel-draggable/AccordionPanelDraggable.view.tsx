@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import ArrowUp from '@/../public/icons/arrow-up.svg';
@@ -8,6 +8,13 @@ import clsx from 'clsx';
 import { IStateChapter } from '@/backoffice/modules/manage-modul/components/chapter/chapter.type';
 import ListDraggable from '../list-draggable';
 import AlertModal from '../alert-modal/AlertModal';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import { useDragpositionStore } from '@/lib/store';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { contentsReorder } from '@/backoffice/modules/manage-modul/api/manageModelApi';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -19,6 +26,7 @@ const AccordionPanelDraggableView: React.FC<
       idDelete: string;
       setIdDelete: Dispatch<SetStateAction<string>>;
       handleEdit: () => void;
+      chapterId?: string;
     }
 > = ({
   totalCurriculum,
@@ -34,7 +42,61 @@ const AccordionPanelDraggableView: React.FC<
   openModal,
   setIsConfirmed,
   handleEdit,
+  chapterId,
 }) => {
+  const queryClient = useQueryClient();
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+
+  const { sortActionContents, setSortContents, sortContents } =
+    useDragpositionStore();
+
+  const { mutateAsync: reorderContentsAsync } = useMutation({
+    mutationKey: ['contents'],
+    mutationFn: contentsReorder,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  useEffect(() => {
+    if (contents) {
+      const sortData = contents.sort((a, b) => a.order - b.order);
+      if (sortData && sortData.length > 0) {
+        setSortContents(sortData);
+      }
+    }
+  }, [contents, index === activeAccordion]);
+
+  useEffect(() => {
+    if (chapterId && sortContents) {
+      const executeMutation = async () => {
+        if (sortContents && sortContents.length > 0) {
+          try {
+            const response = await reorderContentsAsync({
+              chapterId,
+              contents: sortContents.map((el) => el.id),
+            });
+            queryClient.invalidateQueries({ queryKey: ['module'] });
+            console.log(response);
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      };
+      executeMutation();
+    }
+  }, [sortContents]);
+
+  const handleDragEnd = (e: DragEndEvent) => {
+    const { active, over } = e;
+    if (over && active.id !== over.id) {
+      sortActionContents(active, over);
+    }
+  };
+
   return (
     <div className="py-3">
       <AlertModal
@@ -42,8 +104,13 @@ const AccordionPanelDraggableView: React.FC<
         setIsConfirmed={setIsConfirmed}
         setOpenModal={setOpenModal}
       />
-      <div className="flex items-center gap-4">
-        <button>
+      <div ref={setNodeRef} style={style} className="flex items-center gap-4">
+        <button
+          type="button"
+          {...listeners}
+          {...attributes}
+          className="cursor-move"
+        >
           <DragIndicator />
         </button>
         <div
@@ -97,9 +164,18 @@ const AccordionPanelDraggableView: React.FC<
           index === activeAccordion ? 'block' : 'hidden',
         )}
       >
-        {contents.map((el, index) => (
-          <ListDraggable key={index} {...el} />
-        ))}
+        {sortContents && (
+          <DndContext
+            modifiers={[restrictToVerticalAxis]}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={sortContents}>
+              {sortContents.map((el, index) => (
+                <ListDraggable key={index} {...el} />
+              ))}
+            </SortableContext>
+          </DndContext>
+        )}
       </div>
     </div>
   );

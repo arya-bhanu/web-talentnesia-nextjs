@@ -27,6 +27,7 @@ const FormChapter = () => {
     type: 'nextSubmit',
   });
   const [openModalAddContent, setOpenModalAddContent] = useState(false);
+
   const { mutateAsync: createChapterAsync } = useMutation({
     mutationKey: ['chapter'],
     mutationFn: createChapter,

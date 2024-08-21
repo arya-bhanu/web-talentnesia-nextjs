@@ -62,9 +62,7 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
         if (submitType.type === 'defaultSubmit') {
           router.push(`/backoffice/manage-modul`);
         } else {
-          router.push(
-            `/backoffice/manage-modul/create/chapter?modulId=${id}`,
-          );
+          router.push(`/backoffice/manage-modul/create/chapter?modulId=${id}`);
         }
       }
     } catch (err) {
