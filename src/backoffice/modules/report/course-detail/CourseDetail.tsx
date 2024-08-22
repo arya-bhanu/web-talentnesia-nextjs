@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import CoursesProgress from '@/backoffice/modules/program/components/courses-progres/CoursesProgress';
-import AccordionPanelDraggable from '@/backoffice/modules/program/components/accordion-panel-draggable';
+import AccordionPanelDraggable from '../components/accordion-panel-draggable';
 import { TableProgramData } from '../components/table-program/tableProgram.data';
 
 interface ReportDetailProps {
@@ -32,8 +32,8 @@ const ReportDetail: React.FC<ReportDetailProps> = ({ params }) => {
       <CoursesProgress
         progress={programData.progress}
         className="flex-1 mb-6"
-        startDate="22 Maret 2024"
-        endDate="10 September 2024"
+        startDate="22 Maret 3024"
+        endDate="10 September 3024"
         completedSessions={Math.round(programData.progress * 5)}
         totalSessions={500}
       />
@@ -45,6 +45,7 @@ const ReportDetail: React.FC<ReportDetailProps> = ({ params }) => {
         title={`UX Design Principles`}
         index={1}
         totalCurriculum={6}
+        status='Delivered'
         contents={[
           {
             date: new Date(),
@@ -54,44 +55,46 @@ const ReportDetail: React.FC<ReportDetailProps> = ({ params }) => {
           },
           {
             date: new Date(),
-            durationMinute: 20,
+            durationMinute: 30,
             title: 'Jacob\'s Law',
             type: '1',
           },
           {
             date: new Date(),
             durationMinute: 30,
-            title: 'UX Introduction',
+            title: 'Concistency for your design',
             type: '1',
           },
           {
             date: new Date(),
-            durationMinute: 20,
-            title: 'Jacob\'s Law',
+            durationMinute: 30,
+            title: 'Hick\'s Law ',
             type: '2',
           },
           {
             date: new Date(),
             durationMinute: 30, 
-            title: 'UX Introduction',
-            type: '1',
+            title: 'Exam Hick\'s Law ',
+            type: '3',
           },
           {
             date: new Date(),
-            durationMinute: 20,
-            title: 'Jacob\'s Law',
+            durationMinute: 30,
+            title: 'Mentoring 1',
+            type: '4',
+          },
+          {
+            date: new Date(),
+            durationMinute: 30,
+            title: 'The magic number is 4',
+            completed: true,
             type: '2',
           },
           {
             date: new Date(),
             durationMinute: 30,
-            title: 'UX Introduction',
-            type: '1',
-          },
-          {
-            date: new Date(),
-            durationMinute: 20,
-            title: 'Jacob\'s Law',
+            title: 'Ethical Design',
+            completed: true,
             type: '2',
           },
         ]}
