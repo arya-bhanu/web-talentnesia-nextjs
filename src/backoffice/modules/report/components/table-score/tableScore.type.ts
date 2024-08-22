@@ -18,6 +18,7 @@ export interface ITableScoreView {
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   fetchData: () => Promise<void>;
+  title: string; // Tambahkan ini
 }
 
 

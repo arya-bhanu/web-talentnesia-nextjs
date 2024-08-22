@@ -15,13 +15,13 @@ export const ModalExam: React.FC<IExamModalProps & { closeModal: () => void }> =
         </div>
       </Modal.Header>
       <Modal.Body className='p-0'>
-        <div className="flex flex-1 gap-6">
-          <div className="w-[35%] border-r-2 h-full pl-4 pt-4">
+        <div className="flex flex-1 gap-8">
+          <div className="w-[35%] border-r-2 pl-4 pt-4">
             <Question />
           </div>
-          <div className="w-[65%] overflow-x-auto"> 
+          <div className="w-[65%]"> 
             <div className="gap-4 pr-4 pt-4">
-              <TableScore />
+              <TableScore title='Score'/>
             </div>
           </div>
         </div>

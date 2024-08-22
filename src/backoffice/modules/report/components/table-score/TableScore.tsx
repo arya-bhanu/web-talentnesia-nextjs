@@ -4,7 +4,7 @@ import React, { useState, useCallback } from 'react';
 import TableScoreView from './TableScore.view';
 import { TableScoreData } from './tableScore.data';
 
-const TableScore = () => {
+const TableScore = ({ title }: { title: string }) => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -25,6 +25,7 @@ const TableScore = () => {
       isPopupOpen={isPopupOpen}
       setIsPopupOpen={setIsPopupOpen}
       fetchData={fetchData}
+      title={title}
     />
   );
 };

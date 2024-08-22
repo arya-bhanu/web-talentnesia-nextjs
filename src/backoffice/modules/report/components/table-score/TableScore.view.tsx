@@ -19,6 +19,7 @@ const TableScoreView: React.FC<ITableScoreView> = ({
   setFilter,
   Filter,
   data,
+  title
 }) => {
   const router = useRouter();
 
@@ -87,7 +88,7 @@ const TableScoreView: React.FC<ITableScoreView> = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h1 className='text-2xl font-semibold font-poppins'>Score</h1>
+        <h1 className='text-2xl font-semibold font-poppins'>{title}</h1>
         <SearchTable onChange={setFilter} value={Filter} />
       </div>
       <div className="overflow-x-auto">

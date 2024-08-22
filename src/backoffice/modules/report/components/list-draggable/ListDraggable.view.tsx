@@ -5,10 +5,11 @@ import PlayCircle from '@/../public/icons/play-circle.svg';
 import Book from '@/../public/icons/manage-program/book.svg';
 import Edit2 from '@/../public/icons/edit-2.svg';
 import VideoCam from '@/../public/icons/videocam.svg';
-import GreenCheck from '@/../public/icons/green-check.svg'; 
+import GreenCheck from '@/../public/icons/green-check.svg';
 import { formatDateIndonesian } from '@/helpers/formatter.helper';
 import { IListDraggable } from './listDraggableType.type';
 import { ModalExam } from '../modal-exam/ModalExam';
+import { ModalMentoring } from '../modal-mentoring/ModalMentoring';
 
 const ListDraggableView: React.FC<IListDraggable> = ({
   type,
@@ -16,9 +17,10 @@ const ListDraggableView: React.FC<IListDraggable> = ({
   date,
   className,
   durationMinute,
-  completed
+  completed,
 }) => {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isExamModalOpen, setExamModalOpen] = useState(false);
+  const [isMentorModalOpen, setMentorModalOpen] = useState(false);
 
   const generateIcon = useMemo(() => {
     switch (type) {
@@ -35,12 +37,21 @@ const ListDraggableView: React.FC<IListDraggable> = ({
 
   const handleTitleClick = () => {
     if (type === '3') {
-      setModalOpen(true);
+      setExamModalOpen(true);
+    } else if (type === '4') {
+      setMentorModalOpen(true);
+    }
+    else {
+      return;
     }
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const closeExamModal = () => {
+    setExamModalOpen(false);
+  };
+
+  const closeMentorModal = () => {
+    setMentorModalOpen(false);
   };
 
   return (
@@ -49,12 +60,12 @@ const ListDraggableView: React.FC<IListDraggable> = ({
         <div className="flex items-center gap-2">
           <button>
             <DragIndicator />
-          </button> 
+          </button>
           {generateIcon}
           <div>
             <div className="flex gap-1 items-center">
               <h3
-                className={clsx('font-medium font-lato', type === '3' && 'cursor-pointer')}
+                className={clsx('font-medium font-lato cursor-pointer')}
                 onClick={handleTitleClick}
               >
                 {title}
@@ -74,11 +85,15 @@ const ListDraggableView: React.FC<IListDraggable> = ({
         </div>
       </div>
 
-      {isModalOpen && (
-        <ModalExam
+      {isExamModalOpen && (
+        <ModalExam filter="" setFilter={() => {}} closeModal={closeExamModal} />
+      )}
+
+      {isMentorModalOpen && (
+        <ModalMentoring
           filter=""
           setFilter={() => {}}
-          closeModal={closeModal}
+          closeModal={closeMentorModal}
         />
       )}
     </>

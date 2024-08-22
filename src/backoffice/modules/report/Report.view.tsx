@@ -41,7 +41,7 @@ const ReportView: React.FC = () => {
         </div>
         <div className="w-[60%]">
           <div className="flex justify-between mb-4 border-b-2">
-            <h1 className="text-xl font-bold p-6">Today's Agenda</h1>
+            <h1 className="text-xl font-bold p-6">{`Today's Agenda`}</h1>
             <p className="text-md text-gray-500 p-6">
               {format(currentDate, 'dd MMMM yyyy')}
             </p>
