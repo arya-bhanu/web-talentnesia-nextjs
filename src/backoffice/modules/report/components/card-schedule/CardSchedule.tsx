@@ -10,7 +10,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ icon, bgColor, title, count }) => {
   return (
     <div
-      className={`flex-1 bg-white border rounded-lg p-4 font-lato space-y-2 ${bgColor}`}
+      className={`flex-1 bg-white border rounded-lg p-4 font-lato space-y-2 m-3 ${bgColor}`}
     >
       <div className="flex space-x-2">
         <div className={`p-3 items-center rounded-full ${bgColor}`}>{icon}</div>

@@ -72,7 +72,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       <div
         className={`px-8 py-16 bg-[#FAFAFA] min-h-screen transition-all duration-300 md:ml-64`}
       >
-        <div className="mt-14 rounded-xl shadow-sm">
+        <div className="mt-14 rounded-xl">
           {children}
         </div>
       </div>
