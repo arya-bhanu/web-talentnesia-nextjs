@@ -1,9 +1,37 @@
 import { Popover } from 'flowbite-react';
-import React, { useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import MoreHoriz from '../../../../public/icons/more_horiz.svg';
 import { IPopover } from './popover.type';
 import Link from 'next/link';
 import AlertModal from '../alert-modal';
+
+const renderContent = (
+  setOpenModal: Dispatch<SetStateAction<boolean>>,
+  id: string,
+) => {
+  return (
+    <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
+      <Link
+        href={`/backoffice/manage-modul/update?modulId=${id}`}
+        className="hover:text-blue-500 hover:underline"
+      >
+        Edit
+      </Link>
+      <button
+        className="hover:text-red-500 hover:underline"
+        onClick={() => setOpenModal(true)}
+      >
+        Delete
+      </button>
+    </div>
+  );
+};
 
 const PopoverView: React.FC<IPopover> = ({
   index,
@@ -11,6 +39,7 @@ const PopoverView: React.FC<IPopover> = ({
   handleActionButtonRow,
   id,
   setOpenPopoverIndex,
+  content,
 }) => {
   const [open, setOpen] = useState(openPopoverIndex === index);
   const [openModal, setOpenModal] = useState(false);
@@ -33,22 +62,7 @@ const PopoverView: React.FC<IPopover> = ({
         open={open}
         onOpenChange={setOpen}
         aria-labelledby="default-popover"
-        content={
-          <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-            <Link
-              href={`/backoffice/manage-modul/update?modulId=${id}`}
-              className="hover:text-blue-500 hover:underline"
-            >
-              Edit
-            </Link>
-            <button
-              className="hover:text-red-500 hover:underline"
-              onClick={() => setOpenModal(true)}
-            >
-              Delete
-            </button>
-          </div>
-        }
+        content={content ? content : renderContent(setOpenModal, id)}
       >
         <button onClick={() => setOpenPopoverIndex(index)}>
           <MoreHoriz />
