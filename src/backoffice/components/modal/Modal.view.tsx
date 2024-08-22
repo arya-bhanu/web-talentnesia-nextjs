@@ -12,11 +12,10 @@ const ModalView: React.FC<IModal> = ({
   buttonConfirmTitle = 'Submit',
 }) => {
   return (
-    <Modal show={state.openModal} onClose={() => state.setOpenModal(false)}>
+    <Modal  size={'4xl'} show={state.openModal} onClose={() => state.setOpenModal(false)}>
       <Modal.Header>{title}</Modal.Header>
-      <form onSubmit={handleSubmit}>
+      <form className='overflow-auto' onSubmit={handleSubmit}>
         <Modal.Body>{children}</Modal.Body>
-
         <Modal.Footer className="w-full justify-end">
           <Button
             onClick={() => state.setOpenModal(false)}

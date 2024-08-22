@@ -17,8 +17,8 @@ const Datepicker = dynamic(
 const FormMentoringView: React.FC<IFormMentoring> = ({ timeInputState }) => {
   return (
     <div>
-      <form action="" className="py-5">
-        <div className="flex items-center gap-5">
+      <form className="py-3">
+        <div className="flex items-center gap-3">
           <div className="flex-1">
             <LabelForm isImportant htmlFor="mentoring_name">
               Mentoring Name
@@ -97,7 +97,7 @@ const FormMentoringView: React.FC<IFormMentoring> = ({ timeInputState }) => {
           <span className="text-black font-semibold">Save Mentoring</span>
         </button>
       </form>
-      <div className="flex flex-col gap-3 mt-3">
+      <div className="flex flex-col gap-3">
         <h2 className="font-poppins font-semibold">List Mentoring</h2>
         <ListMentoring />
       </div>

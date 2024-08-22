@@ -20,20 +20,29 @@ import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import PopoverAction from '@/backoffice/components/popover-action/PopoverAction';
 import Modal from '@/backoffice/components/modal';
 import FormMentoring from '../../form-program/components/form-mentoring';
+import FormCertificate from '../../form-program/components/form-certificate';
+import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
     IPopoverState & {
       index: number;
       handleOpenModalMentoring: (action: 'open' | 'close') => void;
+      handleOpenModalCertificate: (action: 'open' | 'close') => void;
+      handleOpenModalContent: (action: 'open' | 'close') => void;
       handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
-      setOpenModalMentoring: Dispatch<SetStateAction<boolean>>;
+      handleSubmitModalCertificate: (e: FormEvent<HTMLFormElement>) => void;
+      handleSubmitModalContent: (e: FormEvent<HTMLFormElement>) => void;
+      openModalContent: boolean;
+      setOpenModalContent: Dispatch<SetStateAction<boolean>>;
+      openModalCertificate: boolean;
+      setOpenModalCertificate: Dispatch<SetStateAction<boolean>>;
       openModalMentoring: boolean;
+      setOpenModalMentoring: Dispatch<SetStateAction<boolean>>;
     }
 > = ({
   title,
   index,
-
   totalCurriculum,
   totalMinuteDuration,
   activeAccordion,
@@ -45,6 +54,14 @@ const AccordionPanelDraggableView: React.FC<
   openModalMentoring,
   handleSubmitModalMentoring,
   setOpenModalMentoring,
+  handleOpenModalCertificate,
+  handleSubmitModalCertificate,
+  handleSubmitModalContent,
+  openModalCertificate,
+  setOpenModalCertificate,
+  handleOpenModalContent,
+  openModalContent,
+  setOpenModalContent,
 }) => {
   return (
     <div
@@ -60,6 +77,28 @@ const AccordionPanelDraggableView: React.FC<
         }}
       >
         <FormMentoring />
+      </Modal>
+      <Modal
+        title="Certificate"
+        handleSubmit={handleSubmitModalCertificate}
+        state={{
+          openModal: openModalCertificate,
+          setOpenModal: setOpenModalCertificate,
+        }}
+        buttonConfirmTitle="Save"
+      >
+        <FormCertificate />
+      </Modal>
+      <Modal
+        title="Add content"
+        buttonConfirmTitle="Submit"
+        handleSubmit={handleSubmitModalContent}
+        state={{
+          openModal: openModalContent,
+          setOpenModal: setOpenModalContent,
+        }}
+      >
+        <FormContent />
       </Modal>
       <div className="flex items-center gap-4">
         <button>
@@ -103,7 +142,10 @@ const AccordionPanelDraggableView: React.FC<
                   </button>
                 </li>
                 <li>
-                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                  <button
+                    onClick={() => handleOpenModalContent('open')}
+                    className="text-sm font-lato font-normal flex items-center gap-2"
+                  >
                     <AddXs />
                     Add File Content
                   </button>
@@ -115,7 +157,10 @@ const AccordionPanelDraggableView: React.FC<
                   </button>
                 </li>
                 <li>
-                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                  <button
+                    onClick={() => handleOpenModalCertificate('open')}
+                    className="text-sm font-lato font-normal flex items-center gap-2"
+                  >
                     <ClarityCertificate />
                     Certificate
                   </button>

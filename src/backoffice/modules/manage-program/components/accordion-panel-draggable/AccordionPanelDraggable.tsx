@@ -7,6 +7,16 @@ const AccordionPanelDraggable: React.FC<
 > = (props) => {
   const [openPopover, setOpenPopover] = useState(false);
   const [openModalMentoring, setOpenModalMentoring] = useState(false);
+  const [openModalCertificate, setOpenModalCertificate] = useState(false);
+  const [openModalContent, setOpenModalContent] = useState(false);
+
+  const handleOpenModalContent = (action: 'open' | 'close') => {
+    if (action === 'close') {
+      setOpenModalContent(false);
+    } else {
+      setOpenModalContent(true);
+    }
+  };
 
   const handleOpenModalMentoring = (action: 'open' | 'close') => {
     if (action === 'close') {
@@ -16,7 +26,25 @@ const AccordionPanelDraggable: React.FC<
     }
   };
 
+  const handleOpenModalCertificate = (action: 'open' | 'close') => {
+    if (action === 'close') {
+      setOpenModalCertificate(false);
+    } else {
+      setOpenModalCertificate(true);
+    }
+  };
+
   const handleSubmitModalMentoring = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleSubmitModalCertificate = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleSubmitModalContent = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
   };
@@ -24,11 +52,19 @@ const AccordionPanelDraggable: React.FC<
   return (
     <AccordionPanelDraggableView
       handleOpenModalMentoring={handleOpenModalMentoring}
-      openModalMentoring={openModalMentoring}
+      handleOpenModalCertificate={handleOpenModalCertificate}
+      handleOpenModalContent={handleOpenModalContent}
       open={openPopover}
       setOpen={setOpenPopover}
+      openModalMentoring={openModalMentoring}
       setOpenModalMentoring={setOpenModalMentoring}
       handleSubmitModalMentoring={handleSubmitModalMentoring}
+      handleSubmitModalCertificate={handleSubmitModalCertificate}
+      handleSubmitModalContent={handleSubmitModalContent}
+      openModalContent={openModalContent}
+      setOpenModalContent={setOpenModalContent}
+      openModalCertificate={openModalCertificate}
+      setOpenModalCertificate={setOpenModalCertificate}
       {...props}
     />
   );
