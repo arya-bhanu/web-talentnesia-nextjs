@@ -65,12 +65,6 @@ const AddSchoolView: React.FC = () => {
             required
           />
         </div>
-
-        {/* Buttons */}
-        <div className="col-span-2 flex justify-end space-x-4">
-          <Button color="red">Previous</Button>
-          <Button color="yellow">Next</Button>
-        </div>
       </div>
     </div>
   );

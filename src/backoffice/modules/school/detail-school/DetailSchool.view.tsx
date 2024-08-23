@@ -1,18 +1,15 @@
 'use client';
 
-import { Button, Label, TextInput, Radio, Card, Select } from 'flowbite-react';
+import { Card, } from 'flowbite-react';
 import { TabFlex } from '@/backoffice/components/tabs/tabs';
-import { DropFile } from '@/backoffice/components/drop-files-input/dropFilesInput'; 
-import LabelForm from '@/backoffice/components/label-form';
 import { IAddSchoolView } from './detailSchool.type';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
-import Add from '@/../public/icons/add.svg';
-import { IAccordionPanelDraggable } from '@/backoffice/modules/manage-program/components/accordion-panel-draggable/accordionPanelDraggable.type';
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 import ModalAddProgram from '@/backoffice/components/modal-add-program/ModalAddProgram';
 import DetailSchoolPage from './components/detail-course';
 import ListTableStudent from './components/list-table-student';
 import ListProgramCard from './components/list-program-card';
+import { IAccordionPanelDraggable } from '../components/accordion-panel-draggable/accordionPanelDraggable.type';
 
 function AddSchoolView({
   open,

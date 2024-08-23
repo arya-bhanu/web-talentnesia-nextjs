@@ -1,21 +1,17 @@
 import React from 'react';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
-import Add from '@/../public/icons/add.svg';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
-import Link from 'next/link';
 import { School } from './tableStudent.type';
 import clsx from 'clsx';
 
 interface TableStudentViewProps {
   schools: School[];
-  handleActionButtonRow: (id: string, action: 'delete' | 'edit') => Promise<void>;
   className?: string;
 }
 
 const TableStudentView: React.FC<TableStudentViewProps> = ({
   schools,
-  handleActionButtonRow,
   className,
 }) => {
   return (
@@ -25,7 +21,7 @@ const TableStudentView: React.FC<TableStudentViewProps> = ({
           <label htmlFor="simple-search" className="sr-only">Search</label>
           <div className="relative w-full">
             <div className="absolute inset-y-0 start-0 flex items-center pl-3 pointer-events-none">
-              {/* Search icon here if needed */}
+              <Search />
             </div>
           </div>
         </form>
@@ -55,8 +51,6 @@ const TableStudentView: React.FC<TableStudentViewProps> = ({
                   </td>
                   <td className="px-6 py-4">{el.email}</td>
                   <td className="px-6 py-4">{el.nis}</td>
-                  <td className="px-6 py-4">
-                  </td>
                 </tr>
               ))}
             </tbody>

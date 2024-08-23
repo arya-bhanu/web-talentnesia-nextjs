@@ -1,4 +1,4 @@
-import DetailSchool from '@/backoffice/modules/school/detail-course';
+import DetailSchool from '@/backoffice/modules/school/detail-school';
 import React from 'react';
 
 const AddSchoolProgram = () => {

@@ -4,4 +4,5 @@ export interface IListDraggable {
   date: Date;
   className?: string;
   durationMinute: number;
+  onContentClick?: () => void;  // Properti opsional
 }

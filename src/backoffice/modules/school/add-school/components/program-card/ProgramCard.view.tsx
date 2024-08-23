@@ -15,13 +15,20 @@ export const ProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) => {
     setModalOpen(true);
   };
 
+  const handleTrashClick = (event: React.MouseEvent<SVGElement>) => {
+    event.stopPropagation();
+  };
+
   const handleSubmitSelectedModul = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
   return (
     <>
-      <div className="block p-4 shadow-sm shadow-indigo-100 cursor-pointer" onClick={handleOpenModal}>
+      <div
+        className="block p-4 shadow-sm shadow-indigo-100 cursor-pointer"
+        onClick={handleOpenModal}
+      >
         <img
           alt={data.name}
           src={data.imageUrl}
@@ -33,12 +40,15 @@ export const ProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) => {
               <dd className="font-medium">{data.name}</dd>
               <dd className="text-xs mt-2 text-gray-500">{data.date}</dd>
             </div>
-            <TrashBtn className="ml-4" />
+            <TrashBtn
+              className="ml-4 cursor-pointer"
+              onClick={handleTrashClick}
+            />
           </dl>
         </div>
       </div>
 
-        {modalOpen && (
+      {modalOpen && (
         <CourseDetail
           openModal={modalOpen}
           setOpenModal={setModalOpen}

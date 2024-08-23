@@ -9,18 +9,11 @@ interface TableStudentProps {
 }
 
 const TableStudent: React.FC<TableStudentProps> = ({ className }) => {
-  const [schools, setSchools] = useState<School[]>(schoolsData);
-
-  const handleActionButtonRow = async (id: string, action: 'delete' | 'edit') => {
-    if (action === 'delete') {
-      setSchools((prevSchools) => prevSchools.filter((school) => school.id !== id));
-    }
-  };
+  const [schools] = useState<School[]>(schoolsData);
 
   return (
     <TableStudentView
       schools={schools}
-      handleActionButtonRow={handleActionButtonRow}
       className={className} 
     />
   );

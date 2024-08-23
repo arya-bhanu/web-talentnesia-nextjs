@@ -29,11 +29,9 @@ export const ListProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) =>
               <dd className="font-medium">{data.name}</dd>
               <dd className="text-xs mt-2 text-gray-500">{data.date}</dd>
             </div>
-            <TrashBtn className="ml-4" />
           </dl>
         </div>
       </div>
-
       {modalOpen && (
         <CourseDetail
           openModal={modalOpen}

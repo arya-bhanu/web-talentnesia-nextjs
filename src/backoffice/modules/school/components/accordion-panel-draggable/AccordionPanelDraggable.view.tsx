@@ -61,8 +61,13 @@ const AccordionPanelDraggableView: React.FC<IAccordionPanelDraggable & { index: 
           index === activeAccordion ? 'block' : 'hidden',
         )}
       >
-        {contents.map((el, index) => (
-          <ListDraggable key={index} {...el} />
+        {contents.map((el, idx) => (
+          <ListDraggable
+            key={idx}
+            {...el}
+            onContentClick={el.onContentClick || (() => {})}
+            className="cursor-pointer" 
+          />
         ))}
       </div>
     </div>
