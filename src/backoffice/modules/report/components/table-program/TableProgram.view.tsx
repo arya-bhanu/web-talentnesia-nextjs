@@ -34,21 +34,7 @@ const TableProgramView: React.FC<ITableProgramView> = ({
         header: ({ column }) => (
           <SortingTable column={column} title="Class" />
         ),
-        cell: (info) => {
-          const id = info.row.original.id; // Assuming 'id' is the course ID
-          const className = info.getValue<string>();
-          return (
-            <a
-              href={`/backoffice/report/${id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push(`/backoffice/report/${id}`);
-              }}
-            >
-              {className}
-            </a>
-          );
-        },
+        cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('type', {
         header: ({ column }) => (

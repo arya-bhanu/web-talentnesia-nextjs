@@ -48,7 +48,7 @@ const ReportView: React.FC<IReportViewProps> = ({ agendaCount, holidayCount, cur
         </div>
       </div>
 
-      <div className="p-4 bg-[#FFFFFF] mt-12 overflow-x-auto">
+      <div className="p-4 bg-[#FFFFFF] mt-12 overflow-x-auto rounded-xl">
         <TableProgram />
       </div>
     </>
