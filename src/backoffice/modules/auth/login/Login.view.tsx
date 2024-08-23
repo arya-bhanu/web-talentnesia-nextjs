@@ -1,19 +1,34 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { LoginViewProps } from './login.type';
 import './login.style.css';
 import useLogin from './hooks/useLogin';
+import { login } from '@/lib/action';
+import { Toast } from 'flowbite-react';
+import { HiX } from 'react-icons/hi';
 
-export const LoginView: React.FC<Partial<LoginViewProps>> = (
-  {
-    // showPassword,
-    // togglePasswordVisibility,
-  },
-) => {
+export const LoginView: React.FC<Partial<LoginViewProps>> = () => {
   const { showPassword, togglePasswordVisibility } = useLogin();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [showError, setShowError] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const result = await login(formData);
+    if (result.error) {
+      setError(result.error);
+      setShowError(true);
+      setTimeout(() => setShowError(false), 5000);
+    } else if (result.redirectTo) {
+      window.location.href = result.redirectTo;
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row h-screen font-poppins">
@@ -48,18 +63,29 @@ export const LoginView: React.FC<Partial<LoginViewProps>> = (
           <span className="mx-4 text-gray-500">atau</span>
           <div className="flex-grow border-t border-gray-300 border-dashed" />
         </div>
-        <form className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
           <div className="relative">
             <input
+              name="email"
               type="email"
               placeholder="Email"
+              value={email}
+              required
+              onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
             />
           </div>
           <div className="relative">
             <input
+              name="password"
               type={showPassword ? 'text' : 'password'}
               placeholder="Kata Sandi"
+              value={password}
+              required
+              onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
             />
             <button
@@ -82,14 +108,6 @@ export const LoginView: React.FC<Partial<LoginViewProps>> = (
                 height={20}
               />
             </button>
-          </div>
-          <div className="flex items-center justify-end">
-            <Link
-              href={'/auth/forgot-password'}
-              className="text-sm text-[#219EBC] hover:underline"
-            >
-              Lupa Kata Sandi?
-            </Link>
           </div>
           <button
             type="submit"
@@ -125,6 +143,15 @@ export const LoginView: React.FC<Partial<LoginViewProps>> = (
           </div>
         </div>
       </div>
+      {showError && (
+        <Toast className="fixed bottom-5 right-5">
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
+            <HiX className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal">{error}</div>
+          <Toast.Toggle onDismiss={() => setShowError(false)} />
+        </Toast>
+      )}
     </div>
   );
 };

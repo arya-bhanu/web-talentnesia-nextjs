@@ -10,6 +10,7 @@ const ModalView: React.FC<IModal> = ({
   title,
   handleSubmit,
   buttonConfirmTitle = 'Submit',
+  childProps,
 }) => {
   return (
     <Modal  size={'4xl'} show={state.openModal} onClose={() => state.setOpenModal(false)}>

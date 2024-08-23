@@ -1,19 +1,16 @@
-import Navbar from '@/backoffice/components/navbar';
-import Sidebar from '@/backoffice/components/sidebar';
-import React, { ReactNode } from 'react';
+'use client';
 
-const BackofficeLayout = ({ children }: { children: ReactNode }) => {
+import { AuthProvider } from '@/contexts/AuthContext';
+import BackofficeLayout from './BackofficeLayout';
+
+export default function BackofficeRootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <>
-      <Navbar />
-      <Sidebar />
-      <div className="px-8 py-16 sm:ml-64 bg-[#FAFAFA] min-h-screen">
-        <div className="p-4 bg-[#FFFFFF] mt-14 rounded-xl shadow-sm">
-          {children}
-        </div>
-      </div>
-    </>
+    <AuthProvider>
+      <BackofficeLayout>{children}</BackofficeLayout>
+    </AuthProvider>
   );
-};
-
-export default BackofficeLayout;
+}

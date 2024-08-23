@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FormManageModulView from './FormManageModul.view';
-import { IManageModulForm } from './formManageModul.type';
+import { IManageModulForm, ISubmitType } from './formManageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import {
@@ -12,8 +12,11 @@ import { APIResponseManageModul } from '../../manageModul.type';
 
 const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
   const queryClient = useQueryClient();
-
   const router = useRouter();
+
+  const [submitType, setSubmitType] = useState<ISubmitType>({
+    type: 'nextSubmit',
+  });
 
   // edit
   const { mutateAsync: createAsync } = useMutation({
@@ -22,7 +25,7 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
   });
 
   // update
-  const { mutateAsync: updateAsync } = useMutation({
+  const { mutateAsync: updateModulAsync } = useMutation({
     mutationKey: ['modules'],
     mutationFn: updateModul,
   });
@@ -43,14 +46,26 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
     >;
     try {
       if (moduleId) {
-        await updateAsync({ data: modulObject, moduleId });
+        await updateModulAsync({ data: modulObject, moduleId });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
-        router.push('/backoffice/manage-modul');
+        if (submitType.type === 'defaultSubmit') {
+          router.push('/backoffice/manage-modul');
+        } else {
+          router.push(
+            '/backoffice/manage-modul/update/chapter?modulId=' + moduleId,
+          );
+        }
       } else {
         const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         const id = responseCreate.data.id;
-        router.push(`/backoffice/manage-modul/create/chapter?modulId=${id}`);
+        if (submitType.type === 'defaultSubmit') {
+          router.push(`/backoffice/manage-modul`);
+        } else {
+          router.push(
+            `/backoffice/manage-modul/create/chapter?modulId=${id}`,
+          );
+        }
       }
     } catch (err) {
       console.error(err);
@@ -64,6 +79,8 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
         data: dataModule?.data,
         isLoading,
       }}
+      setSubmitType={setSubmitType}
+      type={submitType.type}
       id={moduleId}
     />
   );

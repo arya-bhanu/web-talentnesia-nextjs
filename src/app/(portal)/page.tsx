@@ -1,5 +1,6 @@
-import Home from '@/portal/modules/home/Home';
-const HomeIndex = () => {
+import { Home } from "@/portal/modules/home";
+
+const HomeIndex = async () => {
   return <Home />;
 };
 

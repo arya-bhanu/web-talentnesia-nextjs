@@ -16,3 +16,7 @@ export interface IFormChapter {
   };
   defaultValueData: APIChapterModul | null | undefined;
 }
+
+export interface ISubmitType {
+  type: 'nextSubmit' | 'defaultSubmit';
+}

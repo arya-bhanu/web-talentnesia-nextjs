@@ -13,7 +13,7 @@ export interface APIContentChapter {
   title: string;
   type: string;
   duration: string;
-  body: string;
+  body?: string;
   id: string;
   isexam: 0 | 1;
   order: number;
@@ -27,6 +27,33 @@ export interface APIChapterModul {
   order: number;
   title: string;
   contents: APIContentChapter[];
+}
+
+export interface APIExamChapter {
+  id: string;
+  order: number;
+  chapterId: string;
+  title: string;
+  duration: string;
+  exams: ExamQuestion[];
+}
+
+export interface ExamQuestion {
+  id: string;
+  title: string;
+  type: 'radio' | 'textarea' | 'file';
+  chapterId: string;
+  options:
+    | {
+        value: string;
+        text: string;
+        id: string;
+        order?: number;
+        questionId?: string;
+      }[]
+    | null;
+  order: number;
+  active: null | any;
 }
 
 export interface IManageModulView {

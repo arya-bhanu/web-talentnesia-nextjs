@@ -157,21 +157,20 @@ function FormProgramView({
               openModal: openModalModul,
               setOpenModal: setOpenModalModul,
             }}
-            buttonConfirmTitle='Save'
+            buttonConfirmTitle="Save"
             handleSubmit={handleSubmitSelectedModul}
-            children={
-              <div>
-                <LabelForm isImportant htmlFor="modul">
-                  Modul Name
-                </LabelForm>
-                <Select id="modul" name="modul">
-                  <option value={1}>Modul 1</option>
-                  <option value={2}>Modul 2</option>
-                  <option value={3}>Modul 3</option>
-                </Select>
-              </div>
-            }
-          />
+          >
+            <div>
+              <LabelForm isImportant htmlFor="modul">
+                Modul Name
+              </LabelForm>
+              <Select id="modul" name="modul">
+                <option value={1}>Modul 1</option>
+                <option value={2}>Modul 2</option>
+                <option value={3}>Modul 3</option>
+              </Select>
+            </div>
+          </Modal>
           <div className="flex items-center justify-between gap-10">
             <ModulProgress
               progress={50}

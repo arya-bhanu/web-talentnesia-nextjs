@@ -37,6 +37,20 @@ build_app:
     - sudo docker build -t $STAGING_REGISTRY_NAME .
     - sudo docker push $STAGING_REGISTRY_NAME
 
+failure_handling:
+  stage: build
+  tags:
+    - pjt2
+  only:
+    - dev
+  script:
+    - docker system prune -f
+  when: on_failure
+  needs:
+    - build_app
+  allow_failure: false
+
+
 deploy_app:
   stage: deploy
   tags:

@@ -1,4 +1,4 @@
-'use client';
+// Home.view.tsx
 import React from 'react';
 import Hero from './components/hero';
 import Benefits from './components/benefits';
@@ -7,19 +7,10 @@ import EliteClass from './components/elite-class';
 import UserStory from './components/user-story';
 import Partners from './components/partners';
 import NewsLetterSubscription from './components/news-letter-subscription';
-import { useHomeData } from './hooks/useHome';
+import { HomeViewProps } from './home.type';
 
-const HomeView = () => {
-  const { data, isLoading, error } = useHomeData();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error loading data</div>;
-  }
-
+const HomeView: React.FC<HomeViewProps> = ({ data }) => {
+  console.log
   return (
     <>
       <Hero />

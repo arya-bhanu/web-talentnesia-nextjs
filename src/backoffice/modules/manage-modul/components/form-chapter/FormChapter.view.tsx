@@ -1,17 +1,21 @@
 import LabelForm from '@/backoffice/components/label-form/LabelForm';
 import { Button } from 'flowbite-react/components/Button';
 import { TextInput } from 'flowbite-react/components/TextInput';
-import React, { useCallback, useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import Add from '@/../public/icons/add.svg';
 import AddWhite from '@/../public/icons/add-white.svg';
 import EditableListContent from '@/backoffice/components/editable-list-content';
 import Modal from '@/backoffice/components/modal';
 import FormContent from '../form-content';
-import { IFormChapter } from './formChapter.type';
+import { IFormChapter, ISubmitType } from './formChapter.type';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { useSearchParams } from 'next/navigation';
 
-const FormChapterView: React.FC<IFormChapter> = ({
+const FormChapterView: React.FC<
+  IFormChapter &
+    ISubmitType & { setSubmitType: Dispatch<SetStateAction<ISubmitType>> }
+> = ({
   handleSubmitAddContent,
   stateFormAddContent,
   id,
@@ -19,7 +23,10 @@ const FormChapterView: React.FC<IFormChapter> = ({
   setActionSubChapter,
   defaultValueData,
   contents,
+  setSubmitType,
 }) => {
+  const params = useSearchParams();
+  const chapterId = params.get('chapterId');
   const renderContents = useMemo(() => {
     if (contents.isLoading) {
       return <h1>Loading...</h1>;
@@ -33,6 +40,7 @@ const FormChapterView: React.FC<IFormChapter> = ({
       <EditableListContent {...el} key={el.id} />
     ));
   }, [contents]);
+
   return (
     <div>
       <Modal
@@ -42,7 +50,11 @@ const FormChapterView: React.FC<IFormChapter> = ({
       >
         <FormContent />
       </Modal>
-      <form onSubmit={handleSubmitCreateChapter}>
+      <form
+        onSubmit={(el) => {
+          handleSubmitCreateChapter(el);
+        }}
+      >
         <div>
           <div className="mb-2 block">
             <LabelForm aria-required htmlFor="chapter" isImportant>
@@ -58,14 +70,6 @@ const FormChapterView: React.FC<IFormChapter> = ({
             className={clsx('w-full')}
             defaultValue={defaultValueData?.title}
             key={defaultValueData?.title}
-            disabled={defaultValueData?.title ? true : false}
-          />
-          <input
-            type="hidden"
-            name="chapter"
-            id="chapter"
-            defaultValue={defaultValueData?.title}
-            key={defaultValueData?.title + ' hidden'}
           />
         </div>
         <div className="mt-14">
@@ -105,11 +109,12 @@ const FormChapterView: React.FC<IFormChapter> = ({
             </Link>
           </Button>
           <Button
+            onClick={() => setSubmitType({ type: 'defaultSubmit' })}
             type="submit"
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >
-            {id ? 'Update' : 'Submit'}
+            {chapterId ? 'Update' : 'Submit'}
           </Button>
         </div>
       </form>
