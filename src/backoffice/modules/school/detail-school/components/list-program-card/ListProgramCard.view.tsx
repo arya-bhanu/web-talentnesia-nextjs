@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ListProgramCardType } from './listProgramCard.type';
-import TrashBtn from '@/../public/icons/manage-program/trash-btn.svg';
 import CourseDetail from '../../../components/course-detail';
 
 interface ProgramCardViewProps {

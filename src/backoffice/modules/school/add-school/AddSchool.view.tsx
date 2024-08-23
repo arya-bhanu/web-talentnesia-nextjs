@@ -1,4 +1,4 @@
-import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useState, MouseEvent } from 'react';
 import { Button, Card } from 'flowbite-react';
 import AddSchool from './components/add';
 import TableStudent from './components/table-student';
@@ -17,11 +17,12 @@ function AddSchoolView({
   setSelected,
   columns,
   rows,
+  handleSubmitSelectedModul,  
 }: IAddSchoolView &
   Pick<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'> & {
     openModalModul: boolean;
     setOpenModalModul: Dispatch<SetStateAction<boolean>>;
-    handleSubmitSelectedModul: (e: FormEvent<HTMLFormElement>) => void;
+    handleSubmitSelectedModul: (e: FormEvent<HTMLFormElement>) => void;  
     className?: string;
   }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -101,8 +102,16 @@ function AddSchoolView({
     },
   ];
 
-  const handleNextTab = () => {
-    setActiveIndex((prevIndex) => Math.min(prevIndex + 1, tabs.length - 1));
+  const handleNextOrSubmit = (e: MouseEvent) => {
+    if (activeIndex === tabs.length - 1) {
+      console.log("Form submitted");
+      const formElement = e.currentTarget.closest("form");
+      if (formElement) {
+        handleSubmitSelectedModul(new Event("submit") as unknown as FormEvent<HTMLFormElement>);
+      }
+    } else {
+      setActiveIndex((prevIndex) => Math.min(prevIndex + 1, tabs.length - 1));
+    }
   };
 
   const handlePreviousTab = () => {
@@ -111,39 +120,38 @@ function AddSchoolView({
 
   return (
     <Card>
-    <ModalAddProgram
-      open={open}
-      selected={selected}
-      setOpen={setOpen}
-      setSelected={setSelected}
-      columns={columns}
-      title="Select Program"
-      rows={rows}
-    />
-    <TabFlex
-      tabs={tabs}
-      activeIndex={activeIndex}
-      setActiveIndex={setActiveIndex}
-    />
-    <div className="col-span-2 flex justify-end space-x-4 mt-4">
-      <Button
-        color="red"
-        onClick={handlePreviousTab}
-        disabled={activeIndex === 0}
-        className="focus:outline-none"
-      >
-        Previous
-      </Button>
-      <Button
-        color="yellow"
-        onClick={handleNextTab}
-        disabled={activeIndex === tabs.length - 1}
-        className="focus:outline-none"
-      >
-        Next
-      </Button>
-    </div>
-  </Card>  
+      <ModalAddProgram
+        open={open}
+        selected={selected}
+        setOpen={setOpen}
+        setSelected={setSelected}
+        columns={columns}
+        title="Select Program"
+        rows={rows}
+      />
+      <TabFlex
+        tabs={tabs}
+        activeIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
+      />
+      <div className="col-span-2 flex justify-end space-x-4 mt-4">
+        <Button
+          color="red"
+          onClick={handlePreviousTab}
+          disabled={activeIndex === 0}
+          className="focus:outline-none"
+        >
+          Previous
+        </Button>
+        <Button
+          color="yellow"
+          onClick={handleNextOrSubmit}
+          className="focus:outline-none"
+        >
+          {activeIndex === tabs.length - 1 ? "Submit" : "Next"}
+        </Button>
+      </div>
+    </Card>
   );
 }
 

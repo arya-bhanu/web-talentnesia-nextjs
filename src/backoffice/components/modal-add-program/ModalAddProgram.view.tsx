@@ -15,7 +15,7 @@ const ModalAddProgramView: React.FC<IModalSelect> = ({
   rows,
 }) => {
   return (
-    <Modal show={open} onClose={() => setOpen(false)}>
+    <Modal show={open} onClose={() => setOpen(false)} size="4xl">
       <div className="max-w-full mx-auto">
         <Modal.Header>
           <span className="text-lg font-semibold">{title}</span>
