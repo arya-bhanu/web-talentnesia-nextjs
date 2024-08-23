@@ -9,11 +9,11 @@ export const ProgramCardData: ProgramCardType[] = [
   {
     name: 'Kelas B Tefa SMK',
     date: 'Periode Januari 2024 - Juni 2024',
-    imageUrl: '/images/frame-2.png'
+    imageUrl: '/images/frame-2.png',
   },
   {
     name: 'Kelas C Tefa SMK',
     date: 'Periode Januari 2024 - Juni 2024',
-    imageUrl: '/images/frame-3.png'
+    imageUrl: '/images/frame-3.png',
   },
 ];
