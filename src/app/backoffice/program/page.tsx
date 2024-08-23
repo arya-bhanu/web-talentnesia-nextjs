@@ -1,4 +1,4 @@
-import Program from '@/backoffice/modules/program/program.view';
+import Program from '@/backoffice/modules/program/Program.view';
 
 const ProgramPage = () => {
   return (

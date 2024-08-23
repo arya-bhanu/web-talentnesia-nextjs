@@ -69,7 +69,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   }
 
   // Determine if background color should be hidden based on current route
-  const customPageStyle = ['/backoffice/report/'].includes(pathname);
+  const customPageStyle = ['/backoffice/report/', '/backoffice/program/'].includes(pathname);
 
   return (
     <div className='bg-[#FAFAFA]'>
