@@ -15,6 +15,7 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDashboard, setIsDashboard] = useState(false);
   const router = useRouter();
   const { user, setUser } = useAuth();
 
@@ -30,7 +31,6 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
           email: session.email || '',
           role: session.role,
         });
-        // Removed refreshToken call
       }
     } catch (error) {
       console.error('Authentication error:', error);
@@ -42,7 +42,6 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     checkAuth();
-    // Removed interval for checkAuth
   }, [checkAuth]);
 
   useEffect(() => {
@@ -55,6 +54,12 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const { pathname } = window.location;
+    const isDashboardPath = pathname.includes('dashboard');
+    setIsDashboard(isDashboardPath);
+  }, []);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -63,7 +68,11 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
     return null;
   }
 
-  const customPageStyle = ['/backoffice/report/'].includes(pathname);
+  // Determine if background color should be hidden based on current route
+  const customPageStyle = 
+  pathname.startsWith('/operator/student/');
+
+  
 
   return (
     <div className='bg-[#FAFAFA]'>
