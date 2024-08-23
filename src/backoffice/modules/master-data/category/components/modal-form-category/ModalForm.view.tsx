@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dropdown, Modal } from 'flowbite-react';
 import { ModalFormViewProps } from './modalForm.type';
+import { InputDropdown } from '@/backoffice/components/input-dropdown/InputDropdown';
 
 export const ModalFormView: React.FC<ModalFormViewProps> = ({
   isOpen,
@@ -60,26 +61,11 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
               <label className="block mb-2 text-sm font-medium text-gray-900">
                 Status<label className="text-red-500">*</label>
               </label>
-              <div className=" w-full p-2 border rounded-lg">
-                <Dropdown
-                  label={formData.status ? formData.status.charAt(0).toUpperCase() + formData.status.slice(1) : 'Active'}
-                  inline
-                  className="w-full"
-                >
-                  <Dropdown.Item
-                    onClick={() => handleInputChange('status', 'active')}
-                    className="text-sm px-4 py-2 hover:bg-gray-100"
-                  >
-                    Active
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() => handleInputChange('status', 'inactive')}
-                    className="text-sm px-4 py-2 hover:bg-gray-100"
-                  >
-                    Inactive
-                  </Dropdown.Item>
-                </Dropdown>
-              </div>
+              <InputDropdown
+                value={formData.status || ''}
+                onChange={(value) => handleInputChange('status', value)}
+                options={['Active', 'Inactive']}
+              />
               {hasError && !formData.status && (
                 <p className="text-red-500 text-xs mt-1">
                   Status is required.

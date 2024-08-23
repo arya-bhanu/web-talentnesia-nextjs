@@ -1,0 +1,21 @@
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+#icon-sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  width: 0; /* Chrome, Safari, Opera */
+}
+
+.sidebar {
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-open {
+  background-color: #f8f9fa; /* Example background color when open */
+}
+
+.sidebar-closed {
+  background-color: transparent; /* Or maintain the same color */
+}

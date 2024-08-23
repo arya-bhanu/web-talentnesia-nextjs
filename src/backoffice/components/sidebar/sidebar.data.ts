@@ -33,8 +33,8 @@ export const sidebarData: SidebarProps[] = [
       { label: 'Level', link: '/backoffice/master-data/level' },
       { label: 'Region', link: '/backoffice/master-data/region' },
       { label: 'Religion', link: '/backoffice/master-data/religion' },
-      { label: 'Role', link: '/backoffice/master-data/role' },
-      { label: 'Quiz Type', link: '/backoffice/master-data/quiz-type' },
+      // { label: 'Role', link: '/backoffice/master-data/role' },
+      // { label: 'Quiz Type', link: '/backoffice/master-data/quiz-type' },
     ],
   },
   {
@@ -50,7 +50,7 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/report.svg',
     title: 'Report',
-    path: '#',
+    path: '/backoffice/report',
   },
   {
     icon: '/icons/sidebar/school.svg',

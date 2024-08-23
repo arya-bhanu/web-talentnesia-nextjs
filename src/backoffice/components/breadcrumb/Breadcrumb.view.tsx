@@ -18,7 +18,7 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
       className={clsx(className, 'font-poppins text-sm')}
     >
       <div className="">
-        <ol className="flex text-md text-[#989FAD] items-center">
+        <ol className="flex text-sm md:text-md text-[#989FAD] items-center">
           {pathSegments.map((segment, index) => {
             const path = '/' + pathSegments.slice(0, index + 1).join('/');
             const isLast = index === pathSegments.length - 1;
