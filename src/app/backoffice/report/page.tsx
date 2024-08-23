@@ -1,9 +1,9 @@
-import ReportView from "@/backoffice/modules/report/Report.view";
+import Report from "@/backoffice/modules/report";
 
 const ReportPage = () => {
     return (
       <>
-        <ReportView />
+        <Report />
       </>
     );
   };

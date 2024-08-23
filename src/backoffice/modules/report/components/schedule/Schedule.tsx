@@ -4,11 +4,7 @@ import { Calendar } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import './schedule.style.css'; // Assuming you have custom CSS for the calendar
-
-interface CalendarsEventProps {
-  selectedDate: Date | null;
-  agenda: Record<number, string>;
-}
+import { CalendarsEventProps } from './schedule.type';
 
 const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda }) => {
   const calendarRef = useRef<HTMLDivElement>(null);

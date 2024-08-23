@@ -1,7 +1,7 @@
 import React from 'react';
 import AddNewProgram from '@/backoffice/modules/manage-program/add-new-program';
 
-const SchoolOperatorPage = () => {
+const AddProgramIICPPage = () => {
   return (
     <>
       <AddNewProgram />
@@ -9,4 +9,4 @@ const SchoolOperatorPage = () => {
   );
 };
 
-export default SchoolOperatorPage;
+export default AddProgramIICPPage;

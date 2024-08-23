@@ -1,13 +1,13 @@
 'use client';
 
-import Navbar from '@/mentor/components/navbar';
+import Navbar from '@/backoffice/components/mentor/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { getSession } from '@/lib/action'; // Removed refreshToken
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-const Sidebar = dynamic(() => import('@/mentor/components/sidebar'), {
+const Sidebar = dynamic(() => import('@/backoffice/components/mentor/components/sidebar'), {
   ssr: false,
 });
 

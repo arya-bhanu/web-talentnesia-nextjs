@@ -1,13 +1,13 @@
 'use client';
 
-import Navbar from '@/operator/components/navbar';
+import Navbar from '@/backoffice/components/operator/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { getSession } from '@/lib/action'; // Removed refreshToken
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-const Sidebar = dynamic(() => import('@/operator/components/sidebar'), {
+const Sidebar = dynamic(() => import('@/backoffice/components/operator/components/sidebar'), {
   ssr: false,
 });
 

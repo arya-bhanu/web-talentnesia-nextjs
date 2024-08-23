@@ -12,7 +12,7 @@ export const TitleNavbarView: React.FC<TitleNavbarViewProps> = ({
     <div
       className={clsx(
         className,
-        'text-2xl font-bold text-[#323232] font-poppins mb-0.5',
+        'text-lg md:text-2xl font-bold text-[#323232] font-poppins mb-0.5',
       )}
     >
       {title}
