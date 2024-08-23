@@ -9,7 +9,7 @@ import { logout, getSession } from '@/lib/action';
 import { SessionData } from '@/lib/lib';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { NavbarState } from '../navbar/navbar.type';
+import { NavbarState } from './navbar.type';
 import { TitleNavbar } from '@/backoffice/components/title-navbar';
 
 interface NavbarViewProps extends NavbarState {
