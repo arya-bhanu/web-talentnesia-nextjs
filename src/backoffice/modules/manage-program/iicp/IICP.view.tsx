@@ -6,8 +6,7 @@ import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
 import Popover from '@/backoffice/components/popover';
 import { IICPStateType } from './iicp.type';
-import Badge from '@/backoffice/components/badge';
-
+import { BadgeStatus } from '@/backoffice/components/badge-status';
 const IICPView: React.FC<IICPStateType> = ({
   popoverIndex,
   setPopoverIndex,
@@ -105,7 +104,7 @@ const IICPView: React.FC<IICPStateType> = ({
               <td className="px-6 py-4">1</td>
               <td className="px-6 py-4">Data Analyst</td>
               <td className="px-6 py-4">
-                <Badge color={renderColorBadge(true)}>Active</Badge>
+                <BadgeStatus status={1} />
               </td>
               <td className="px-6 py-4">
                 <Popover
