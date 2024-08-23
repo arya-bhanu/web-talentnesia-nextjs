@@ -3,7 +3,7 @@
 import Navbar from '@/backoffice/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession } from '@/lib/action'; // Removed refreshToken
+import { getSession } from '@/lib/action';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -14,6 +14,7 @@ const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
 const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDashboard, setIsDashboard] = useState(false);
   const router = useRouter();
   const { user, setUser } = useAuth();
 
@@ -29,7 +30,6 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
           email: session.email || '',
           role: session.role,
         });
-        // Removed refreshToken call
       }
     } catch (error) {
       console.error('Authentication error:', error);
@@ -41,7 +41,6 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     checkAuth();
-    // Removed interval for checkAuth
   }, [checkAuth]);
 
   useEffect(() => {
@@ -54,8 +53,14 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const { pathname } = window.location;
+    const isDashboardPath = pathname.includes('dashboard');
+    setIsDashboard(isDashboardPath);
+  }, []);
+
   if (isLoading) {
-    return <div>Loading...</div>; // Consider using a proper loading component
+    return <div>Loading...</div>;
   }
 
   if (!user) {
@@ -70,9 +75,12 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div
-        className={`px-8 py-16 bg-[#FAFAFA] min-h-screen transition-all duration-300 md:ml-64`}
+        className={`px-4 py-12 bg-[#FAFAFA] min-h-screen transition-all duration-300 md:ml-64`}
       >
-        <div className="p-4 bg-[#FFFFFF] mt-14 rounded-xl shadow-sm">
+        <div
+          className={`p-4 ${isDashboard ? '' : 'bg-[#FFFFFF] rounded-xl shadow-sm'}`}
+          style={isDashboard ? { marginLeft: '-40px' } : { marginRight: '50px' }}
+        >
           {children}
         </div>
       </div>

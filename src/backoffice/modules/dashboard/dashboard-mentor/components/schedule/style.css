@@ -1,0 +1,171 @@
+.fc-toolbar-title {
+  font-size: 14px !important;
+  font-weight: semibold !important;
+  color: #667085 !important;
+  padding: 20px !important;
+  padding-left: -40px  !important;
+  margin-bottom: -28px !important;
+  font-family: poppins;
+}
+
+.fc-agendaButton-button {
+  background: transparent !important;  
+  border: none !important;             
+  color: black !important;           
+  font-size: 20px !important;          
+  font-weight: bold !important;        
+  font-family: poppins, sans-serif !important; 
+  padding: 0 !important;               
+  margin: 0 !important;                
+  cursor: text !important;             
+  box-shadow: none !important;        
+  text-align: left !important;         
+  outline: none !important;  
+  padding-top: 22px !important;                            
+}
+
+.fc-agendaButton-button:hover,
+.fc-agendaButton-button:focus {
+  background: transparent !important;  
+  color: black !important;           
+  cursor: text !important;             
+  outline: none !important;  
+  border-left-color: #1D4ED8; 
+}
+
+
+.fc-agendaButton-button:hover,
+.fc-agendaButton-button:focus {
+  background: transparent !important;  
+  color: black !important;           
+  cursor: text !important;             
+  outline: none !important;           
+}
+
+.fc .fc-timegrid-slot {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-bottom: none !important;
+}
+
+.fc .fc-timegrid-slot-label-cushion,
+.fc .fc-timegrid-slot-lane {
+  border-bottom: 0; 
+}
+
+.fc .fc-timegrid-axis {
+  border-right: 0; 
+}
+
+.calendar-event-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin-left: 20px;
+  margin-top: -40px;
+  border-right: none;
+}
+
+#mycalendar .fc {
+  border: none !important;
+}
+
+#mycalendar .fc-daygrid-day, 
+#mycalendar .fc-timegrid-daygrid-day {
+  background-color: black !important; 
+}
+
+#mycalendar .fc-timegrid-slot,
+#mycalendar .fc-timegrid-slot-label-cushion,
+#mycalendar .fc-timegrid-slot-lane,
+#mycalendar .fc-timegrid-axis,
+#mycalendar .fc-col-header-cell,
+#mycalendar .fc-timegrid-axis-frame,
+#mycalendar .fc-timegrid-slot-label-frame {
+  background-color: white !important;
+  border-bottom: none !important;
+}
+
+#mycalendar .fc-daygrid-day-number {
+  background-color: white !important; 
+}
+.fc-day-header {
+  display: none !important;
+  margin-left: -30px;
+  margin-top: 30px;
+  border: none !important
+}
+.fc-day-header, .fc-day-top {
+  display: none !important;
+}
+.fc-day-grid-container {
+  display: none;
+}
+/* Hide both the header and top part of the day cells */
+.fc .fc-col-header-cell,
+.fc .fc-daygrid-day-top {
+  display: none !important;
+}
+
+
+.custom-event {
+  background-color: #219EBC;
+  color: white;
+  border: none;
+  padding: 2px;
+  border-radius: 6px;
+  font-size: 12px;
+  position: relative;
+  overflow: auto;
+  left: 30px;
+}
+
+.custom-event-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.custom-event-time {
+  font-size: 10px;
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  padding: 6px;
+}
+.fc-event-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hide scrollbar but keep scrolling */
+#mycalendar {
+  margin-left: -30px;
+  height: 645px; /* Adjust height as needed */
+  width: 230%; /* Adjust width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#mycalendar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Webkit browsers */
+}
+
+#mycalendar {
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.fc .fc-timegrid-slot.fc-timegrid-slot-hour {
+  border-bottom: 1px solid gray !important; /* Hourly lines */
+}
+
+.fc .fc-timegrid-slot.fc-timegrid-slot-minute {
+  border-bottom: none !important;
+  border: none !important;
+}
+.fc .fc-timegrid-slot.fc-timegrid-slot-minute {
+  border-bottom: none !important;
+}
+
