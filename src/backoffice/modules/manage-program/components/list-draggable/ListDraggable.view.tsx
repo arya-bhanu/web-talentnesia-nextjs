@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { FormEvent, useMemo } from 'react';
 
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import clsx from 'clsx';
-import { IListDraggable } from './listDraggableType.type';
+import { IListDraggable, IListDraggableState } from './listDraggableType.type';
 import PlayCircle from '@/../public/icons/play-circle.svg';
 import Book from '@/../public/icons/manage-program/book.svg';
 import Edit2 from '@/../public/icons/edit-2.svg';
@@ -11,13 +11,23 @@ import Calendar from '@/../public/icons/manage-program/calendar.svg';
 import EditBtn from '@/../public/icons/manage-program/Edit-btn.svg';
 import TrashBtn from '@/../public/icons/manage-program/trash-btn.svg';
 import { formatDateIndonesian } from '@/helpers/formatter.helper';
+import Modal from '@/backoffice/components/modal';
+import FormSchedule from '../../form-program/components/form-schedule';
 
-const ListDraggableView: React.FC<IListDraggable> = ({
+const ListDraggableView: React.FC<
+  IListDraggable &
+    IListDraggableState & {
+      handleSubmitSchedule: (e: FormEvent<HTMLFormElement>) => void;
+    }
+> = ({
   type,
   title,
   date,
   className,
   durationMinute,
+  modalSchedule,
+  setModalSchedule,
+  handleSubmitSchedule,
 }) => {
   const generateIcon = useMemo(() => {
     switch (type) {
@@ -33,6 +43,17 @@ const ListDraggableView: React.FC<IListDraggable> = ({
   }, [type]);
   return (
     <div className={clsx('flex items-center justify-between', className)}>
+      <Modal
+        title="Edit Schedule"
+        state={{
+          openModal: modalSchedule,
+          setOpenModal: setModalSchedule,
+        }}
+        buttonConfirmTitle="Submit"
+        handleSubmit={handleSubmitSchedule}
+      >
+        <FormSchedule />
+      </Modal>
       <div className="flex items-center gap-2">
         <button>
           <DragIndicator />
@@ -50,7 +71,7 @@ const ListDraggableView: React.FC<IListDraggable> = ({
         <p className="font-semibold font-lato text-xs">
           {durationMinute} minute
         </p>
-        <button>
+        <button onClick={() => setModalSchedule(true)}>
           <Calendar />
         </button>
         <button>

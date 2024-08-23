@@ -21,6 +21,7 @@
     "flowbite": "^2.4.1",
     "flowbite-react": "^0.10.1",
     "hamburger-react": "^2.5.1",
+    "hex-and-rgba": "^2.0.0",
     "iron-session": "^8.0.2",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^8.5.1",

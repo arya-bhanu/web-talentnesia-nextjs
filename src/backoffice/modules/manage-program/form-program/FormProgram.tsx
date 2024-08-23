@@ -1,6 +1,6 @@
 'use client';
 import React, { FormEvent, useState } from 'react';
-import AddNewProgramView from './AddNewProgram.view';
+import FormProgramView from './FormProgram.view';
 import SintiaPic from '@/../public/icons/sintia-pic.svg';
 
 const columns = [
@@ -62,7 +62,7 @@ const mappedNumberRows = rows.map((el, index) => {
   return { ...el, no: index + 1 };
 });
 
-const AddNewProgram = () => {
+const FormProgram = () => {
   const [mentors, setMentors] = useState(['Mentor 1', 'Mentor 2']);
   const [status, setStatus] = useState('On Going');
   const [selectedStudents, setSelectedStudents] = useState(['']);
@@ -72,7 +72,7 @@ const AddNewProgram = () => {
 
   const handleSubmitSelectedModul = (e: FormEvent<HTMLFormElement>) => {};
   return (
-    <AddNewProgramView
+    <FormProgramView
       handleSubmitSelectedModul={handleSubmitSelectedModul}
       mentors={mentors}
       setMentors={setMentors}
@@ -92,4 +92,4 @@ const AddNewProgram = () => {
   );
 };
 
-export default AddNewProgram;
+export default FormProgram;
