@@ -1,10 +1,9 @@
 import React from 'react';
-import AddNewProgram from '@/backoffice/modules/manage-program/add-new-program';
-
+import FormProgram from '@/backoffice/modules/manage-program/form-program';
 const SchoolOperatorPage = () => {
   return (
     <>
-      <AddNewProgram />
+      <FormProgram />
     </>
   );
 };

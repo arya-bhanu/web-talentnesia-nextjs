@@ -15,6 +15,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDashboard, setIsDashboard] = useState(false);
   const router = useRouter();
   const { user, setUser } = useAuth();
 
@@ -30,7 +31,6 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
           email: session.email || '',
           role: session.role,
         });
-        // Removed refreshToken call
       }
     } catch (error) {
       console.error('Authentication error:', error);
@@ -42,7 +42,6 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     checkAuth();
-    // Removed interval for checkAuth
   }, [checkAuth]);
 
   useEffect(() => {
@@ -55,8 +54,14 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const { pathname } = window.location;
+    const isDashboardPath = pathname.includes('dashboard');
+    setIsDashboard(isDashboardPath);
+  }, []);
+
   if (isLoading) {
-    return <div>Loading...</div>; // Consider using a proper loading component
+    return <div>Loading...</div>;
   }
 
   if (!user) {
