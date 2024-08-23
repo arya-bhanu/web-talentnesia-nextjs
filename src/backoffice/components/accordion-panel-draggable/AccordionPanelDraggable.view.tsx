@@ -12,7 +12,7 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import { useDragContents, useDragChapters } from '@/lib/store';
+import { useDragContents } from '@/lib/store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { contentsReorder } from '@/backoffice/modules/manage-modul/api/manageModelApi';
 

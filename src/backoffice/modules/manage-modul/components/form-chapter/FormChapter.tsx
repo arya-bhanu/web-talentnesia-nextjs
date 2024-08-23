@@ -45,6 +45,8 @@ const FormChapter = () => {
     queryFn: () => fetchChapter(params.get('chapterId')),
   });
 
+  console.log(dataChapter);
+
   const handleSubmitAddContent = async (
     e: React.FormEvent<HTMLFormElement>,
   ) => {
