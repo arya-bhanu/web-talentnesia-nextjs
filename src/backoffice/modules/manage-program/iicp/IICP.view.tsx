@@ -35,7 +35,7 @@ const IICPView: React.FC<IICPStateType> = ({
           </div>
         </form>
         <Link
-          href="/backoffice/manage-modul/create"
+          href="/backoffice/manage-program/add-program-IICP"
           className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
         >
           <Add />
@@ -106,15 +106,13 @@ const IICPView: React.FC<IICPStateType> = ({
               <td className="px-6 py-4">
                 <BadgeStatus status={1} />
               </td>
-              <td className="px-6 py-4">
-                <Popover
-                  id="1"
-                  index={1}
-                  openPopoverIndex={popoverIndex}
-                  setOpenPopoverIndex={setPopoverIndex}
-                  handleActionButtonRow={() => {}}
-                />
-              </td>
+              <Popover
+                id="1"
+                index={1}
+                openPopoverIndex={popoverIndex}
+                setOpenPopoverIndex={setPopoverIndex}
+                handleActionButtonRow={() => {}}
+              />
             </tr>
           </tbody>
         </table>
