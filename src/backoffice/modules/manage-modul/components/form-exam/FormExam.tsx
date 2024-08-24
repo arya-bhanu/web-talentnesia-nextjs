@@ -1,5 +1,5 @@
 'use client';
-import React, { FormEvent, useEffect, useState, useTransition } from 'react';
+import React, { FormEvent, useEffect, useTransition } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useExamStore, useQuestionExamStore } from '@/lib/store';
@@ -11,7 +11,7 @@ import {
   getExam,
   updateExam,
 } from '../../api/manageModelApi';
-import { defaultQuestionRadio } from './formExam.data';
+import { defaultExamData, defaultQuestionRadio } from './formExam.data';
 
 const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   const params = useSearchParams();
@@ -35,6 +35,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   }, [isPending]);
 
   useEffect(() => {
+    setDataExam(defaultExamData);
     if (dataExam?.data) {
       setDataExam({
         chapterId: dataExam.data?.chapterId,
@@ -45,7 +46,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
       });
       updateQuestion(dataExam.data?.exams);
     }
-  }, [dataExam?.data]);
+  }, [JSON.stringify(dataExam?.data)]);
 
   const { mutateAsync: createExamAsync } = useMutation({
     mutationFn: createExam,
@@ -75,7 +76,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
       if (examName && chapterId && modulId) {
         const dataExam = {
           chapterId,
-          duration: dataExamStore.duration,
+          duration: dataExamStore?.duration || '01.00',
           exams: question,
           title: examName,
         } as APIExamChapter;
@@ -100,9 +101,10 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
           //   });
           // }
         }
-
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['exam'] });
+        setDataExam(defaultExamData);
+        updateQuestion([]);
         startTransition(() => {
           router.replace(
             `/backoffice/manage-modul/create/chapter/?modulId=${modulId}&chapterId=${chapterId}`,

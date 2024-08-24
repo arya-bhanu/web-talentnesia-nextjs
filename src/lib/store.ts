@@ -1,4 +1,7 @@
-import { defaultQuestionRadio } from '@/backoffice/modules/manage-modul/components/form-exam/formExam.data';
+import {
+  defaultExamData,
+  defaultQuestionRadio,
+} from '@/backoffice/modules/manage-modul/components/form-exam/formExam.data';
 import {
   APIChapterModul,
   APIContentChapter,
@@ -37,13 +40,7 @@ interface DragChapter {
 }
 
 export const useExamStore = create<ExamStore>()((set) => ({
-  dataExam: {
-    chapterId: '',
-    duration: '01:00',
-    id: '',
-    order: -1,
-    title: '',
-  },
+  dataExam: defaultExamData,
   setDataExam: (newData) =>
     set(() => ({
       dataExam: newData,

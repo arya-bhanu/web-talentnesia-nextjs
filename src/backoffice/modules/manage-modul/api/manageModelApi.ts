@@ -11,7 +11,7 @@ export const fetchModules = async () => {
   return response.data;
 };
 
-export const fetchModule = async (id?: string) => {
+export const fetchModule = async (id?: string | null) => {
   if (id) {
     const response = await backOfficeAPI.get('/manage-module/' + id);
     return response.data;
@@ -77,8 +77,11 @@ export const deleteChapter = async (id: string) => {
 
 // content
 export const fetchContent = async (id?: string) => {
-  const response = await backOfficeAPI.get('/content/' + id);
-  return response.data;
+  if (id) {
+    const response = await backOfficeAPI.get('/content/' + id);
+    return response.data;
+  }
+  return null;
 };
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
@@ -144,12 +147,9 @@ export const examReorder = async ({
   questions: string[];
   examId: string;
 }) => {
-  const response = await backOfficeAPI.post(
-    '/exam/reorder-exams/' + examId,
-    {
-      questions,
-    },
-  );
+  const response = await backOfficeAPI.post('/exam/reorder-exams/' + examId, {
+    questions,
+  });
   return response.data;
 };
 export const contentsReorder = async ({

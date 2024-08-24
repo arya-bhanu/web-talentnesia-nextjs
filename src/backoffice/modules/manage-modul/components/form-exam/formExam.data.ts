@@ -1,6 +1,14 @@
 import { v4 as uuid } from 'uuid';
 import { ExamQuestion } from '../../manageModul.type';
 
+export const defaultExamData = {
+  chapterId: '',
+  duration: '01:00',
+  id: '',
+  order: -1,
+  title: '',
+};
+
 export const defaultOptionRadio = [
   {
     text: 'Option 1',

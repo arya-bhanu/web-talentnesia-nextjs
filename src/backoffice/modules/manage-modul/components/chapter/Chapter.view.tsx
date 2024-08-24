@@ -30,6 +30,7 @@ const ChapterView: React.FC<IChapter & IStateChapter> = ({
   });
 
   useEffect(() => {
+    setSortChapters(null);
     if (data.chapters) {
       const sortData = data.chapters.sort((a, b) => a.order - b.order);
       setSortChapters(sortData);
@@ -90,7 +91,7 @@ const ChapterView: React.FC<IChapter & IStateChapter> = ({
         </SortableContext>
       </DndContext>
     );
-  }, [sortChapters, activeAccordion, setActiveAccordion]);
+  }, [sortChapters, activeAccordion, setActiveAccordion, data.isLoading]);
   return (
     <section className={className}>
       <div className="flex items-center justify-between mt-10">

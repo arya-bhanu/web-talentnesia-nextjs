@@ -29,7 +29,7 @@ const FormExamView: React.FC<
   } = useQuestionExamStore();
   const { dataExam, setTime } = useExamStore();
   const [timeState, setTimeState] = useState<Date>(
-    convertStrToDate(dataExam.duration),
+    convertStrToDate(dataExam?.duration || '01.00'),
   );
 
   useEffect(() => {
@@ -62,8 +62,8 @@ const FormExamView: React.FC<
             id="exam_name"
             name="exam_name"
             placeholder="UI/UX Designer"
-            defaultValue={dataExam.title}
-            key={dataExam.title}
+            defaultValue={dataExam?.title}
+            key={dataExam?.title}
             required
           />
         </div>
@@ -71,7 +71,7 @@ const FormExamView: React.FC<
           <TimeInput
             label={{ isImportant: true, text: 'Duration' }}
             setTime={setTimeState}
-            time={convertStrToDate(dataExam.duration || '01:00')}
+            time={convertStrToDate(dataExam?.duration || '01:00')}
             className="h-full"
           />
         </div>

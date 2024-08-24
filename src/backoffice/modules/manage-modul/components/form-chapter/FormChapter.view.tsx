@@ -25,7 +25,6 @@ const FormChapterView: React.FC<
 > = ({
   handleSubmitAddContent,
   stateFormAddContent,
-  id,
   handleSubmitCreateChapter,
   setActionSubChapter,
   defaultValueData,
@@ -64,9 +63,10 @@ const FormChapterView: React.FC<
         </SortableContext>
       </DndContext>
     );
-  }, [JSON.stringify(sortContents)]);
+  }, [JSON.stringify(sortContents), contents.isLoading]);
 
   useEffect(() => {
+    setSortContents(null);
     if (contents.data) {
       const sortData = contents.data.sort((a, b) => a.order - b.order);
       if (sortData && sortData.length > 0) {

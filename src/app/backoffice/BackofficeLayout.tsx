@@ -19,30 +19,30 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { user, setUser } = useAuth();
 
-  const checkAuth = useCallback(async () => {
-    try {
-      const session = await getSession();
-      if (!session || !session.isLoggedIn || session.role !== 1) {
-        router.push('/auth/login');
-      } else {
-        setUser({
-          userId: session.userId || '',
-          name: session.name || '',
-          email: session.email || '',
-          role: session.role,
-        });
-      }
-    } catch (error) {
-      console.error('Authentication error:', error);
-      router.push('/auth/login');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [router, setUser]);
+  // const checkAuth = useCallback(async () => {
+  //   try {
+  //     const session = await getSession();
+  //     if (!session || !session.isLoggedIn || session.role !== 1) {
+  //       router.push('/auth/login');
+  //     } else {
+  //       setUser({
+  //         userId: session.userId || '',
+  //         name: session.name || '',
+  //         email: session.email || '',
+  //         role: session.role,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Authentication error:', error);
+  //     router.push('/auth/login');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }, [router, setUser]);
 
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+  // useEffect(() => {
+  //   checkAuth();
+  // }, [checkAuth]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -60,13 +60,13 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     setIsDashboard(isDashboardPath);
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   // Determine if background color should be hidden based on current route
   const customPageStyle = ['/backoffice/report/', '/backoffice/program/'].includes(pathname);
