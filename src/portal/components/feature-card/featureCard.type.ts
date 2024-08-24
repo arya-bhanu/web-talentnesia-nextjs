@@ -7,4 +7,5 @@ export interface courses {
   originPrice: string;
   url: string;
   rating: string;
+  isLoading?: boolean
 }

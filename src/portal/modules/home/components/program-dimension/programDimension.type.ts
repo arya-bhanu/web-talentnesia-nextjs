@@ -3,4 +3,5 @@ import { Programs } from '@/portal/components/program-dimension-card/programDime
 export interface ProgramDimensionSectionViewProps {
   className?: string;
   programs: Programs[];
+  isLoading?: boolean;
 }
