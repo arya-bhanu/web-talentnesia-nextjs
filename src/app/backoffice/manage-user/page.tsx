@@ -1,3 +1,12 @@
-const Page = () => <></>;
+import React from 'react';
+import UserView from '@/backoffice/modules/user/User';
 
-export default Page;
+const UserPage = () => {
+  return (
+    <>
+      <UserView />
+    </>
+  );
+};
+
+export default UserPage;

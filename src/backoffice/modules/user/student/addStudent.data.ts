@@ -21,38 +21,6 @@ export const educationLevels = [
   'S3',
 ];
 
-export const provinces = ['Jawa Timur', 'jawa Barat', 'Jawa Tengah'];
-
-export const districts = [
-  'Malang',
-  'Cirebon',
-  'Semarang',
-  'Solo',
-  'Surabaya',
-  'Jakarta',
-  'Bandung',
-  'Medan',
-  'Makassar',
-  'Palembang',
-  'Yogyakarta',
-  'Bali',
-  'Lampung',
-  'Banten',
-  'Jambi',
-  'Bali',
-  'Lampung',
-  'Banten',
-];
-
-export const subDistrict = [
-  'KedungKandang',
-  'Depok',
-  'Gunungpati',
-  'Sleman',
-  'Denpasar',
-  'Kediri',
-];
-
 export const placesOfBirth = [
   'Jakarta',
   'Surabaya',

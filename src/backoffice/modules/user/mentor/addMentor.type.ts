@@ -34,3 +34,8 @@ export interface MentorFormData {
   addressDomicile: string;
   education: Education[];
 }
+
+export interface Region {
+  id: string;
+  name: string;
+}

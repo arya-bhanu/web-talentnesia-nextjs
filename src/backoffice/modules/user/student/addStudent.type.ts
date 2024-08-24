@@ -20,3 +20,8 @@ export interface StudentFormData {
   start: string;
   end: string;
 }
+
+export interface Region {
+  id: string;
+  name: string;
+}

@@ -1,18 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
-import {
-  religions,
-  provinces,
-  districts,
-  subDistrict,
-  placesOfBirth,
-  educationLevels,
-} from './addStudent.data';
+import React, { useState, useEffect } from 'react';
+import { religions, educationLevels, placesOfBirth } from './addStudent.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useStudentForm } from './AddStudent';
-import './student.style.css';
+import './addStudent.style.css';
+import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
+import { cityAPI } from '../../master-data/region/city/api/cityApi';
+import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
+import { Region } from './addStudent.type';
+
 
 const Datepicker = dynamic(
   () =>
@@ -46,11 +44,37 @@ export const StudentView: React.FC<StudentViewProps> = ({
   handleEducationChange,
   resetForm,
 }) => {
+  const [provinces, setProvinces] = useState<Region[]>([]);
+  const [districts, setDistricts] = useState<Region[]>([]);
+  const [subDistricts, setSubDistricts] = useState<Region[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedProvinces = await provinceAPI.all();
+        console.log('Fetched provinces:', fetchedProvinces);
+        setProvinces(fetchedProvinces);
+  
+        const fetchedDistricts = await cityAPI.all();
+        console.log('Fetched districts:', fetchedDistricts);
+        setDistricts(fetchedDistricts);
+  
+        const fetchedSubDistricts = await subDistrictAPI.all();
+        console.log('Fetched sub-districts:', fetchedSubDistricts);
+        setSubDistricts(fetchedSubDistricts);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+
+
   return (
     <>
       <div className="container mx-auto p-1 max-w-full">
-        {/* <h1 className="text-3xl font-bold mb-8">Add Student</h1>
-            <Breadcrumb pathSegments={[]}/> */}
         <form className="space-y-8">
           <div className="border p-6 rounded-lg shadow-sm bg-white">
             <div className="flex items-center space-x-4">
@@ -223,16 +247,20 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   name="province"
                   value={form.province || ''}
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins"
                 >
                   <option className="hidden" value="" disabled>
                     Select Province
                   </option>
-                  {provinces.map((province, index) => (
-                    <option key={index} value={province}>
-                      {province}
-                    </option>
-                  ))}
+                  {provinces && provinces.length > 0 ? (
+                    provinces.map((province, index) => (
+                      <option key={index} value={province.id}>
+                        {province.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="" disabled>Loading provinces...</option>
+                  )}
                 </select>
               </div>
               <div>
@@ -240,40 +268,49 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   City/District<div className="text-red-600">*</div>
                 </label>
                 <select
-                  name="district"
-                  value={form.district || ''}
-                  onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
-                >
-                  <option className="hidden" value={''} disabled>
-                    Select City/District
-                  </option>
-                  {districts.map((district, index) => (
-                    <option key={index} value={district}>
-                      {district}
-                    </option>
-                  ))}
-                </select>
+  name="district"
+  value={form.district || ''}
+  onChange={handleInputChange}
+  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+>
+  <option className="hidden" value="" disabled>
+    Select City/District
+  </option>
+  {districts && districts.length > 0 ? (
+    districts.map((district, index) => (
+      <option key={index} value={district.id}>
+        {district.name}
+      </option>
+    ))
+  ) : (
+    <option value="" disabled>Loading districts...</option>
+  )}
+</select>
+
               </div>
               <div>
                 <label className="flex mb-1">
                   Sub District<div className="text-red-600">*</div>
                 </label>
                 <select
-                  name="subDistrict"
-                  value={form.subDistrict || ''}
-                  onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
-                >
-                  <option className="hidden" value={''} disabled>
-                    Select Sub District
-                  </option>
-                  {subDistrict.map((district, index) => (
-                    <option key={index} value={district}>
-                      {district}
-                    </option>
-                  ))}
-                </select>
+  name="subDistrict"
+  value={form.subDistrict || ''}
+  onChange={handleInputChange}
+  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+>
+  <option className="hidden" value="" disabled>
+    Select Sub District
+  </option>
+  {subDistricts && subDistricts.length > 0 ? (
+    subDistricts.map((subDistrict, index) => (
+      <option key={index} value={subDistrict.id}>
+        {subDistrict.name}
+      </option>
+    ))
+  ) : (
+    <option value="" disabled>Loading sub districts...</option>
+  )}
+</select>
               </div>
               <div>
                 <label className="flex mb-1">

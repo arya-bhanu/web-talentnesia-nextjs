@@ -1,19 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   religions,
   isMarried,
   titles,
-  provinces,
-  districts,
-  subDistrict,
   placesOfBirth,
 } from './addMentor.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useMentorForm } from './AddMentor';
-import './mentor.style.css';
+import './addMentor.style.css';
+import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
+import { cityAPI } from '../../master-data/region/city/api/cityApi';
+import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
+import { Region } from './addMentor.type';
 
 const Datepicker = dynamic(
   () =>
@@ -49,11 +50,32 @@ export const MentorView: React.FC<MentorViewProps> = ({
   removeEducation,
   resetForm,
 }) => {
+  const [provinces, setProvinces] = useState<Region[]>([]);
+  const [districts, setDistricts] = useState<Region[]>([]);
+  const [subDistricts, setSubDistricts] = useState<Region[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedProvinces = await provinceAPI.all();
+        setProvinces(fetchedProvinces);
+
+        const fetchedDistricts = await cityAPI.all();
+        setDistricts(fetchedDistricts);
+
+        const fetchedSubDistricts = await subDistrictAPI.all();
+        setSubDistricts(fetchedSubDistricts);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="container mx-auto p-1 max-w-full">
-        {/* <h1 className="text-3xl font-bold mb-8">Add Mentor</h1>
-            <Breadcrumb pathSegments={[]}/> */}
         <form className="space-y-8">
           <div className="border p-6 rounded-lg shadow-sm bg-white">
             <div className="flex items-center space-x-4">
@@ -299,20 +321,20 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   Province<div className="text-red-600">*</div>
                 </label>
                 <select
-                  name="province"
-                  value={form.province || ''}
-                  onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
-                >
-                  <option className="hidden" value="" disabled>
-                    Select Province
+                name="province"
+                value={form.province || ''}
+                onChange={handleInputChange}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+              >
+                <option className="hidden" value="" disabled>
+                  Select Province
+                </option>
+                {provinces?.map((province, index) => (
+                  <option key={index} value={province.id}>
+                    {province.name}
                   </option>
-                  {provinces.map((province, index) => (
-                    <option key={index} value={province}>
-                      {province}
-                    </option>
-                  ))}
-                </select>
+                ))}
+              </select>
               </div>
               <div>
                 <label className="flex mb-1">
@@ -324,12 +346,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   onChange={handleInputChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
                 >
-                  <option className="hidden" value={''} disabled>
+                  <option className="hidden" value="" disabled>
                     Select City/District
                   </option>
-                  {districts.map((district, index) => (
-                    <option key={index} value={district}>
-                      {district}
+                  {districts?.map((district, index) => (
+                    <option key={index} value={district.id}>
+                      {district.name}
                     </option>
                   ))}
                 </select>
@@ -344,12 +366,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   onChange={handleInputChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
                 >
-                  <option className="hidden" value={''} disabled>
+                  <option className="hidden" value="" disabled>
                     Select Sub District
                   </option>
-                  {subDistrict.map((district, index) => (
-                    <option key={index} value={district}>
-                      {district}
+                  {subDistricts?.map((subDistrict, index) => (
+                    <option key={index} value={subDistrict.id}>
+                      {subDistrict.name}
                     </option>
                   ))}
                 </select>
