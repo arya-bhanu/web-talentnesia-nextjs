@@ -1,7 +1,7 @@
 'use client';
 import React, { FormEvent, useState } from 'react';
 import FormProgramView from './FormProgram.view';
-import SintiaPic from '@/../public/icons/sintia-pic.svg';
+import Image from 'next/image';
 
 const columns = [
   {
@@ -26,7 +26,13 @@ const rows = [
   {
     name: () => (
       <div className="flex items-center gap-1.5">
-        <SintiaPic />
+        <Image
+          alt="prof-pic"
+          src={'/images/manage-program/profile.svg'}
+          width={50}
+          height={50}
+          className="rounded-full w-9 h-9"
+        />
         <span>Cintia</span>
       </div>
     ),
@@ -37,7 +43,13 @@ const rows = [
   {
     name: () => (
       <div className="flex items-center gap-1.5">
-        <SintiaPic />
+        <Image
+          alt="prof-pic"
+          src={'/images/manage-program/profile.svg'}
+          width={50}
+          height={50}
+          className="rounded-full w-9 h-9"
+        />
         <span className="w-max">Roby</span>
       </div>
     ),
@@ -48,7 +60,13 @@ const rows = [
   {
     name: () => (
       <div className="flex items-center gap-1.5">
-        <SintiaPic />
+        <Image
+          alt="prof-pic"
+          src={'/images/manage-program/profile.svg'}
+          width={50}
+          height={50}
+          className="rounded-full w-9 h-9"
+        />
         <span className="w-max">Jennifer</span>
       </div>
     ),
