@@ -5,9 +5,11 @@ import { Mentor } from './mentorSelector.type';
 function MentorSelector({
   selectedMentors,
   setSelectedMentors,
+  defaultMentors,
 }: {
   selectedMentors: Mentor[];
   setSelectedMentors: Dispatch<SetStateAction<Mentor[]>>;
+  defaultMentors: Mentor[];
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -81,7 +83,7 @@ function MentorSelector({
           <hr />
           {/* Mentor List with Checkboxes */}
           <div className="p-2 max-h-40 overflow-y-auto">
-            {selectedMentors
+            {defaultMentors
               .filter((mentor) =>
                 mentor.name.toLowerCase().includes(searchTerm.toLowerCase()),
               )

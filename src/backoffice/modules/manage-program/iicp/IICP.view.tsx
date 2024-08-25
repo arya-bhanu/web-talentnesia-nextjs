@@ -39,7 +39,7 @@ const IICPView: React.FC<IICPStateType> = ({
           className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
         >
           <Add />
-          <span className="text-black"> Add Modul</span>
+          <span className="text-black"> Add New Program</span>
         </Link>
       </div>
       <div className="overflow-x-auto max-h-[60vh] overflow-y-auto sm:rounded-lg mt-5">

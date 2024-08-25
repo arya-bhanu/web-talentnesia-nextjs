@@ -13,11 +13,16 @@ export interface IStateFormDetail {
   isLoadingMentors: boolean;
 }
 
+export type Schools = {
+  id: string;
+  name: string;
+};
+
 export interface APIDetailForm {
   name: string;
-  active: number;
+  active: 0 | 1 | 2;
   mentors: Mentor[];
-  image?: File | null;
+  image?: string | null;
   startDate: string;
   endDate: string;
   institutionId?: string | null;

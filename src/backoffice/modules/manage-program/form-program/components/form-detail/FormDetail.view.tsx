@@ -19,7 +19,8 @@ const FormDetailView: React.FC<
   IFormDetail & IHandleFormDetail & IStateFormDetail
 > = ({ programId, handleSubmitForm, isLoadingMentors }) => {
   const [selectedMentors, setSelectedMentors] = useState<Mentor[]>([]);
-  const { data, setData } = useFormDetailStore();
+  const { data, setData, defaultMentors, defaultSchools } =
+    useFormDetailStore();
   useEffect(() => {
     if (selectedMentors) {
       const { mentors, ...rest } = data;
@@ -49,7 +50,7 @@ const FormDetailView: React.FC<
         <div className="flex items-center space-x-4">
           <Radio id="notStarted" name="active" value="0" />
           <Label htmlFor="notStarted" value="Not Started" />
-          <Radio id="onGoing" name="active" value="1" />
+          <Radio id="onGoing" defaultChecked name="active" value="1" />
           <Label htmlFor="onGoing" value="On Going" />
         </div>
       </div>
@@ -60,6 +61,7 @@ const FormDetailView: React.FC<
           Mentor
         </LabelForm>
         <MentorSelector
+          defaultMentors={defaultMentors}
           selectedMentors={data.mentors}
           setSelectedMentors={setSelectedMentors}
         />
@@ -89,12 +91,17 @@ const FormDetailView: React.FC<
       {/* School */}
       <div className="col-span-2">
         <LabelForm htmlFor="school">School</LabelForm>
-        <Select id="school" name="school" required>
-          <option selected value="" disabled>
+        <Select defaultValue={''} id="school" name="school" required>
+          <option value="" disabled>
             Select School
           </option>
-          <option value="1">School 1</option>
-          <option value="2">School 2</option>
+          {defaultSchools.map((el) => {
+            return (
+              <option key={el.id} value={el.id}>
+                {el.name}
+              </option>
+            );
+          })}
         </Select>
       </div>
 
