@@ -29,6 +29,7 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
           userId: session.userId || '',
           name: session.name || '',
           email: session.email || '',
+          profilePicture: session.profilePicture || '',
           role: session.role,
         });
       }
