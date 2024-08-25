@@ -14,7 +14,7 @@ const BenefitsSectionView = ({ className }: { className?: string }) => {
     <section
       className={clsx(
         className,
-        'flex items-center justify-center gap-3 md:gap-5 lg:gap-7 relative top-0 lg:-top-6 xl:-top-12',
+        'flex items-center justify-center gap-3 md:gap-5 lg:gap-7 relative top-0 lg:-top-6 xl:-top-20',
       )}
     >
       <Swiper
@@ -38,9 +38,9 @@ const BenefitsSectionView = ({ className }: { className?: string }) => {
         modules={[Pagination]}
         className="mySwiper"
       >
-        {dataBenefits.map((el, index) => (
+        {dataBenefits.map((el, index) => ( //el = isi dari setiap elemen, index = index elemen
           <SwiperSlide key={index}>
-            <BenefitCard props={{ ...el }} />
+            <BenefitCard props={{ ...el }}/>
           </SwiperSlide>
         ))}
       </Swiper>

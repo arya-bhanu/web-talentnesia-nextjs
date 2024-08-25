@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import styles from './benefitCard.module.css';
 import { IBenefitCard } from './benefitCard.type';
-
+import SkeletonLoader from '../skeleton-animation';
 const BenefitCardView = ({
   className,
   props,
@@ -11,6 +11,13 @@ const BenefitCardView = ({
   className?: string;
   props: IBenefitCard;
 }) => {
+  const [skeletonAnimation, setTime] = React.useState(true);
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setTime(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  },[]);
   return (
     <figure
       className={clsx(
@@ -19,19 +26,26 @@ const BenefitCardView = ({
         styles.card,
       )}
     >
-      <Image
-        alt="benefit image"
-        src={props.imgUrl}
-        width={64}
-        height={64}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="lg:scale-100 scale-90"
-      />
-      <figcaption className="mt-2 lg:mt-4">
-        <h2 className="text-[#344054] text-center sm:text-start font-semibold">
-          {props.label}
-        </h2>
-      </figcaption>
+      <SkeletonLoader visible={skeletonAnimation} variant='circle-image' width={75} height={75} />
+      <SkeletonLoader visible={skeletonAnimation} />
+      {
+        !skeletonAnimation &&
+        <>
+        <Image
+          alt="benefit image"
+          src={props.imgUrl}
+          width={75}
+          height={75}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="lg:scale-100 scale-90"
+        />
+        <figcaption className="mt-2 lg:mt-4">
+          <h2 className="text-[#344054] text-center sm:text-start font-semibold">
+            {props.label}
+          </h2>
+        </figcaption>
+        </>
+      }
     </figure>
   );
 };
