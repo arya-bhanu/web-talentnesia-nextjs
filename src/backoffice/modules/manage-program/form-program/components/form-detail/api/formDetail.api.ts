@@ -1,5 +1,5 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
-import { APIDetailForm } from '../formDetail.type';
+import { APIDetailProgramIICP } from '../formDetail.type';
 
 export const fetchMentors = async () => {
   return await backOfficeAPI.get('/manage-user/mentor');
@@ -10,7 +10,7 @@ export const fetchSchools = async () => {
 };
 
 export const createProgram = async (
-  data: Omit<APIDetailForm, 'mentors'> & { mentors: string[] },
+  data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] },
 ) => {
   try {
     return await backOfficeAPI.post('/manage-program', data);

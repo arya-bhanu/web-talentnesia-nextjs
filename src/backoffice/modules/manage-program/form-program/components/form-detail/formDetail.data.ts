@@ -1,6 +1,6 @@
-import { APIDetailForm } from './formDetail.type';
+import { APIDetailProgramIICP } from './formDetail.type';
 
-export const defaultDataFormDetail: APIDetailForm = {
+export const defaultDataFormDetail: APIDetailProgramIICP = {
   image: null,
   endDate: '',
   mentors: [{ id: '', name: '' }],

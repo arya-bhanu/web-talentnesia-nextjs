@@ -1,9 +1,9 @@
 'use client';
 import React, { FormEvent, useEffect } from 'react';
 import FormDetailView from './FormDetail.view';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useFormDetailStore } from './formDetail.store';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createProgram,
   fetchMentors,
@@ -12,10 +12,13 @@ import {
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
 import { Schools } from './formDetail.type';
 import { convertIntoNumericDate } from '@/helpers/formatter.helper';
+import { defaultDataFormDetail } from './formDetail.data';
 
 const FormDetail = () => {
   const params = useSearchParams();
+  const queryClient = useQueryClient();
   const programId = params.get('programId');
+  const router = useRouter();
   const { data, setData, setDefaultMentors, setDefaultSchools } =
     useFormDetailStore();
 
@@ -95,6 +98,9 @@ const FormDetail = () => {
     });
 
     console.log(response);
+    setData(defaultDataFormDetail);
+    await queryClient.invalidateQueries({ queryKey: ['programs'] });
+    router.push('/backoffice/manage-program');
   };
   return (
     <FormDetailView

@@ -18,7 +18,8 @@ export type Schools = {
   name: string;
 };
 
-export interface APIDetailForm {
+export interface APIDetailProgramIICP {
+  id?: string;
   name: string;
   active: 0 | 1 | 2;
   mentors: Mentor[];
@@ -27,4 +28,5 @@ export interface APIDetailForm {
   endDate: string;
   institutionId?: string | null;
   type: string;
+  progress?: number;
 }

@@ -31,11 +31,13 @@ function FormProgramView({
   setSelected,
   columns,
   rows,
+  programId,
 }: IFormProgram &
   Pick<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'> & {
     openModalModul: boolean;
     setOpenModalModul: Dispatch<SetStateAction<boolean>>;
     handleSubmitSelectedModul: (e: FormEvent<HTMLFormElement>) => void;
+    programId?: string | null;
   }) {
   const handleMentorChange = (mentor: string) => {
     setMentors((prev) =>
@@ -102,7 +104,7 @@ function FormProgramView({
         title="Select Student"
         rows={rows}
       />
-      <TabFlex tabs={tabs} />
+      <TabFlex tabs={programId ? tabs : [tabs[0]]} />
     </Card>
   );
 }
