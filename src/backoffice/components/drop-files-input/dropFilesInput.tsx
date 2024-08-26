@@ -31,7 +31,7 @@ export function DropFile() {
       onClick={handleClick}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
-      className="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-lg p-4 cursor-pointer"
+      className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-[#219EBC] rounded-lg p-4 cursor-pointer"
     >
       {!file ? (
         <div className="text-center p-4">
@@ -45,7 +45,7 @@ export function DropFile() {
             viewBox="0 0 24 24"
           >
             <path
-              stroke="currentColor"
+              stroke="#989FAD"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
@@ -55,7 +55,7 @@ export function DropFile() {
           <p className="mb-2 font-medium">Drag file here</p>
           <p className="text-sm text-gray-500 mb-2">or</p>
           <Button
-            className="text-blue-500 border-spacing-2 border-blue-500"
+            className="text-[#219EBC] border-spacing-2 border-[#219EBC]"
             color="light"
             onClick={handleClick}
           >

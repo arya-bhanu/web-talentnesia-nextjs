@@ -3,14 +3,17 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Breadcrumb } from '@/backoffice/components/breadcrumb';
-import { globalCustomTitles, globalCustomBreadcrumbs } from '@/backoffice/components/global-customization/globalCustomizations';
+import {
+  globalCustomTitles,
+  globalCustomBreadcrumbs,
+} from '@/backoffice/components/global-customization/globalCustomizations';
 import { Button, Modal } from 'flowbite-react';
 import { logout, getSession } from '@/lib/action';
-import { SessionData } from '@/lib/lib';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { NavbarState } from '../navbar/navbar.type';
 import { TitleNavbar } from '@/backoffice/components/title-navbar';
+import Link from 'next/link';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
@@ -24,7 +27,6 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [sessionData, setSessionData] = useState<Partial<SessionData> | null>(null);
   const { setUser } = useAuth();
   const router = useRouter();
 
@@ -33,12 +35,10 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   };
 
   const handleProfileClick = async () => {
-    const session = await getSession();
-    setSessionData(session);
     setShowProfileModal(true);
   };
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
     setShowLogoutModal(true);
   };
 
@@ -58,7 +58,6 @@ const NavbarView: React.FC<NavbarViewProps> = ({
           <TitleNavbar customTitles={globalCustomTitles} />
           <Breadcrumb
             customBreadcrumbs={globalCustomBreadcrumbs}
-            className=""
             pathSegments={[]}
             formattedSegments={[]}
           />
@@ -103,10 +102,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
               <div className="relative flex items-center space-x-2 bg-[#FFFFFF] p-2 rounded-lg shadow-sm">
                 <div className="relative rounded-lg overflow-hidden">
                   <Image
-                    src={
-                      user?.profilePicture ||
-                      '/images/placeholderProfilePicture.png'
-                    }
+                    src={user?.profilePicture || ''}
                     alt="User"
                     width={30}
                     height={30}
@@ -132,11 +128,13 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
-                    Settings
-                  </li>
+                  <Link href={'/operator/setting'}>
+                    <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
+                      Setting
+                    </li>
+                  </Link>
                   <li
-                    onClick={handleLogout}
+                    onClick={handleLogoutClick}
                     className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm"
                   >
                     Logout
@@ -150,11 +148,11 @@ const NavbarView: React.FC<NavbarViewProps> = ({
       <Modal show={showProfileModal} onClose={() => setShowProfileModal(false)}>
         <Modal.Header>User Profile</Modal.Header>
         <Modal.Body>
-          {sessionData && (
+          {user && (
             <div>
-              <p>Name: {sessionData.name}</p>
-              <p>Email: {sessionData.email}</p>
-              <p>Role: {sessionData.role}</p>
+              <p>Name: {user.name}</p>
+              <p>Email: {user.email}</p>
+              <p>Role: {user.role}</p>
             </div>
           )}
         </Modal.Body>

@@ -13,7 +13,7 @@ export const sidebarData: SidebarProps[] = [
   },
   {
     icon: '/icons/sidebar/user.svg',
-    title: 'User',
-    path: '/operator/user',
+    title: 'Student',
+    path: '/operator/student',
   },
 ];
