@@ -1,10 +1,9 @@
 'use client';
-
 import { Card } from 'flowbite-react';
 import { TabFlex } from '@/backoffice/components/tabs/tabs';
 import { IFormProgram } from './formProgram.type';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
-import dynamic from 'next/dynamic';
+
 import Add from '@/../public/icons/add.svg';
 import TableStudents from './components/table-students';
 import ModalSelect from '@/backoffice/components/modal-select/ModalSelect';
@@ -13,24 +12,11 @@ import { Dispatch, FormEvent, SetStateAction } from 'react';
 import FormCourse from './components/form-course';
 import FormDetail from './components/form-detail/FormDetail';
 
-const Datepicker = dynamic(
-  () =>
-    import('@/backoffice/components/datepicker/Datepicker').then(
-      (mod) => mod.Component,
-    ),
-  { ssr: false },
-);
-
 function FormProgramView({
-  setMentors,
-  setStatus,
-  status,
   open,
   selected,
   setOpen,
   setSelected,
-  columns,
-  rows,
   programId,
 }: IFormProgram &
   Pick<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'> & {
@@ -39,14 +25,6 @@ function FormProgramView({
     handleSubmitSelectedModul: (e: FormEvent<HTMLFormElement>) => void;
     programId?: string | null;
   }) {
-  const handleMentorChange = (mentor: string) => {
-    setMentors((prev) =>
-      prev.includes(mentor)
-        ? prev.filter((m) => m !== mentor)
-        : [...prev, mentor],
-    );
-  };
-
   const tabs = [
     {
       title: 'Detail',
@@ -100,9 +78,7 @@ function FormProgramView({
         selected={selected}
         setOpen={setOpen}
         setSelected={setSelected}
-        columns={columns}
         title="Select Student"
-        rows={rows}
       />
       <TabFlex tabs={programId ? tabs : [tabs[0]]} />
     </Card>

@@ -6,7 +6,7 @@ import RedTrash from '@/../public/icons/red-trash.svg';
 import { useTableStudentStore } from './tableStudents.store';
 
 const TableStudentsView: React.FC<ITableStudents> = ({ className }) => {
-  const { dataStudentsJoined, dataSchoolStudents } = useTableStudentStore();
+  const { dataStudentsJoined } = useTableStudentStore();
   return (
     <div className={clsx('overflow-x-auto', className)}>
       {!dataStudentsJoined || dataStudentsJoined.length === 0 ? (
@@ -23,7 +23,10 @@ const TableStudentsView: React.FC<ITableStudents> = ({ className }) => {
           <Table.Body className="divide-y">
             {dataStudentsJoined.map((el, index) => {
               return (
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                <Table.Row
+                  key={el.userId}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     {index + 1}
                   </Table.Cell>
