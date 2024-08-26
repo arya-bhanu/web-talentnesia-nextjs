@@ -3,7 +3,7 @@
 import Navbar from '@/backoffice/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession } from '@/lib/action'; // Removed refreshToken
+import { getSession } from '@/lib/action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -29,7 +29,6 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
           userId: session.userId || '',
           name: session.name || '',
           email: session.email || '',
-          profilePicture: session.profilePicture || '',
           role: session.role,
         });
       }
@@ -56,10 +55,9 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    const { pathname } = window.location;
     const isDashboardPath = pathname.includes('dashboard');
     setIsDashboard(isDashboardPath);
-  }, []);
+  }, [pathname]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -73,7 +71,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const customPageStyle = ['/backoffice/report/', '/backoffice/program/'].includes(pathname);
 
   return (
-    <div className='bg-[#FAFAFA]'>
+    <div className="bg-[#FAFAFA]">
       {user && <Navbar user={user} />}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
@@ -82,7 +80,10 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       <div
         className={`px-8 py-16 min-h-screen transition-all duration-300 md:ml-64 bg-[#FAFAFA]`}
       >
-        <div className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}>
+        <div
+          className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}
+          style={isDashboard ? { marginLeft: '-50px', padding: '0', backgroundColor: 'transparent', marginTop:'-1px' } : { marginRight: '50px' }}
+        >
           {children}
         </div>
       </div>
