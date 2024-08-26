@@ -47,11 +47,22 @@ const FooterView = ({ className, dataNavs }: FooterViewProps) => {
           
         </div>
         <div className=" w-full md:w-1/2 ">
-          <div className="flex items-start gap-4 sm:gap-5 md:gap-x-12 lg:gap-x-20 flex-wrap">
-            {dataNavs.map((dataNav, index) => (
-              <NavLinks key={index} {...dataNav} isLoading={skeletonAnimation}/>
-            ))}
-          </div>
+        <div className="flex items-start sm:gap-5 md:gap-x-12 lg:gap-x-20 flex-wrap">
+  {dataNavs.map((dataNav, index) => (
+    <div key={index} style={{display: "block"}}>
+      {skeletonAnimation ? (
+        <div>
+          <SkeletonLoader visible={true} width={150} height={30} borderRadius={0} />
+          <SkeletonLoader visible={true} width={130} height={100} borderRadius={0}/>
+        </div>
+      ) : (
+        <div>
+          <NavLinks {...dataNav} />
+        </div>
+      )}
+    </div>
+  ))}
+</div>
           <div className="flex flex-wrap items-center justify-between mt-3 md:mt-10 lg:mt-12 pt-2 sm:pt-4 md:pt-6 border-t border-t-[#E7E9EE] gap-3">
             <SkeletonLoader visible={skeletonAnimation} width={'30%'} containerStyle={{margin: 0}} />
             <SkeletonLoader visible={skeletonAnimation} height={10} width={'70%'} containerStyle={{margin: 0}}/>

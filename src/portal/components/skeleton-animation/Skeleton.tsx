@@ -9,10 +9,11 @@ const SkeletonLoader: React.FC<SkeletonProps> = ({
     width,
     height,
     containerStyle,
+    borderRadius
 }) => {
     return(
         <SkeletonView variant={variant} visible={visible}
-        width={width} height={height} containerStyle={containerStyle}/>
+        width={width} height={height} containerStyle={containerStyle} borderRadius={borderRadius}/>
     );
 
 };

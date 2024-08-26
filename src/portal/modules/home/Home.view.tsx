@@ -26,7 +26,7 @@ const HomeView: React.FC<HomeViewProps> = ({ data }) => {
 
   return (
     <>
-      <Hero />
+      <Hero isLoading={skeletonAnimation}/>
       <main className="container">
         <Benefits className="mt-9 md:mt-16 xl:mt-0" />
         <ProgramDimension
