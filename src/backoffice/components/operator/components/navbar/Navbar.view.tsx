@@ -128,7 +128,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <Link href={'/operator/setting'}>
+                  <Link href={'/operator/setting'} className='p-0 m-0 block'>
                     <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
                       Setting
                     </li>
