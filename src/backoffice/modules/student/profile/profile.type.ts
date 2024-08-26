@@ -1,10 +1,12 @@
 export interface ProfileData {
+  data: {
+    profilePicture: string;
     firstName: string;
     lastName: string;
     email: string;
-    linkedin: string;
-    phone: string;
+    linkedIn: string;
+    phoneNumber: string;
     bio: string;
-    gender: string;
-  }
-  
+    gender: number;
+  };
+}

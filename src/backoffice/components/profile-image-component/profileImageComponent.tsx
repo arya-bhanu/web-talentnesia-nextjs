@@ -43,7 +43,7 @@ const ProfileImageInput: React.FC = () => {
             className="rounded-full"
           />
           <div className="absolute bottom-2 right-2 bg-[#219EBC] rounded-full p-2">
-            <EditIcon width={24} height={24} />
+            <EditIcon className='w-8 h-8' />
           </div>
         </label>
       </div>
