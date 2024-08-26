@@ -6,4 +6,5 @@ export interface SkeletonProps {
     width?: number | string;
     height?: number | string;
     containerStyle?: CSSProperties;
+    borderRadius?: number 
 }
