@@ -3,7 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Breadcrumb } from '@/backoffice/components/breadcrumb';
-import { globalCustomTitles, globalCustomBreadcrumbs } from '@/backoffice/components/global-customization/globalCustomizations';
+import {
+  globalCustomTitles,
+  globalCustomBreadcrumbs,
+} from '@/backoffice/components/global-customization/globalCustomizations';
 import { Button, Modal } from 'flowbite-react';
 import { logout, getSession } from '@/lib/action';
 import { useAuth } from '@/contexts/AuthContext';
@@ -99,10 +102,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
               <div className="relative flex items-center space-x-2 bg-[#FFFFFF] p-2 rounded-lg shadow-sm">
                 <div className="relative rounded-lg overflow-hidden">
                   <Image
-                    src={
-                      user?.profilePicture ||
-                      ''
-                    }
+                    src={user?.profilePicture || ''}
                     alt="User"
                     width={30}
                     height={30}
@@ -128,11 +128,11 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
-                    <Link href={'/operator/setting'} >
-                    Setting
-                    </Link>
-                  </li>
+                  <Link href={'/operator/setting'}>
+                    <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
+                      Setting
+                    </li>
+                  </Link>
                   <li
                     onClick={handleLogoutClick}
                     className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm"
