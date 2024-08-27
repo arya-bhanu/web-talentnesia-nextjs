@@ -11,6 +11,7 @@ import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import { Mentor } from './mentor/AddMentor';
 import { MentorFormData } from './mentor/addMentor.type';
 import { userAPI } from './api/userApi';
+import Link from 'next/link';
 
 
 const UserView: React.FC<IUserView> = ({
@@ -45,13 +46,6 @@ const UserView: React.FC<IUserView> = ({
     setData(fetchedData);
   };
 
-  const handleAddMentor = async (mentorData: MentorFormData) => {
-    const newMentor = await userAPI.add({ ...mentorData, role: 3 });
-    if (newMentor) {
-      fetchData();
-      setIsAddMentorOpen(false);
-    }
-  };
 
   const handleEditMentor = async (id: string, mentorData: MentorFormData) => {
     const updatedMentor = await userAPI.update(id, mentorData);
@@ -127,15 +121,13 @@ const UserView: React.FC<IUserView> = ({
       <div className="flex justify-between items-center font-poppins mb-4">
         <SearchTable value={Filter} onChange={setFilter} />
         {tabName === 'Mentor' && (
+        <Link href={'/backoffice/manage-user/add-mentor/'} >
         <AddButton
-          onClick={() => setIsAddMentorOpen(true)}
+        onClick={() => ('')}
           text="Add Mentor"
         />
+        </Link>
       )}
-        <AddButton
-          onClick={() => setIsPopupOpen(true)}
-          text={`Add ${tabName}`}
-        />
       </div>
       <DataTable
         data={data}

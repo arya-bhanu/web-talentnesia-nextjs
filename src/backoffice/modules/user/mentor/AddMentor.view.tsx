@@ -15,6 +15,7 @@ import { Component as FileInput } from '../components/file-input/FileInput';
 import { ProfilePictureInput } from '../components/profile-picture-input/ProfilePictureInput';
 import { SelectYear } from '../components/select-year/selectYear';
 import { Region } from './addMentor.type';
+import Link from 'next/link';
 
 type MentorViewProps = ReturnType<typeof useMentorForm>;
 
@@ -575,13 +576,14 @@ export const MentorView: React.FC<MentorViewProps> = ({
           </div>
           {/* Submit Button */}
           <div className="flex justify-end space-x-4">
+            <Link href={'/backoffice/manage-user'}>
             <button
               type="button"
-              onClick={resetForm}
               className="cancel-button bg-white border-red-500 border-2 text-red-500 py-2 px-4 rounded font-poppins"
             >
               Cancel
             </button>
+            </Link>
             <button
               type="submit"
               className="submit-button bg-yellow-400 text-black py-2 px-4 rounded font-poppins"
