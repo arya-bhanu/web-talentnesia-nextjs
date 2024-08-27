@@ -154,7 +154,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                       value="Male"
                       onChange={handleInputChange}
                       checked={form.gender === 'Male'}
-                      className="mr-2 size-4 md:size-6 text-sm md:text-base place-self-center"
+                      className="mr-2 size-4 md:size-6 text-sm md:text-base focus:ring-transparent text-[#219EBC]"
                     />
                     Male
                   </label>
@@ -165,7 +165,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                       value="Female"
                       onChange={handleInputChange}
                       checked={form.gender === 'Female'}
-                      className="mr-2 size-4 md:size-6 text-sm md:text-base"
+                      className="mr-2 size-4 md:size-6 text-sm md:text-base focus:ring-transparent text-[#219EBC]"
                     />
                     Female
                   </label>
@@ -373,13 +373,13 @@ export const StudentView: React.FC<StudentViewProps> = ({
             <button
               type="button"
               onClick={resetForm}
-              className="cancel-button bg-white border-red-500 border-2 text-red-500 py-2 px-4 rounded font-poppins"
+              className="cancel-button bg-white hover:bg-[#F04438] border-[#F04438] border-2 text-[#F04438] hover:text-white py-2 px-4 rounded-lg font-poppins"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="submit-button bg-yellow-400 text-black py-2 px-4 rounded font-poppins"
+              className="submit-button bg-[#FFC862] hover:bg-[#fbbf24] text-black py-2 px-4 rounded-lg font-poppins"
             >
               Submit
             </button>

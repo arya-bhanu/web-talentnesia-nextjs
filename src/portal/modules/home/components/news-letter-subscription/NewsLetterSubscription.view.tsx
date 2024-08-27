@@ -3,8 +3,10 @@ import React from 'react';
 
 const NewsLetterSubscriptionSectionView = ({
   className,
+  isLoading
 }: {
   className?: string;
+  isLoading?: boolean;
 }) => {
   return (
     <section className={className}>
@@ -19,8 +21,9 @@ const NewsLetterSubscriptionSectionView = ({
           bgColor: 'bg-[#FFC862]',
           text: 'Gabung Sekarang',
           textColor: 'text-[#2B2E33]',
-        }}
+        }} 
         title="Dapatkan Wawasan Eksklusif Sesuai Minatmu Langsung melalui Emailmu"
+        isLoading={isLoading}
       />
     </section>
   );

@@ -3,7 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Breadcrumb } from '@/backoffice/components/breadcrumb';
-import { globalCustomTitles, globalCustomBreadcrumbs } from '@/backoffice/components/global-customization/globalCustomizations';
+import {
+  globalCustomTitles,
+  globalCustomBreadcrumbs,
+} from '@/backoffice/components/global-customization/globalCustomizations';
 import { Button, Modal } from 'flowbite-react';
 import { logout, getSession } from '@/lib/action';
 import { SessionData } from '@/lib/lib';
@@ -11,6 +14,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { NavbarState } from './navbar.type';
 import { TitleNavbar } from '@/backoffice/components/title-navbar';
+import Link from 'next/link';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
@@ -24,7 +28,9 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [sessionData, setSessionData] = useState<Partial<SessionData> | null>(null);
+  const [sessionData, setSessionData] = useState<Partial<SessionData> | null>(
+    null,
+  );
   const { setUser } = useAuth();
   const router = useRouter();
 
@@ -132,9 +138,11 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
-                    Settings
-                  </li>
+                  <Link href={'/mentor/setting'}>
+                    <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
+                      Setting
+                    </li>
+                  </Link>
                   <li
                     onClick={handleLogout}
                     className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm"
