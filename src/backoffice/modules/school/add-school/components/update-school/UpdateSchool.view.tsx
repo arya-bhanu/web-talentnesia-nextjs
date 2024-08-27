@@ -1,31 +1,34 @@
+// UpdateSchool.view.tsx
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import LabelForm from '@/backoffice/components/label-form';
-import { APIResponseSchool } from '../../../school.type';
+import { SchoolAPI } from '../../../api/schoolApi';
 import ImageUploadInput from '../../../components/image-upload-input/ImageUploadInput';
 import Link from 'next/link';
-import { SchoolAPI } from '../../../api/schoolApi';
-import { AddSchoolViewProps } from './addSchool.type';
+import { APIResponseSchool } from '../../../school.type';
 
-const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
+interface UpdateSchoolViewProps {
+  initialData: APIResponseSchool;
+}
+
+const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
   const router = useRouter();
-  const [formData, setFormData] = useState<Partial<APIResponseSchool>>({
-    name: '',
-    pic: '',
-    email: '',
-    phone: '',
-    address: '',
-    imageUrl: '',
-  });
+  const [formData, setFormData] = useState<APIResponseSchool | null>(null);
   const [hasError, setHasError] = useState(false);
 
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+  }, [initialData]);
+
   const handleInputChange = (field: keyof APIResponseSchool, value: string) => {
-    setFormData((prevData) => ({
+    setFormData((prevData) => prevData ? ({
       ...prevData,
       [field]: value,
-    }));
+    }) : null);
   };
 
   const handleImageChange = (imageUrl: string) => {
@@ -34,48 +37,47 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
+    if (!formData) {
+      return;
+    }
+  
     setHasError(true);
-
-    // Check if all required fields are filled
-    const requiredFields: (keyof APIResponseSchool)[] = [
-      'name',
-      'pic',
-      'email',
-      'phone',
-      'address',
-    ];
-    const isFormValid = requiredFields.every((field) => formData[field]);
-
+  
+    // Periksa apakah semua field yang diperlukan telah diisi
+    const requiredFields: (keyof APIResponseSchool)[] = ['name', 'pic', 'email', 'phone', 'address'];
+    const isFormValid = requiredFields.every(field => formData[field]);
+  
     if (!isFormValid) {
       return;
     }
-
+  
     try {
-      const newSchool = await SchoolAPI.add(formData as APIResponseSchool);
-      console.log('School added successfully:', newSchool);
       router.push('/backoffice/school');
     } catch (error) {
-      console.error('Failed to add school:', error);
+      console.error('Failed to update school:', error);
     }
   };
+
+  if (!formData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="p-6 rounded-lg bg-white">
       <div className="mb-6 flex">
         <ImageUploadInput
           onChange={handleImageChange}
-          initialImage={formData.imageUrl || ''}
+          initialImage={formData.imageUrl}
         />
       </div>
-
       <div className="grid grid-cols-2 gap-6">
         <div>
-          <LabelForm isImportant htmlFor="name">
-            School Name
-          </LabelForm>
+          <label className="block mb-2 text-sm font-medium text-gray-900">
+            School Name<label className="text-red-500">*</label>
+          </label>
           <input
-            id="name"
+            type="text"
             placeholder="Input School Name"
             value={formData.name || ''}
             onChange={(e) => handleInputChange('name', e.target.value)}
@@ -90,11 +92,11 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
         </div>
 
         <div>
-          <LabelForm isImportant htmlFor="pic">
-            PIC
-          </LabelForm>
+          <label className="block mb-2 text-sm font-medium text-gray-900">
+            PIC<label className="text-red-500">*</label>
+          </label>
           <input
-            id="pic"
+            type="text"
             placeholder="Input PIC"
             value={formData.pic || ''}
             onChange={(e) => handleInputChange('pic', e.target.value)}
@@ -107,13 +109,12 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
         </div>
 
         <div>
-          <LabelForm isImportant htmlFor="email">
-            Email
-          </LabelForm>
+          <label className="block mb-2 text-sm font-medium text-gray-900">
+            Email<label className="text-red-500">*</label>
+          </label>
           <input
-            id="email"
-            placeholder="Input Email"
             type="email"
+            placeholder="Input Email"
             value={formData.email || ''}
             onChange={(e) => handleInputChange('email', e.target.value)}
             required
@@ -125,13 +126,12 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
         </div>
 
         <div>
-          <LabelForm isImportant htmlFor="phone">
-            Nomor Telepon
-          </LabelForm>
+          <label className="block mb-2 text-sm font-medium text-gray-900">
+            Nomor Telepon<label className="text-red-500">*</label>
+          </label>
           <input
-            id="phone"
-            placeholder="Input Phone Number"
             type="tel"
+            placeholder="Input Phone Number"
             value={formData.phone || ''}
             onChange={(e) => handleInputChange('phone', e.target.value)}
             required
@@ -145,11 +145,11 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
         </div>
 
         <div className="col-span-2">
-          <LabelForm isImportant htmlFor="address">
-            Address
-          </LabelForm>
+          <label className="block mb-2 text-sm font-medium text-gray-900">
+            Address<label className="text-red-500">*</label>
+          </label>
           <input
-            id="address"
+            type="text"
             placeholder="Input School Address"
             value={formData.address || ''}
             onChange={(e) => handleInputChange('address', e.target.value)}
@@ -160,8 +160,8 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
             <p className="text-red-500 text-xs mt-1">Address is required.</p>
           )}
         </div>
+        
       </div>
-
       <div className="mt-6 flex justify-end gap-4">
         <Link href="/backoffice/school" className="p-0 m-0 block">
           <button className="border-2 border-[#F04438] text-[#F04438] bg-white hover:bg-[#F04438] hover:text-white px-3 py-2 rounded-lg">
@@ -172,11 +172,11 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
           type="submit"
           className="text-black bg-[#FFC862] hover:bg-yellow-400 px-3 py-2 rounded-lg"
         >
-          Submit
+          Update
         </button>
       </div>
     </form>
   );
 };
 
-export default AddSchoolView;
+export default UpdateSchoolView;

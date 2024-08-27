@@ -1,7 +1,5 @@
-export interface AddSchoolFormData {
-    schoolName: string;
-    pic: string;
-    email: string;
-    phone: string;
-    address: string;
-  }
+import { APIResponseSchool } from "../../../school.type";
+
+export interface AddSchoolViewProps {
+  initialData?: APIResponseSchool;
+}

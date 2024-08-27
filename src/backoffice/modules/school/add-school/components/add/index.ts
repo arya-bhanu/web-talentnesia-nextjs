@@ -1,1 +1,1 @@
-export { default } from './AddSchool'
+export { default } from './AddSchool.view'

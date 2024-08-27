@@ -1,53 +1,64 @@
 'use client';
-import React, { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchSchools, deleteSchool } from './api/schoolApi';
-import ManageModulView from './School.view';
 
-const ManageModul = () => {
+import React, { useState, useCallback } from 'react';
+import SchoolView from './School.view';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { SchoolAPI } from './api/schoolApi';
+import { useSchoolActions } from './hooks/useSchoolAction';
+
+const School = () => {
   const queryClient = useQueryClient();
-  const query = useQuery({ queryKey: ['schools'], queryFn: fetchSchools });
-  const { mutateAsync: deleteSchoolAsync } = useMutation({
-    mutationFn: deleteSchool,
+  const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
+  const [Filter, setFilter] = useState('');
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const { handleDeleteSchool } = useSchoolActions();
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['school'],
+    queryFn: async () => {
+      const response = await SchoolAPI.fetch();
+      return response;
+    },
   });
-  const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
+  
+  const fetchData = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ['school'] });
+  }, [queryClient]);
 
-  const handleActionButtonRow = async (
-    id: string,
-    action: 'delete' | 'edit',
-  ) => {
-    switch (action) {
-      case 'delete':
-        await deleteSchoolAsync(id);
-        break;
-      default:
-        break;
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+    if (action === "delete") {
+      await handleDeleteSchool(id);
+      fetchData();
+    } else if (action === "edit" && rowData) {
+      // await handleEditSchool(id, rowData);
+      fetchData();
     }
-    queryClient.invalidateQueries({ queryKey: ['schools'] });
-  };
+  }, [fetchData, handleDeleteSchool]);
 
-  if (query.isLoading) {
-    return <div>Loading...</div>;
-  }
+  const handleAdd = useCallback(async (name: string) => {
+    // await handleAddSchool(name);
+    fetchData();
+    setIsPopupOpen(false);
+  }, [fetchData]);
 
-  if (query.isError) {
-    return <div>Error loading data. Please try again later.</div>;
-  }
-
-  const data = query.data?.data?.items;
-
-  if (!data || data.length === 0) {
-    return <div>No schools available.</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <ManageModulView
+    <SchoolView
+      data={data ?? []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
-      data={data}
       handleActionButtonRow={handleActionButtonRow}
+      handleAddSchool={handleAdd}
+      Filter={Filter}
+      setFilter={setFilter}
+      isPopupOpen={isPopupOpen}
+      setIsPopupOpen={setIsPopupOpen}
+      fetchData={fetchData}
     />
   );
 };
 
-export default ManageModul;
+export default School;
