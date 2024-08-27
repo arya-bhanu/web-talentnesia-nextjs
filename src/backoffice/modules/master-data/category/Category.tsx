@@ -37,10 +37,11 @@ const Category = () => {
   }, [fetchData, handleDeleteCategory, handleEditCategory]);
 
   const handleAdd = useCallback(async (name: string) => {
-    await handleAddCategory(name); 
+    await handleAddCategory(name);
     fetchData();
     setIsPopupOpen(false);
   }, [fetchData, handleAddCategory]);
+  
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
