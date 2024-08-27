@@ -34,6 +34,7 @@ RUN chown -R nginx:nginx /var/www/html
 # Install dependecies using yarn
 RUN yarn install
 
+RUN rm -rf /var/www/html/.next
 RUN rm -rf .next/cache
 
 # Build application using yarn
