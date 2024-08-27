@@ -18,3 +18,14 @@ export const createProgram = async (
     console.error(err);
   }
 };
+
+export const fetchDetailProgram = async (programId?: string | null) => {
+  try {
+    if (programId) {
+      return await backOfficeAPI.get('/manage-program/detail/' + programId);
+    }
+    return null;
+  } catch (err) {
+    console.error(err);
+  }
+};

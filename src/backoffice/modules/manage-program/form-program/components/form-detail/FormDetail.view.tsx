@@ -7,6 +7,8 @@ import { Datepicker } from 'flowbite-react/components/Datepicker';
 import { Select } from 'flowbite-react/components/Select';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+
 import {
   IFormDetail,
   IHandleFormDetail,
@@ -19,14 +21,24 @@ const FormDetailView: React.FC<
   IFormDetail & IHandleFormDetail & IStateFormDetail
 > = ({ programId, handleSubmitForm, isLoadingMentors }) => {
   const [selectedMentors, setSelectedMentors] = useState<Mentor[]>([]);
-  const { data, setData, defaultMentors, defaultSchools } =
+  const { data, setData, defaultMentors, defaultSchools, defaultData } =
     useFormDetailStore();
+
   useEffect(() => {
     if (selectedMentors) {
       const { mentors, ...rest } = data;
       setData({ ...rest, mentors: selectedMentors });
     }
   }, [selectedMentors]);
+
+  useEffect(() => {
+    if (defaultData?.mentors && defaultMentors) {
+      setSelectedMentors(
+        defaultMentors.filter((el) => defaultData?.mentors.includes(el.id)),
+      );
+    }
+  }, [JSON.stringify(defaultData?.mentors), JSON.stringify(defaultMentors)]);
+
   return (
     <form onSubmit={handleSubmitForm} className="grid grid-cols-2 gap-6">
       {/* Program Name */}
@@ -37,6 +49,8 @@ const FormDetailView: React.FC<
         <TextInput
           id="program_name"
           name="program_name"
+          defaultValue={defaultData?.name}
+          key={defaultData?.name}
           placeholder="Kelas D Tefa SMK"
           required
         />
@@ -48,9 +62,25 @@ const FormDetailView: React.FC<
           Status
         </LabelForm>
         <div className="flex items-center space-x-4">
-          <Radio id="notStarted" name="active" value="0" />
+          <Radio
+            id="notStarted"
+            defaultChecked={
+              defaultData ? (defaultData.active == 0 ? true : false) : false
+            }
+            key={defaultData.active + '_0'}
+            name="active"
+            value="0"
+          />
           <Label htmlFor="notStarted" value="Not Started" />
-          <Radio id="onGoing" defaultChecked name="active" value="1" />
+          <Radio
+            id="onGoing"
+            defaultChecked={
+              defaultData ? (defaultData.active == 1 ? true : false) : true
+            }
+            key={defaultData.active + '_1'}
+            name="active"
+            value="1"
+          />
           <Label htmlFor="onGoing" value="On Going" />
         </div>
       </div>
@@ -79,25 +109,57 @@ const FormDetailView: React.FC<
         <LabelForm isImportant htmlFor="start_date">
           Start Date
         </LabelForm>
-        <Datepicker id="start_date" name="start_date" />
+        <Datepicker
+          defaultDate={
+            defaultData && defaultData.startDate !== ''
+              ? moment(defaultData.startDate).toDate()
+              : new Date()
+          }
+          key={defaultData?.startDate}
+          // defaultDate={new Date()}
+          id="start_date"
+          name="start_date"
+        />
       </div>
       <div>
         <LabelForm isImportant htmlFor="end_date">
           End Date
         </LabelForm>
-        <Datepicker id="end_date" name="end_date" />
+        <Datepicker
+          defaultDate={
+            defaultData && defaultData.endDate !== ''
+              ? moment(defaultData.endDate).toDate()
+              : new Date()
+          }
+          key={defaultData?.startDate}
+          id="end_date"
+          name="end_date"
+        />
       </div>
 
       {/* School */}
       <div className="col-span-2">
         <LabelForm htmlFor="school">School</LabelForm>
-        <Select defaultValue={''} id="school" name="school" required>
+        <Select
+          defaultValue={
+            defaultData ? (defaultData.institutionId as string | undefined) : ''
+          }
+          id="school"
+          name="school"
+          required
+        >
           <option value="" disabled>
             Select School
           </option>
           {defaultSchools.map((el) => {
             return (
-              <option key={el.id} value={el.id}>
+              <option
+                selected={
+                  defaultData ? defaultData.institutionId == el.id : false
+                }
+                key={el.id}
+                value={el.id}
+              >
                 {el.name}
               </option>
             );

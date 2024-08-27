@@ -10,3 +10,17 @@ export const defaultDataFormDetail: APIDetailProgramIICP = {
   institutionId: '',
   type: 'iicp',
 };
+
+export const defaultDataFormDetailEdit: Omit<
+  APIDetailProgramIICP,
+  'mentors'
+> & { mentors: string[] } = {
+  image: null,
+  endDate: '',
+  mentors: [''],
+  name: '',
+  startDate: '',
+  active: 0,
+  institutionId: '',
+  type: 'iicp',
+};

@@ -6,6 +6,7 @@ import { useFormDetailStore } from './formDetail.store';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createProgram,
+  fetchDetailProgram,
   fetchMentors,
   fetchSchools,
 } from './api/formDetail.api';
@@ -19,8 +20,19 @@ const FormDetail = () => {
   const queryClient = useQueryClient();
   const programId = params.get('programId');
   const router = useRouter();
-  const { data, setData, setDefaultMentors, setDefaultSchools } =
-    useFormDetailStore();
+  const {
+    data,
+    setData,
+    setDefaultMentors,
+    setDefaultSchools,
+    setDefaultData,
+  } = useFormDetailStore();
+
+  const { data: dataProgramDetail, isLoading: isLoadingProgramDetail } =
+    useQuery({
+      queryKey: ['program', 'detail', programId],
+      queryFn: () => fetchDetailProgram(programId),
+    });
 
   const { data: dataMentors, isLoading: isLoadingMentors } = useQuery({
     queryKey: ['mentors'],
@@ -39,6 +51,9 @@ const FormDetail = () => {
     });
 
   useEffect(() => {
+    if (dataProgramDetail?.data?.data) {
+      setDefaultData(dataProgramDetail.data.data);
+    }
     if (dataMentors?.data?.data) {
       setDefaultMentors(
         dataMentors.data.data.map((el: any) => {
@@ -59,7 +74,11 @@ const FormDetail = () => {
         }),
       );
     }
-  }, [JSON.stringify(dataMentors?.data), JSON.stringify(dataSchools?.data)]);
+  }, [
+    JSON.stringify(dataMentors?.data),
+    JSON.stringify(dataSchools?.data),
+    JSON.stringify(dataProgramDetail?.data),
+  ]);
 
   const handleSubmitFormDetail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
