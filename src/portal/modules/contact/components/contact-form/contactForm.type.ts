@@ -8,4 +8,5 @@ export interface ContactFormViewProps {
   selectedIssue: string;
   onIssueChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   issues: Issue[];
+  isLoading?: boolean
 }
