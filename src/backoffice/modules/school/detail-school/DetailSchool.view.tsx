@@ -1,8 +1,8 @@
 'use client';
 
-import { Card, } from 'flowbite-react';
+import { Card } from 'flowbite-react';
 import { TabFlex } from '@/backoffice/components/tabs/tabs';
-import { IAddSchoolView } from './detailSchool.type';
+import { IDetailSchoolView, SchoolData } from './detailSchool.type';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 import ModalAddProgram from '@/backoffice/components/modal-add-program/ModalAddProgram';
@@ -11,68 +11,49 @@ import ListTableStudent from './components/list-table-student';
 import ListProgramCard from './components/list-program-card';
 import { IAccordionPanelDraggable } from '../components/accordion-panel-draggable/accordionPanelDraggable.type';
 import { TabsListStudent } from '../components/tabs-list-student/TabsListStudent';
+import { TabsProgram } from '../components/tabs-program/TabsProgram';
 
-function AddSchoolView({
+interface DetailSchoolViewProps extends IDetailSchoolView {
+  activeAccordion: number;
+  setActiveAccordion: Dispatch<SetStateAction<number>>;
+  openModalModul: boolean;
+  setOpenModalModul: Dispatch<SetStateAction<boolean>>;
+  handleSubmitSelectedModul: (e: FormEvent<HTMLFormElement>) => void;
+  className?: string;
+  schoolData: SchoolData | null;
+  fullImageUrl: string;
+}
+
+function DetailSchoolView({
   open,
   selected,
   setOpen,
   setSelected,
   columns,
   rows,
-}: IAddSchoolView &
-  Pick<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'> & {
-    openModalModul: boolean;
-    setOpenModalModul: Dispatch<SetStateAction<boolean>>;
-    handleSubmitSelectedModul: (e: FormEvent<HTMLFormElement>) => void;
-    className?: string;
-  }) {
-
+  schoolId,
+  schoolData,
+  fullImageUrl,
+}: DetailSchoolViewProps) {
   const tabs = [
     {
       title: 'Detail School',
-      content: (
-        <div>
-            <DetailSchoolPage />
-        </div>
-      ),
+      content: <DetailSchoolPage />,
     },
     {
       title: 'Student',
-      content: (
-        <TabsListStudent />
-      ),
-    },    
+      content: <TabsListStudent />,
+    },
     {
       title: 'Program',
       content: (
-        <div>
-          <div className="flex justify-between">
-            <div className="flex items-center max-w-xs w-full">
-              <label htmlFor="simple-search" className="sr-only">
-                Search
-              </label>
-              <div className="relative w-full">
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  <Search />
-                </div>
-                <input
-                  type="text"
-                  id="simple-search"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search ..."
-                  required
-                />
-              </div>
-            </div>
-          </div>
-          <ListProgramCard className="mt-5"/>
-        </div>
+        <TabsProgram />
       ),
     },
   ];
 
   return (
-    <Card>
+    <>
       <ModalAddProgram
         open={open}
         selected={selected}
@@ -83,8 +64,8 @@ function AddSchoolView({
         rows={rows}
       />
       <TabFlex tabs={tabs} />
-    </Card>
+    </>
   );
 }
 
-export default AddSchoolView;
+export default DetailSchoolView;

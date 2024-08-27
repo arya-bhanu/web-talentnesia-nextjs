@@ -1,70 +1,55 @@
-import { DropFile } from '@/backoffice/components/drop-files-input/dropFilesInput';
-import LabelForm from '@/backoffice/components/label-form';
 import React from 'react';
-import { FakeData } from './detailSchoolPage.type';
+import LabelForm from '@/backoffice/components/label-form';
+import { SchoolData } from './detailSchoolPage.type';
 
-interface AddSchoolViewProps {
-  fakeData: FakeData;
+interface DetailSchoolPageViewProps {
+  schoolData: SchoolData;
+  fullImageUrl: string;
 }
 
-const AddSchoolView: React.FC<AddSchoolViewProps> = ({ fakeData }) => {
+const DetailSchoolPageView: React.FC<DetailSchoolPageViewProps> = ({ schoolData, fullImageUrl }) => {
   return (
-    <div>
-      {/* Cover Image */}
-      <div className="mb-6 w-2/4"> 
-      <img 
-          src={fakeData.img} 
-          alt="Cover Image" 
-          className="w-full h-auto border rounded"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-6">
-        {/* School Name */}
-        <div>
-          <LabelForm isImportant htmlFor="inputSchoolName">
-            School Name
-          </LabelForm>
-          <p id="inputSchoolName">
-            {fakeData.schoolName}
-          </p>
+    <div className="container mx-auto p-6">
+      <div className="items-start">
+        <div className="w-[15%] gap-y-4">
+          <img 
+            src={fullImageUrl || '/default-image.png'} 
+            alt="School Image" 
+            className="w-full h-auto rounded-lg"
+          />
         </div>
 
-        {/* PIC */}
-        <div>
-          <LabelForm htmlFor="inputPic">PIC</LabelForm>
-          <p id="inputPic">
-            {fakeData.pic}
-          </p>
-        </div>
+        <div className="grid grid-cols-2 w-full font-lato gap-y-4 mt-4">
+          <div className="space-y-4">
+            <LabelForm className="font-semibold text-lg" htmlFor="inputSchoolName">
+              School Name
+            </LabelForm>
+            <p id="inputSchoolName" className="text-base">{schoolData.name}</p>
+          </div>
 
-        {/* Email */}
-        <div>
-          <LabelForm htmlFor="inputEmail">Email</LabelForm>
-          <p id="inputEmail">
-            {fakeData.email}
-          </p>
-        </div>
+          <div className="space-y-4">
+            <LabelForm className="font-semibold text-lg" htmlFor="inputPic">PIC</LabelForm>
+            <p id="inputPic" className="text-base">{schoolData.pic}</p>
+          </div>
 
-        {/* Nomor Telepon */}
-        <div>
-          <LabelForm htmlFor="inputPhone">Nomor Telepon</LabelForm>
-          <p id="inputPhone">
-            {fakeData.phone}
-          </p>
-        </div>
+          <div className="space-y-4">
+            <LabelForm className="font-semibold text-lg" htmlFor="inputEmail">Email</LabelForm>
+            <p id="inputEmail" className="text-base">{schoolData.email}</p>
+          </div>
 
-        {/* Alamat */}
-        <div>
-          <LabelForm htmlFor="inputAddress">Alamat</LabelForm>
-          <p id="inputAddress">
-            {fakeData.address}
-          </p>
-        </div>
+          <div className="space-y-4">
+            <LabelForm className="font-semibold text-lg" htmlFor="inputPhone">Telephone</LabelForm>
+            <p id="inputPhone" className="text-base">{schoolData.phone}</p>
+          </div>
 
+          <div className="space-y-4 col-span-2">
+            <LabelForm className="font-semibold text-lg" htmlFor="inputAddress">Address</LabelForm>
+            <p id="inputAddress" className="text-base">{schoolData.address}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default AddSchoolView;
+export default DetailSchoolPageView;

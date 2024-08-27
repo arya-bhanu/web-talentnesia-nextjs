@@ -1,21 +1,51 @@
 import React from 'react';
-import AddSchoolView from './DetailSchoolPage.view';
+import { useParams } from 'next/navigation';
+import DetailSchoolPageView from './DetailSchoolPage.view';
+import { SchoolData } from './detailSchoolPage.type';
+import { SchoolAPI } from '../../../api/schoolApi';
+import { getImageUrl } from '../../../api/minioApi';
 
 const DetailSchoolPage: React.FC = () => {
-  const getFakeData = () => {
-    return {
-      img:'/logo.png',
-      schoolName: 'SMK Negeri 6 Malang',
-      pic: 'John Doe',
-      email: 'john.doe@smkn6malang.sch.id',
-      phone: '08123456789',
-      address: 'Jl. Merdeka No.1, Malang',
+  const { id } = useParams<{ id: string }>();
+  const [schoolData, setSchoolData] = React.useState<SchoolData | null>(null);
+  const [fullImageUrl, setFullImageUrl] = React.useState<string>('');
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchSchoolData = async () => {
+      if (!id) {
+        setError("No school ID provided");
+        return;
+      }
+
+      try {
+        const data = await SchoolAPI.getById(id);
+        console.log('Fetched school data:', data);
+        setSchoolData(data);
+
+        if (data.imageUrl) {
+          const imageUrl = await getImageUrl(data.imageUrl);
+          console.log('Full image URL:', imageUrl);
+          setFullImageUrl(imageUrl);
+        }
+      } catch (error) {
+        console.error('Failed to fetch school data:', error);
+        setError("Failed to load school data. Please try again.");
+      }
     };
-  };
 
-  const fakeData = getFakeData();
+    fetchSchoolData();
+  }, [id]);
 
-  return <AddSchoolView fakeData={fakeData} />;
-}
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!schoolData) {
+    return <div>Loading...</div>;
+  }
+
+  return <DetailSchoolPageView schoolData={schoolData} fullImageUrl={fullImageUrl} />;
+};
 
 export default DetailSchoolPage;
