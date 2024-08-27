@@ -5,7 +5,8 @@ interface CodeReedemViewProps {
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
   className?: string;
-  discountMessage?: string; 
+  discountMessage?: string;
+  onCancel: () => void;
 }
 
 const CodeReedemView: React.FC<CodeReedemViewProps> = ({
@@ -13,7 +14,8 @@ const CodeReedemView: React.FC<CodeReedemViewProps> = ({
   onInputChange,
   onSubmit,
   className,
-  discountMessage
+  discountMessage,
+  onCancel
 }) => {
   return (
     <div className={`${className} flex items-center justify-between`}>
@@ -34,9 +36,34 @@ const CodeReedemView: React.FC<CodeReedemViewProps> = ({
         </button>
       </div>
       {discountMessage && (
-        <p className="p-2 bg-green-100 text-green-800 rounded-md border border-green-200 ml-40 flex-shrink-0">
-          {discountMessage}
-        </p>
+        <div className="flex items-center space-x-2">
+          <p className="p-2 bg-green-100 text-green-800 rounded-md border border-green-200 ml-40 flex-shrink-0">
+            {discountMessage}
+          </p>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="p-2 rounded-full hover:bg-gray-200 focus:outline-none"
+          >
+            <svg
+              className="me-1.5 h-5 w-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L17.94 6M18 18L6.06 6"
+              />
+            </svg>
+          </button>
+        </div>
       )}
     </div>
   );

@@ -1,4 +1,3 @@
-// CartView.tsx
 import React from 'react';
 import { CartItem, OrderSummary } from './cart.type';
 import Trash from '@/../public/icons/trash.svg';
@@ -66,7 +65,7 @@ const CartView: React.FC<CartViewProps> = ({
                     <div className="text-base font-semibold text-gray-500 dark:text-white text-center mr-10">
                       Type
                     </div>
-                    <div className="text-base font-semibold text-gray-500 dark:text-white text-center mr-4">
+                    <div className="text-base font-semibold text-gray-500 dark:text-white text-center mr-2">
                       Price
                     </div>
                     <div className="text-base font-semibold text-gray-500 dark:text-white text-center ml-4">
@@ -98,18 +97,16 @@ const CartView: React.FC<CartViewProps> = ({
                     </div>
                     <CodeReedem />
                   </div>
-
-                  <div className="w-full min-w-0 flex-1 space-y-4 md:max-w-md flex flex-col lg:flex-row lg:items-center lg:space-x-4 lg:pl-2">
+                  <div className="w-full min-w-0 flex-1 space-y-4 md:max-w-md flex flex-col lg:flex-row lg:items-center lg:space-x-2 lg:pl-2">
                     <div className="flex flex-col flex-1">
                       <a
                         href="#"
                         className="text-base font-bold text-gray-700 hover:underline dark:text-white"
                       >
-                        {item.title.length > 25
-                          ? `${item.title.slice(0, 25)}...`
+                        {item.title.length > 10
+                          ? `${item.title.slice(0, 10)}...`
                           : item.title}
                       </a>
-                      {/* Rating Component moved here */}
                       <Rating rating={4.5} />
                     </div>
                     <div className="text-sm font-semibold text-gray-600 dark:text-white flex flex-col lg:flex-row lg:space-x-6 lg:items-center">
@@ -117,7 +114,7 @@ const CartView: React.FC<CartViewProps> = ({
                         {item.type}
                       </p>
                       <p className="text-sm font-semibold text-gray-600 dark:text-white">
-                        {item.price}
+                        Rp {item.price.toLocaleString()}
                       </p>
                     </div>
                     <div className="flex flex-col items-center justify-center mt-4 lg:mt-0">
@@ -137,10 +134,10 @@ const CartView: React.FC<CartViewProps> = ({
               <div className="mt-4 space-y-4">
                 <div className="flex justify-between">
                   <p className="text-base font-medium text-gray-700 dark:text-white">
-                    Items ({cartItems.length}):
+                    Items ({orderSummary.items}):
                   </p>
                   <p className="text-base font-medium text-gray-700 dark:text-white">
-                    Rp. ---
+                    Rp {orderSummary.totalPrice.toLocaleString()}
                   </p>
                 </div>
                 <div className="flex justify-between">
@@ -157,7 +154,7 @@ const CartView: React.FC<CartViewProps> = ({
                     Total:
                   </p>
                   <p className="text-base font-semibold text-gray-900 dark:text-white">
-                    Rp 6.010.000
+                    Rp {(orderSummary.totalPrice + 10000).toLocaleString()}
                   </p>
                 </div>
                 <hr className="my-4 border-t border-gray-300 dark:border-gray-600 mb-5" />

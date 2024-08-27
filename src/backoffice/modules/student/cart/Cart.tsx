@@ -39,10 +39,18 @@ const Cart: React.FC = () => {
     }
   };
 
+  const getTotalPrice = () => {
+    return cartItems
+      .filter((_, index) => selectedItems[index])
+      .reduce((total, item) => total + item.price, 0);
+  };
+
+  const totalPrice = getTotalPrice();
+
   return (
     <CartView
-      cartItems={cartItems}
-      orderSummary={orderSummary}
+      cartItems={cartItems.map((item, index) => ({ ...item, isSelected: selectedItems[index] }))}
+      orderSummary={{ items: selectedItems.filter(Boolean).length, totalPrice: totalPrice }}
       onIncrement={handleIncrement}
       onDecrement={handleDecrement}
       onRemove={handleRemove}

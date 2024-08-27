@@ -1,13 +1,12 @@
 export interface CartItem {
-    title: string;
-    price: string;
-    quantity: string;
-    image: string;
-    type: string;
-  }
-  
-  export interface OrderSummary {
-    totalItems: number;
-    totalPrice: string;
-  }
-  
+  id: string;
+  title: string;
+  image: string;
+  type: string;
+  price: number;
+}
+
+export interface OrderSummary {
+  items: number;
+  totalPrice: number;
+}

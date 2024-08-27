@@ -17,12 +17,18 @@ const CodeReedem: React.FC = () => {
     }
   };
 
+  const handleCancel = () => {
+    setCode('');
+    setDiscountMessage(undefined);
+  };
+
   return (
     <CodeReedemView
       code={code}
       onInputChange={handleInputChange}
       onSubmit={handleSubmit}
       discountMessage={discountMessage}
+      onCancel={handleCancel}
       className="mt-4 w-40 flex"
     />
   );
