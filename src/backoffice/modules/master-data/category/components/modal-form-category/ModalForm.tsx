@@ -1,48 +1,72 @@
 import React, { useState, useEffect } from 'react';
 import { ModalFormProps } from './modalForm.type';
 import { ModalFormView } from './ModalForm.view';
+import { categoryAPI } from '../../api/categoryApi';
 
-const ModalForm: React.FC<ModalFormProps> = ({ 
-  isOpen, 
-  onClose, 
-  onSave, 
+const ModalForm: React.FC<ModalFormProps> = ({
+  isOpen,
+  onClose,
+  onSave,
   initialData = null,
   id = undefined,
-  title, 
+  title,
 }) => {
-
   const [formData, setFormData] = useState({
     category: '',
+    code: '',
+    status: 1, 
   });
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        category: initialData.category || '',
+        category: initialData.name || '',
+        code: initialData.code || '',
+        status: initialData.active === 1 ? 1 : 0, 
       });
+      console.log('Initial Data:', initialData);
+      console.log('Form Data After Initialization:', formData.status); 
     } else {
       setFormData({
         category: '',
+        code: '',
+        status: 1, 
       });
     }
   }, [initialData]);
 
-  const handleInputChange = (category: string, value: string) => {
-    setFormData(prevData => ({ ...prevData, [category]: value }));
+  const handleInputChange = (field: string, value: string) => {
+    const newValue = field === 'status' ? (value === 'Active' ? 1 : 0) : value;
+    setFormData(prevData => ({ ...prevData, [field]: newValue }));
+    console.log(`Field ${field} changed to`, newValue); 
   };
 
   const handleSave = async () => {
-    if (!formData.category) {
+    if (!formData.category || !formData.code || formData.status === undefined) {
       setHasError(true);
       return;
     }
 
     try {
-      await onSave(id, formData);
+      const data = {
+        name: formData.category,
+        code: formData.code,
+        active: formData.status, 
+      }; 
+
+      if (id) {
+      } else {
+        await categoryAPI.add(data); 
+      }
+
       onClose();
+      if (onSave) {
+        await onSave(id, data);
+      }
     } catch (error) {
-      console.error('Failed to save data');
+      console.error('Failed to save data', error);
+      alert('An error occurred while saving the data. Please try again.');
     }
   };
 
@@ -50,7 +74,10 @@ const ModalForm: React.FC<ModalFormProps> = ({
     <ModalFormView
       isOpen={isOpen}
       title={title}
-      formData={formData}
+      formData={{
+        ...formData,
+        status: formData.status === 1 ? 'Active' : 'Non Active', 
+      }}
       hasError={hasError}
       handleInputChange={handleInputChange}
       handleSave={handleSave}
