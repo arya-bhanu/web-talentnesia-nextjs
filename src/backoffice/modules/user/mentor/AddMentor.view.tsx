@@ -1,12 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {
-  religions,
-  isMarried,
-  titles,
-  placesOfBirth,
-} from './addMentor.data';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useMentorForm } from './AddMentor';
@@ -14,45 +8,37 @@ import './addMentor.style.css';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
 import { cityAPI } from '../../master-data/region/city/api/cityApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
+import { academicTitleAPI } from '../../master-data/academic-title/api/academicTitleApi';
+import { religionAPI } from '../../master-data/religion/api/religionApi';
+import { Component as Datepicker } from '../components/datepicker/Datepicker';
+import { Component as FileInput } from '../components/file-input/FileInput';
+import { ProfilePictureInput } from '../components/profile-picture-input/ProfilePictureInput';
+import { SelectYear } from '../components/select-year/selectYear';
 import { Region } from './addMentor.type';
-
-const Datepicker = dynamic(
-  () =>
-    import('@/backoffice/components/datepicker/Datepicker').then(
-      (mod) => mod.Component,
-    ),
-  { ssr: false },
-);
-
-const FileInput = dynamic(
-  () =>
-    import('@/backoffice/components/file-input/FileInput').then(
-      (mod) => mod.Component,
-    ),
-  { ssr: false },
-);
-
-const ProfilePictureInput = dynamic(
-  () =>
-    import(
-      '@/backoffice/components/profile-picture-input/ProfilePictureInput'
-    ).then((mod) => mod.ProfilePictureInput),
-  { ssr: false },
-);
 
 type MentorViewProps = ReturnType<typeof useMentorForm>;
 
 export const MentorView: React.FC<MentorViewProps> = ({
   form,
-  handleInputChange,
-  handleEducationChange,
-  addEducation,
-  removeEducation,
-  resetForm,
+    handleInputChange,
+    handleEducationChange,
+    addEducation,
+    removeEducation,
+    resetForm,
+    handleFileChange,
+    handleProfilePictureChange,
+    handleEducationFileChange,
+    handleSubmit,
 }) => {
   const [provinces, setProvinces] = useState<Region[]>([]);
   const [districts, setDistricts] = useState<Region[]>([]);
   const [subDistricts, setSubDistricts] = useState<Region[]>([]);
+  const [academicTitles, setAcademicTitles] = useState<Region[]>([]);
+  const [religions, setReligions] = useState<Region[]>([]);
+
+  const styles = {
+    inputField: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins",
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +51,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
 
         const fetchedSubDistricts = await subDistrictAPI.all();
         setSubDistricts(fetchedSubDistricts);
+
+        const fetchedAcademicTitles = await academicTitleAPI.all();
+        setAcademicTitles(fetchedAcademicTitles);
+
+        const fetchedReligions = await religionAPI.all();
+        setReligions(fetchedReligions);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -76,10 +68,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
   return (
     <>
       <div className="container mx-auto p-1 max-w-full">
-        <form className="space-y-8">
+        <form className="space-y-8" onSubmit={handleSubmit}>
           <div className="border p-6 rounded-lg shadow-sm bg-white">
             <div className="flex items-center space-x-4">
-              <ProfilePictureInput />
+            <ProfilePictureInput
+              onChange={handleProfilePictureChange}
+            />
             </div>
           </div>
 
@@ -97,7 +91,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   type="text"
                   name="name"
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+                  className={styles.inputField}
                   placeholder="Input name"
                   required
                 />
@@ -111,7 +105,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   type="text"
                   name="nik"
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                   placeholder="Input NIK"
                   required
                 />
@@ -122,112 +116,124 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   type="text"
                   name="npwp"
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+                  className={styles.inputField}
                   placeholder="Input NPWP"
                 />
               </div>
               <div>
                 <label className="block mb-1">Foto KTP</label>
-                <FileInput id="ktp-file" label="Foto KTP" />
+                <FileInput
+                  id="ktp-file"
+                  label="Foto KTP"
+                  onChange={handleFileChange('photoKtp')}
+                />
               </div>
               <div>
                 <label className="block mb-1">Foto NPWP</label>
-                <FileInput id="npwp-file" label="Foto NPWP" />
+                <FileInput
+                  id="npwp-file"
+                  label="Foto NPWP"
+                  onChange={handleFileChange('photoNpwp')}
+                />
               </div>
               <div>
                 <label className="flex mb-1">
                   Place of Birth<div className="text-red-600">*</div>
                 </label>
-                <select
+                <input
+                  type="text"
                   name="placeOfBirth"
                   onChange={handleInputChange}
                   value={form.placeOfBirth || ''}
                   required
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins"
-                >
-                  <option className="hidden" value="" disabled>
-                    Select Place of Birth
-                  </option>
-                  {placesOfBirth.map((place, index) => (
-                    <option key={index} value={place}>
-                      {place}
-                    </option>
-                  ))}
-                </select>
+                  className={styles.inputField}
+                  placeholder="Enter Place of Birth"
+                />
               </div>
               <div>
-                <label className="flex mb-1">
-                  Date of Birth<div className="text-red-600">*</div>
-                </label>
-                <Datepicker />
-              </div>
+              <label className="flex mb-1">
+                Date of Birth<div className="text-red-600">*</div>
+              </label>
+              <Datepicker
+                id="dateOfBirth"
+                onChange={(date: Date | null) => {
+                  const customEvent = {
+                    target: {
+                      name: 'dateOfBirth',
+                      value: date ? date.toISOString().split('T')[0] : '',
+                    },
+                  } as React.ChangeEvent<HTMLInputElement>;
+                  handleInputChange(customEvent);
+                }}
+                value={form.dateOfBirth ? new Date(form.dateOfBirth) : null}
+                placeholder="Select Date of Birth"
+              />
+            </div>
               <div>
                 <label className="flex mb-1">
                   Religion<div className="text-red-600">*</div>
                 </label>
                 <select
-                  name="religion"
+                  name="religionId"
                   onChange={handleInputChange}
-                  value={form.religion || ''}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins"
+                  value={form.religionId || ''}
+                  className={styles.inputField}
                 >
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
                   {religions.map((religion, index) => (
-                    <option key={index} value={religion}>
-                      {religion}
+                    <option key={index} value={religion.id}>
+                      {religion.name}
                     </option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="flex mb-1">
-                  Gender<div className="text-red-600">*</div>
-                </label>
-                <div className="flex items-center mt-3 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="Male"
-                      onChange={handleInputChange}
-                      checked={form.gender === 'Male'}
-                      className="mr-2 size-4 md:size-6 text-sm md:text-base place-self-center"
-                    />
-                    Male
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="Female"
-                      onChange={handleInputChange}
-                      checked={form.gender === 'Female'}
-                      className="mr-2 size-4 md:size-6 text-sm md:text-base"
-                    />
-                    Female
-                  </label>
-                </div>
-              </div>
+            <label className="flex mb-1">
+              Gender<div className="text-red-600">*</div>
+            </label>
+            <div className="flex items-center mt-3 space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="1"
+                  onChange={handleInputChange}
+                  checked={form.gender === 1}
+                  className="mr-2 size-4 md:size-6 text-sm md:text-base place-self-center"
+                />
+                Male
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="2"
+                  onChange={handleInputChange}
+                  checked={form.gender === 2}
+                  className="mr-2 size-4 md:size-6 text-sm md:text-base"
+                />
+                Female
+              </label>
+            </div>
+          </div>
               <div>
                 <label className="flex mb-1">
                   Mariage Status<div className="text-red-600">*</div>
                 </label>
                 <select
-                  name="isMarried"
+                  name="mariageStatus"
                   onChange={handleInputChange}
-                  value={form.isMarried || ''}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins "
+                  value={form.mariageStatus || ''}
+                  className={styles.inputField}
                 >
                   <option className="hidden" value="" disabled>
                     Select Mariage Status
                   </option>
-                  {isMarried.map((status, index) => (
-                    <option key={index} value={status}>
-                      {status}
-                    </option>
-                  ))}
+                  <option value="single">Single</option>
+                  <option value="married">Married</option>
+                  <option value="divorced">Divorced</option>
                 </select>
               </div>
               <div>
@@ -237,14 +243,18 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   name="numberOfChildren"
                   placeholder="Input Number of Child"
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                 />
               </div>
               <div>
                 <label className="flex mb-1">
                   Employee Contract<div className="text-red-600">*</div>
                 </label>
-                <FileInput id="contract-file" label="Employee Contract" />
+                <FileInput
+                  id="contract-file"
+                  label="Employee Contract"
+                  onChange={handleFileChange('contract')}
+                />
               </div>
             </div>
           </div>
@@ -261,11 +271,11 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 </label>
                 <input
                   type="text"
-                  name="phoneNumber"
+                  name="phone"
                   placeholder="Phone Number"
                   required
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                 />
               </div>
               <div>
@@ -278,7 +288,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   placeholder="Linkedin Link"
                   required
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                 />
               </div>
               <div>
@@ -291,7 +301,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   placeholder="Email"
                   required
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                 />
               </div>
               <div>
@@ -304,7 +314,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   placeholder="Emergency Contact"
                   required
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                 />
               </div>
             </div>
@@ -321,10 +331,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   Province<div className="text-red-600">*</div>
                 </label>
                 <select
-                name="province"
-                value={form.province || ''}
+                name="provinceId"
+                value={form.provinceId || ''}
                 onChange={handleInputChange}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+                className={styles.inputField}
               >
                 <option className="hidden" value="" disabled>
                   Select Province
@@ -341,10 +351,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   City/District<div className="text-red-600">*</div>
                 </label>
                 <select
-                  name="district"
-                  value={form.district || ''}
+                  name="districtId"
+                  value={form.districtId || ''}
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+                  className={styles.inputField}
                 >
                   <option className="hidden" value="" disabled>
                     Select City/District
@@ -361,10 +371,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   Sub District<div className="text-red-600">*</div>
                 </label>
                 <select
-                  name="subDistrict"
-                  value={form.subDistrict || ''}
+                  name="subDistrictId"
+                  value={form.subDistrictId || ''}
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins"
+                  className={styles.inputField}
                 >
                   <option className="hidden" value="" disabled>
                     Select Sub District
@@ -385,7 +395,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   name="zipCode"
                   placeholder="Input Zip Code"
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                 />
               </div>
               <div>
@@ -397,7 +407,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   name="addressKtp"
                   placeholder="Input Address (KTP)"
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                 />
               </div>
               <div>
@@ -409,14 +419,14 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   name="addressDomicile"
                   placeholder="Input Address (Domicile)"
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                  className={styles.inputField}
                 />
               </div>
             </div>
           </div>
 
-          {/* Section D: Education */}
-          <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
+                    {/* Section D: Education */}
+                    <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg md:text-xl font-semibold">D. Education</h2>
 
@@ -438,14 +448,14 @@ export const MentorView: React.FC<MentorViewProps> = ({
               </button>
             </div>
 
-            {form.education.map((education, index) => (
+            {form.educations.map((education, index) => (
               <div key={index} className="border-b pb-4 mb-4">
                 <div className="flex justify-between items-center mb-4 w-full">
                   <div>
                     <h3 className="text-lg font-semibold">{index + 1}.</h3>
                   </div>
                   <div>
-                    {form.education.length > 1 && (
+                    {form.educations.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeEducation(index)}
@@ -469,10 +479,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     </label>
                     <input
                       type="text"
-                      name={`universityName-${index}`}
+                      name="name"
                       placeholder="University Name"
-                      onChange={handleInputChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                      onChange={(e) => handleEducationChange(e, index)}
+                      className={styles.inputField}
                     />
                   </div>
                   <div>
@@ -480,17 +490,17 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       Academic Title<div className="text-red-600">*</div>
                     </label>
                     <select
-                      name={`title-${index}`}
-                      value={education.title || ''}
-                      onChange={handleInputChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                      name="titleId"
+                      value={education.titleId || ''}
+                      onChange={(e) => handleEducationChange(e, index)}
+                      className={styles.inputField}
                     >
                       <option className="hidden" value="" disabled>
                         Select Academic Title
                       </option>
-                      {titles.map((title, idx) => (
-                        <option key={idx} value={title}>
-                          {title}
+                      {academicTitles.map((level, idx) => (
+                        <option key={idx} value={level.id}>
+                          {level.name}
                         </option>
                       ))}
                     </select>
@@ -501,10 +511,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     </label>
                     <input
                       type="text"
-                      name={`major-${index}`}
+                      name="major"
                       placeholder="Input Major"
-                      onChange={handleInputChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                      onChange={(e) => handleEducationChange(e, index)}
+                      className={styles.inputField}
                     />
                   </div>
                   <div>
@@ -513,28 +523,40 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     </label>
                     <input
                       type="text"
-                      name={`gpa-${index}`}
+                      name="gpa"
                       placeholder="Input GPA"
-                      onChange={handleInputChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                      onChange={(e) => handleEducationChange(e, index)}
+                      className={styles.inputField}
                     />
                   </div>
                   <div>
-                    <label className="flex mb-1">
-                      Year Graduated<div className="text-red-600">*</div>
-                    </label>
-                    <Datepicker />
-                  </div>
+                  <label className="flex mb-1">
+                    Year Graduated<div className="text-red-600">*</div>
+                  </label>
+                  <SelectYear
+                    id={`educations.${index}.yearGraduate`}
+                    value={education.yearGraduate ? parseInt(education.yearGraduate, 10) : null}
+                    onChange={(year) => {
+                      const event = {
+                        target: {
+                          name: 'yearGraduate',
+                          value: year.toString(),
+                        },
+                      } as React.ChangeEvent<{ name?: string; value?: string }>;
+                      handleEducationChange(event, index);
+                    }}
+                  />
+                </div>
                   <div>
                     <label className="flex mb-1">
                       Certificate Number<div className="text-red-600">*</div>
                     </label>
                     <input
                       type="text"
-                      name={`certificateNumber-${index}`}
+                      name="certificateNumber"
                       placeholder="Input Certificate Number"
-                      onChange={handleInputChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white   font-poppins "
+                      onChange={(e) => handleEducationChange(e, index)}
+                      className={styles.inputField}
                     />
                   </div>
                   <div>
@@ -544,6 +566,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     <FileInput
                       id={`certificate-file-${index}`}
                       label={`Academic Certificate ${index + 1}`}
+                      onChange={handleEducationFileChange(index, 'certificate')}
                     />
                   </div>
                 </div>

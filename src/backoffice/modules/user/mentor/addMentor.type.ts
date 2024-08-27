@@ -1,38 +1,40 @@
 export interface Education {
   name: string;
-  title: string;
+  titleId: string | null;
   major: string;
   gpa: string;
-  yearGraduated: string;
+  yearGraduate: string;
   certificateNumber: string;
-  certificate: string | null;
+  certificate: string;
 }
 
 export interface MentorFormData {
-  profilePicture: string | null;
+  role: number;
+  active: number;
+  profilePicture: string;
   name: string;
   nik: string;
   npwp: string;
-  fotoKtp: string | null;
-  fotoNpwp: string | null;
+  photoKtp: string;
+  photoNpwp: string;
   placeOfBirth: string;
   dateOfBirth: string;
-  religion: string;
-  gender: string;
-  isMarried: string;
+  religionId: string | null;
+  gender: number;
+  mariageStatus: string;
   numberOfChildren: string;
-  contract: string | null;
+  contract: string;
   phone: string;
+  email: string;
   linkedin: string;
   emergencyContact: string;
-  email: string;
-  province: string;
-  district: string;
-  subDistrict: string;
+  provinceId: string | null;
+  districtId: string | null;
+  subDistrictId: string | null;
   zipCode: string;
   addressKtp: string;
   addressDomicile: string;
-  education: Education[];
+  educations: Education[];
 }
 
 export interface Region {

@@ -8,7 +8,10 @@ import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import { TabFlex } from './components/tabs/tabs';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
+import { Mentor } from './mentor/AddMentor';
+import { MentorFormData } from './mentor/addMentor.type';
 import { userAPI } from './api/userApi';
+
 
 const UserView: React.FC<IUserView> = ({
   Filter,
@@ -19,6 +22,8 @@ const UserView: React.FC<IUserView> = ({
 }) => {
   const [activeTab, setActiveTab] = useState('Mentor');
   const [data, setData] = useState<User[]>([]);
+  const [isAddMentorOpen, setIsAddMentorOpen] = useState(false);
+  const [editingMentor, setEditingMentor] = useState<User | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -38,6 +43,22 @@ const UserView: React.FC<IUserView> = ({
         break;
     }
     setData(fetchedData);
+  };
+
+  const handleAddMentor = async (mentorData: MentorFormData) => {
+    const newMentor = await userAPI.add({ ...mentorData, role: 3 });
+    if (newMentor) {
+      fetchData();
+      setIsAddMentorOpen(false);
+    }
+  };
+
+  const handleEditMentor = async (id: string, mentorData: MentorFormData) => {
+    const updatedMentor = await userAPI.update(id, mentorData);
+    if (updatedMentor) {
+      fetchData();
+      setEditingMentor(null);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -105,6 +126,12 @@ const UserView: React.FC<IUserView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins mb-4">
         <SearchTable value={Filter} onChange={setFilter} />
+        {tabName === 'Mentor' && (
+        <AddButton
+          onClick={() => setIsAddMentorOpen(true)}
+          text="Add Mentor"
+        />
+      )}
         <AddButton
           onClick={() => setIsPopupOpen(true)}
           text={`Add ${tabName}`}

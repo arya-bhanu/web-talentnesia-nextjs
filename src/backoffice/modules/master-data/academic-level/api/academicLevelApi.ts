@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+// const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+const API_URL = 'http://127.0.0.1:8000/api/v1';
 
 export const academicLevelAPI = {
   fetch: async () => {
@@ -10,6 +11,16 @@ export const academicLevelAPI = {
     } catch (error) {
       console.error('Failed to fetch academic levels');
       throw new Error('Failed to fetch academic levels');
+    }
+  },
+
+  all: async () => {
+    try {
+      const response = await axios.get(`${API_URL}/education-level/all`);
+      return response.data.data;
+    } catch (error) {
+      console.error('Failed to get all academic level', error);
+      return [];
     }
   },
 
