@@ -10,6 +10,7 @@ import ImageUploadInput from '../../../components/image-upload-input/ImageUpload
 import Link from 'next/link';
 import { SchoolAPI } from '../../../api/schoolApi';
 import { AddSchoolViewProps } from './addSchool.type';
+import { getImageUrl } from '../../../api/minioApi';
 
 const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
     address: '',
     imageUrl: '',
   });
+  const [fullImageUrl, setFullImageUrl] = useState<string>('');
   const [hasError, setHasError] = useState(false);
 
   const handleInputChange = (field: keyof APIResponseSchool, value: string) => {
@@ -30,17 +32,22 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
     }));
   };
 
-  const handleImageChange = (imageUrl: string) => {
-    console.log('New image URL:', imageUrl);
-    handleInputChange('imageUrl', imageUrl);
+  const handleImageChange = async (imageUrl: string) => {
+    try {
+      const fullUrl = await getImageUrl(imageUrl);
+      console.log('Image URL:', imageUrl);
+      console.log('Full image URL:', fullUrl);
+      setFullImageUrl(fullUrl);
+      handleInputChange('imageUrl', imageUrl);
+    } catch (error) {
+      console.error('Failed to get full image URL:', error);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setHasError(true);
 
-    // Check if all required fields are filled
     const requiredFields: (keyof APIResponseSchool)[] = [
       'name',
       'pic',
@@ -70,7 +77,7 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
       <div className="mb-6 flex">
         <ImageUploadInput
           onChange={handleImageChange}
-          initialImage={formData.imageUrl || ''}
+          initialImage={fullImageUrl || ''}
         />
       </div>
 

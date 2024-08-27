@@ -15,6 +15,7 @@ interface UpdateSchoolViewProps {
 const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
   const router = useRouter();
   const [formData, setFormData] = useState<APIResponseSchool | null>(null);
+  const [fullImageUrl, setFullImageUrl] = useState<string>('');
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
@@ -25,10 +26,7 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
         getImageUrl(initialData.imageUrl)
           .then(url => {
             if (url) {
-              setFormData(prevData => ({
-                ...prevData!,
-                imageUrl: url
-              }));
+              setFullImageUrl(url);
             } else {
               console.error('Fetched image URL is undefined or empty');
             }
@@ -45,11 +43,16 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
     }) : null);
   };
 
-  const handleImageChange = (imageUrl: string) => {
-    setFormData(prevData => ({
-      ...prevData!,
-      imageUrl: imageUrl
-    }));
+  const handleImageChange = async (imageUrl: string) => {
+    try {
+      const fullUrl = await getImageUrl(imageUrl);
+      console.log('Image URL:', imageUrl);
+      console.log('Full image URL:', fullUrl);
+      setFullImageUrl(fullUrl);
+      handleInputChange('imageUrl', imageUrl);
+    } catch (error) {
+      console.error('Failed to get full image URL:', error);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,7 +64,6 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
 
     setHasError(true);
 
-    // Check if all required fields are filled
     const requiredFields: (keyof APIResponseSchool)[] = ['name', 'pic', 'email', 'phone', 'address'];
     const isFormValid = requiredFields.every(field => formData[field]);
 
@@ -86,7 +88,7 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
       <div className="mb-6 flex">
         <ImageUploadInput
           onChange={handleImageChange}
-          initialImage={formData.imageUrl || ''}
+          initialImage={fullImageUrl || ''}
         />
       </div>
       <div className="grid grid-cols-2 gap-6">
