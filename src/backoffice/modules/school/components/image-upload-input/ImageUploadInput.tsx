@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+'use client'
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { uploadFile } from '../../api/uploadMinio';
+import { uploadFile } from '../../api/minioApi';
 
 interface ImageUploadInputProps {
   onChange: (imageUrl: string) => void;
@@ -10,6 +12,14 @@ interface ImageUploadInputProps {
 const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialImage }) => {
   const [imageSrc, setImageSrc] = useState<string | null>(initialImage || null);
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    if (initialImage) {
+      setImageSrc(initialImage);
+    }
+  }, [initialImage]);
+
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -26,7 +36,12 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
       try {
         const response = await uploadFile(file, 'institutions');
         const imageUrl = response.path.thumbs;  
+        
+        // Add a small delay here
+        await delay(500); // 500ms delay, adjust as needed
+        
         onChange(imageUrl);
+        setImageSrc(imageUrl); // Update imageSrc with the new URL
       } catch (error) {
         console.error('Failed to upload image:', error); 
       } finally {
@@ -34,6 +49,7 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
       }
     }
   };
+
 
   const handleDeleteImage = (e: React.MouseEvent) => {
     e.preventDefault();

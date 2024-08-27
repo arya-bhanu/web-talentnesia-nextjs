@@ -29,3 +29,17 @@ export const uploadFile = async (file: File, path: string): Promise<UploadFileRe
     throw error;
   }
 };
+
+export const getImageUrl = async (imageUrl: string): Promise<string> => {
+  try {
+    // Hapus 'path=' dari URL dan ganti '?' dengan '/'
+    const correctedPath = imageUrl.replace('path=', '').replace('?', '/');
+    const fullUrl = `https://api-talentnesia.skwn.dev/api/v1/file/${correctedPath}`;
+    
+    const response = await axios.get(fullUrl);
+    return response.data.url || fullUrl;
+  } catch (error) {
+    console.error('Failed to fetch image URL:', error);
+    throw error;
+  }
+};

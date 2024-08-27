@@ -1,5 +1,3 @@
-// UpdateSchool.view.tsx
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -8,6 +6,7 @@ import { SchoolAPI } from '../../../api/schoolApi';
 import ImageUploadInput from '../../../components/image-upload-input/ImageUploadInput';
 import Link from 'next/link';
 import { APIResponseSchool } from '../../../school.type';
+import { getImageUrl } from '../../../api/minioApi';
 
 interface UpdateSchoolViewProps {
   initialData: APIResponseSchool;
@@ -21,6 +20,21 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
   useEffect(() => {
     if (initialData) {
       setFormData(initialData);
+  
+      if (initialData.imageUrl) {
+        getImageUrl(initialData.imageUrl)
+          .then(url => {
+            if (url) {
+              setFormData(prevData => ({
+                ...prevData!,
+                imageUrl: url
+              }));
+            } else {
+              console.error('Fetched image URL is undefined or empty');
+            }
+          })
+          .catch(error => console.error('Error fetching image URL:', error));
+      }
     }
   }, [initialData]);
 
@@ -32,31 +46,34 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
   };
 
   const handleImageChange = (imageUrl: string) => {
-    handleInputChange('imageUrl', imageUrl);
+    setFormData(prevData => ({
+      ...prevData!,
+      imageUrl: imageUrl
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!formData) {
       return;
     }
-  
+
     setHasError(true);
-  
-    // Periksa apakah semua field yang diperlukan telah diisi
+
+    // Check if all required fields are filled
     const requiredFields: (keyof APIResponseSchool)[] = ['name', 'pic', 'email', 'phone', 'address'];
     const isFormValid = requiredFields.every(field => formData[field]);
-  
+
     if (!isFormValid) {
       return;
     }
-  
+
     try {
       const updatedSchool = await SchoolAPI.update(formData.id, formData);
       router.push('/backoffice/school');
     } catch (error) {
-      console.error('Failed to update school:', error);
+      console.error('Failed to update school:');
     }
   };
 
