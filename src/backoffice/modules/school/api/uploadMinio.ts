@@ -3,6 +3,10 @@ import FormData from 'form-data';
 
 interface UploadFileResponse {
   fileUrl: string;
+  path: {
+    thumbs: string;
+    origin: string;
+  }
 }
 
 export const uploadFile = async (file: File, path: string): Promise<UploadFileResponse> => {
@@ -16,10 +20,6 @@ export const uploadFile = async (file: File, path: string): Promise<UploadFileRe
     data,
     maxBodyLength: Infinity,
   };
-
-  // Debugging: Log the headers to check what's being sent
-  console.log('FormData headers:', data.getHeaders ? data.getHeaders() : 'No headers');
-  console.log('FormData:', data);
 
   try {
     const response = await axios(config);

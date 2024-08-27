@@ -24,14 +24,11 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
 
       setIsUploading(true);
       try {
-        const datePath = new Date().toISOString().slice(0, 7); // e.g., "2024-08"
-        const uniqueFileName = `thumb-and-origin/${datePath}/thumb-${file.name.split('.').pop()}-${Date.now()}`;
-        const { fileUrl } = await uploadFile(file, `institutions/${datePath}/${uniqueFileName}`);
-        
-        console.log('Image uploaded successfully:', fileUrl);
-        onChange(fileUrl);
+        const response = await uploadFile(file, 'institutions');
+        const imageUrl = response.path.thumbs;  
+        onChange(imageUrl);
       } catch (error) {
-        console.error('Failed to upload image:', error);
+        console.error('Failed to upload image:', error); 
       } finally {
         setIsUploading(false);
       }
@@ -39,7 +36,7 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
   };
 
   const handleDeleteImage = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     setImageSrc(null);
     onChange('');
     const fileInput = document.getElementById('image-upload-input') as HTMLInputElement;
@@ -49,7 +46,7 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
   };
 
   const handleEditClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     document.getElementById('image-upload-input')?.click();
   };
 
@@ -72,7 +69,6 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
         height={150}
       />
 
-      {/* Edit Icon */}
       <button
         type="button"
         className="absolute top-2 right-2 rounded-full p-1 bg-white shadow-md"
@@ -88,7 +84,6 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
         />
       </button>
 
-      {/* Delete Icon */}
       <button
         type="button"
         className="absolute bottom-2 right-2 rounded-full p-1 bg-white shadow-md"

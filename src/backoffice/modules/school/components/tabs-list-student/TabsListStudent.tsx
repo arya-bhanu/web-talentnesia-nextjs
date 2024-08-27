@@ -1,5 +1,5 @@
 import { SearchTable } from '@/backoffice/components/search-table';
-import TableStudent from '../add-school/components/table-student';
+import TableStudent from '../../add-school/components/table-student';
 
 export const TabsListStudent = () => {
   return (

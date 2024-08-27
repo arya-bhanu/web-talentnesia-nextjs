@@ -32,7 +32,6 @@ export const SchoolAPI = {
         ...data,
         active: 1,
         createdBy: '',
-        imageUrl: data.imageUrl || 'https://imagizer.imageshack.com/img923/3166/zM2TAi.jpg',
         provinceId: null,
         districtId: null,
         levelId: null,
@@ -52,7 +51,6 @@ export const SchoolAPI = {
       const requestData = {
         ...data,
         active: 1,
-        imageUrl: data.imageUrl,
         provinceId: null,
         districtId: null,
         levelId: null,

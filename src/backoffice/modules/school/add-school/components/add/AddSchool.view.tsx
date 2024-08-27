@@ -1,3 +1,5 @@
+// AddSchool.view.tsx
+
 'use client';
 
 import React, { useState } from 'react';
@@ -29,6 +31,7 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
   };
 
   const handleImageChange = (imageUrl: string) => {
+    console.log('New image URL:', imageUrl);
     handleInputChange('imageUrl', imageUrl);
   };
 
@@ -44,10 +47,12 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
       'email',
       'phone',
       'address',
+      'imageUrl',
     ];
     const isFormValid = requiredFields.every((field) => formData[field]);
 
     if (!isFormValid) {
+      console.log(formData)
       return;
     }
 

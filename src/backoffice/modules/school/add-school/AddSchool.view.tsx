@@ -12,7 +12,7 @@ import { IAddSchoolView } from './addSchool.type';
 import { TabFlex } from '../components/tabs/tabs';
 import { IAccordionPanelDraggable } from '../components/accordion-panel-draggable/accordionPanelDraggable.type';
 import { TabsProgram } from '../components/tabs-program/TabsProgram';
-import { TabsListStudent } from '../list-student/ListStudent';
+import { TabsListStudent } from '../components/tabs-list-student/TabsListStudent';
 
 function AddSchoolView({
   open,
