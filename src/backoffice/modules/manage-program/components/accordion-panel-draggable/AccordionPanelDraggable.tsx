@@ -1,6 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 import AccordionPanelDraggableView from './AccordionPanelDraggable.view';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteChapter } from '@/backoffice/modules/manage-modul/api/manageModelApi';
 
 const AccordionPanelDraggable: React.FC<
   IAccordionPanelDraggable & { index: number }
@@ -9,6 +11,12 @@ const AccordionPanelDraggable: React.FC<
   const [openModalMentoring, setOpenModalMentoring] = useState(false);
   const [openModalCertificate, setOpenModalCertificate] = useState(false);
   const [openModalContent, setOpenModalContent] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: deleteChapterAsync } = useMutation({
+    mutationKey: ['delete', 'chapter'],
+    mutationFn: deleteChapter,
+  });
 
   const handleOpenModalContent = (action: 'open' | 'close') => {
     if (action === 'close') {
@@ -34,6 +42,15 @@ const AccordionPanelDraggable: React.FC<
     }
   };
 
+  const handleDeleteChapter = async (idChapter: string) => {
+    try {
+      await deleteChapterAsync(idChapter);
+      await queryClient.invalidateQueries({ queryKey: ['course'] });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleSubmitModalMentoring = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -51,6 +68,7 @@ const AccordionPanelDraggable: React.FC<
 
   return (
     <AccordionPanelDraggableView
+      handleDeleteChapter={handleDeleteChapter}
       handleOpenModalMentoring={handleOpenModalMentoring}
       handleOpenModalCertificate={handleOpenModalCertificate}
       handleOpenModalContent={handleOpenModalContent}

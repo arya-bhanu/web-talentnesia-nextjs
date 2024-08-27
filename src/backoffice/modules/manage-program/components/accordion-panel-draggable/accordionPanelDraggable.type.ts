@@ -6,6 +6,7 @@ export interface IAccordionPanelDraggable extends IAccordionState {
   totalMinuteDuration: number;
   totalCurriculum: number;
   contents: IListDraggable[];
+  id: string;
 }
 
 export interface IAccordionState {

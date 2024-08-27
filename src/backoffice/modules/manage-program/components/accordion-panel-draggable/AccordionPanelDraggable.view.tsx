@@ -22,6 +22,8 @@ import Modal from '@/backoffice/components/modal';
 import FormMentoring from '../../form-program/components/form-mentoring';
 import FormCertificate from '../../form-program/components/form-certificate';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
+import Link from 'next/link';
+import { useFormCourseStore } from '../../form-program/components/form-course/formCourse.store';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -33,6 +35,7 @@ const AccordionPanelDraggableView: React.FC<
       handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
       handleSubmitModalCertificate: (e: FormEvent<HTMLFormElement>) => void;
       handleSubmitModalContent: (e: FormEvent<HTMLFormElement>) => void;
+      handleDeleteChapter: (chapterId: string) => void;
       openModalContent: boolean;
       setOpenModalContent: Dispatch<SetStateAction<boolean>>;
       openModalCertificate: boolean;
@@ -62,7 +65,10 @@ const AccordionPanelDraggableView: React.FC<
   handleOpenModalContent,
   openModalContent,
   setOpenModalContent,
+  handleDeleteChapter,
+  id,
 }) => {
+  const { activeModule } = useFormCourseStore();
   return (
     <div
       className={clsx('p-4', index === activeAccordion ? 'bg-[#219EBC0F]' : '')}
@@ -134,6 +140,7 @@ const AccordionPanelDraggableView: React.FC<
               <ul className="p-3 flex flex-col gap-3">
                 <li>
                   <button
+                    type="button"
                     onClick={() => handleOpenModalMentoring('open')}
                     className="text-sm font-lato flex items-center gap-2 font-normal"
                   >
@@ -143,6 +150,7 @@ const AccordionPanelDraggableView: React.FC<
                 </li>
                 <li>
                   <button
+                    type="button"
                     onClick={() => handleOpenModalContent('open')}
                     className="text-sm font-lato font-normal flex items-center gap-2"
                   >
@@ -151,13 +159,17 @@ const AccordionPanelDraggableView: React.FC<
                   </button>
                 </li>
                 <li>
-                  <button className="text-sm flex items-center gap-2 font-lato font-normal">
+                  <button
+                    type="button"
+                    className="text-sm flex items-center gap-2 font-lato font-normal"
+                  >
                     <AddXs />
                     Add Exam
                   </button>
                 </li>
                 <li>
                   <button
+                    type="button"
                     onClick={() => handleOpenModalCertificate('open')}
                     className="text-sm font-lato font-normal flex items-center gap-2"
                   >
@@ -166,13 +178,20 @@ const AccordionPanelDraggableView: React.FC<
                   </button>
                 </li>
                 <li>
-                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                  <Link
+                    href={`/backoffice/manage-modul/update/chapter/?modulId=${activeModule}&chapterId=${id}`}
+                    className="text-sm font-lato font-normal flex items-center gap-2"
+                  >
                     <Edit />
                     Edit
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteChapter(id)}
+                    className="text-sm font-lato font-normal flex items-center gap-2"
+                  >
                     <TrashXs />
                     Delete
                   </button>

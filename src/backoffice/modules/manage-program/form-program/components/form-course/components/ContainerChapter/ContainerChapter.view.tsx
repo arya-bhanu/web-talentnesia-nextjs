@@ -2,20 +2,24 @@ import { convertTimeToMinutes } from '@/helpers/formatter.helper';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useFormCourseStore } from '../../formCourse.store';
 import AccordionPanelDraggable from '@/backoffice/modules/manage-program/components/accordion-panel-draggable';
+import clsx from 'clsx';
 
 const ContainerChapterView = ({
   activeAccordion,
   setActiveAccordion,
+  className,
 }: {
   activeAccordion: number;
   setActiveAccordion: Dispatch<SetStateAction<number>>;
+  className?: string;
 }) => {
   const { data } = useFormCourseStore();
   return (
-    <div className="mt-5">
+    <div className={clsx(className)}>
       {data ? (
         data.chapters.map((el, index) => (
           <AccordionPanelDraggable
+            id={el.id}
             key={el.id}
             activeAccordion={activeAccordion}
             setActiveAccordion={setActiveAccordion}
