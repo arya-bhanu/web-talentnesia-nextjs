@@ -14,8 +14,6 @@ function MentorSelector({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  console.log(selectedMentors);
-
   const toggleMentorSelection = (mentor: Mentor) => {
     setSelectedMentors((prev) =>
       prev.map((el) => el.name).includes(mentor.name)

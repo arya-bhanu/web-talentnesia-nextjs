@@ -34,7 +34,6 @@ export const formatDateIndonesian = (date: Date) => {
   return formattedDate;
 };
 
-
 // convert August 25, 2024 -> 2024-08-25
 export const convertIntoNumericDate = (dateString: string) => {
   const months: { [key: string]: string } = {
@@ -59,9 +58,29 @@ export const convertIntoNumericDate = (dateString: string) => {
   return `${year}-${monthCode}-${dayCode}`;
 };
 
-export function formatNumericDateToEng(dateString : string) {
+
+// convert HH:mm -> {number_minute}
+export function convertTimeToMinutes(time : string) {
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
+}
+
+export function formatNumericDateToEng(dateString: string) {
   const date = new Date(dateString);
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   const day = date.getDate();
   const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
@@ -79,8 +98,6 @@ export function formatNumericDateToEng(dateString : string) {
 
   return `${month} ${day}${suffix} ${year}`;
 }
-
-
 
 export const convertHHmmTime = (date: Date) => {
   const timeHHmm = date.toLocaleTimeString('en-US', {

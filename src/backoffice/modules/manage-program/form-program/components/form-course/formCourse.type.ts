@@ -1,3 +1,4 @@
+import { APIChapterModul } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 
 export interface IFormCourse {}
@@ -9,6 +10,11 @@ export interface IHandlerFormCourse {
 export interface IStateFormCourse {
   openModalModul: boolean;
   setOpenModalModul: Dispatch<SetStateAction<boolean>>;
-  activeAccordion: number;
-  setActiveAccordion: Dispatch<SetStateAction<number>>;
+}
+
+export interface IFormCourse {
+  id: string;
+  name: string;
+  progress: number;
+  chapters: APIChapterModul[];
 }

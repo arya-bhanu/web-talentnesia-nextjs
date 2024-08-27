@@ -1,20 +1,21 @@
 import LabelForm from '@/backoffice/components/label-form';
 import Modal from '@/backoffice/components/modal';
-import AccordionPanelDraggable from '@/backoffice/modules/manage-program/components/accordion-panel-draggable';
+
 import ModulProgress from '@/backoffice/modules/manage-program/form-program/components/modul-progress';
 import { Select } from 'flowbite-react/components/Select';
 import React from 'react';
 import { IHandlerFormCourse, IStateFormCourse } from './formCourse.type';
 import { Button } from 'flowbite-react/components/Button';
 import Link from 'next/link';
+import { useFormCourseStore } from './formCourse.store';
+import ContainerChapter from './components/ContainerChapter';
 
 const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
-  activeAccordion,
   handleSubmitSelectedModul,
   openModalModul,
-  setActiveAccordion,
   setOpenModalModul,
 }) => {
+  const { data, modules, activeModule } = useFormCourseStore();
   return (
     <form>
       <Modal
@@ -27,20 +28,30 @@ const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
         handleSubmit={handleSubmitSelectedModul}
       >
         <div>
-          <LabelForm isImportant htmlFor="modul">
-            Modul Name
-          </LabelForm>
-          <Select id="modul" name="modul">
-            <option value={1}>Modul 1</option>
-            <option value={2}>Modul 2</option>
-            <option value={3}>Modul 3</option>
-          </Select>
+          {modules && (
+            <>
+              <LabelForm isImportant htmlFor="modul">
+                Modul Name
+              </LabelForm>
+              <Select
+                defaultValue={activeModule || undefined}
+                id="modul"
+                name="modul"
+              >
+                {modules.map((el) => (
+                  <option key={el.id} value={el.id}>
+                    {el.name}
+                  </option>
+                ))}
+              </Select>
+            </>
+          )}
         </div>
       </Modal>
       <div className="flex items-center justify-between gap-10">
         <ModulProgress
-          progress={50}
-          title="UI/UX Designer"
+          progress={data?.progress || 0}
+          title={data?.name || ''}
           className="flex-1"
         />
         <div className="flex items-center gap-3">
@@ -53,6 +64,7 @@ const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
             </span>
           </button>
           <button
+            type="button"
             onClick={() => setOpenModalModul(true)}
             className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-3 me-2 mb-2 dark:focus:ring-yellow-900"
           >
@@ -60,54 +72,7 @@ const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
           </button>
         </div>
       </div>
-      <div className="mt-5">
-        <AccordionPanelDraggable
-          key={1}
-          activeAccordion={activeAccordion}
-          setActiveAccordion={setActiveAccordion}
-          title="UX Design Principles"
-          index={1}
-          totalCurriculum={6}
-          contents={[
-            {
-              date: new Date(),
-              durationMinute: 30,
-              title: 'Law',
-              type: '1',
-            },
-            {
-              date: new Date(),
-              durationMinute: 20,
-              title: 'Law Hick',
-              type: '2',
-            },
-          ]}
-          totalMinuteDuration={58}
-        />
-        <AccordionPanelDraggable
-          key={2}
-          activeAccordion={activeAccordion}
-          setActiveAccordion={setActiveAccordion}
-          title="UI Design Principles"
-          index={2}
-          totalCurriculum={6}
-          totalMinuteDuration={45}
-          contents={[
-            {
-              date: new Date(),
-              durationMinute: 30,
-              title: 'Law',
-              type: '1',
-            },
-            {
-              date: new Date(),
-              durationMinute: 20,
-              title: 'Law Hick',
-              type: '2',
-            },
-          ]}
-        />
-      </div>
+      <ContainerChapter />
       <div className="flex justify-end space-x-4 mt-10">
         <Button
           type="button"
