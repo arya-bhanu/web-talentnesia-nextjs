@@ -5,8 +5,9 @@ import React from 'react';
 export async function generateStaticParams() {
   try {
     const response = await SchoolAPI.fetch();
-    const schoolIds = response.map((school) => ({ id: school.id }));
-    return schoolIds;
+    return response.map((school) => ({
+      id: school.id,
+    }));
   } catch (error) {
     console.error('Failed to fetch school IDs:', error);
     return [];
@@ -23,7 +24,7 @@ export default async function AddSchoolProgram({ params }: { params: { id: strin
   }
   return (
     <>
-      <DetailSchool />
+      <DetailSchool schoolId={params.id}/>
     </>
   );
 };
