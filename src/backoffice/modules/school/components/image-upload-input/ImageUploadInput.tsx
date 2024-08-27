@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { uploadMinio } from '@/helpers/minio.helper';
+import { uploadFile } from '../../api/uploadMinio';
 
 interface ImageUploadInputProps {
   onChange: (imageUrl: string) => void;
@@ -24,11 +24,14 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
 
       setIsUploading(true);
       try {
-        const uploadedPath = await uploadMinio(file, 'institutions', 'images');
-        console.log('Image uploaded successfully:', uploadedPath);
-        onChange(uploadedPath);
+        const datePath = new Date().toISOString().slice(0, 7); // e.g., "2024-08"
+        const uniqueFileName = `thumb-and-origin/${datePath}/thumb-${file.name.split('.').pop()}-${Date.now()}`;
+        const { fileUrl } = await uploadFile(file, `institutions/${datePath}/${uniqueFileName}`);
+        
+        console.log('Image uploaded successfully:', fileUrl);
+        onChange(fileUrl);
       } catch (error) {
-        console.error('Failed to upload image to MinIO:', error);
+        console.error('Failed to upload image:', error);
       } finally {
         setIsUploading(false);
       }
@@ -71,7 +74,7 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
 
       {/* Edit Icon */}
       <button
-        type="button" // Explicitly set button type to "button"
+        type="button"
         className="absolute top-2 right-2 rounded-full p-1 bg-white shadow-md"
         onClick={handleEditClick}
         disabled={isUploading}
@@ -87,7 +90,7 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({ onChange, initialIm
 
       {/* Delete Icon */}
       <button
-        type="button" // Explicitly set button type to "button"
+        type="button"
         className="absolute bottom-2 right-2 rounded-full p-1 bg-white shadow-md"
         onClick={handleDeleteImage}
         disabled={isUploading}

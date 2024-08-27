@@ -53,6 +53,7 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
     }
   
     try {
+      const updatedSchool = await SchoolAPI.update(formData.id, formData);
       router.push('/backoffice/school');
     } catch (error) {
       console.error('Failed to update school:', error);
@@ -68,7 +69,7 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
       <div className="mb-6 flex">
         <ImageUploadInput
           onChange={handleImageChange}
-          initialImage={formData.imageUrl}
+          initialImage={formData.imageUrl || ''}
         />
       </div>
       <div className="grid grid-cols-2 gap-6">
@@ -160,7 +161,6 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
             <p className="text-red-500 text-xs mt-1">Address is required.</p>
           )}
         </div>
-        
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link href="/backoffice/school" className="p-0 m-0 block">

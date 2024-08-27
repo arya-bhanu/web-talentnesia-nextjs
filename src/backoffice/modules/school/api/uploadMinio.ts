@@ -12,19 +12,20 @@ export const uploadFile = async (file: File, path: string): Promise<UploadFileRe
 
   const config: AxiosRequestConfig = {
     method: 'post',
-    url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/file`,
-    headers: {
-      ...data.getHeaders(),
-    },
+    url: `https://api-talentnesia.skwn.dev/api/v1/file`,
     data,
     maxBodyLength: Infinity,
   };
+
+  // Debugging: Log the headers to check what's being sent
+  console.log('FormData headers:', data.getHeaders ? data.getHeaders() : 'No headers');
+  console.log('FormData:', data);
 
   try {
     const response = await axios(config);
     return response.data;
   } catch (error) {
-    console.error('File upload failed:', error);
+    console.error('Failed to upload image:', error);
     throw error;
   }
 };
