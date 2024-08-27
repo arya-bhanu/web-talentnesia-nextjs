@@ -9,7 +9,7 @@ export const HeroSectionView = ({ className, isLoading }: { className?: string, 
     <section
       className={clsx(
         className,
-        'bg-secondary min-h-[80vh] md:min-h-[70vh] lg:min-h-[80vh]',
+        'bg-secondary min-h-[80vh] md:min-h-[70vh] lg:min-h-[70vh]',
       )}
     >
       <div className="container pt-10 md:pt-14 lg:pt-24 flex flex-col lg:flex-row items-center lg:items-start">
