@@ -38,7 +38,6 @@ export const createContent = async (
   return response.data;
 };
 
-
 // chapter
 export const createChapter = async ({
   programId,
@@ -61,7 +60,9 @@ export const editChapter = async ({
   chapterId: string;
   title: string;
 }) => {
-  const response = await backOfficeAPI.put('/program-chapter/' + chapterId, { title });
+  const response = await backOfficeAPI.put('/program-chapter/' + chapterId, {
+    title,
+  });
   return response.data;
 };
 
@@ -71,4 +72,8 @@ export const fetchChapter = async (chapterId?: string | null) => {
     return response.data;
   }
   return null;
+};
+export const deleteChapter = async (id: string) => {
+  const response = await backOfficeAPI.delete('/program-chapter/' + id);
+  return response.data;
 };

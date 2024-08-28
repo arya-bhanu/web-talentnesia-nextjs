@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import AccordionPanelDraggableView from './AccordionPanelDraggable.view';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteChapter } from '@/backoffice/modules/manage-modul/api/manageModelApi';
+import { deleteChapter } from '../../form-program/components/form-course/api/formCourse.api';
 
 const AccordionPanelDraggable: React.FC<
   IAccordionPanelDraggable & { index: number }
@@ -46,6 +46,7 @@ const AccordionPanelDraggable: React.FC<
     try {
       await deleteChapterAsync(idChapter);
       await queryClient.invalidateQueries({ queryKey: ['course'] });
+      setOpenPopover(false);
     } catch (err) {
       console.error(err);
     }

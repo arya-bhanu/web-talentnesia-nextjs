@@ -20,13 +20,14 @@ const FormCourse = () => {
   } = useFormCourseStore();
 
   const { data: modules, isLoading: isLoadingModules } = useQuery({
-    queryKey: ['modules'],
+    queryKey: ['modules', 'save'],
     queryFn: fetchModule,
   });
 
   const { data: course, isLoading: isLoadingCourse } = useQuery({
     queryKey: ['course', activeModule, programId],
     queryFn: () => {
+      console.log('refetch courses');
       return fetchCourseData({
         modulId: activeModule,
         programId: programId,
@@ -41,10 +42,13 @@ const FormCourse = () => {
         setActiveModule(modules?.data?.data[0].id);
       }
     }
+  }, [JSON.stringify(modules?.data?.data)]);
+
+  useEffect(() => {
     if (course?.data?.data) {
       setData(course?.data?.data);
     }
-  }, [JSON.stringify(modules?.data?.data), JSON.stringify(course?.data?.data)]);
+  }, [JSON.stringify(course?.data?.data)]);
 
   const handleSubmitSelectedModul = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
