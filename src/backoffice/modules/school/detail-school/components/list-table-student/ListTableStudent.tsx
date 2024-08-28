@@ -19,7 +19,6 @@ const ListTableStudent = () => {
     queryFn: async () => {
       if (typeof id === 'string') {
         const response = await ListTableStudentAPI.fetch(id);
-        console.log('response', response);
         return response?.data?.items || []; // Extract items from the response
       }
     },

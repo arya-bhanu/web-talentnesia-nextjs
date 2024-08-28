@@ -8,7 +8,7 @@ import VideoCam from '@/../public/icons/videocam.svg';
 import PlusIcon from '@/../public/icons/plus.svg';   
 import MinusIcon from '@/../public/icons/minus.svg'; 
 import { IListDraggable } from '../list-draggable/listDraggable.type';
-import { IAccordionPanelDraggable } from '../accordion-panel-draggable/accordionPanelDraggable.type';
+import { Chapter } from '../course-detail/courseDetail.type';
 import Exam from './exam/exam.view';
 import Media from './media/media.view';
 
@@ -16,7 +16,7 @@ interface CourseSidebarProps {
   isSidebarVisible: boolean;
   setIsSidebarVisible: (visible: boolean) => void;
   content: IListDraggable | null;
-  accordionData: Omit<IAccordionPanelDraggable, 'activeAccordion' | 'setActiveAccordion'>[];
+  accordionData: Chapter[];
 }
 
 const iconMap: { [key: string]: React.ReactNode } = {
@@ -37,7 +37,10 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({
 
   useEffect(() => {
     if (content) {
-      setActiveContent(content);
+      setActiveContent({
+        ...content,
+        durationMinute: content.durationMinute || 0, // Provide a default value if needed
+      });
 
       const courseIndex = accordionData.findIndex((course) =>
         course.contents.some((item) => 
@@ -51,7 +54,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({
     }
   }, [content, accordionData]);
 
-  const handleItemClick = (item: IListDraggable, uniqueIdentifier: string) => {
+  const handleItemClick = (item: IListDraggable) => {
     setActiveContent(item); 
   };
 
@@ -65,9 +68,9 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({
   const renderContent = () => {
     switch (activeContent?.type) {
       case '1': 
-        return <Media url="https://www.youtube.com/watch?v=dQw4w9WgXcQ" />;
+        return <Media url=''/>;
       case '2': 
-        return <PdfReader url="https://repository.uinjkt.ac.id/dspace/bitstream/123456789/67067/1/MUZAYIN%20MUSRI-FST.pdf" />;
+        return <PdfReader url=''/>;
       case '3': 
         return <Exam />;
       case '4':
@@ -98,7 +101,7 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({
                   return (
                     <div
                       key={idx}
-                      onClick={() => handleItemClick(item, uniqueIdentifier)}
+                      onClick={() => handleItemClick(item)}
                       className={`flex items-center gap-2 mb-4 cursor-pointer p-2 rounded ${
                         activeContent?.title === item.title &&
                         activeContent?.type === item.type &&

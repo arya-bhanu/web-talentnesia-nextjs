@@ -41,16 +41,16 @@ const ListProgramCard: React.FC<ListProgramCardProps> = ({ className = '' }) => 
     }
 
     const filteredItems = Array.isArray(programCards) 
-    ? programCards.filter(item =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
+        ? programCards.filter(item =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : [];
   
-
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
+    
     const nextPage = () => {
         if (currentPage < Math.ceil(filteredItems.length / itemsPerPage)) {
             setCurrentPage(currentPage + 1);

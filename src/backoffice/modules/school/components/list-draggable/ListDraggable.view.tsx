@@ -16,6 +16,9 @@ const ListDraggableView: React.FC<IListDraggable & { onContentClick?: () => void
   durationMinute,
   onContentClick, 
 }) => {
+
+  const formattedDate = date ? formatDateIndonesian(new Date(date)) : '';
+
   const generateIcon = useMemo(() => {
     switch (type) {
       case '1':
@@ -39,7 +42,7 @@ const ListDraggableView: React.FC<IListDraggable & { onContentClick?: () => void
         <div>
           <h3 className="font-medium font-lato">{title}</h3>
           <p className="text-xs text-[#989FAD] font-lato font-normal">
-            {formatDateIndonesian(date)}
+          {formattedDate}
           </p>
         </div>
       </div>

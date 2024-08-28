@@ -20,16 +20,14 @@ const DetailSchoolPage: React.FC = () => {
 
       try {
         const data = await SchoolAPI.getById(id);
-        console.log('Fetched school data:', data);
         setSchoolData(data);
 
         if (data.imageUrl) {
           const imageUrl = await getImageUrl(data.imageUrl);
-          console.log('Full image URL:', imageUrl);
           setFullImageUrl(imageUrl);
         }
       } catch (error) {
-        console.error('Failed to fetch school data:', error);
+        console.error('Failed to fetch school data:');
         setError("Failed to load school data. Please try again.");
       }
     };

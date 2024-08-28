@@ -48,12 +48,12 @@ export const ProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) => {
         </div>
       </div>
 
-      {modalOpen && (
+      {/* {modalOpen && (
         <CourseDetail
           openModal={modalOpen}
           setOpenModal={setModalOpen}
         />
-      )}
+      )} */}
     </>
   );
 };

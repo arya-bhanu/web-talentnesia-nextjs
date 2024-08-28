@@ -4,7 +4,7 @@ import { TabFlex } from '@/backoffice/components/tabs/tabs';
 import { IDetailSchoolView, SchoolData } from './detailSchool.type';
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 import ModalAddProgram from '@/backoffice/components/modal-add-program/ModalAddProgram';
-import DetailSchoolPage from './components/detail-course';
+import DetailSchoolPage from './components/detail-school-page';
 import ListTableStudent from './components/list-table-student';
 import { TabsProgram } from '../components/tabs-program/TabsProgram';
 import ListProgramCard from './components/list-program-card';
