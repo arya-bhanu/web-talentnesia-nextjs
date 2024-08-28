@@ -13,9 +13,10 @@ const ListTableStudentView: React.FC<IListTableStudentView> = ({
   Filter,
   setFilter,
 }) => {
-  const columns = useMemo<ColumnDef<any>[]>(
+  const columns = useMemo<ColumnDef<any, any>[]>(
     () => [
-      columnHelper.accessor('no', {
+      columnHelper.accessor((row, index) => index + 1, {
+        id: 'no',
         header: ({ column }) => <SortingTable column={column} title="No" />,
         cell: (info) => info.getValue(),
       }),
@@ -27,7 +28,7 @@ const ListTableStudentView: React.FC<IListTableStudentView> = ({
         header: ({ column }) => <SortingTable column={column} title="Email" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('noHp', {
+      columnHelper.accessor('phone', {
         header: ({ column }) => <SortingTable column={column} title="No. Hp" />,
         cell: (info) => info.getValue(),
       }),

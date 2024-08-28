@@ -8,7 +8,7 @@ const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
 export const SchoolAPI = {
   fetch: async (): Promise<APIResponseSchool[]> => {
     try {
-      const response = await axios.get(`${API_URL}/educational-institution`);
+      const response = await axios.get(`${process.env.API_SERVER_URL}/v1/educational-institution`);
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch schools');
@@ -18,7 +18,7 @@ export const SchoolAPI = {
 
   getById: async (id: string): Promise<APIResponseSchool> => {
     try {
-      const response = await axios.get(`${API_URL}/educational-institution/${id}`);
+      const response = await axios.get(`${process.env.API_SERVER_URL}/v1/educational-institution/${id}`);
       return response.data.data;
     } catch (error) {
       console.error('Failed to fetch school details');
@@ -37,7 +37,7 @@ export const SchoolAPI = {
         levelId: null,
       };
 
-      const response = await axios.post(`${API_URL}/educational-institution`, requestData);
+      const response = await axios.post(`${process.env.API_SERVER_URL}/v1/educational-institution`, requestData);
       return response.data.data;
     } catch (error) {
       console.error('Failed to add school');
@@ -56,7 +56,7 @@ export const SchoolAPI = {
         levelId: null,
       };
 
-      const response = await axios.put(`${API_URL}/educational-institution/${id}`, requestData);
+      const response = await axios.put(`${process.env.API_SERVER_URL}/v1/educational-institution/${id}`, requestData);
       return response.data.data;
     } catch (error) {
       console.error('Failed to update school');
@@ -70,7 +70,7 @@ export const SchoolAPI = {
         throw new Error('Invalid ID format');
       }
 
-      await axios.delete(`${API_URL}/educational-institution/${id}`);
+      await axios.delete(`${process.env.API_SERVER_URL}/v1/educational-institution/${id}`);
     } catch (error) {
       console.error('Failed to delete school');
       throw new Error('Failed to delete school');

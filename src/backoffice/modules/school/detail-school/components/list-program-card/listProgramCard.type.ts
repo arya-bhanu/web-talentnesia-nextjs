@@ -1,8 +1,8 @@
 export interface ListProgramCardType {
-    length: number;
-    durationMinute: number;
-    name: string;
-    date: string;
-    imageUrl: string;
-  }
-  
+  id: string;
+  name: string;
+  date: string;
+  imageUrl: string;
+  length: number;
+  durationMinute: number;
+}

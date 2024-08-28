@@ -7,6 +7,7 @@ import ModalAddProgram from '@/backoffice/components/modal-add-program/ModalAddP
 import DetailSchoolPage from './components/detail-course';
 import ListTableStudent from './components/list-table-student';
 import { TabsProgram } from '../components/tabs-program/TabsProgram';
+import ListProgramCard from './components/list-program-card';
 
 interface DetailSchoolViewProps extends IDetailSchoolView {
   activeAccordion: number;
@@ -42,7 +43,7 @@ function DetailSchoolView({
     {
       title: 'Program',
       content: (
-        <TabsProgram />
+        <ListProgramCard />
       ),
     },
   ];

@@ -20,7 +20,7 @@ const ListTableStudent = () => {
       if (typeof id === 'string') {
         const response = await ListTableStudentAPI.fetch(id);
         console.log('response', response);
-        return response;
+        return response?.data?.items || []; // Extract items from the response
       }
     },
     enabled: !!id,
@@ -48,3 +48,4 @@ const ListTableStudent = () => {
 };
 
 export default ListTableStudent;
+

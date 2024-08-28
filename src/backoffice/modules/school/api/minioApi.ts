@@ -16,7 +16,7 @@ export const uploadFile = async (file: File, path: string): Promise<UploadFileRe
 
   const config: AxiosRequestConfig = {
     method: 'post',
-    url: `https://api-talentnesia.skwn.dev/api/v1/file`,
+    url: `${process.env.API_SERVER_URL}/v1/file`,
     data,
     maxBodyLength: Infinity,
   };
@@ -34,7 +34,7 @@ export const getImageUrl = async (imageUrl: string): Promise<string> => {
   try {
     // Hapus 'path=' dari URL dan ganti '?' dengan '/'
     const correctedPath = imageUrl.replace('path=', '').replace('?', '/');
-    const fullUrl = `https://api-talentnesia.skwn.dev/api/v1/file/${correctedPath}`;
+    const fullUrl = `${process.env.API_SERVER_URL}/v1/file/${correctedPath}`;
     
     const response = await axios.get(fullUrl);
     return response.data.url || fullUrl;
