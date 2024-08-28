@@ -14,6 +14,7 @@ const ContainerChapterView = ({
   className?: string;
 }) => {
   const { data } = useFormCourseStore();
+
   return (
     <div className={clsx(className)}>
       {data ? (

@@ -24,6 +24,7 @@ import FormCertificate from '../../form-program/components/form-certificate';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
 import Link from 'next/link';
 import { useFormCourseStore } from '../../form-program/components/form-course/formCourse.store';
+import { useSearchParams } from 'next/navigation';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -34,7 +35,10 @@ const AccordionPanelDraggableView: React.FC<
       handleOpenModalContent: (action: 'open' | 'close') => void;
       handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
       handleSubmitModalCertificate: (e: FormEvent<HTMLFormElement>) => void;
-      handleSubmitModalContent: (e: FormEvent<HTMLFormElement>) => void;
+      handleSubmitModalContent: (
+        e: FormEvent<HTMLFormElement>,
+        chapterId: string,
+      ) => void;
       handleDeleteChapter: (chapterId: string) => void;
       openModalContent: boolean;
       setOpenModalContent: Dispatch<SetStateAction<boolean>>;
@@ -68,6 +72,9 @@ const AccordionPanelDraggableView: React.FC<
   handleDeleteChapter,
   id,
 }) => {
+  const params = useSearchParams();
+  const programId = params.get('programId');
+  const schoolId = params.get('schoolId');
   const { activeModule } = useFormCourseStore();
   return (
     <div
@@ -98,7 +105,7 @@ const AccordionPanelDraggableView: React.FC<
       <Modal
         title="Add content"
         buttonConfirmTitle="Submit"
-        handleSubmit={handleSubmitModalContent}
+        handleSubmit={(e) => handleSubmitModalContent(e, id)}
         state={{
           openModal: openModalContent,
           setOpenModal: setOpenModalContent,
@@ -180,7 +187,7 @@ const AccordionPanelDraggableView: React.FC<
                 </li>
                 <li>
                   <Link
-                    href={`/backoffice/manage-program/update-program-IICP/edit-chapter/?modulId=${activeModule}&chapterId=${id}`}
+                    href={`/backoffice/manage-program/update-program-IICP/edit-chapter/?programId=${programId}&chapterId=${id}&schoolId=${schoolId}`}
                     className="text-sm font-lato font-normal flex items-center gap-2"
                   >
                     <Edit />

@@ -1,7 +1,19 @@
 import { APIContentChapter } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { backOfficeAPI } from '@/lib/axiosConfig';
 
-export const fetchCourseData = ({
+// course
+
+export const fetchChapterCourse = async (programId: string | null) => {
+  try {
+    if (programId) {
+      return backOfficeAPI.get(`/manage-program/course/${programId}`);
+    }
+    return null;
+  } catch (err) {
+    console.error(err);
+  }
+};
+export const addCourseChapterDefault = async ({
   modulId,
   programId,
 }: {
@@ -21,7 +33,7 @@ export const fetchCourseData = ({
   }
 };
 
-export const fetchModule = () => {
+export const fetchModule = async () => {
   try {
     return backOfficeAPI.get('/manage-module/all');
   } catch (err) {
@@ -30,7 +42,6 @@ export const fetchModule = () => {
 };
 
 // content
-
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
 ) => {

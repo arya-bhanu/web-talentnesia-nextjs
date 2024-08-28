@@ -1,8 +1,12 @@
 'use client';
 import React, { FormEvent, useEffect, useState } from 'react';
 import FormCourseView from './FormCourse.view';
-import { useQuery } from '@tanstack/react-query';
-import { fetchCourseData, fetchModule } from './api/formCourse.api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  addCourseChapterDefault,
+  fetchChapterCourse,
+  fetchModule,
+} from './api/formCourse.api';
 import { useFormCourseStore } from './formCourse.store';
 import { useSearchParams } from 'next/navigation';
 
@@ -10,30 +14,31 @@ const FormCourse = () => {
   const [openModalModul, setOpenModalModul] = useState(false);
   const params = useSearchParams();
   const programId = params.get('programId');
-  const {
-    setModules,
-    modules: modulesStored,
-    setData,
-    data,
-    activeModule,
-    setActiveModule,
-  } = useFormCourseStore();
+  const queryClient = useQueryClient();
+  const { setModules, setData, activeModule, setActiveModule } =
+    useFormCourseStore();
+
+  const { data: programChapters, isLoading: isLoadingProgramChapters } =
+    useQuery({
+      queryKey: ['chapters', 'program', programId],
+      queryFn: () => fetchChapterCourse(programId),
+    });
 
   const { data: modules, isLoading: isLoadingModules } = useQuery({
-    queryKey: ['modules', 'save'],
+    queryKey: ['save-module'],
     queryFn: fetchModule,
   });
 
-  const { data: course, isLoading: isLoadingCourse } = useQuery({
-    queryKey: ['course', activeModule, programId],
-    queryFn: () => {
-      console.log('refetch courses');
-      return fetchCourseData({
-        modulId: activeModule,
-        programId: programId,
-      });
-    },
+  const { mutateAsync: addChapterDefault } = useMutation({
+    mutationKey: ['add-chapter', 'default'],
+    mutationFn: addCourseChapterDefault,
   });
+
+  useEffect(() => {
+    if (programChapters?.data?.data) {
+      setData(programChapters?.data?.data);
+    }
+  }, [JSON.stringify(programChapters?.data?.data)]);
 
   useEffect(() => {
     if (modules?.data?.data) {
@@ -44,16 +49,18 @@ const FormCourse = () => {
     }
   }, [JSON.stringify(modules?.data?.data)]);
 
-  useEffect(() => {
-    if (course?.data?.data) {
-      setData(course?.data?.data);
-    }
-  }, [JSON.stringify(course?.data?.data)]);
-
-  const handleSubmitSelectedModul = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmitSelectedModul = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const selectModule = formData.get('modul');
+    const selectModule = formData.get('modul') as string;
+    await addChapterDefault({
+      modulId: selectModule,
+      programId,
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: ['chapters', 'program', programId],
+    });
     setActiveModule(selectModule as string);
     setOpenModalModul(false);
   };

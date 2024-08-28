@@ -2,7 +2,11 @@ import React, { FormEvent, useState } from 'react';
 import AccordionPanelDraggableView from './AccordionPanelDraggable.view';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteChapter } from '../../form-program/components/form-course/api/formCourse.api';
+import {
+  createContent,
+  deleteChapter,
+} from '../../form-program/components/form-course/api/formCourse.api';
+import { useSearchParams } from 'next/navigation';
 
 const AccordionPanelDraggable: React.FC<
   IAccordionPanelDraggable & { index: number }
@@ -12,10 +16,16 @@ const AccordionPanelDraggable: React.FC<
   const [openModalCertificate, setOpenModalCertificate] = useState(false);
   const [openModalContent, setOpenModalContent] = useState(false);
   const queryClient = useQueryClient();
+  const params = useSearchParams();
 
   const { mutateAsync: deleteChapterAsync } = useMutation({
     mutationKey: ['delete', 'chapter'],
     mutationFn: deleteChapter,
+  });
+
+  const { mutateAsync: createContentProgramAsync } = useMutation({
+    mutationFn: createContent,
+    mutationKey: ['content', 'chapter', 'program'],
   });
 
   const handleOpenModalContent = (action: 'open' | 'close') => {
@@ -43,9 +53,12 @@ const AccordionPanelDraggable: React.FC<
   };
 
   const handleDeleteChapter = async (idChapter: string) => {
+    const programId = params.get('programId');
     try {
       await deleteChapterAsync(idChapter);
-      await queryClient.invalidateQueries({ queryKey: ['course'] });
+      await queryClient.invalidateQueries({
+        queryKey: ['chapters', 'program', programId],
+      });
       setOpenPopover(false);
     } catch (err) {
       console.error(err);
@@ -62,9 +75,36 @@ const AccordionPanelDraggable: React.FC<
     e.stopPropagation();
   };
 
-  const handleSubmitModalContent = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmitModalContent = async (
+    e: FormEvent<HTMLFormElement>,
+    chapterId: string,
+  ) => {
     e.preventDefault();
     e.stopPropagation();
+    try {
+      const formData = new FormData(e.currentTarget);
+      const time = formData.get('time') as string;
+      const title = formData.get('title') as string;
+      const type = formData.get('type') as string;
+      const uploadFile = formData.get('upload_file') as File;
+      const convertedTime = time.substring(0, 5);
+      if (chapterId && convertedTime && title && type && uploadFile) {
+        await createContentProgramAsync({
+          body: 'sample',
+          duration: convertedTime,
+          title,
+          type,
+          chapterId,
+          isexam: 0,
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ['chapters', 'program', params.get('programId')],
+        });
+        setOpenModalContent(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
