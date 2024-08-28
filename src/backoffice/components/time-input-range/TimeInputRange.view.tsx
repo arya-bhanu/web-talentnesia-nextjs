@@ -1,13 +1,15 @@
 import React from 'react';
-import LabelForm from '../label-form';
 import Flatpickr from 'react-flatpickr';
-import { ITimeInput } from './timeInput.type';
+import LabelForm from '../label-form';
 import clsx from 'clsx';
-const TimeInputView: React.FC<ITimeInput & { className?: string }> = ({
-  setTime,
-  time,
-  className,
+import { ITimeInputRange } from './timeInputRange.type';
+const TimeInputRangeView: React.FC<ITimeInputRange> = ({
   label,
+  className,
+  setTimeEnd,
+  setTimeStart,
+  timeEnd,
+  timeStart,
 }) => {
   return (
     <div className={clsx('flex-1 flex flex-col w-full', className)}>
@@ -50,25 +52,42 @@ const TimeInputView: React.FC<ITimeInput & { className?: string }> = ({
           />
         </svg>
 
-        <Flatpickr
-          id="time"
-          className="h-full w-full !border-none"
-          options={{
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: 'H:i',
-            time_24hr: true,
-            minuteIncrement: 1,
-            mode: 'range',
-          }}
-          value={time}
-          onChange={([date]) => {
-            setTime(date);
-          }}
-        />
+        <div className="flex items-center gap-3">
+          <Flatpickr
+            id="time"
+            className="max-w-[3rem] !border-none"
+            options={{
+              enableTime: true,
+              noCalendar: true,
+              dateFormat: 'H:i',
+              time_24hr: true,
+              minuteIncrement: 1,
+            }}
+            value={timeStart}
+            onChange={([date]) => {
+              setTimeStart(date);
+            }}
+          />
+          <span>-</span>
+          <Flatpickr
+            id="time"
+            className="max-w-[3rem] !border-none"
+            options={{
+              enableTime: true,
+              noCalendar: true,
+              dateFormat: 'H:i',
+              time_24hr: true,
+              minuteIncrement: 1,
+            }}
+            value={timeEnd}
+            onChange={([date]) => {
+              setTimeEnd(date);
+            }}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
-export default TimeInputView;
+export default TimeInputRangeView;

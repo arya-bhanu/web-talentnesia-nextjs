@@ -7,6 +7,9 @@ import {
   deleteChapter,
 } from '../../form-program/components/form-course/api/formCourse.api';
 import { useSearchParams } from 'next/navigation';
+import { createMentoring } from '../../form-program/components/form-mentoring/api/formMentoring.api';
+import { useFormMentoringStore } from '../../form-program/components/form-mentoring/formMentoring.store';
+import { convertDateToStr, convertHHmmTime } from '@/helpers/formatter.helper';
 
 const AccordionPanelDraggable: React.FC<
   IAccordionPanelDraggable & { index: number }
@@ -27,6 +30,13 @@ const AccordionPanelDraggable: React.FC<
     mutationFn: createContent,
     mutationKey: ['content', 'chapter', 'program'],
   });
+
+  const { mutateAsync: createMentorAsync } = useMutation({
+    mutationKey: ['create', 'mentor'],
+    mutationFn: createMentoring,
+  });
+
+  const { timeStart, date, timeEnd } = useFormMentoringStore();
 
   const handleOpenModalContent = (action: 'open' | 'close') => {
     if (action === 'close') {
@@ -65,9 +75,28 @@ const AccordionPanelDraggable: React.FC<
     }
   };
 
-  const handleSubmitModalMentoring = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmitModalMentoring = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    const formData = new FormData(e.currentTarget);
+    const title = formData.get('mentoring_name') as string;
+    const mentorId = formData.get('mentor') as string;
+    const startTime = timeStart;
+    const endTime = timeEnd;
+    const dateData = date;
+    const location = null;
+    const link = formData.get('url') as string;
+    const response = await createMentorAsync({
+      link,
+      location,
+      title,
+      chapterId: props.id,
+      mentorId,
+      endTime: convertHHmmTime(endTime),
+      startTime: convertHHmmTime(startTime),
+      date: convertDateToStr(new Date(dateData)),
+    });
+    console.log(response);
   };
 
   const handleSubmitModalCertificate = (e: FormEvent<HTMLFormElement>) => {

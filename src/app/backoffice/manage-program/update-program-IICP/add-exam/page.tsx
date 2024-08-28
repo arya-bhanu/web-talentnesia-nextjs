@@ -1,9 +1,6 @@
-import React from 'react'
+import AddExam from '@/backoffice/modules/manage-program/form-program/components/add-exam';
+const AddExamPage = () => {
+  return <AddExam />;
+};
 
-const AddExam = () => {
-  return (
-    <div>AddExam</div>
-  )
-}
-
-export default AddExam
+export default AddExamPage;

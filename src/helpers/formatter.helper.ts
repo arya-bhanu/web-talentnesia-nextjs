@@ -58,11 +58,13 @@ export const convertIntoNumericDate = (dateString: string) => {
   return `${year}-${monthCode}-${dayCode}`;
 };
 
-
 // convert HH:mm -> {number_minute}
-export function convertTimeToMinutes(time : string) {
-  const [hours, minutes] = time.split(':').map(Number);
-  return hours * 60 + minutes;
+export function convertTimeToMinutes(time?: string) {
+  if (time) {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+  }
+  return 0;
 }
 
 export function formatNumericDateToEng(dateString: string) {
@@ -108,8 +110,13 @@ export const convertHHmmTime = (date: Date) => {
   return timeHHmm;
 };
 
-export const convertStrToDate = (str: string) => {
+export const convertStrToTime = (str: string) => {
   const timeString = str;
   const date = moment(timeString, 'HH:mm').toDate();
   return date;
+};
+
+// convert Date -> YYYY-MM-DD
+export const convertDateToStr = (date: Date) => {
+  return moment(date).format('YYYY-MM-DD');
 };

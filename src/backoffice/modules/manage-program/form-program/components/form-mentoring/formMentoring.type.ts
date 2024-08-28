@@ -1,10 +1,36 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, FormEvent, SetStateAction } from 'react';
 
-export interface IFormMentoring {
-  timeInputState: ITimeInput;
+export interface IFormMentoring {}
+
+export interface ITimeInputRange {
+  timeStart: Date;
+  setTimeStart: Dispatch<SetStateAction<Date>>;
+  timeEnd: Date;
+  setTimeEnd: Dispatch<SetStateAction<Date>>;
 }
 
-export interface ITimeInput {
-  time: Date;
-  setTime: Dispatch<SetStateAction<Date>>;
+export interface IDateInput {
+  date: string;
+  setDate: Dispatch<SetStateAction<string>>;
+}
+
+export interface IHandler {}
+
+export interface IMentor {
+  email: string;
+  id: string;
+  name: string;
+  phone: string | null;
+  photoProfile: string | null;
+}
+
+export interface IMentoring {
+  chapterId?: string;
+  title: string;
+  mentorId: string;
+  startTime: string;
+  endTime: string;
+  date: string;
+  location: null;
+  link: string;
 }

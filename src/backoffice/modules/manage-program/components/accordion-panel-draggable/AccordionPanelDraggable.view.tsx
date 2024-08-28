@@ -89,7 +89,7 @@ const AccordionPanelDraggableView: React.FC<
           setOpenModal: setOpenModalMentoring,
         }}
       >
-        <FormMentoring />
+        <FormMentoring chapterId={id} isModalOpen={openModalMentoring} />
       </Modal>
       <Modal
         title="Certificate"
