@@ -60,6 +60,7 @@ export const createChapter = async ({
   const response = await backOfficeAPI.post('/chapter', { moduleId, title });
   return response.data;
 };
+
 export const editChapter = async ({
   chapterId,
   title,
@@ -70,6 +71,7 @@ export const editChapter = async ({
   const response = await backOfficeAPI.put('/chapter/' + chapterId, { title });
   return response.data;
 };
+
 export const deleteChapter = async (id: string) => {
   const response = await backOfficeAPI.delete('/chapter/' + id);
   return response.data;
