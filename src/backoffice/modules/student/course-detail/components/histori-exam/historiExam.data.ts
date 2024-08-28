@@ -1,4 +1,3 @@
-// historiExam.data.ts
 import { ExamData } from './historiExam.type';
 
 export const examData: ExamData[] = [

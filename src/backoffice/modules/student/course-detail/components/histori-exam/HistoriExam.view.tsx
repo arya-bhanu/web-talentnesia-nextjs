@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExamData } from './historiExam.type';
-import SortIcon from '@/../public/icons/sort-arrow.svg'; // Import ikon sort
+import SortIcon from '@/../public/icons/sort-arrow.svg'; 
 
 const formatDateTime = (dateTime: string) => {
   const date = new Date(dateTime);
