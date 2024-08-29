@@ -96,6 +96,9 @@ const AccordionPanelDraggable: React.FC<
       startTime: convertHHmmTime(startTime),
       date: convertDateToStr(new Date(dateData)),
     });
+    queryClient.invalidateQueries({
+      queryKey: ['mentoring', 'list', props.id],
+    });
     console.log(response);
   };
 

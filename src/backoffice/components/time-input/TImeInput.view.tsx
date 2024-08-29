@@ -59,7 +59,6 @@ const TimeInputView: React.FC<ITimeInput & { className?: string }> = ({
             dateFormat: 'H:i',
             time_24hr: true,
             minuteIncrement: 1,
-            mode: 'range',
           }}
           value={time}
           onChange={([date]) => {

@@ -13,7 +13,7 @@ import { IQuestionListDraggable } from './questionListDraggable.type';
 import QuestionFieldProject from './question-field-project';
 import clsx from 'clsx';
 import dynamic from 'next/dynamic';
-import { useQuestionExamStore } from '@/lib/store';
+import { useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { IMentor } from './formMentoring.type';
+import { IMentor, IMentoring } from './formMentoring.type';
 
 const timeStartDef = new Date();
 timeStartDef.setHours(7);
@@ -18,6 +18,8 @@ export interface IFormMentoringStore {
   setTimeEnd: (newTime: Date) => void;
   date: string;
   setDate: (newDate: string) => void;
+  mentorings: IMentoring[] | null;
+  setMentorings: (newMentorings: IMentoring[]) => void;
 }
 
 export const useFormMentoringStore = create<IFormMentoringStore>((set) => ({
@@ -29,4 +31,6 @@ export const useFormMentoringStore = create<IFormMentoringStore>((set) => ({
   timeStart: timeStartDef,
   setTimeEnd: (newTimeEnd) => set({ timeEnd: newTimeEnd }),
   setTimeStart: (newTimeStart) => set({ timeStart: newTimeStart }),
+  mentorings: null,
+  setMentorings: (newMentorings) => set({ mentorings: newMentorings }),
 }));

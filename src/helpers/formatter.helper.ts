@@ -58,7 +58,7 @@ export const convertIntoNumericDate = (dateString: string) => {
   return `${year}-${monthCode}-${dayCode}`;
 };
 
-// convert HH:mm -> {number_minute}
+// convert HH:mm -> {minute}
 export function convertTimeToMinutes(time?: string) {
   if (time) {
     const [hours, minutes] = time.split(':').map(Number);
@@ -120,3 +120,25 @@ export const convertStrToTime = (str: string) => {
 export const convertDateToStr = (date: Date) => {
   return moment(date).format('YYYY-MM-DD');
 };
+
+// convert HH:mm:ss -> HH:mm
+export function convertTimeHHmmss(timeStr: string) {
+  // Split the input string into hours, minutes, and seconds
+  let [hours, minutes, seconds] = timeStr.split(':');
+
+  // Return the time in HH:mm format
+  return `${hours}:${minutes}`;
+}
+
+
+
+// convert new Date() -> 20 Januari 2003
+export function convertDateIntoIDDate(date : Date) {
+  // Get the day, month, and year from the Date object
+  let day = date.getDate();
+  let month = date.toLocaleString('id-ID', { month: 'long' });
+  let year = date.getFullYear();
+  
+  // Return the date in the format DD MMMM YYYY
+  return `${day} ${month} ${year}`;
+}

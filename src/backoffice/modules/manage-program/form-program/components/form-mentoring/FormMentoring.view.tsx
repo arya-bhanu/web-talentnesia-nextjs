@@ -25,7 +25,6 @@ const FormMentoringView: React.FC<
   IFormMentoring & IHandler & ITimeInputRange & IDateInput
 > = ({ date, setDate, setTimeEnd, setTimeStart, timeEnd, timeStart }) => {
   const { mentors } = useFormMentoringStore();
-
   return (
     <>
       <div className="flex items-center gap-3">
@@ -41,7 +40,11 @@ const FormMentoringView: React.FC<
           </LabelForm>
           <Select id="mentor" name="mentor" required>
             {mentors?.map((el) => {
-              return <option value={el.id}>{el.name}</option>;
+              return (
+                <option key={el.id} value={el.id}>
+                  {el.name}
+                </option>
+              );
             })}
           </Select>
         </div>

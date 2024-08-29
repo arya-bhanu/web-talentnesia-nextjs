@@ -22,10 +22,11 @@ export const createMentoring = async (payload: IMentoring) => {
 export const fetchMentoring = async (chapterId: string) => {
   try {
     if (chapterId) {
-      return await backOfficeAPI.get('/mentoring/' + chapterId);
+      return await backOfficeAPI.get('/mentoring/add-mentoring/' + chapterId);
     }
     return null;
   } catch (err) {
     console.error(err);
+    return null;
   }
 };

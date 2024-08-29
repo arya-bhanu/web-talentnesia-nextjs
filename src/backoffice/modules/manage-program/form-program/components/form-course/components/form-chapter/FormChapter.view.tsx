@@ -15,7 +15,7 @@ import { useSearchParams } from 'next/navigation';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { SortableContext } from '@dnd-kit/sortable';
-import { useDragContents } from '@/lib/store';
+import { useDragContents } from '@/backoffice/modules/manage-modul/add-exam/store';
 // import { contentsReorder } from '../../api/manageModelApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';

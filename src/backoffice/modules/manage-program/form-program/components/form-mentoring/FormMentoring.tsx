@@ -19,10 +19,12 @@ const FormMentoring = ({
     date,
     setTimeEnd,
     timeEnd,
+    setMentorings,
   } = useFormMentoringStore();
   const [timestartState, setTimeStartState] = useState(timeStart);
   const [timeEndState, setTimeEndState] = useState(timeEnd);
   const [dateIn, setDateIn] = useState<string>(date);
+
   const { data: mentors, isLoading: isLoadingMentors } = useQuery({
     queryKey: ['mentors', isModalOpen],
     queryFn: fetchMentors,
@@ -32,8 +34,12 @@ const FormMentoring = ({
     queryFn: () => fetchMentoring(chapterId),
     enabled: chapterId !== null || chapterId !== undefined,
   });
-
-  console.log(mentorings);
+  
+  useEffect(() => {
+    if (mentorings?.data?.data?.items) {
+      setMentorings(mentorings?.data?.data?.items);
+    }
+  }, [mentorings?.data?.data]);
 
   useEffect(() => {
     if (mentors?.data?.data?.items) {

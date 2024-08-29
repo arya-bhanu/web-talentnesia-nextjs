@@ -2,7 +2,7 @@
 import React, { FormEvent, useEffect, useTransition } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useExamStore, useQuestionExamStore } from '@/lib/store';
+import { useExamStore, useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { APIExamChapter } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
