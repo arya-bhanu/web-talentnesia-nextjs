@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import QuestionListDraggableView from './QuestionListDraggable.view';
 import { IQuestionListDraggable } from './questionListDraggable.type';
-import { useQuestionExamStore } from '@/lib/store';
+import { useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { uuid } from 'uuidv4';
 import { defaultOptionRadio } from '@/backoffice/modules/manage-modul/components/form-exam/formExam.data';
 

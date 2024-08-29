@@ -22,7 +22,6 @@ const FormChapter = () => {
   const [actionSubChapter, setActionSubChapter] = useState<'exam' | 'content'>(
     'exam',
   );
-
   const [submitType, setSubmitType] = useState<ISubmitType>({
     type: 'nextSubmit',
   });
@@ -90,7 +89,10 @@ const FormChapter = () => {
         const chapterId = response.data.id;
 
         if (submitType.type === 'defaultSubmit') {
-          return router.back();
+          // router.back()
+          return router.replace(
+            `/backoffice/manage-modul/create/?modulId=${moduleId}`,
+          );
         }
 
         if (actionSubChapter === 'exam') {
@@ -105,7 +107,10 @@ const FormChapter = () => {
         await editChapterAsync({ chapterId, title: chapter });
 
         if (submitType.type === 'defaultSubmit') {
-          return router.back();
+           // router.back()
+          return router.replace(
+            `/backoffice/manage-modul/update/?modulId=${moduleId}`,
+          );
         }
 
         if (actionSubChapter === 'exam') {

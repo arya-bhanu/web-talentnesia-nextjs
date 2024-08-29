@@ -24,6 +24,8 @@ import Modal from '@/backoffice/components/modal';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
 import { useRouter } from 'next/navigation';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const EditableListContentView: React.FC<
   IEditableListContent & { className?: string } & {
@@ -50,6 +52,13 @@ const EditableListContentView: React.FC<
   const params = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
   const renderMinuteTime = useMemo(() => {
     if (duration) {
       const [hours, minutes] = duration.split(':');
@@ -80,7 +89,11 @@ const EditableListContentView: React.FC<
     }
   }, [type]);
   return (
-    <div className={clsx('flex items-center justify-between py-3', className)}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={clsx('flex items-center justify-between py-3', className)}
+    >
       <AlertModal
         openModal={openModal}
         setIsConfirmed={setIsConfirmed}
@@ -97,7 +110,7 @@ const EditableListContentView: React.FC<
         {openModalEdit && <FormContent contentId={injectId} />}
       </Modal>
       <div className="flex items-center gap-2">
-        <button type="button">
+        <button {...listeners} {...attributes} type="button">
           <DragIndicator />
         </button>
         {Icon}

@@ -8,7 +8,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const AccordionPanelDraggable: React.FC<
-  IAccordionPanelDraggable & IStateChapter & { index: number }
+  IAccordionPanelDraggable &
+    IStateChapter & { index: number; chapterId?: string }
 > = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [isConfirmDel, setIsConfirmDel] = useState(false);

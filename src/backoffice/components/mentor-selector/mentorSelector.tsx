@@ -1,22 +1,23 @@
-import { useState } from 'react';
-import { Badge, Dropdown, Checkbox, TextInput } from 'flowbite-react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { Badge, Checkbox, TextInput } from 'flowbite-react';
+import { Mentor } from './mentorSelector.type';
 
-function MentorSelector() {
-  const [selectedMentors, setSelectedMentors] = useState<string[]>([]);
+function MentorSelector({
+  selectedMentors,
+  setSelectedMentors,
+  defaultMentors,
+}: {
+  selectedMentors: Mentor[];
+  setSelectedMentors: Dispatch<SetStateAction<Mentor[]>>;
+  defaultMentors: Mentor[];
+}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const allMentors = [
-    'Mentor 1',
-    'Mentor 2',
-    'Mentor 3',
-    'Mentor 4',
-    'Mentor 5',
-  ];
 
-  const toggleMentorSelection = (mentor: string) => {
+  const toggleMentorSelection = (mentor: Mentor) => {
     setSelectedMentors((prev) =>
-      prev.includes(mentor)
-        ? prev.filter((m) => m !== mentor)
+      prev.map((el) => el.name).includes(mentor.name)
+        ? prev.filter((m) => m.name !== mentor.name)
         : [...prev, mentor],
     );
   };
@@ -30,9 +31,13 @@ function MentorSelector() {
       >
         {selectedMentors.length > 0 ? (
           selectedMentors.map((mentor) => (
-            <Badge key={mentor} color="info" className="flex items-center mr-2">
+            <Badge
+              key={mentor.id}
+              color="info"
+              className="flex items-center mr-2"
+            >
               <span className="flex items-center">
-                {mentor}
+                {mentor.name}
                 <span
                   className="ml-2 cursor-pointer flex items-center justify-center"
                   onClick={(e) => {
@@ -78,20 +83,20 @@ function MentorSelector() {
           <hr />
           {/* Mentor List with Checkboxes */}
           <div className="p-2 max-h-40 overflow-y-auto">
-            {allMentors
+            {defaultMentors
               .filter((mentor) =>
-                mentor.toLowerCase().includes(searchTerm.toLowerCase()),
+                mentor.name.toLowerCase().includes(searchTerm.toLowerCase()),
               )
               .map((mentor) => (
-                <div key={mentor} className="flex items-center mb-2">
+                <div key={mentor.id} className="flex items-center mb-2">
                   <Checkbox
-                    id={mentor}
-                    value={mentor}
+                    id={mentor.id}
+                    value={mentor.name}
                     checked={selectedMentors.includes(mentor)}
                     onChange={() => toggleMentorSelection(mentor)}
                   />
-                  <label htmlFor={mentor} className="ml-2">
-                    {mentor}
+                  <label htmlFor={mentor.id} className="ml-2">
+                    {mentor.name}
                   </label>
                 </div>
               ))}
