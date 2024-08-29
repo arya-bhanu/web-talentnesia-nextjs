@@ -8,7 +8,7 @@ interface FilterViewProps {
 const FilterView: React.FC<FilterViewProps> = ({ filterCategories }) => {
   return (
     <div className="hidden md:block space-y-2 w-[280px] overflow-y-auto border border-gray-300 rounded-lg">
-      <div className="bg-blue-500 text-white font-bold text-[24px] p-5">
+      <div className="text-white font-bold text-[24px] p-5" style={{backgroundColor: '#219EBC'}}>
         Filter
       </div>
 
