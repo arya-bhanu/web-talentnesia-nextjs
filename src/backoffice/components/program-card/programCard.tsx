@@ -27,7 +27,7 @@ export function CustomCard({
       : "bg-red-100 text-red-400";
 
   return (
-    <Link href={`/backoffice/program/${id}`}>
+    <Link href={`/operator/program/${id}`}>
       <div className="relative max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 cursor-pointer">
         <img
           src={imgSrc}
