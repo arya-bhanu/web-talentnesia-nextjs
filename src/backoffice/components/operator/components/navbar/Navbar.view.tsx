@@ -102,7 +102,10 @@ const NavbarView: React.FC<NavbarViewProps> = ({
               <div className="relative flex items-center space-x-2 bg-[#FFFFFF] p-2 rounded-lg shadow-sm">
                 <div className="relative rounded-lg overflow-hidden">
                   <Image
-                    src={user?.profilePicture || ''}
+                    src={
+                      user?.profilePicture ||
+                      'https://api-talentnesia.skwn.dev/api/v1/file/users/2024-08/thumbs/weJJ7Yb2qP7M6N42.jpg'
+                    }
                     alt="User"
                     width={30}
                     height={30}
@@ -128,7 +131,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <Link href={'/operator/setting'} className='p-0 m-0 block'>
+                  <Link href={'/operator/setting'} className="p-0 m-0 block">
                     <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
                       Setting
                     </li>
