@@ -33,6 +33,10 @@ const ContainerChapterView = ({
                 durationMinute: convertTimeToMinutes(el.duration),
                 title: el.title,
                 type: el.type,
+                chapterId: el.chapterId,
+                id: el.id,
+                order: el.order,
+                isexam: Boolean(el.isexam),
               };
             })}
             totalMinuteDuration={58}
