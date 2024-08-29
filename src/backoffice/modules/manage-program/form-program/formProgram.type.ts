@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 export type IFormProgram = Pick<
   IModalSelect,
-  'selected' | 'setSelected' | 'open' | 'setOpen' | 'columns' | 'rows'
+  'selected' | 'setSelected' | 'open' | 'setOpen'
 > & {
   setMentors: Dispatch<SetStateAction<string[]>>;
   mentors: string[];

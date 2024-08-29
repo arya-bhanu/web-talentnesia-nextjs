@@ -1,12 +1,17 @@
 'use client';
-import React, { FormEvent, useEffect, useState, useTransition } from 'react';
+import React, { FormEvent, useEffect, useTransition } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useExamStore, useQuestionExamStore } from '@/lib/store';
+import { useExamStore, useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { APIExamChapter } from '../../manageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createExam, getExam, updateExam } from '../../api/manageModelApi';
-import { defaultQuestionRadio } from './formExam.data';
+import {
+  createExam,
+  examReorder,
+  getExam,
+  updateExam,
+} from '../../api/manageModelApi';
+import { defaultExamData, defaultQuestionRadio } from './formExam.data';
 
 const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   const params = useSearchParams();
@@ -30,6 +35,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   }, [isPending]);
 
   useEffect(() => {
+    setDataExam(defaultExamData);
     if (dataExam?.data) {
       setDataExam({
         chapterId: dataExam.data?.chapterId,
@@ -40,7 +46,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
       });
       updateQuestion(dataExam.data?.exams);
     }
-  }, [dataExam?.data]);
+  }, [JSON.stringify(dataExam?.data)]);
 
   const { mutateAsync: createExamAsync } = useMutation({
     mutationFn: createExam,
@@ -49,6 +55,11 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
 
   const { mutateAsync: updateExamAsync } = useMutation({
     mutationFn: updateExam,
+    mutationKey: ['exam'],
+  });
+
+  const { mutateAsync: reorderExamsAynsc } = useMutation({
+    mutationFn: examReorder,
     mutationKey: ['exam'],
   });
 
@@ -65,23 +76,35 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
       if (examName && chapterId && modulId) {
         const dataExam = {
           chapterId,
-          duration: dataExamStore.duration,
+          duration: dataExamStore?.duration || '01.00',
           exams: question,
           title: examName,
         } as APIExamChapter;
 
-        console.log(dataExam);
-
         if (examId) {
           console.log('updating exam...');
           await updateExamAsync({ data: dataExam, id: examId });
+          console.log('reordering exam...');
+          await reorderExamsAynsc({
+            examId,
+            questions: question.map((el) => el.id),
+          });
         } else {
           console.log('creating exam...');
-          await createExamAsync(dataExam);
+          const response = await createExamAsync(dataExam);
+          console.log(response);
+          // console.log('reordering exam...');
+          // if (response?.data) {
+          //   await reorderExamsAynsc({
+          //     examId: response?.data.id,
+          //     questions: question.map((el) => el.id),
+          //   });
+          // }
         }
-
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['exam'] });
+        setDataExam(defaultExamData);
+        updateQuestion([]);
         startTransition(() => {
           router.replace(
             `/backoffice/manage-modul/create/chapter/?modulId=${modulId}&chapterId=${chapterId}`,

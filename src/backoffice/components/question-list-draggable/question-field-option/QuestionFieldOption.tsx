@@ -1,6 +1,6 @@
 import React from 'react';
 import QuestionFieldOptionView from './QuestionFieldOption.view';
-import { useQuestionExamStore } from '@/lib/store';
+import { useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { uuid } from 'uuidv4';
 import debounce from 'lodash.debounce';
 import { createOptionId } from './questionFieldOption.helper';
