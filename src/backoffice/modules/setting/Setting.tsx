@@ -51,7 +51,7 @@ export const Setting = () => {
           setUserData(data);
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Error fetching user data:');
       }
     };
   
@@ -75,15 +75,18 @@ export const Setting = () => {
     e.preventDefault();
     try {
       if (password !== confirmPassword) {
-        alert("Passwords don't match");
+        setModalMessage('Passwords do not match');
+        setShowModal(true);
         return;
       }
       const updatedData = { ...userData, password };
       await updateUserProfile(userData.id, updatedData);
-      alert('Profile updated successfully');
+      setModalMessage('Profile updated successfully!');
+      setShowModal(true);
     } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Failed to update profile');
+      console.error('Error updating profile:');
+      setModalMessage('Failed to update profile');
+      setShowModal(true);
     }
   };
 

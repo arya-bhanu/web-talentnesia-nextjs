@@ -23,17 +23,7 @@ export function DropFile({ onChange, initialImage }: DropFileProps) {
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setIsUploading(true);
-      try {
-        const response = await uploadFile(file, 'users');
-        const imageUrl = response.path.thumbs;
-        onChange(imageUrl);
-        setImageSrc(imageUrl);
-      } catch (error) {
-        console.error('Failed to upload image:', error);
-      } finally {
-        setIsUploading(false);
-      }
+      await handleImageUpload(file);
     }
   };  
 
@@ -56,19 +46,26 @@ export function DropFile({ onChange, initialImage }: DropFileProps) {
   const handleImageUpload = async (file: File) => {
     setIsUploading(true);
     try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageSrc(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+  
       const response = await uploadFile(file, 'users');
-      const imageUrl = response.path.thumbs;  
+      const imageUrl = `${process.env.API_SERVER_URL}/v1/file/${response.path.thumbs}`;
       
       await delay(500);
       
       onChange(imageUrl);
       setImageSrc(imageUrl);
     } catch (error) {
-      console.error('Failed to upload image:', error); 
+      console.error('Failed to upload image:', error);
     } finally {
       setIsUploading(false);
     }
   };
+  
 
   return (
     <div
@@ -109,16 +106,19 @@ export function DropFile({ onChange, initialImage }: DropFileProps) {
       ) : (
         <div className="text-center p-4">
           <p className="mb-2 font-medium">File Uploaded:</p>
-          <img
+          <Image
             src={imageSrc}
             alt="Uploaded file preview"
             className="mt-4 max-w-full h-auto rounded-lg object-cover"
+            width={200}
+            height={200}
             style={{ maxHeight: '200px', padding: '10px' }}
           />
         </div>
       )}
       <input
         type="file"
+        onChange={handleImageChange}
         className="hidden"
         id="fileUpload"
         accept="image/*"
