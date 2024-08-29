@@ -20,9 +20,23 @@ export interface IFormMentoringStore {
   setDate: (newDate: string) => void;
   mentorings: IMentoring[] | null;
   setMentorings: (newMentorings: IMentoring[]) => void;
+  idDefaultMentoring: string | null;
+  setIdDefaultMentoring: (idMentoring: string) => void;
+  defaultMentoring: IMentoring | null;
+  setDefaultMentoring: (newMentoring: IMentoring) => void;
+  clear: () => void;
 }
 
 export const useFormMentoringStore = create<IFormMentoringStore>((set) => ({
+  clear: () =>
+    set({
+      timeStart: timeStartDef,
+      timeEnd: timeEndDef,
+      date: new Date().toString(),
+      mentorings: null,
+      idDefaultMentoring: null,
+      defaultMentoring: null,
+    }),
   mentors: null,
   setMentors: (newMentors) => set({ mentors: newMentors }),
   date: new Date().toString(),
@@ -33,4 +47,10 @@ export const useFormMentoringStore = create<IFormMentoringStore>((set) => ({
   setTimeStart: (newTimeStart) => set({ timeStart: newTimeStart }),
   mentorings: null,
   setMentorings: (newMentorings) => set({ mentorings: newMentorings }),
+  idDefaultMentoring: null,
+  setIdDefaultMentoring: (newDefaultId) =>
+    set({ idDefaultMentoring: newDefaultId }),
+  defaultMentoring: null,
+  setDefaultMentoring: (newMentoring) =>
+    set({ defaultMentoring: newMentoring }),
 }));

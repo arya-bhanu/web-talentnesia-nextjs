@@ -130,15 +130,31 @@ export function convertTimeHHmmss(timeStr: string) {
   return `${hours}:${minutes}`;
 }
 
-
-
 // convert new Date() -> 20 Januari 2003
-export function convertDateIntoIDDate(date : Date) {
+export function convertDateIntoIDDate(date: Date) {
   // Get the day, month, and year from the Date object
   let day = date.getDate();
   let month = date.toLocaleString('id-ID', { month: 'long' });
   let year = date.getFullYear();
-  
+
   // Return the date in the format DD MMMM YYYY
   return `${day} ${month} ${year}`;
+}
+
+export function convertTimeHHmmssToDate(timeString: string) {
+  // Assuming the input string is in the format "HH:mm:ss"
+  const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+  // Create a new Date object with the current date
+  const date = new Date();
+
+  // Set the hours, minutes, and seconds
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  date.setSeconds(seconds);
+
+  // Optionally, set milliseconds to 0 for precision
+  date.setMilliseconds(0);
+
+  return date;
 }

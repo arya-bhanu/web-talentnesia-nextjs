@@ -15,7 +15,7 @@ const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
   const [modalDelete, setModalDelete] = useState(false);
   const [isConfirmDel, setIsConfirmDel] = useState(false);
   const [idMentoring, setIdMentoring] = useState('');
-  const { mentorings } = useFormMentoringStore();
+  const { mentorings, setIdDefaultMentoring } = useFormMentoringStore();
   useEffect(() => {
     if (isConfirmDel) {
       handleDeleteMentoring(idMentoring);
@@ -62,7 +62,12 @@ const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
                   </button>
                 </Table.Cell>
                 <Table.Cell className="flex items-center gap-3">
-                  <button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (el.id) setIdDefaultMentoring(el.id);
+                    }}
+                  >
                     <Image
                       alt="icon"
                       src={'/icons/manage-program/Edit-btn.svg'}

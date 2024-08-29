@@ -7,7 +7,10 @@ import {
   deleteChapter,
 } from '../../form-program/components/form-course/api/formCourse.api';
 import { useSearchParams } from 'next/navigation';
-import { createMentoring } from '../../form-program/components/form-mentoring/api/formMentoring.api';
+import {
+  createMentoring,
+  editMentoring,
+} from '../../form-program/components/form-mentoring/api/formMentoring.api';
 import { useFormMentoringStore } from '../../form-program/components/form-mentoring/formMentoring.store';
 import { convertDateToStr, convertHHmmTime } from '@/helpers/formatter.helper';
 
@@ -20,6 +23,8 @@ const AccordionPanelDraggable: React.FC<
   const [openModalContent, setOpenModalContent] = useState(false);
   const queryClient = useQueryClient();
   const params = useSearchParams();
+
+  const { idDefaultMentoring } = useFormMentoringStore();
 
   const { mutateAsync: deleteChapterAsync } = useMutation({
     mutationKey: ['delete', 'chapter'],
@@ -36,7 +41,12 @@ const AccordionPanelDraggable: React.FC<
     mutationFn: createMentoring,
   });
 
-  const { timeStart, date, timeEnd } = useFormMentoringStore();
+  const { mutateAsync: editMentoringAsync } = useMutation({
+    mutationKey: ['update', 'mentor'],
+    mutationFn: editMentoring,
+  });
+
+  const { timeStart, date, timeEnd, clear } = useFormMentoringStore();
 
   const handleOpenModalContent = (action: 'open' | 'close') => {
     if (action === 'close') {
@@ -86,20 +96,36 @@ const AccordionPanelDraggable: React.FC<
     const dateData = date;
     const location = null;
     const link = formData.get('url') as string;
-    const response = await createMentorAsync({
-      link,
-      location,
-      title,
-      chapterId: props.id,
-      mentorId,
-      endTime: convertHHmmTime(endTime),
-      startTime: convertHHmmTime(startTime),
-      date: convertDateToStr(new Date(dateData)),
-    });
+    idDefaultMentoring
+      ? await editMentoringAsync({
+          mentoringId: idDefaultMentoring,
+          payload: {
+            link,
+            location,
+            title,
+            chapterId: props.id,
+            mentorId,
+            endTime: convertHHmmTime(endTime),
+            startTime: convertHHmmTime(startTime),
+            date: convertDateToStr(new Date(dateData)),
+          },
+        })
+      : await createMentorAsync({
+          link,
+          location,
+          title,
+          chapterId: props.id,
+          mentorId,
+          endTime: convertHHmmTime(endTime),
+          startTime: convertHHmmTime(startTime),
+          date: convertDateToStr(new Date(dateData)),
+        });
+
     queryClient.invalidateQueries({
       queryKey: ['mentoring', 'list', props.id],
     });
-    console.log(response);
+
+    clear();
   };
 
   const handleSubmitModalCertificate = (e: FormEvent<HTMLFormElement>) => {

@@ -1,7 +1,7 @@
 import LabelForm from '@/backoffice/components/label-form';
 import TimeInput from '@/backoffice/components/time-input';
 import { Select, TextInput } from 'flowbite-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   IDateInput,
   IFormMentoring,
@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic';
 import ListMentoring from '../list-mentoring';
 import { useFormMentoringStore } from './formMentoring.store';
 import TimeInputRange from '@/backoffice/components/time-input-range/TimeInputRange';
+import { convertTimeHHmmssToDate } from '@/helpers/formatter.helper';
 
 const Datepicker = dynamic(
   () =>
@@ -32,7 +33,16 @@ const FormMentoringView: React.FC<
   timeStart,
   chapterId,
 }) => {
-  const { mentors } = useFormMentoringStore();
+  const { mentors, defaultMentoring } = useFormMentoringStore();
+  useEffect(() => {
+    if (defaultMentoring?.startTime && defaultMentoring.endTime) {
+      setTimeEnd(convertTimeHHmmssToDate(defaultMentoring.endTime));
+      setTimeStart(convertTimeHHmmssToDate(defaultMentoring.startTime));
+    }
+    if (defaultMentoring?.date) {
+      setDate(new Date(defaultMentoring.date).toString());
+    }
+  }, [JSON.stringify(defaultMentoring)]);
   return (
     <>
       <div className="flex items-center gap-3">
@@ -40,13 +50,25 @@ const FormMentoringView: React.FC<
           <LabelForm isImportant htmlFor="mentoring_name">
             Mentoring Name
           </LabelForm>
-          <TextInput id="mentoring_name" name="mentoring_name" required />
+          <TextInput
+            id="mentoring_name"
+            defaultValue={defaultMentoring?.title}
+            key={defaultMentoring?.title}
+            name="mentoring_name"
+            required
+          />
         </div>
         <div className="flex-1">
           <LabelForm isImportant htmlFor="mentor">
             Mentor
           </LabelForm>
-          <Select id="mentor" name="mentor" required>
+          <Select
+            defaultValue={defaultMentoring?.mentorId}
+            key={defaultMentoring?.mentorId}
+            id="mentor"
+            name="mentor"
+            required
+          >
             {mentors?.map((el) => {
               return (
                 <option key={el.id} value={el.id}>
@@ -103,6 +125,8 @@ const FormMentoringView: React.FC<
               </svg>
             </div>
             <input
+              defaultValue={defaultMentoring?.link}
+              key={defaultMentoring?.link}
               type="text"
               id="url"
               name="url"

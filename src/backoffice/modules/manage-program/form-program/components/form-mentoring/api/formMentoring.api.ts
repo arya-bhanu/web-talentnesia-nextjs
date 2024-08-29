@@ -21,6 +21,18 @@ export const createMentoring = async (payload: IMentoring) => {
   }
 };
 
+export const fetchOneMentoring = async (mentoringId: string | null) => {
+  try {
+    if (mentoringId) {
+      return await backOfficeAPI.get('/mentoring/' + mentoringId);
+    }
+    return null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
 export const fetchMentoring = async (chapterId: string) => {
   try {
     if (chapterId) {
@@ -37,6 +49,24 @@ export const deleteMentoring = async (mentoringId: string) => {
   try {
     if (mentoringId) {
       return await backOfficeAPI.delete('/mentoring/' + mentoringId);
+    }
+    return null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
+export const editMentoring = async ({
+  mentoringId,
+  payload,
+}: {
+  mentoringId: string;
+  payload: IMentoring;
+}) => {
+  try {
+    if (mentoringId) {
+      return await backOfficeAPI.put('/mentoring/' + mentoringId, payload);
     }
     return null;
   } catch (err) {

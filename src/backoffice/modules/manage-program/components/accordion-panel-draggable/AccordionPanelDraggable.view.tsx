@@ -32,6 +32,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import AlertModal from '@/backoffice/components/alert-modal';
 import FormContent from '../../form-program/components/form-course/components/form-content';
+import { useFormMentoringStore } from '../../form-program/components/form-mentoring/formMentoring.store';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -84,6 +85,7 @@ const AccordionPanelDraggableView: React.FC<
   const params = useSearchParams();
   const programId = params.get('programId');
   const schoolId = params.get('schoolId');
+  const { clear } = useFormMentoringStore();
 
   useEffect(() => {
     if (deleteConfirm) {
@@ -167,7 +169,10 @@ const AccordionPanelDraggableView: React.FC<
                 <li>
                   <button
                     type="button"
-                    onClick={() => handleOpenModalMentoring('open')}
+                    onClick={() => {
+                      clear();
+                      handleOpenModalMentoring('open');
+                    }}
                     className="text-sm font-lato flex items-center gap-2 font-normal"
                   >
                     <FluentShiftTeam />
