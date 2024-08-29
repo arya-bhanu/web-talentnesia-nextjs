@@ -7,27 +7,27 @@ import {
 
 // modul
 export const fetchModules = async () => {
-  const response = await backOfficeAPI.get('/modul');
+  const response = await backOfficeAPI.get('/v1/manage-module');
   return response.data;
 };
 
 export const fetchModule = async (id?: string) => {
   if (id) {
-    const response = await backOfficeAPI.get('/modul/' + id);
+    const response = await backOfficeAPI.get('/v1/manage-module/' + id);
     return response.data;
   }
   return null;
 };
 
 export const deleteModule = async (id: string) => {
-  const response = await backOfficeAPI.delete('/modul/' + id);
+  const response = await backOfficeAPI.delete('/v1/manage-module/' + id);
   return response.data;
 };
 
 export const createModul = async (
   data: Pick<APIResponseManageModul, 'active' | 'name'>,
 ) => {
-  const response = await backOfficeAPI.post('/modul', data);
+  const response = await backOfficeAPI.post('/v1/manage-module', data);
   return response.data;
 };
 
@@ -38,7 +38,7 @@ export const updateModul = async ({
   data: Pick<APIResponseManageModul, 'active' | 'name'>;
   moduleId: string;
 }) => {
-  const response = await backOfficeAPI.put(`/modul/${moduleId}`, data);
+  const response = await backOfficeAPI.put(`/v1/manage-module/${moduleId}`, data);
   return response.data;
 };
 
