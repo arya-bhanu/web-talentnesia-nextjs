@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ListProgramCardType } from '../listProgramCard.type';
 
 export const ListProgramCardAPI = {
-  fetch: async (schoolId: string): Promise<ListProgramCardType[]> => {
+  fetchProgram: async (schoolId: string): Promise<ListProgramCardType[]> => {
     try {
       const response = await axios.get(
         `${process.env.API_SERVER_URL}/v1/manage-program/program/${schoolId}`,
@@ -18,7 +18,17 @@ export const ListProgramCardAPI = {
       }));
       return transformedData;
     } catch (error) {
-      console.error('Error fetching program card data:', error);
+      console.error('Error fetching program card data:');
+      throw error;
+    }
+  },
+  
+  fetchDetailProgram: async (id: string) => {
+    try {
+      const response = await axios.get(`${process.env.API_SERVER_URL}/v1/manage-program/course/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching student table data:', error);
       throw error;
     }
   },

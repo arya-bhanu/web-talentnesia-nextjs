@@ -10,7 +10,7 @@ interface ListProgramCardProps {
     className?: string;
 }
 
-const ListProgramCard: React.FC<ListProgramCardProps> = ({ className = '' }) => {
+const ListProgramCard: React.FC<ListProgramCardProps> = ({ className }) => {
     const { id } = useParams<{ id: string }>();
     const [programCards, setProgramCards] = useState<ListProgramCardType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -26,10 +26,10 @@ const ListProgramCard: React.FC<ListProgramCardProps> = ({ className = '' }) => 
             }
 
             try {
-                const data = await ListProgramCardAPI.fetch(id);
+                const data = await ListProgramCardAPI.fetchProgram(id);
                 setProgramCards(data);
             } catch (error) {
-                console.error('Failed to fetch program cards:', error);
+                console.error('Failed to fetch program cards:');
                 setError("Failed to load program cards. Please try again.");
             }
         };

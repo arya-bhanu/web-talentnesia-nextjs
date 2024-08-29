@@ -4,6 +4,7 @@ import DetailSchoolView from './DetailSchool.view';
 import { SchoolAPI } from '../api/schoolApi';
 import { getImageUrl } from '../api/minioApi';
 import { SchoolData } from './detailSchool.type';
+import useSchoolCustomizations from './detailSchool.data';
 
 const columns = [
   { key: 'no', val: 'No' },
@@ -48,6 +49,8 @@ const DetailSchool: React.FC<DetailSchoolProps> = ({ schoolId }) => {
   const [openModalModul, setOpenModalModul] = useState(false);
   const [schoolData, setSchoolData] = useState<SchoolData | null>(null);
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
+
+  useSchoolCustomizations(schoolId);
 
   useEffect(() => {
     const fetchSchoolData = async () => {

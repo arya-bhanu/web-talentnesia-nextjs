@@ -44,6 +44,6 @@ export interface Content {
   duration: string;
   order: number;
   isexam: number;
-  isComplered: number;
+  isCompleted: number;
 }
 

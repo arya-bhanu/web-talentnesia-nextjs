@@ -1,9 +1,9 @@
+// Component Backup
+
 import React from 'react';
 import { Modal } from 'flowbite-react';
 import ModulProgress from '../modul-progres';
-import AccordionPanelDraggable from '../accordion-panel-draggable/AccordionPanelDraggable';
 import { CourseDetailProps, CourseData, Content } from './courseDetail.type';
-import CourseSidebar from '../course-sidebar/CourseSidebar';
 import { IListDraggable } from '../list-draggable/listDraggable.type';
 
 interface CourseDetailViewProps extends CourseDetailProps {
@@ -58,7 +58,7 @@ const CourseDetailView: React.FC<CourseDetailViewProps> = ({
               />
             </div>
             <div className="mt-5">
-              {courseData.chapters.map((chapter, index) => (
+              {/* {courseData.chapters.map((chapter, index) => (
                 <AccordionPanelDraggable
                   key={chapter.id}
                   index={index}
@@ -76,7 +76,7 @@ const CourseDetailView: React.FC<CourseDetailViewProps> = ({
                       handleContentClick(content, chapter.title),
                   }))}
                 />
-              ))}
+              ))} */}
             </div>
           </div>
         </Modal.Body>
@@ -89,14 +89,14 @@ const CourseDetailView: React.FC<CourseDetailViewProps> = ({
       >
         <Modal.Header>Course Sidebar</Modal.Header>
         <Modal.Body>
-          {selectedContent && courseData && (
+          {/* {selectedContent && courseData && (
             <CourseSidebar
               isSidebarVisible={sidebarVisible}
               setIsSidebarVisible={setSidebarVisible}
               content={selectedContent}
               accordionData={courseData.chapters}
             />
-          )}
+          )} */}
         </Modal.Body>
       </Modal>
     </>

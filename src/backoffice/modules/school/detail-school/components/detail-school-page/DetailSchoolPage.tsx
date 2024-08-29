@@ -27,8 +27,7 @@ const DetailSchoolPage: React.FC = () => {
           setFullImageUrl(imageUrl);
         }
       } catch (error) {
-        console.error('Failed to fetch school data:');
-        setError("Failed to load school data. Please try again.");
+        return;
       }
     };
 
@@ -40,10 +39,10 @@ const DetailSchoolPage: React.FC = () => {
   }
 
   if (!schoolData) {
-    return <div>Loading...</div>;
+    return;
   }
 
-  return <DetailSchoolPageView schoolData={schoolData} fullImageUrl={fullImageUrl} />;
+  return <DetailSchoolPageView schoolData={schoolData} fullImageUrl={fullImageUrl || '/img/manage-user/profile-template.svg'} />;
 };
 
 export default DetailSchoolPage;

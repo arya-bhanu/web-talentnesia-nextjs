@@ -32,7 +32,6 @@ export const uploadFile = async (file: File, path: string): Promise<UploadFileRe
 
 export const getImageUrl = async (imageUrl: string): Promise<string> => {
   try {
-    // Hapus 'path=' dari URL dan ganti '?' dengan '/'
     const correctedPath = imageUrl.replace('path=', '').replace('?', '/');
     const fullUrl = `${process.env.API_SERVER_URL}/v1/file/${correctedPath}`;
     
