@@ -37,6 +37,7 @@ export const Setting = () => {
     bio: '',
     gender: '',
   });
+  const [fullImageUrl, setFullImageUrl] = useState<string>('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -46,10 +47,9 @@ export const Setting = () => {
         const data = await getUserProfile('fngdme2va5ndvivq');
         if (data.profilePicture) {
           const imageUrl = await getImageUrl(data.profilePicture);
-          setUserData({ ...data, profilePicture: imageUrl });
-        } else {
-          setUserData(data);
+          setFullImageUrl(imageUrl);
         }
+        setUserData(data);
       } catch (error) {
         console.error('Error fetching user data:');
       }
@@ -57,6 +57,7 @@ export const Setting = () => {
   
     fetchUserData();
   }, []);
+  
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -68,8 +69,11 @@ export const Setting = () => {
   };
 
   const handleFileChange = async (fileUrl: string) => {
-    setUserData((prevData) => ({ ...prevData, profilePicture: fileUrl }));
+    const fullUrl = await getImageUrl(fileUrl);
+    setUserData(prevData => ({ ...prevData, profilePicture: fileUrl }));
+    setFullImageUrl(fullUrl);
   };
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,7 +99,7 @@ export const Setting = () => {
       <div className="w-1/3">
         <DropFile
           onChange={handleFileChange}
-          initialImage={userData.profilePicture}
+          initialImage={fullImageUrl}
         />
       </div>
       <div className="w-2/3 space-y-4">
@@ -214,10 +218,10 @@ export const Setting = () => {
             value={userData.gender || ''}
             onChange={handleInputChange}
           >
-            <option value="">Select gender</option>
+            <option value="" hidden>Select gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
-            <option value="other">Other</option>
+            <option value="other" hidden>Other</option>
           </select>
         </div>
 

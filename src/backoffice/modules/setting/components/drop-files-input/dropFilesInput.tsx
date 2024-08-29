@@ -51,10 +51,10 @@ export function DropFile({ onChange, initialImage }: DropFileProps) {
         setImageSrc(reader.result as string);
       };
       reader.readAsDataURL(file);
-  
+
       const response = await uploadFile(file, 'users');
-      const imageUrl = `${process.env.API_SERVER_URL}/v1/file/${response.path.thumbs}`;
-      
+      const imageUrl = response.path.thumbs;  
+
       await delay(500);
       
       onChange(imageUrl);
@@ -65,7 +65,6 @@ export function DropFile({ onChange, initialImage }: DropFileProps) {
       setIsUploading(false);
     }
   };
-  
 
   return (
     <div
