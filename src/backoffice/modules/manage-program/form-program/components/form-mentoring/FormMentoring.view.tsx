@@ -23,7 +23,15 @@ const Datepicker = dynamic(
 
 const FormMentoringView: React.FC<
   IFormMentoring & IHandler & ITimeInputRange & IDateInput
-> = ({ date, setDate, setTimeEnd, setTimeStart, timeEnd, timeStart }) => {
+> = ({
+  date,
+  setDate,
+  setTimeEnd,
+  setTimeStart,
+  timeEnd,
+  timeStart,
+  chapterId,
+}) => {
   const { mentors } = useFormMentoringStore();
   return (
     <>
@@ -114,7 +122,7 @@ const FormMentoringView: React.FC<
 
       <div className="flex flex-col gap-3">
         <h2 className="font-poppins font-semibold">List Mentoring</h2>
-        <ListMentoring />
+        <ListMentoring chapterId={chapterId} />
       </div>
     </>
   );

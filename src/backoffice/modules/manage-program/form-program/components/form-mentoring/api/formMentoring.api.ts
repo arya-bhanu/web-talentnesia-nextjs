@@ -1,6 +1,7 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
 import { IMentoring } from '../formMentoring.type';
 
+// mentor
 export const fetchMentors = async () => {
   try {
     return await backOfficeAPI.get('/manage-user/3/table');
@@ -9,6 +10,7 @@ export const fetchMentors = async () => {
   }
 };
 
+// mentoring
 export const createMentoring = async (payload: IMentoring) => {
   try {
     if (payload.chapterId) {
@@ -23,6 +25,18 @@ export const fetchMentoring = async (chapterId: string) => {
   try {
     if (chapterId) {
       return await backOfficeAPI.get('/mentoring/add-mentoring/' + chapterId);
+    }
+    return null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
+
+export const deleteMentoring = async (mentoringId: string) => {
+  try {
+    if (mentoringId) {
+      return await backOfficeAPI.delete('/mentoring/' + mentoringId);
     }
     return null;
   } catch (err) {

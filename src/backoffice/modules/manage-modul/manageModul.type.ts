@@ -12,6 +12,7 @@ export interface APIContentChapter {
   chapterId: string;
   title: string;
   type: string;
+  date?: Date | null;
   duration: string;
   body?: string;
   id: string;

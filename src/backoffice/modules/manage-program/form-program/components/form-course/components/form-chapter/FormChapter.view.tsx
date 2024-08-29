@@ -5,7 +5,7 @@ import { TextInput } from 'flowbite-react/components/TextInput';
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import Add from '@/../public/icons/add.svg';
 import AddWhite from '@/../public/icons/add-white.svg';
-import EditableListContent from '@/backoffice/components/editable-list-content';
+import EditableListContent from '../editable-list-content';
 import Modal from '@/backoffice/components/modal';
 // import FormContent from '../form-content';
 import { IFormChapter, ISubmitType } from './formChapter.type';
@@ -16,8 +16,7 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDragContents } from '@/backoffice/modules/manage-modul/add-exam/store';
-// import { contentsReorder } from '../../api/manageModelApi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
 
 const FormChapterView: React.FC<

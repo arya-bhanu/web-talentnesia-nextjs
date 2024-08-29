@@ -1,6 +1,8 @@
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 
-export interface IFormMentoring {}
+export interface IFormMentoring {
+  chapterId: string;
+}
 
 export interface ITimeInputRange {
   timeStart: Date;
@@ -25,6 +27,7 @@ export interface IMentor {
 }
 
 export interface IMentoring {
+  id?: string;
   chapterId?: string;
   title: string;
   mentorId: string;

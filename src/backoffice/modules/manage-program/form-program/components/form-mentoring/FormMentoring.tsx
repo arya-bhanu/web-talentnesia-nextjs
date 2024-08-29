@@ -34,7 +34,7 @@ const FormMentoring = ({
     queryFn: () => fetchMentoring(chapterId),
     enabled: chapterId !== null || chapterId !== undefined,
   });
-  
+
   useEffect(() => {
     if (mentorings?.data?.data?.items) {
       setMentorings(mentorings?.data?.data?.items);
@@ -67,6 +67,7 @@ const FormMentoring = ({
       timeStart={timestartState}
       date={dateIn}
       setDate={setDateIn}
+      chapterId={chapterId}
     />
   );
 };

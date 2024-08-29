@@ -1,4 +1,10 @@
-import React, { Dispatch, FormEvent, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import ArrowUp from '@/../public/icons/arrow-up.svg';
@@ -21,9 +27,11 @@ import PopoverAction from '@/backoffice/components/popover-action/PopoverAction'
 import Modal from '@/backoffice/components/modal';
 import FormMentoring from '../../form-program/components/form-mentoring';
 import FormCertificate from '../../form-program/components/form-certificate';
-import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
+
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import AlertModal from '@/backoffice/components/alert-modal';
+import FormContent from '../../form-program/components/form-course/components/form-content';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -71,14 +79,26 @@ const AccordionPanelDraggableView: React.FC<
   handleDeleteChapter,
   id,
 }) => {
+  const [openModalConfirm, setOpenModalConfirm] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const params = useSearchParams();
   const programId = params.get('programId');
   const schoolId = params.get('schoolId');
 
+  useEffect(() => {
+    if (deleteConfirm) {
+      handleDeleteChapter(id);
+    }
+  }, [deleteConfirm]);
   return (
     <div
       className={clsx('p-4', index === activeAccordion ? 'bg-[#219EBC0F]' : '')}
     >
+      <AlertModal
+        openModal={openModalConfirm}
+        setIsConfirmed={setDeleteConfirm}
+        setOpenModal={setOpenModalConfirm}
+      />
       <Modal
         title="Mentoring"
         buttonConfirmTitle="Submit"
@@ -196,7 +216,7 @@ const AccordionPanelDraggableView: React.FC<
                 <li>
                   <button
                     type="button"
-                    onClick={() => handleDeleteChapter(id)}
+                    onClick={() => setOpenModalConfirm(true)}
                     className="text-sm font-lato font-normal flex items-center gap-2"
                   >
                     <TrashXs />

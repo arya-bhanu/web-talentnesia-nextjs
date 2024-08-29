@@ -1,5 +1,5 @@
-import React from 'react';
-import { IListMentoring } from './listMentoring.type';
+import React, { useEffect, useState } from 'react';
+import { IListMentoring, IListMentoringHandler } from './listMentoring.type';
 import { Table } from 'flowbite-react/components/Table';
 import Image from 'next/image';
 import { useFormMentoringStore } from '../form-mentoring/formMentoring.store';
@@ -7,11 +7,27 @@ import {
   convertDateIntoIDDate,
   convertTimeHHmmss,
 } from '@/helpers/formatter.helper';
+import AlertModal from '@/backoffice/components/alert-modal';
 
-const ListMentoringView: React.FC<IListMentoring> = () => {
+const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
+  handleDeleteMentoring,
+}) => {
+  const [modalDelete, setModalDelete] = useState(false);
+  const [isConfirmDel, setIsConfirmDel] = useState(false);
+  const [idMentoring, setIdMentoring] = useState('');
   const { mentorings } = useFormMentoringStore();
+  useEffect(() => {
+    if (isConfirmDel) {
+      handleDeleteMentoring(idMentoring);
+    }
+  }, [isConfirmDel]);
   return (
     <div className="overflow-y-auto max-h-[20vh]">
+      <AlertModal
+        openModal={modalDelete}
+        setOpenModal={setModalDelete}
+        setIsConfirmed={setIsConfirmDel}
+      />
       {mentorings && (
         <Table>
           <Table.Body className="divide-y">
@@ -55,7 +71,13 @@ const ListMentoringView: React.FC<IListMentoring> = () => {
                       className="w-6 h-6 object-contain"
                     />
                   </button>
-                  <button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (el.id) setIdMentoring(el.id);
+                      setModalDelete(true);
+                    }}
+                  >
                     <Image
                       alt="icon"
                       src={'/icons/manage-program/trash-btn.svg'}
