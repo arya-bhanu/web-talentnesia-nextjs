@@ -23,7 +23,6 @@ import FormMentoring from '../../form-program/components/form-mentoring';
 import FormCertificate from '../../form-program/components/form-certificate';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
 import Link from 'next/link';
-import { useFormCourseStore } from '../../form-program/components/form-course/formCourse.store';
 import { useSearchParams } from 'next/navigation';
 
 const AccordionPanelDraggableView: React.FC<
@@ -75,7 +74,7 @@ const AccordionPanelDraggableView: React.FC<
   const params = useSearchParams();
   const programId = params.get('programId');
   const schoolId = params.get('schoolId');
-  const { activeModule } = useFormCourseStore();
+
   return (
     <div
       className={clsx('p-4', index === activeAccordion ? 'bg-[#219EBC0F]' : '')}
@@ -167,7 +166,7 @@ const AccordionPanelDraggableView: React.FC<
                 </li>
                 <li>
                   <Link
-                    href={`/backoffice/manage-program/update-program-IICP/add-exam/?modulId=${activeModule}&chapterId=${id}`}
+                    href={`/backoffice/manage-program/update-program-IICP/add-exam/?programId=${programId}&chapterId=${id}`}
                     type="button"
                     className="text-sm flex items-center gap-2 font-lato font-normal"
                   >

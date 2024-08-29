@@ -2,12 +2,20 @@
 import React, { FormEvent, useEffect, useTransition } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useExamStore, useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
+import {
+  useExamStore,
+  useQuestionExamStore,
+} from '@/backoffice/modules/manage-modul/add-exam/store';
 import { APIExamChapter } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { defaultExamData, defaultQuestionRadio } from './formExam.data';
-import { createExam, getExam, updateExam } from '../../api/formProgram.api';
+import {
+  createExam,
+  updateExam,
+  getExam,
+  reorderExam,
+} from '../add-exam/api/exam.api';
 
 const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   const params = useSearchParams();
@@ -54,22 +62,25 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
     mutationKey: ['exam'],
   });
 
-  // const { mutateAsync: reorderExamsAynsc } = useMutation({
-  //   mutationFn: examReorder,
-  //   mutationKey: ['exam'],
-  // });
+  const { mutateAsync: reorderExamsAynsc } = useMutation({
+    mutationFn: reorderExam,
+    mutationKey: ['exam'],
+  });
 
   const handleSubmitExam = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const chapterId = params.get('chapterId');
+    const programId = params.get('programId');
+    const examId = params.get('examId');
+    const schoolId = params.get('schoolId');
+
     const formData = new FormData(e.currentTarget);
     const examName = formData.get('exam_name');
-    const chapterId = params.get('chapterId');
-    const modulId = params.get('modulId');
-    const examId = params.get('examId');
 
     try {
-      if (examName && chapterId && modulId) {
+      if (examName && chapterId && programId) {
         const dataExam = {
           chapterId,
           duration: dataExamStore?.duration || '01.00',
@@ -78,24 +89,24 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         } as APIExamChapter;
 
         if (examId) {
-          console.log('updating exam progam...');
-          // await updateExamAsync({ data: dataExam, id: examId });
+          console.log('updating program exam...');
+          await updateExamAsync({ payload: dataExam, examId: examId });
           console.log('reordering exam program...');
-          // await reorderExamsAynsc({
-          //   examId,
-          //   questions: question.map((el) => el.id),
-          // });
+          await reorderExamsAynsc({
+            examId,
+            questions: question.map((el) => el.id),
+          });
         } else {
-          console.log('creating exam...');
+          console.log('creating program exam...');
           const response = await createExamAsync(dataExam);
           console.log(response);
-          // console.log('reordering exam...');
-          // if (response?.data) {
-          //   await reorderExamsAynsc({
-          //     examId: response?.data.id,
-          //     questions: question.map((el) => el.id),
-          //   });
-          // }
+          console.log('reordering program exam...');
+          if (response?.data) {
+            await reorderExamsAynsc({
+              examId: response?.data.id,
+              questions: question.map((el) => el.id),
+            });
+          }
         }
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['exam'] });
@@ -103,7 +114,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         updateQuestion([]);
         startTransition(() => {
           router.replace(
-            `/backoffice/manage-modul/create/chapter/?modulId=${modulId}&chapterId=${chapterId}`,
+            `/backoffice/manage-program/update-program-IICP/?programId=${programId}&schoolId=${schoolId}`,
           );
         });
       }
