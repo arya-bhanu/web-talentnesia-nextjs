@@ -1,4 +1,4 @@
-import React, { FormEvent, useMemo } from 'react';
+import React, { Dispatch, FormEvent, SetStateAction, useMemo } from 'react';
 
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import clsx from 'clsx';
@@ -13,11 +13,21 @@ import TrashBtn from '@/../public/icons/manage-program/trash-btn.svg';
 import { formatDateIndonesian } from '@/helpers/formatter.helper';
 import Modal from '@/backoffice/components/modal';
 import FormSchedule from '../../form-program/components/form-schedule';
+import FormContent from '../../form-program/components/form-course/components/form-content';
+import AlertModal from '@/backoffice/components/alert-modal';
 
 const ListDraggableView: React.FC<
   IListDraggable &
     IListDraggableState & {
       handleSubmitSchedule: (e: FormEvent<HTMLFormElement>) => void;
+      handleEditContent: (e: FormEvent<HTMLFormElement>) => void;
+      contentId: string;
+      modalEditContent: boolean;
+      setModalEditContent: Dispatch<SetStateAction<boolean>>;
+      modalDelContent: boolean;
+      setModalDelContent: Dispatch<SetStateAction<boolean>>;
+      confirmDel: boolean;
+      setConfirmDel: Dispatch<SetStateAction<boolean>>;
     }
 > = ({
   type,
@@ -28,6 +38,14 @@ const ListDraggableView: React.FC<
   modalSchedule,
   setModalSchedule,
   handleSubmitSchedule,
+  contentId,
+  modalEditContent,
+  setModalEditContent,
+  handleEditContent,
+  setModalDelContent,
+  modalDelContent,
+  confirmDel,
+  setConfirmDel,
 }) => {
   const generateIcon = useMemo(() => {
     switch (type) {
@@ -54,6 +72,22 @@ const ListDraggableView: React.FC<
       >
         <FormSchedule />
       </Modal>
+      <Modal
+        title="Edit Content"
+        buttonConfirmTitle="Submit"
+        state={{
+          openModal: modalEditContent,
+          setOpenModal: setModalEditContent,
+        }}
+        handleSubmit={handleEditContent}
+      >
+        <FormContent contentId={contentId} />
+      </Modal>
+      <AlertModal
+        openModal={modalDelContent}
+        setIsConfirmed={setConfirmDel}
+        setOpenModal={setModalDelContent}
+      />
       <div className="flex items-center gap-2">
         <button>
           <DragIndicator />
@@ -71,13 +105,13 @@ const ListDraggableView: React.FC<
         <p className="font-semibold font-lato text-xs">
           {durationMinute} minute
         </p>
-        <button onClick={() => setModalSchedule(true)}>
+        <button type="button" onClick={() => setModalSchedule(true)}>
           <Calendar />
         </button>
-        <button>
+        <button onClick={() => setModalEditContent(true)} type="button">
           <EditBtn />
         </button>
-        <button>
+        <button onClick={() => setModalDelContent(true)} type="button">
           <TrashBtn />
         </button>
       </div>

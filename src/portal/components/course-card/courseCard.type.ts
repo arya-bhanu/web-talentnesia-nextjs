@@ -9,5 +9,6 @@ export interface CourseCardProps {
     duration: string;
     level: string;
     modules: string;
+    isLoading?: boolean
   }
   

@@ -11,7 +11,7 @@ export const fetchModules = async () => {
   return response.data;
 };
 
-export const fetchModule = async (id?: string) => {
+export const fetchModule = async (id?: string | null) => {
   if (id) {
     const response = await backOfficeAPI.get('/v1/manage-module/' + id);
     return response.data;
@@ -60,6 +60,7 @@ export const createChapter = async ({
   const response = await backOfficeAPI.post('/v1/chapter', { moduleId, title });
   return response.data;
 };
+
 export const editChapter = async ({
   chapterId,
   title,
@@ -70,6 +71,7 @@ export const editChapter = async ({
   const response = await backOfficeAPI.put('/v1/chapter/' + chapterId, { title });
   return response.data;
 };
+
 export const deleteChapter = async (id: string) => {
   const response = await backOfficeAPI.delete('/v1/chapter/' + id);
   return response.data;
@@ -77,8 +79,11 @@ export const deleteChapter = async (id: string) => {
 
 // content
 export const fetchContent = async (id?: string) => {
-  const response = await backOfficeAPI.get('/v1/content/' + id);
-  return response.data;
+  if (id) {
+    const response = await backOfficeAPI.get('/v1/content/' + id);
+    return response.data;
+  }
+  return null;
 };
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
@@ -133,5 +138,49 @@ export const getExam = async (id: string | null | undefined) => {
 
 export const deleteExam = async (id: string) => {
   const response = await backOfficeAPI.delete('/v1/exam/' + id);
+  return response.data;
+};
+
+// sorting request
+export const examReorder = async ({
+  examId,
+  questions,
+}: {
+  questions: string[];
+  examId: string;
+}) => {
+  const response = await backOfficeAPI.post('/v1/exam/reorder-exams/' + examId, {
+    questions,
+  });
+  return response.data;
+};
+export const contentsReorder = async ({
+  contents,
+  chapterId,
+}: {
+  contents: string[];
+  chapterId: string;
+}) => {
+  const response = await backOfficeAPI.post(
+    '/v1/content/reorder-contents/' + chapterId,
+    {
+      contents,
+    },
+  );
+  return response.data;
+};
+export const chapterReorder = async ({
+  chapters,
+  modulId,
+}: {
+  modulId: string;
+  chapters: string[];
+}) => {
+  const response = await backOfficeAPI.post(
+    '/v1/chapter/reorder-chapters/' + modulId,
+    {
+      chapters,
+    },
+  );
   return response.data;
 };

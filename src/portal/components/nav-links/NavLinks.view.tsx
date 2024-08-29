@@ -9,25 +9,21 @@ const NavLinksView = ({ title, links, isLoading }: { title: string; links: ILink
       <h4 className="font-semibold text-[#2D2D2D]">{title}</h4>
       <nav className="flex flex-col gap-0.5 md:gap-1.5 mt-1 md:mt-3">
         {links.map((link, index) => (
-          <>
-          <SkeletonLoader visible={isLoading ? isLoading : false} height={10}/>
-          {
-            !isLoading &&
-            <>
-            <Link
-              href={link.link}
-              key={index}
-              className="text-[#5B5B5B] font-medium text-sm"
-            >
-              {link.label}
-            </Link>
-            </>
-          }
-          </>
+          <React.Fragment key={index}>
+            <SkeletonLoader visible={isLoading ? isLoading : false} height={10} />
+            {!isLoading && (
+              <Link
+                href={link.link}
+                className="text-[#5B5B5B] font-medium text-sm"
+              >
+                {link.label}
+              </Link>
+            )}
+          </React.Fragment>
         ))}
       </nav>
     </div>
-  )
+  );
 };
 
 export default NavLinksView;

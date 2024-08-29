@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { IListDraggable } from './listDraggable.type';
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
-import Image from 'next/image';
 import clsx from 'clsx';
 import PlayCircle from '@/../public/icons/play-circle.svg';
 import Edit2 from '@/../public/icons/edit-2.svg';
 import Book from '@/../public/icons/manage-program/book.svg';
 import Video from '@/../public/icons/videocam.svg';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const ListDraggableView: React.FC<IListDraggable> = ({
   className,
@@ -14,7 +15,16 @@ const ListDraggableView: React.FC<IListDraggable> = ({
   durationMinute,
   isexam,
   type,
+  id,
 }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+  
   const Icon = useMemo(() => {
     if (isexam) {
       return <Edit2 />;
@@ -32,9 +42,13 @@ const ListDraggableView: React.FC<IListDraggable> = ({
     }
   }, [type]);
   return (
-    <div className={clsx('flex items-center justify-between', className)}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={clsx('flex items-center justify-between', className)}
+    >
       <div className="flex items-center gap-2">
-        <button>
+        <button type="button" {...listeners} {...attributes}>
           <DragIndicator />
         </button>
         {Icon}

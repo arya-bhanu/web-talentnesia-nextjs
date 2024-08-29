@@ -1,7 +1,6 @@
 import React from 'react';
 import LabelForm from '../label-form';
 import Flatpickr from 'react-flatpickr';
-import Timer from '@/../public/icons/timer.svg';
 import { ITimeInput } from './timeInput.type';
 import clsx from 'clsx';
 const TimeInputView: React.FC<ITimeInput & { className?: string }> = ({
@@ -30,24 +29,24 @@ const TimeInputView: React.FC<ITimeInput & { className?: string }> = ({
           <path
             d="M21.25 13.25C21.25 18.08 17.33 22 12.5 22C7.67 22 3.75 18.08 3.75 13.25C3.75 8.42 7.67 4.5 12.5 4.5C17.33 4.5 21.25 8.42 21.25 13.25Z"
             stroke="#989FAD"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M12.5 8V13"
             stroke="#989FAD"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M9.5 2H15.5"
             stroke="#989FAD"
-            stroke-width="1.5"
-            stroke-miterlimit="10"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
 
