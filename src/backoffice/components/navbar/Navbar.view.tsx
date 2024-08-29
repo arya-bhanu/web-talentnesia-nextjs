@@ -138,10 +138,10 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <Link href={'/backoffice/setting'}>
+                  <Link href={'/backoffice/setting'} className='p-0 m-0 block'>
                     <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
                       Setting
-                    </li>
+                    </li>     
                   </Link>
                   <li
                     onClick={handleLogout}

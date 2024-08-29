@@ -1,29 +1,50 @@
 'use client';
-import React, { useState } from 'react';
-import { School } from './listTableStudent.type';
-import { schoolsData } from './listTableStudent.data';
+
+import React, { useState, useCallback } from 'react';
+import { useParams } from 'next/navigation';
 import ListTableStudentView from './ListTableStudent.view';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { ListTableStudentAPI } from './api/listTableStudentApi';
 
-interface TableStudentProps {
-  className?: string;
-}
+const ListTableStudent = () => {
+  const queryClient = useQueryClient();
+  const { id } = useParams<{ id: string }>();
 
-const ListTableStudent: React.FC<TableStudentProps> = ({ className }) => {
-  const [schools, setSchools] = useState<School[]>(schoolsData);
+  const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
+  const [Filter, setFilter] = useState('');
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const handleActionButtonRow = async (id: string, action: 'delete' | 'edit') => {
-    if (action === 'delete') {
-      setSchools((prevSchools) => prevSchools.filter((school) => school.id !== id));
-    }
-  };
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['listTableStudent', id],
+    queryFn: async () => {
+      if (typeof id === 'string') {
+        const response = await ListTableStudentAPI.fetch(id);
+        return response?.data?.items || []; // Extract items from the response
+      }
+    },
+    enabled: !!id,
+  });
+
+  const fetchData = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ['listTableStudent', id] });
+  }, [queryClient, id]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <ListTableStudentView
-      schools={schools}
-      handleActionButtonRow={handleActionButtonRow}
-      className={className} 
+      data={data}
+      openPopoverIndex={openPopoverIndex}
+      setOpenPopoverIndex={setOpenPopoverIndex}
+      Filter={Filter}
+      setFilter={setFilter}
+      isPopupOpen={isPopupOpen}
+      setIsPopupOpen={setIsPopupOpen}
+      fetchData={fetchData}
     />
   );
 };
 
 export default ListTableStudent;
+
