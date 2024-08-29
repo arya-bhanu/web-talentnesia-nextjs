@@ -111,7 +111,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   <Image
                     src={
                       user?.profilePicture ||
-                      '/images/placeholderProfilePicture.png'
+                      'https://api-talentnesia.skwn.dev/api/v1/file/users/2024-08/thumbs/weJJ7Yb2qP7M6N42.jpg'
                     }
                     alt="User"
                     width={30}
@@ -138,10 +138,10 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <Link href={'/backoffice/setting'}>
+                  <Link href={'/backoffice/setting'} className='p-0 m-0 block'>
                     <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
                       Setting
-                    </li>
+                    </li>     
                   </Link>
                   <li
                     onClick={handleLogout}

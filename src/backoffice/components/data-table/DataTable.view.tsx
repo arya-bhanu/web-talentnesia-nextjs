@@ -68,7 +68,7 @@ export function DataTableView<T>({
                     key={header.id}
                     scope="col"
                     className={
-                      index === headerGroup.headers.length - 1
+                      header.column.id === 'action'
                         ? 'px-6 py-3 text-center'
                         : 'px-6 py-3'
                     }
@@ -90,7 +90,7 @@ export function DataTableView<T>({
                     <td
                       key={cell.id}
                       className={
-                        cellIndex === row.getVisibleCells().length - 1
+                        cell.column.id === 'action'
                           ? 'px-6 py-4 text-center'
                           : 'px-6 py-4'
                       }

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { ListProgramCardView } from './ListProgramCard.view';
-import { ListProgramCardData } from './listProgramCard.data';
+import { ListProgramCardAPI } from './api/listProgramCardApi';
+import { ListProgramCardType } from './listProgramCard.type';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
 
@@ -8,16 +10,49 @@ interface ListProgramCardProps {
     className?: string;
 }
 
-const ListProgramCard: React.FC<ListProgramCardProps> = ({ className = '' }) => {
+const ListProgramCard: React.FC<ListProgramCardProps> = ({ className }) => {
+    const { id } = useParams<{ id: string }>();
+    const [programCards, setProgramCards] = useState<ListProgramCardType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [error, setError] = useState<string | null>(null);
 
+    useEffect(() => {
+        const fetchProgramCards = async () => {
+            if (!id) {
+                setError("No school ID provided");
+                return;
+            }
+
+            try {
+                const data = await ListProgramCardAPI.fetchProgram(id);
+                setProgramCards(data);
+            } catch (error) {
+                console.error('Failed to fetch program cards:');
+                setError("Failed to load program cards. Please try again.");
+            }
+        };
+        fetchProgramCards();
+    }, [id]);
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    const filteredItems = Array.isArray(programCards) 
+        ? programCards.filter(item =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : [];
+  
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = ListProgramCardData.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
+    
     const nextPage = () => {
-        if (currentPage < Math.ceil(ListProgramCardData.length / itemsPerPage)) {
+        if (currentPage < Math.ceil(filteredItems.length / itemsPerPage)) {
             setCurrentPage(currentPage + 1);
         }
     };
@@ -33,8 +68,20 @@ const ListProgramCard: React.FC<ListProgramCardProps> = ({ className = '' }) => 
         setCurrentPage(1); 
     };
 
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+        setCurrentPage(1);
+    };
+
     return (
         <div>
+            <input
+                type="text"
+                placeholder="Search programs..."
+                value={searchTerm}
+                onChange={handleSearch}
+                className="mb-4 p-2 border rounded"
+            />
             <div className={`flex flex-wrap -mx-4 ${className}`}>
                 {currentItems.map((item, index) => (
                     <div key={index} className="w-full sm:w-1/2 lg:w-1/3 px-4 mb-8">
@@ -57,7 +104,7 @@ const ListProgramCard: React.FC<ListProgramCardProps> = ({ className = '' }) => 
                         <option value={30}>30</option>
                         <option value={50}>50</option>
                     </select>
-                    <p className="w-full min-w-max">data out of {ListProgramCardData.length}</p>
+                    <p className="w-full min-w-max">data out of {filteredItems.length}</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <p className="text-[#667085]">Data per page</p>
@@ -71,7 +118,7 @@ const ListProgramCard: React.FC<ListProgramCardProps> = ({ className = '' }) => 
                         </button>
                         <button
                             onClick={nextPage}
-                            disabled={currentPage === Math.ceil(ListProgramCardData.length / itemsPerPage)}
+                            disabled={currentPage === Math.ceil(filteredItems.length / itemsPerPage)}
                             className="p-2 text-white rounded"
                         >
                             <IconRight />
