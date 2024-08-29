@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Medal from '@/../public/icons/medal.svg';
+import RatingModalView from '@/backoffice/components/rating-modal/RatingModal.view';
 
 const Certificate: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleDownloadClick = () => {
+    setTimeout(() => {
+      setIsModalOpen(true); 
+    }, 3000); 
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); 
+  };
+
   return (
     <section className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-700">
       <div className="container flex flex-col items-center -mt-20">
@@ -17,12 +30,14 @@ const Certificate: React.FC = () => {
             in the next course!
           </p>
           <a
-            className="py-4 px-6 w-48 text-sm font-semibold rounded-full bg-[#FFC862] hover:bg-[#ffbf49] text-gray-700 mx-auto" // Tambahkan mx-auto untuk mengatur tombol ke tengah
+            onClick={handleDownloadClick}
+            className="py-4 px-6 w-48 text-sm font-semibold rounded-full bg-[#FFC862] hover:bg-[#ffbf49] text-gray-700 mx-auto cursor-pointer" 
           >
             Download Certificate
           </a>
         </div>
       </div>
+      <RatingModalView isOpen={isModalOpen} onClose={handleCloseModal} />
     </section>
   );
 };

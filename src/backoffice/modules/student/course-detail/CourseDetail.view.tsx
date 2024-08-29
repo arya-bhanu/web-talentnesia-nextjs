@@ -7,6 +7,8 @@ import Schedule from './components/schedule';
 import Modul from './components/modul';
 import ModulProgress from './components/modul-progres';
 import JoinDiscord from './components/join-discord/JoinDiscord';
+import Statistic from './components/statistic';
+import Mentor from './components/list-mentor';
 
 const CourseDetailView: React.FC = () => (
   <div className="p-4">
@@ -34,6 +36,8 @@ const CourseDetailView: React.FC = () => (
       </div>
       <div className="w-full md:w-1/3">
         <JoinDiscord />
+        <Statistic />
+        <Mentor />
       </div>
     </div>
   </div>
