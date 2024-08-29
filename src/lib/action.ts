@@ -28,9 +28,9 @@ export const login = (formData: FormData) => {
   setToken(token);
 
   const redirectMap: Record<number, string> = {
-    1: '/backoffice/example',
-    2: '/operator/example',
-    3: '/mentor/example'
+    1: '/backoffice/dashboard',
+    2: '/operator/dashboard',
+    3: '/mentor/dashboard'
   };
 
   return { redirectTo: redirectMap[user.role] || '/' };
