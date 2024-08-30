@@ -79,6 +79,8 @@ function FormProgramView({
         setOpen={setOpen}
         setSelected={setSelected}
         title="Select Student"
+        columns={[]}
+        rows={[]}
       />
       <TabFlex tabs={programId ? tabs : [tabs[0]]} />
     </Card>

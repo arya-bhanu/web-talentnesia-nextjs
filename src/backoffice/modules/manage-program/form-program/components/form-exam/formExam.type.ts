@@ -1,5 +1,5 @@
+import { ExamQuestion } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { Dispatch, FormEvent, SetStateAction } from 'react';
-import { ExamQuestion } from '../../manageModul.type';
 
 export type IFormExam = {
   handleSubmitExam: (e: FormEvent<HTMLFormElement>) => void;
