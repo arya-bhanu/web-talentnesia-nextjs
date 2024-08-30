@@ -141,6 +141,24 @@ export const deleteChapter = async (id: string) => {
   return response.data;
 };
 
+export const reorderChapter = async ({
+  chapters,
+  programId,
+}: {
+  programId: string;
+  chapters: string[];
+}) => {
+  try {
+    const response = await backOfficeAPI.post(
+      '/program-chapter/reorder-chapters/' + programId,
+      { chapters },
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // schedule
 export const updateSchedule = async ({
   contentId,

@@ -33,6 +33,9 @@ import { useSearchParams } from 'next/navigation';
 import AlertModal from '@/backoffice/components/alert-modal';
 import FormContent from '../../form-program/components/form-course/components/form-content';
 import { useFormMentoringStore } from '../../form-program/components/form-mentoring/formMentoring.store';
+import { useSortable } from '@dnd-kit/sortable';
+
+import { CSS } from '@dnd-kit/utilities';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -86,7 +89,13 @@ const AccordionPanelDraggableView: React.FC<
   const programId = params.get('programId');
   const schoolId = params.get('schoolId');
   const { clear } = useFormMentoringStore();
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
 
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
   useEffect(() => {
     if (deleteConfirm) {
       handleDeleteChapter(id);
@@ -94,6 +103,8 @@ const AccordionPanelDraggableView: React.FC<
   }, [deleteConfirm]);
   return (
     <div
+      ref={setNodeRef}
+      style={style}
       className={clsx('p-4', index === activeAccordion ? 'bg-[#219EBC0F]' : '')}
     >
       <AlertModal
@@ -135,7 +146,7 @@ const AccordionPanelDraggableView: React.FC<
         <FormContent />
       </Modal>
       <div className="flex items-center gap-4">
-        <button className="button">
+        <button type="button" {...listeners} {...attributes} className="button">
           <DragIndicator />
         </button>
         <div
