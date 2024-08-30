@@ -5,10 +5,12 @@ import { APIContentChapter } from '@/backoffice/modules/manage-modul/manageModul
 import {
   deleteContent,
   editContent,
+  updateSchedule,
 } from '../../form-program/components/form-course/api/formCourse.api';
 import { deleteExam } from '../../form-program/components/add-exam/api/exam.api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
+import { useFormScheduleStore } from '../../form-program/components/form-schedule/formSchedule.store';
 
 const ListDraggable: React.FC<IListDraggable> = (props) => {
   const params = useSearchParams();
@@ -18,6 +20,13 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
   const [isConfrmDel, setConfrmDel] = useState(false);
   const queryClient = useQueryClient();
   const programId = params.get('programId');
+  const { content } = useFormScheduleStore();
+
+  const { mutateAsync: updateScheduleAasync } = useMutation({
+    mutationKey: ['schedule'],
+    mutationFn: updateSchedule,
+  });
+
   const { mutateAsync: deleteContentAsync } = useMutation({
     mutationFn: deleteContent,
     mutationKey: ['content'],
@@ -39,7 +48,25 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
     }
   }, [isConfrmDel]);
 
-  const handleSubmitSchedule = (e: FormEvent<HTMLFormElement>) => {};
+  const handleSubmitSchedule = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (content && content.date) {
+      const response = await updateScheduleAasync({
+        contentId: props.id,
+        payload: {
+          date: content.date,
+          duration: content.duration,
+        },
+      });
+      console.log(response);
+      await queryClient.invalidateQueries({
+        queryKey: ['chapters', 'program', programId],
+      });
+      setModalSchedule(false);
+    }
+  };
+
   const handleDeleteContent = async (isexam: boolean, id: string) => {
     try {
       isexam ? await deleteContentAsync(id) : await deleteExamAsync(id);

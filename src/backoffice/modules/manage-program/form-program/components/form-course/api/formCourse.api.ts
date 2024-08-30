@@ -140,3 +140,25 @@ export const deleteChapter = async (id: string) => {
   const response = await backOfficeAPI.delete('/program-chapter/' + id);
   return response.data;
 };
+
+// schedule
+export const updateSchedule = async ({
+  contentId,
+  payload,
+}: {
+  contentId: string;
+  payload: {
+    date: string;
+    duration: string;
+  };
+}) => {
+  try {
+    const response = await backOfficeAPI.post(
+      '/program-content/update-schedule/' + contentId,
+      payload,
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};

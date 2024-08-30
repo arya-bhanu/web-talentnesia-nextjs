@@ -70,7 +70,7 @@ const ListDraggableView: React.FC<
         buttonConfirmTitle="Submit"
         handleSubmit={handleSubmitSchedule}
       >
-        <FormSchedule />
+        <FormSchedule contentId={contentId} />
       </Modal>
       <Modal
         title="Edit Content"

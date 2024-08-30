@@ -101,6 +101,7 @@ export function formatNumericDateToEng(dateString: string) {
   return `${month} ${day}${suffix} ${year}`;
 }
 
+// convert new Date() -> HH:mm
 export const convertHHmmTime = (date: Date) => {
   const timeHHmm = date.toLocaleTimeString('en-US', {
     hour: '2-digit',
@@ -110,6 +111,7 @@ export const convertHHmmTime = (date: Date) => {
   return timeHHmm;
 };
 
+// convert HH:mm -> new Date()
 export const convertStrToTime = (str: string) => {
   const timeString = str;
   const date = moment(timeString, 'HH:mm').toDate();
@@ -119,6 +121,11 @@ export const convertStrToTime = (str: string) => {
 // convert Date -> YYYY-MM-DD
 export const convertDateToStr = (date: Date) => {
   return moment(date).format('YYYY-MM-DD');
+};
+
+// convert YYYY-MM-DD -> Date
+export const YMDIntoDate = (dateString: string) => {
+  return moment(dateString, 'YYYY-MM-DD').toDate();
 };
 
 // convert HH:mm:ss -> HH:mm
@@ -141,6 +148,7 @@ export function convertDateIntoIDDate(date: Date) {
   return `${day} ${month} ${year}`;
 }
 
+// convert HH:mm:ss -> new Date()
 export function convertTimeHHmmssToDate(timeString: string) {
   // Assuming the input string is in the format "HH:mm:ss"
   const [hours, minutes, seconds] = timeString.split(':').map(Number);
