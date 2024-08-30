@@ -15,6 +15,9 @@ import Modal from '@/backoffice/components/modal';
 import FormSchedule from '../../form-program/components/form-schedule';
 import FormContent from '../../form-program/components/form-course/components/form-content';
 import AlertModal from '@/backoffice/components/alert-modal';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const ListDraggableView: React.FC<
   IListDraggable &
@@ -46,7 +49,20 @@ const ListDraggableView: React.FC<
   modalDelContent,
   confirmDel,
   setConfirmDel,
+  isexam,
+  id,
+  chapterId,
 }) => {
+  const router = useRouter();
+  const params = useSearchParams();
+  const programId = params.get('programId');
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
   const generateIcon = useMemo(() => {
     switch (type) {
       case '1':
@@ -60,7 +76,11 @@ const ListDraggableView: React.FC<
     }
   }, [type]);
   return (
-    <div className={clsx('flex items-center justify-between', className)}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={clsx('flex items-center justify-between', className)}
+    >
       <Modal
         title="Edit Schedule"
         state={{
@@ -70,7 +90,7 @@ const ListDraggableView: React.FC<
         buttonConfirmTitle="Submit"
         handleSubmit={handleSubmitSchedule}
       >
-        <FormSchedule />
+        <FormSchedule contentId={contentId} />
       </Modal>
       <Modal
         title="Edit Content"
@@ -89,7 +109,7 @@ const ListDraggableView: React.FC<
         setOpenModal={setModalDelContent}
       />
       <div className="flex items-center gap-2">
-        <button>
+        <button type="button" {...listeners} {...attributes}>
           <DragIndicator />
         </button>
         {generateIcon}
@@ -108,10 +128,26 @@ const ListDraggableView: React.FC<
         <button type="button" onClick={() => setModalSchedule(true)}>
           <Calendar />
         </button>
-        <button onClick={() => setModalEditContent(true)} type="button">
+        <button
+          onClick={() => {
+            if (isexam) {
+              router.push(
+                `/backoffice/manage-program/update-program-IICP/edit-exam/?examId=${id}&chapterId=${chapterId}&programId=${programId}`,
+              );
+            } else {
+              setModalEditContent(true);
+            }
+          }}
+          type="button"
+        >
           <EditBtn />
         </button>
-        <button onClick={() => setModalDelContent(true)} type="button">
+        <button
+          onClick={() => {
+            setModalDelContent(true);
+          }}
+          type="button"
+        >
           <TrashBtn />
         </button>
       </div>

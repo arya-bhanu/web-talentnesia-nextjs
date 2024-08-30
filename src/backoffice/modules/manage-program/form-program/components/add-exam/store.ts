@@ -8,6 +8,7 @@ import {
   APIExamChapter,
   ExamQuestion,
 } from '@/backoffice/modules/manage-modul/manageModul.type';
+import { IListDraggable } from '@/backoffice/modules/manage-program/components/list-draggable/listDraggableType.type';
 import { convertHHmmTime } from '@/helpers/formatter.helper';
 import { Active, Over } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
@@ -29,9 +30,9 @@ interface ExamStore {
   setTime: (time: Date) => void;
 }
 interface DragContents {
-  sortContents: APIContentChapter[] | null | undefined;
+  sortContents: IListDraggable[] | null | undefined;
   sortActionContents: (active: Active, over: Over) => void;
-  setSortContents: (data: APIContentChapter[] | null | undefined) => void;
+  setSortContents: (data: IListDraggable[] | null | undefined) => void;
 }
 interface DragChapter {
   sortChapters: APIChapterModul[] | null | undefined;
@@ -124,6 +125,7 @@ export const useDragContents = create<DragContents>((set) => ({
   sortContents: null,
 
   setSortContents: (data) => {
+    console.log('data set ' + data);
     return set(() => ({
       sortContents: data,
     }));

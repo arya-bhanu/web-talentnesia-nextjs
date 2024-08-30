@@ -52,6 +52,7 @@ const EditableListContentView: React.FC<
   const params = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const progamId = params.get('programId');
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: id });
 
@@ -123,11 +124,10 @@ const EditableListContentView: React.FC<
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => {
-              const modulId = params.get('modulId');
               const chapterId = params.get('chapterId');
               if (isexam) {
                 router.push(
-                  `${pathname}/update-exam/?modulId=${modulId}&chapterId=${chapterId}&examId=${id}`,
+                  `/backoffice/manage-program/update-program-IICP/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
                 );
               } else {
                 setOpenModalEdit(true);

@@ -2,10 +2,7 @@
 import React, { FormEvent, useEffect, useTransition } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  useExamStore,
-  useQuestionExamStore,
-} from '@/backoffice/modules/manage-modul/add-exam/store';
+import { useExamStore, useQuestionExamStore } from '../add-exam/store';
 import { APIExamChapter } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -40,15 +37,15 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
 
   useEffect(() => {
     setDataExam(defaultExamData);
-    if (dataExam?.data) {
+    if (dataExam?.data?.data) {
       setDataExam({
-        chapterId: dataExam.data?.chapterId,
-        duration: dataExam.data?.duration,
-        id: dataExam.data?.id,
-        order: dataExam.data?.order,
-        title: dataExam.data?.title,
+        chapterId: dataExam.data?.data.chapterId,
+        duration: dataExam.data?.data.duration,
+        id: dataExam.data?.data.id,
+        order: dataExam.data?.data.order,
+        title: dataExam.data?.data.title,
       });
-      updateQuestion(dataExam.data?.exams);
+      updateQuestion(dataExam.data?.data.exams);
     }
   }, [JSON.stringify(dataExam?.data)]);
 
@@ -98,15 +95,14 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
           });
         } else {
           console.log('creating program exam...');
-          const response = await createExamAsync(dataExam);
-          console.log(response);
-          console.log('reordering program exam...');
-          if (response?.data) {
-            await reorderExamsAynsc({
-              examId: response?.data.id,
-              questions: question.map((el) => el.id),
-            });
-          }
+          await createExamAsync(dataExam);
+          // console.log('reordering program exam...');
+          // if (response?.data) {
+          //   await reorderExamsAynsc({
+          //     examId: response?.data.id,
+          //     questions: question.map((el) => el.id),
+          //   });
+          // }
         }
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['exam'] });

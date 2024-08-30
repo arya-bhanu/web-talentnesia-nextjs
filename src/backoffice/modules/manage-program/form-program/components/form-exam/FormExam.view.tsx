@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { IFormExam } from './formExam.type';
 import TimeInput from '@/backoffice/components/time-input';
 import Add from '@/../public/icons/add.svg';
-import QuestionListDraggable from '@/backoffice/components/question-list-draggable';
+import QuestionListDraggable from './components/question-list-draggable';
 import { defaultQuestionRadio } from './formExam.data';
 
 import { uuid } from 'uuidv4';
@@ -14,10 +14,7 @@ import { useSearchParams } from 'next/navigation';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import {
-  useExamStore,
-  useQuestionExamStore,
-} from '@/backoffice/modules/manage-modul/add-exam/store';
+import { useExamStore, useQuestionExamStore } from '../add-exam/store';
 
 const FormExamView: React.FC<
   IFormExam & {
@@ -54,6 +51,7 @@ const FormExamView: React.FC<
       sortActionExam(active, over);
     }
   }
+
 
   return (
     <form onSubmit={handleSubmitExam} className={className}>

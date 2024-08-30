@@ -90,10 +90,46 @@ export const editContent = async ({
   }
 };
 
+export const reorderContent = async ({
+  chapterId,
+  contents,
+}: {
+  chapterId: string;
+  contents: string[];
+}) => {
+  try {
+    const response = await backOfficeAPI.post(
+      '/program-content/reorder-contents/' + chapterId,
+      { contents },
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // exam
 export const deleteExam = async (examId: string) => {
   try {
     const response = await backOfficeAPI.delete('/program-exam/' + examId);
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const reorderExam = async ({
+  examId,
+  questions,
+}: {
+  examId: string;
+  questions: string[];
+}) => {
+  try {
+    const response = await backOfficeAPI.post(
+      '/program-exam/reorder-exams/' + examId,
+      { questions },
+    );
     return response;
   } catch (err) {
     console.error(err);
@@ -139,4 +175,44 @@ export const fetchChapter = async (chapterId?: string | null) => {
 export const deleteChapter = async (id: string) => {
   const response = await backOfficeAPI.delete('/program-chapter/' + id);
   return response.data;
+};
+
+export const reorderChapter = async ({
+  chapters,
+  programId,
+}: {
+  programId: string;
+  chapters: string[];
+}) => {
+  try {
+    const response = await backOfficeAPI.post(
+      '/program-chapter/reorder-chapters/' + programId,
+      { chapters },
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// schedule
+export const updateSchedule = async ({
+  contentId,
+  payload,
+}: {
+  contentId: string;
+  payload: {
+    date: string;
+    duration: string;
+  };
+}) => {
+  try {
+    const response = await backOfficeAPI.post(
+      '/program-content/update-schedule/' + contentId,
+      payload,
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
 };
