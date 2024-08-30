@@ -125,6 +125,7 @@ export const useDragContents = create<DragContents>((set) => ({
   sortContents: null,
 
   setSortContents: (data) => {
+    console.log('data set ' + data);
     return set(() => ({
       sortContents: data,
     }));

@@ -118,17 +118,16 @@ const AccordionPanelDraggableView: React.FC<
   }, [deleteConfirm]);
 
   useEffect(() => {
-    setSortContents(null);
-    if (contents) {
+    if (contents && index === activeAccordion) {
       const sortData = contents.sort((a, b) => a.order - b.order);
       if (sortData && sortData.length > 0) {
         setSortContents(sortData);
       }
     }
-  }, [JSON.stringify(contents)]);
+  }, [JSON.stringify(contents), index === activeAccordion]);
 
   useEffect(() => {
-    if (programId && sortContents) {
+    if (id && sortContents) {
       const executeMutation = async () => {
         if (sortContents && sortContents.length > 0) {
           try {
