@@ -64,7 +64,7 @@ deploy_app:
     - |
       DELETABLE_IMAGES=$(sudo docker --context project-talentnesia images --filter "reference=$STAGING_REGISTRY_NAME_NOTAG" --filter "dangling=true" -q)
       if [ -n "$DELETABLE_IMAGES" ]; then
-        sudo docker --context project-ci rmi $DELETABLE_IMAGES
+        sudo docker --context project-talentnesia rmi $DELETABLE_IMAGES
       else
         echo "No deletable images found."
       fi
