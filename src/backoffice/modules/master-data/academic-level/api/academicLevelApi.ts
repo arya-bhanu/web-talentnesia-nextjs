@@ -1,11 +1,9 @@
-import axios from 'axios';
-
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+import { backOfficeAPI } from '@/lib/axiosConfig';
 
 export const academicLevelAPI = {
   fetch: async () => {
     try {
-      const response = await axios.get(`${API_URL}/education-level`);
+      const response = await backOfficeAPI.get('/v1/education-level');
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch academic levels');
@@ -15,7 +13,7 @@ export const academicLevelAPI = {
 
   getById: async (id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/education-level/${id}`);
+      const response = await backOfficeAPI.get(`/v1/education-level/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch academic level details');
@@ -31,7 +29,7 @@ export const academicLevelAPI = {
         createdBy: ""
       };
 
-      const response = await axios.post(`${API_URL}/education-level`, requestData);
+      const response = await backOfficeAPI.post('/v1/education-level', requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to add academic level');
@@ -41,12 +39,12 @@ export const academicLevelAPI = {
 
   update: async (id: string, name: string ) => {
     try {
-        const requestData = {
+      const requestData = {
         name,
         active: 1
       };
 
-      const response = await axios.put(`${API_URL}/education-level/${id}`, requestData);
+      const response = await backOfficeAPI.put(`/v1/education-level/${id}`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to update academic level');
@@ -60,7 +58,7 @@ export const academicLevelAPI = {
         throw new Error('Invalid ID format');
       }
 
-      const response = await axios.delete(`${API_URL}/education-level/${id}`);
+      const response = await backOfficeAPI.delete(`/v1/education-level/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to delete academic level');

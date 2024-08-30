@@ -8,10 +8,15 @@ export function DropFile() {
 
   useEffect(() => {
     if (file) {
-      const { image, ...res } = data;
-      setData({ ...res, image: file });
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const { image, ...res } = data;
+        setData({ ...res, image: e.target?.result as string });
+      };
+      reader.readAsDataURL(file);
     }
   }, [file]);
+  
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
