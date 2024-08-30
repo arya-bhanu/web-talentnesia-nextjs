@@ -19,8 +19,11 @@ export const LoginView: React.FC<Partial<LoginViewProps>> = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const result = await login(formData);
+    const data = {
+      email,
+      password
+    };
+    const result = await login(data);
     if (result.error) {
       setError(result.error);
       setShowError(true);

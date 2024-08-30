@@ -1,68 +1,44 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
+import { AcademicLevelResponse, SingleAcademicLevelResponse } from '../academicLevel.type';
 
 export const academicLevelAPI = {
   fetch: async () => {
-    try {
-      const response = await backOfficeAPI.get('/v1/education-level');
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch academic levels');
-      throw new Error('Failed to fetch academic levels');
-    }
+    return fetchAxios<AcademicLevelResponse>({
+      url: `${process.env.API_SERVER_URL}/v1/education-level`,
+      method: 'GET',
+    });
   },
 
   getById: async (id: string) => {
-    try {
-      const response = await backOfficeAPI.get(`/v1/education-level/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch academic level details');
-      throw new Error('Failed to fetch academic level details');
-    }
+    return fetchAxios<SingleAcademicLevelResponse>({
+      url: `${process.env.API_SERVER_URL}/v1/education-level/${id}`,
+      method: 'GET',
+    });
   },
 
   add: async (name: string) => {
-    try {
-      const requestData = {
-        name,
-        active: 1,
-        createdBy: ""
-      };
-
-      const response = await backOfficeAPI.post('/v1/education-level', requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to add academic level');
-      throw new Error('Failed to add academic level');
-    }
+    const requestData = { name, active: 1, createdBy: "" };
+    return fetchAxios<SingleAcademicLevelResponse>({
+      url: `${process.env.API_SERVER_URL}/v1/education-level`,
+      method: 'POST',
+      formData: requestData,
+    });
   },
 
-  update: async (id: string, name: string ) => {
-    try {
-      const requestData = {
-        name,
-        active: 1
-      };
-
-      const response = await backOfficeAPI.put(`/v1/education-level/${id}`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to update academic level');
-      throw new Error('Failed to update academic level');
-    }
+  update: async (id: string, name: string) => {
+    const requestData = { name, active: 1 };
+    return fetchAxios<SingleAcademicLevelResponse>({
+      url: `${process.env.API_SERVER_URL}/v1/education-level/${id}`,
+      method: 'PUT',
+      formData: requestData,
+    });
   },
 
   delete: async (id: string) => {
-    try {
-      if (typeof id !== 'string' || !id) {
-        throw new Error('Invalid ID format');
-      }
-
-      const response = await backOfficeAPI.delete(`/v1/education-level/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to delete academic level');
-      throw new Error('Failed to delete academic level');
-    }
+    return fetchAxios<{ success: boolean }>({
+      url: `${process.env.API_SERVER_URL}/v1/education-level/${id}`,
+      method: 'DELETE',
+    });
   }
 };
+

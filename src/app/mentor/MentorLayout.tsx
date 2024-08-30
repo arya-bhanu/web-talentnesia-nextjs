@@ -47,6 +47,7 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
   }, [checkAuth]);
 
   useEffect(() => {
+    checkAuth();
     const handleResize = () => {
       setIsSidebarOpen(window.innerWidth >= 768);
     };
@@ -64,7 +65,7 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
     return null;
   }
 
-  const customPageStyle = ['/backoffice/report/'].includes(pathname);
+  const customPageStyle = ['/mentor/dashboard/'].includes(pathname);
 
   return (
     <div className='bg-[#FAFAFA]'>
