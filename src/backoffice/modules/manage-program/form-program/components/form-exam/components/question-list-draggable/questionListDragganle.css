@@ -1,0 +1,14 @@
+#richtext .quill .ql-toolbar {
+  border: none !important;
+  padding: 0.5rem 0px;
+}
+
+#richtext .quill {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+#richtext .quill .ql-container {
+  border-right: 0px !important;
+  border-left: 0px !important;
+}

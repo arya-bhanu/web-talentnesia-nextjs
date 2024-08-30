@@ -15,6 +15,7 @@ import Modal from '@/backoffice/components/modal';
 import FormSchedule from '../../form-program/components/form-schedule';
 import FormContent from '../../form-program/components/form-course/components/form-content';
 import AlertModal from '@/backoffice/components/alert-modal';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const ListDraggableView: React.FC<
   IListDraggable &
@@ -46,7 +47,13 @@ const ListDraggableView: React.FC<
   modalDelContent,
   confirmDel,
   setConfirmDel,
+  isexam,
+  id,
+  chapterId,
 }) => {
+  const router = useRouter();
+  const params = useSearchParams();
+  const programId = params.get('programId');
   const generateIcon = useMemo(() => {
     switch (type) {
       case '1':
@@ -108,10 +115,26 @@ const ListDraggableView: React.FC<
         <button type="button" onClick={() => setModalSchedule(true)}>
           <Calendar />
         </button>
-        <button onClick={() => setModalEditContent(true)} type="button">
+        <button
+          onClick={() => {
+            if (isexam) {
+              router.push(
+                `/backoffice/manage-program/update-program-IICP/edit-exam/?examId=${id}&chapterId=${chapterId}&programId=${programId}`,
+              );
+            } else {
+              setModalEditContent(true);
+            }
+          }}
+          type="button"
+        >
           <EditBtn />
         </button>
-        <button onClick={() => setModalDelContent(true)} type="button">
+        <button
+          onClick={() => {
+            setModalDelContent(true);
+          }}
+          type="button"
+        >
           <TrashBtn />
         </button>
       </div>

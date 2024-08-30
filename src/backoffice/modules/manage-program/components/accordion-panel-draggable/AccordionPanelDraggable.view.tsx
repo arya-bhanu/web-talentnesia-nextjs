@@ -135,7 +135,7 @@ const AccordionPanelDraggableView: React.FC<
         <FormContent />
       </Modal>
       <div className="flex items-center gap-4">
-        <button>
+        <button className="button">
           <DragIndicator />
         </button>
         <div
