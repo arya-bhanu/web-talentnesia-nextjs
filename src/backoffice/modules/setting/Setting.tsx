@@ -8,17 +8,17 @@ import { DropFile } from './components/drop-files-input/dropFilesInput';
 import Link from 'next/link';
 import { Modal } from 'flowbite-react';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
+import { DecodedToken, decodeToken } from '@/lib/tokenDecoder';
 
-interface UserData {
-  id: string;
-  profilePicture: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  linkedIn: string;
-  phoneNumber: string;
-  bio: string;
-  gender: string;
+interface UserData extends DecodedToken {
+  firstName?: string;
+  lastName?: string;
+  linkedIn?: string;
+  phoneNumber?: string;
+  bio?: string;
+  gender?: string;
+  password?: string;
+  hashedPassword?: string;
 }
 
 export const Setting = () => {
@@ -27,15 +27,15 @@ export const Setting = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [userData, setUserData] = useState<UserData>({
-    id: '',
-    profilePicture: '',
-    firstName: '',
-    lastName: '',
+    userId: '',
+    name: '',
     email: '',
-    linkedIn: '',
-    phoneNumber: '',
-    bio: '',
-    gender: '',
+    role: 0,
+    profilePicture: '',
+    isLoggedIn: '',
+    token: '',
+    password: '',
+    hashedPassword: ''
   });
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
   const [password, setPassword] = useState('');
@@ -43,27 +43,33 @@ export const Setting = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const data = await getUserProfile('fngdme2va5ndvivq');
-        if (data.profilePicture) {
-          try {
-            const imageUrl = await getImageUrl(data.profilePicture);
-            setFullImageUrl(imageUrl);
-          } catch (imageError) {
-            console.error('Error fetching image');
+      const decodedToken = decodeToken();
+      console.log(decodedToken);
+      if (decodedToken) {
+        setUserData(decodedToken as UserData);
+        try {
+          const data = await getUserProfile(decodedToken.userId || 'fngdme2va5ndvivq');
+          if (data.profilePicture) {
+            try {
+              const imageUrl = await getImageUrl(data.profilePicture);
+              setFullImageUrl(imageUrl);
+            } catch (imageError) {
+              console.error('Error fetching image');
+              setFullImageUrl('');
+            }
+          } else {
             setFullImageUrl('');
           }
-        } else {
-          setFullImageUrl('');
+          setUserData(prevData => ({ ...prevData, ...data, hashedPassword: data.password }));
+        } catch (error) {
+          console.error('Error fetching user data');
         }
-        setUserData(data);
-      } catch (error) {
-        console.error('Error fetching user data');
       }
     };
   
     fetchUserData();
   }, []);
+  
   
 
   const handleInputChange = (
@@ -90,16 +96,21 @@ export const Setting = () => {
         setShowModal(true);
         return;
       }
-      const updatedData = { ...userData, password };
-      await updateUserProfile(userData.id, updatedData);
+      const updatedData = { ...userData };
+      if (password) {
+        updatedData.password = password;
+      }
+      await updateUserProfile(userData.userId, updatedData);
+      
       setModalMessage('Profile updated successfully!');
       setShowModal(true);
     } catch (error) {
-      console.error('Error updating profile');
+      console.error('Error updating profile', error);
       setModalMessage('Failed to update profile');
       setShowModal(true);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-row space-x-8 p-6">
@@ -322,7 +333,7 @@ export const Setting = () => {
           </button>
         </div>
         <Modal show={showModal} onClose={() => setShowModal(false)}>
-          <Modal.Header>
+          <Modal.Header >
             <div className="flex items-center">
               <HiOutlineCheckCircle className="mr-2 h-5 w-5 text-green-500" />
               <span>Success</span>

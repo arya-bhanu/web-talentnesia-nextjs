@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { decodeToken } from './tokenDecoder';
 
 export const getAuthToken = async (): Promise<string> => {
   const tokenRes = await axios<{ isLoggedIn: boolean; token: string }>(
@@ -14,3 +15,9 @@ export const refreshAuthToken = async (): Promise<string> => {
   if (!res.data.success) throw new Error('Token refresh failed');
   return res.data.apiToken;
 };
+
+export const getToken = () => {
+  const decodedToken = decodeToken();
+  return { token: decodedToken?.token, role: decodedToken?.role || null };
+};
+

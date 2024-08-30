@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, isAxiosError } from 'axios';
-import { getAuthToken, refreshAuthToken } from './auth';
+import { getAuthToken, getToken, refreshAuthToken } from './auth';
 
 export interface UseFetchProps {
   url: string;
@@ -17,7 +17,8 @@ export const fetchAxios = async <T = any>({
   formData,
   token,
 }: UseFetchProps): Promise<T> => {
-  token = token || (await getAuthToken());
+  // token = token || (await getAuthToken());
+  token = token || (getToken()?.token);
 
   const config: AxiosRequestConfig = {
     method,

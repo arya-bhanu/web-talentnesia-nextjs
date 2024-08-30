@@ -7,6 +7,16 @@ export interface APIResponseAcademicLevel {
   updatedAt?: Date;
 }
 
+export interface AcademicLevelResponse {
+  data: {
+    items: APIResponseAcademicLevel[];
+  };
+}
+
+export interface SingleAcademicLevelResponse {
+  data: APIResponseAcademicLevel;
+}
+
 export interface IAcademicLevelView {
   data: APIResponseAcademicLevel[];
   openPopoverIndex: number | null;
@@ -18,6 +28,7 @@ export interface IAcademicLevelView {
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   fetchData: () => Promise<void>;
+  role: number;
 }
 
 
