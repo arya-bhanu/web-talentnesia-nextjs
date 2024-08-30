@@ -52,7 +52,6 @@ const FormExamView: React.FC<
     }
   }
 
-  console.log(dataExam);
 
   return (
     <form onSubmit={handleSubmitExam} className={className}>

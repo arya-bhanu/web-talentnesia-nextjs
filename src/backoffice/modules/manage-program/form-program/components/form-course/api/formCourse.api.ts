@@ -118,6 +118,24 @@ export const deleteExam = async (examId: string) => {
   }
 };
 
+export const reorderExam = async ({
+  examId,
+  questions,
+}: {
+  examId: string;
+  questions: string[];
+}) => {
+  try {
+    const response = await backOfficeAPI.post(
+      '/program-exam/reorder-exams/' + examId,
+      { questions },
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // chapter
 export const createChapter = async ({
   programId,
