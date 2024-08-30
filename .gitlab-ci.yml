@@ -62,7 +62,7 @@ deploy_app:
     - sudo docker --context project-talentnesia pull $STAGING_REGISTRY_NAME
     - sudo docker-compose --context project-talentnesia up -d
     - |
-      DELETABLE_IMAGES=$(sudo docker --context project-ci images --filter "reference=$STAGING_REGISTRY_NAME_NOTAG" --filter "dangling=true" -q)
+      DELETABLE_IMAGES=$(sudo docker --context project-talentnesia images --filter "reference=$STAGING_REGISTRY_NAME_NOTAG" --filter "dangling=true" -q)
       if [ -n "$DELETABLE_IMAGES" ]; then
         sudo docker --context project-ci rmi $DELETABLE_IMAGES
       else
