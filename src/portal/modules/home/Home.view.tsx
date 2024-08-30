@@ -11,12 +11,10 @@ import NewsLetterSubscription from './components/news-letter-subscription';
 import { HomeViewProps } from './home.type';
 
 const HomeView: React.FC<HomeViewProps> = ({ data }) => {
-  console.log
+  console.log(data.courses)
   const [skeletonAnimation, setTime] = useState(true);
 
   useEffect(() => {
-    
-    
     const timer = setTimeout(() => {
       setTime(false);
     }, 2000);

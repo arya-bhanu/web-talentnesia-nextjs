@@ -1,8 +1,8 @@
 import React from 'react';
 import CourseHeroView from './Hero.view';
 
-const Hero = ({ className }: { className?: string }) => {
-  return <CourseHeroView className={className} />;
+const Hero = ({ className, isLoading }: { className?: string, isLoading?: boolean }) => {
+  return <CourseHeroView className={className} isLoading={isLoading}/>;
 };
 
 export default Hero;

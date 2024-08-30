@@ -32,9 +32,10 @@ export const uploadFile = async (file: File, path: string): Promise<UploadFileRe
 
 export const getImageUrl = async (imageUrl: string): Promise<string> => {
   try {
-    const correctedPath = imageUrl.replace('path=', '').replace('?', '/');
-    const fullUrl = `${process.env.API_SERVER_URL}/v1/file/${correctedPath}`;
-    
+    if (imageUrl.startsWith('http')) {
+      return imageUrl; // If it's already a full URL, return it as is
+    }
+    const fullUrl = `${process.env.API_SERVER_URL}/v1/file/${imageUrl}`;
     const response = await axios.get(fullUrl);
     return response.data.url || fullUrl;
   } catch (error) {
@@ -42,3 +43,4 @@ export const getImageUrl = async (imageUrl: string): Promise<string> => {
     throw error;
   }
 };
+

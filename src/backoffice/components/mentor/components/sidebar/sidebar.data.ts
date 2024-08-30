@@ -11,4 +11,11 @@ export const sidebarData: SidebarProps[] = [
     title: 'Program',
     path: '/mentor/program/add-program-iicp',
   },
+  {
+    icon: '/icons/sidebar/setting.svg',
+    title: 'Master Data',
+    links: [
+      { label: 'Academic Level', link: '/mentor/master-data/academic-level' },
+    ],
+  },
 ];

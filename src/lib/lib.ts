@@ -7,6 +7,7 @@ export interface SessionData {
   email: string;
   profilePicture: string;
   role: number;
+  token?: string;
   isLoggedIn: boolean;
 }
 
