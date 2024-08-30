@@ -46,12 +46,19 @@ export const Setting = () => {
       try {
         const data = await getUserProfile('fngdme2va5ndvivq');
         if (data.profilePicture) {
-          const imageUrl = await getImageUrl(data.profilePicture);
-          setFullImageUrl(imageUrl);
+          try {
+            const imageUrl = await getImageUrl(data.profilePicture);
+            setFullImageUrl(imageUrl);
+          } catch (imageError) {
+            console.error('Error fetching image');
+            setFullImageUrl('');
+          }
+        } else {
+          setFullImageUrl('');
         }
         setUserData(data);
       } catch (error) {
-        console.error('Error fetching user data:');
+        console.error('Error fetching user data');
       }
     };
   
@@ -88,7 +95,7 @@ export const Setting = () => {
       setModalMessage('Profile updated successfully!');
       setShowModal(true);
     } catch (error) {
-      console.error('Error updating profile:');
+      console.error('Error updating profile');
       setModalMessage('Failed to update profile');
       setShowModal(true);
     }
@@ -99,7 +106,7 @@ export const Setting = () => {
       <div className="w-1/3">
         <DropFile
           onChange={handleFileChange}
-          initialImage={fullImageUrl}
+          initialImage={fullImageUrl || ''}
         />
       </div>
       <div className="w-2/3 space-y-4">
@@ -219,9 +226,8 @@ export const Setting = () => {
             onChange={handleInputChange}
           >
             <option value="" hidden>Select gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other" hidden>Other</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
           </select>
         </div>
 

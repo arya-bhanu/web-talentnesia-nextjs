@@ -1,23 +1,21 @@
-import axios from 'axios';
-
-const BASE_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+import { backOfficeAPI } from '@/lib/axiosConfig';
 
 export const getUserProfile = async (id: string) => {
   try {
-    const response = await axios.get(`${BASE_URL}/user-profile-setting/${id}`);
+    const response = await backOfficeAPI.get(`/v1/user-profile-setting/${id}`);
     return response.data.data;
   } catch (error) {
-    console.error('Error fetching user profile:', error);
+    console.error('Error fetching user profile');
     throw error;
   }
 };
 
 export const updateUserProfile = async (id: string, userData: any) => {
   try {
-    const response = await axios.put(`${BASE_URL}/user-profile-setting/${id}`, userData);
+    const response = await backOfficeAPI.put(`/v1/user-profile-setting/${id}`, userData);
     return response.data;
   } catch (error) {
-    console.error('Error updating user profile:', error);
+    console.error('Error updating user profile');
     throw error;
   }
 };

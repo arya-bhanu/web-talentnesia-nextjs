@@ -1,5 +1,5 @@
+import { ExamQuestion } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { v4 as uuid } from 'uuid';
-import { ExamQuestion } from '../../manageModul.type';
 
 export const defaultExamData = {
   chapterId: '',

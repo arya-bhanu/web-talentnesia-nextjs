@@ -104,7 +104,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   <Image
                     src={
                       user?.profilePicture ||
-                      'https://api-talentnesia.skwn.dev/api/v1/file/users/2024-08/thumbs/weJJ7Yb2qP7M6N42.jpg'
+                      `${process.env.API_SERVER_URL}/v1/file/users/2024-08/thumbs/weJJ7Yb2qP7M6N42.jpg`
                     }
                     alt="User"
                     width={30}
