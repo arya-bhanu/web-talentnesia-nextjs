@@ -7,7 +7,6 @@ import Add from '@/../public/icons/add.svg';
 import AddWhite from '@/../public/icons/add-white.svg';
 import EditableListContent from '../editable-list-content';
 import Modal from '@/backoffice/components/modal';
-// import FormContent from '../form-content';
 import { IFormChapter, ISubmitType } from './formChapter.type';
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -16,8 +15,9 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDragContents } from '@/backoffice/modules/manage-modul/add-exam/store';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
+import { reorderContent } from '../../api/formCourse.api';
 
 const FormChapterView: React.FC<
   IFormChapter &
@@ -37,10 +37,10 @@ const FormChapterView: React.FC<
   const { setSortContents, sortContents, sortActionContents } =
     useDragContents();
 
-  // const { mutateAsync: reorderContentsAsync } = useMutation({
-  //   mutationKey: ['contents'],
-  //   mutationFn: contentsReorder,
-  // });
+  const { mutateAsync: reorderContentsAsync } = useMutation({
+    mutationKey: ['contents'],
+    mutationFn: reorderContent,
+  });
 
   const renderContents = useMemo(() => {
     if (contents.isLoading) {
@@ -80,10 +80,10 @@ const FormChapterView: React.FC<
       const executeMutation = async () => {
         if (sortContents && sortContents.length > 0) {
           try {
-            // await reorderContentsAsync({
-            //   chapterId,
-            //   contents: sortContents.map((el) => el.id),
-            // });
+            await reorderContentsAsync({
+              chapterId,
+              contents: sortContents.map((el) => el.id),
+            });
             queryClient.invalidateQueries({ queryKey: ['module'] });
           } catch (err) {
             console.error(err);
