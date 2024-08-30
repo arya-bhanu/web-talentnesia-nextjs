@@ -1,18 +1,22 @@
+'use client';
+
 import React, { useMemo, useState, useEffect } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { IUserView, User, TabFlexProps } from './user.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
-import { DataTable } from '@/backoffice/components/data-table';
+import { DataTable } from './components/data-table/DataTable';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import { TabFlex } from './components/tabs/tabs';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
-import { Mentor } from './mentor/AddMentor';
-import { MentorFormData } from './mentor/addMentor.type';
 import { userAPI } from './api/userApi';
+import { mentorAPI } from './mentor/api/mentorApi';
 import Link from 'next/link';
-
+import { useRouter } from 'next/navigation';
+import { ResponseModal } from './components/response-modal/responseModal';
+import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 
 const UserView: React.FC<IUserView> = ({
   Filter,
@@ -23,8 +27,23 @@ const UserView: React.FC<IUserView> = ({
 }) => {
   const [activeTab, setActiveTab] = useState('Mentor');
   const [data, setData] = useState<User[]>([]);
-  const [isAddMentorOpen, setIsAddMentorOpen] = useState(false);
-  const [editingMentor, setEditingMentor] = useState<User | null>(null);
+  const [profilePictures, setProfilePictures] = useState<Record<string, string>>({});
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const success = searchParams.get('success');
+    const action = searchParams.get('action');
+    if (success === 'true') {
+      setIsSuccess(true);
+      setModalMessage(action === 'add' ? 'Berhasil Menambahkan Mentor' : 'Berhasil Mengubah Mentor');
+      setShowResultModal(true);
+      router.replace('/backoffice/manage-user');
+    }
+  }, [searchParams, router]);
 
   useEffect(() => {
     fetchData();
@@ -34,7 +53,7 @@ const UserView: React.FC<IUserView> = ({
     let fetchedData: User[] = [];
     switch (activeTab) {
       case 'Mentor':
-        fetchedData = await userAPI.fetchMentors();
+        fetchedData = await mentorAPI.fetchMentors();
         break;
       case 'Student':
         fetchedData = await userAPI.fetchStudents();
@@ -44,15 +63,22 @@ const UserView: React.FC<IUserView> = ({
         break;
     }
     setData(fetchedData);
-  };
-
-
-  const handleEditMentor = async (id: string, mentorData: MentorFormData) => {
-    const updatedMentor = await userAPI.update(id, mentorData);
-    if (updatedMentor) {
-      fetchData();
-      setEditingMentor(null);
+    
+    // Load profile pictures
+    const pictures: Record<string, string> = {};
+    for (const user of fetchedData) {
+      if (user.photoProfile) {
+        try {
+          const blob = await userAPI.getFile(user.photoProfile);
+          if (blob) {
+            pictures[user.id] = URL.createObjectURL(blob);
+          }
+        } catch (error) {
+          console.error('Error loading profile picture:', error);
+        }
+      }
     }
+    setProfilePictures(pictures);
   };
 
   const handleDelete = async (id: string) => {
@@ -65,9 +91,30 @@ const UserView: React.FC<IUserView> = ({
   const columns = useMemo<ColumnDef<User>[]>(
     () => [
       {
+        id: 'no',
+        header: 'No',
+        cell: (info) => info.row.index + 1,
+      },
+      {
         accessorKey: 'name',
         header: ({ column }) => <SortingTable column={column} title="Name" />,
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+          const userId = info.row.original.id;
+          const profileImage = profilePictures[userId] || '/img/manage-user/profile-template.svg';
+
+          return (
+            <div className="flex items-center">
+              <Image
+                src={profileImage}
+                width={40}
+                height={40}
+                alt="Profile"
+                className="rounded-full mr-2 object-cover w-[40px] h-[40px]"
+              />
+              <span>{info.getValue() as string}</span>
+            </div>
+          );
+        },
       },
       {
         accessorKey: 'email',
@@ -91,7 +138,13 @@ const UserView: React.FC<IUserView> = ({
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
                   <button
-                    onClick={() => handleActionButtonRow(id, 'edit', rowData)}
+                    onClick={() => {
+                      if (activeTab === 'Mentor') {
+                        router.push(`/backoffice/manage-user/edit-mentor?id=${rowData.id}`);
+                      } else {
+                        handleActionButtonRow(id, 'edit', rowData);
+                      }
+                    }}
                     className="hover:text-blue-700 hover:underline"
                   >
                     Edit
@@ -113,11 +166,19 @@ const UserView: React.FC<IUserView> = ({
         },
       },
     ],
-    [handleActionButtonRow]
+    [handleActionButtonRow, profilePictures]
   );
 
   const renderTabContent = (tabName: string) => (
     <div>
+      <ResponseModal
+        isOpen={showResultModal}
+        onClose={() => setShowResultModal(false)}
+        onConfirm={() => setShowResultModal(false)}
+        title={isSuccess ? "Success" : "Error"}
+        message={modalMessage}
+        confirmText="OK!"
+      />
       <div className="flex justify-between items-center font-poppins mb-4">
         <SearchTable value={Filter} onChange={setFilter} />
         {tabName === 'Mentor' && (
@@ -158,7 +219,6 @@ const UserView: React.FC<IUserView> = ({
   const handleTabChange: TabFlexProps['onTabChange'] = (tabTitle) => {
     setActiveTab(tabTitle);
   };
-
 
   return (
     <div className="p-4">

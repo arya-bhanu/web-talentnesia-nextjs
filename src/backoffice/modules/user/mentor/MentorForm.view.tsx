@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useMentorForm } from './AddMentor';
-import './addMentor.style.css';
+import { useMentorForm } from './MentorForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
 import { cityAPI } from '../../master-data/region/city/api/cityApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
@@ -13,9 +12,10 @@ import { religionAPI } from '../../master-data/religion/api/religionApi';
 import { Component as Datepicker } from '../components/datepicker/Datepicker';
 import { Component as FileInput } from '../components/file-input/FileInput';
 import { ProfilePictureInput } from '../components/profile-picture-input/ProfilePictureInput';
-import { SelectYear } from '../components/select-year/selectYear';
-import { Region } from './addMentor.type';
+import { Component as SelectYear } from '../components/select-year/selectYear';
+import { Region } from '../mentor/MentorForm.type';
 import Link from 'next/link';
+import { ResponseModal } from '../components/response-modal/responseModal';
 
 type MentorViewProps = ReturnType<typeof useMentorForm>;
 
@@ -30,6 +30,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
     handleProfilePictureChange,
     handleEducationFileChange,
     handleSubmit,
+    showConfirmModal,
+    setShowConfirmModal,
+    showResultModal,
+    setShowResultModal,
+    isSuccess,
+    confirmSubmit,
 }) => {
   const [provinces, setProvinces] = useState<Region[]>([]);
   const [districts, setDistricts] = useState<Region[]>([]);
@@ -70,10 +76,14 @@ export const MentorView: React.FC<MentorViewProps> = ({
     <>
       <div className="container mx-auto p-1 max-w-full">
         <form className="space-y-8" onSubmit={handleSubmit}>
+          <input type="hidden" name="id" value={form.id || ''} />
           <div className="border p-6 rounded-lg shadow-sm bg-white">
             <div className="flex items-center space-x-4">
             <ProfilePictureInput
               onChange={handleProfilePictureChange}
+              initialValue={form.profilePicture}
+              idCheck={form.id}
+              id={form.id}  // Add this line
             />
             </div>
           </div>
@@ -91,6 +101,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="name"
+                  value={form.name}
                   onChange={handleInputChange}
                   className={styles.inputField}
                   placeholder="Input name"
@@ -105,6 +116,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="nik"
+                  value={form.nik}
                   onChange={handleInputChange}
                   className={styles.inputField}
                   placeholder="Input NIK"
@@ -116,6 +128,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="npwp"
+                  value={form.npwp}
                   onChange={handleInputChange}
                   className={styles.inputField}
                   placeholder="Input NPWP"
@@ -124,17 +137,21 @@ export const MentorView: React.FC<MentorViewProps> = ({
               <div>
                 <label className="block mb-1">Foto KTP</label>
                 <FileInput
-                  id="ktp-file"
-                  label="Foto KTP"
+                  id="photoKtp"
+                  label="Upload KTP"
                   onChange={handleFileChange('photoKtp')}
+                  initialValue={form.photoKtp}
+                  initialFilename={form.photoKtpOrigin}
                 />
               </div>
               <div>
                 <label className="block mb-1">Foto NPWP</label>
                 <FileInput
-                  id="npwp-file"
-                  label="Foto NPWP"
+                  id="photoNpwp"
+                  label="Upload NPWP"
                   onChange={handleFileChange('photoNpwp')}
+                  initialValue={form.photoNpwp}
+                  initialFilename={form.photoNpwpOrigin}
                 />
               </div>
               <div>
@@ -242,6 +259,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="number"
                   name="numberOfChildren"
+                  value={form.numberOfChildren}
                   placeholder="Input Number of Child"
                   onChange={handleInputChange}
                   className={styles.inputField}
@@ -252,9 +270,11 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   Employee Contract<div className="text-red-600">*</div>
                 </label>
                 <FileInput
-                  id="contract-file"
-                  label="Employee Contract"
+                  id="contract"
+                  label="Upload Contract"
                   onChange={handleFileChange('contract')}
+                  initialValue={form.contract}
+                  initialFilename={form.contractOrigin}
                 />
               </div>
             </div>
@@ -273,6 +293,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="phone"
+                  value={form.phone}
                   placeholder="Phone Number"
                   required
                   onChange={handleInputChange}
@@ -286,6 +307,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="linkedin"
+                  value={form.linkedin}
                   placeholder="Linkedin Link"
                   required
                   onChange={handleInputChange}
@@ -299,6 +321,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="email"
                   name="email"
+                  value={form.email}
                   placeholder="Email"
                   required
                   onChange={handleInputChange}
@@ -312,6 +335,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="emergencyContact"
+                  value={form.emergencyContact}
                   placeholder="Emergency Contact"
                   required
                   onChange={handleInputChange}
@@ -394,6 +418,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="zipCode"
+                  value={form.zipCode}
                   placeholder="Input Zip Code"
                   onChange={handleInputChange}
                   className={styles.inputField}
@@ -406,6 +431,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="addressKtp"
+                  value={form.addressKtp}
                   placeholder="Input Address (KTP)"
                   onChange={handleInputChange}
                   className={styles.inputField}
@@ -418,6 +444,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="text"
                   name="addressDomicile"
+                  value={form.addressDomicile}
                   placeholder="Input Address (Domicile)"
                   onChange={handleInputChange}
                   className={styles.inputField}
@@ -425,7 +452,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
               </div>
             </div>
           </div>
-
                     {/* Section D: Education */}
                     <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <div className="flex justify-between items-center mb-4">
@@ -449,7 +475,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
               </button>
             </div>
 
-            {form.educations.map((education, index) => (
+            {form.educations.map((educations, index) => (
               <div key={index} className="border-b pb-4 mb-4">
                 <div className="flex justify-between items-center mb-4 w-full">
                   <div>
@@ -479,8 +505,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       University Name<div className="text-red-600">*</div>
                     </label>
                     <input
-                      type="text"
-                      name="name"
+                      id={`educations[${index}].name`}
+                      name={`educations[${index}].name`}
+                      value={educations.name}
                       placeholder="University Name"
                       onChange={(e) => handleEducationChange(e, index)}
                       className={styles.inputField}
@@ -491,20 +518,19 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       Academic Title<div className="text-red-600">*</div>
                     </label>
                     <select
-                      name="titleId"
-                      value={education.titleId || ''}
-                      onChange={(e) => handleEducationChange(e, index)}
-                      className={styles.inputField}
+                    id={`educations[${index}].titleId`}
+                    name={`educations[${index}].titleId`}
+                    value={educations.titleId || ''}
+                    onChange={(e) => handleEducationChange(e, index)}
+                    className={styles.inputField}
                     >
-                      <option className="hidden" value="" disabled>
-                        Select Academic Title
+                    <option value="">Select Title</option>
+                    {academicTitles.map((title) => (
+                      <option key={title.id} value={title.id}>
+                        {title.name}
                       </option>
-                      {academicTitles.map((level, idx) => (
-                        <option key={idx} value={level.id}>
-                          {level.name}
-                        </option>
-                      ))}
-                    </select>
+                    ))}
+                  </select>
                   </div>
                   <div>
                     <label className="flex mb-1">
@@ -512,7 +538,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     </label>
                     <input
                       type="text"
-                      name="major"
+                      id={`educations[${index}].major`}
+                      name={`educations[${index}].major`}
+                      value={educations.major}
                       placeholder="Input Major"
                       onChange={(e) => handleEducationChange(e, index)}
                       className={styles.inputField}
@@ -524,7 +552,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     </label>
                     <input
                       type="text"
-                      name="gpa"
+                      id={`educations[${index}].gpa`}
+                      name={`educations[${index}].gpa`}
+                      value={educations.gpa}
                       placeholder="Input GPA"
                       onChange={(e) => handleEducationChange(e, index)}
                       className={styles.inputField}
@@ -535,18 +565,18 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     Year Graduated<div className="text-red-600">*</div>
                   </label>
                   <SelectYear
-                    id={`educations.${index}.yearGraduate`}
-                    value={education.yearGraduate ? parseInt(education.yearGraduate, 10) : null}
-                    onChange={(year) => {
-                      const event = {
-                        target: {
-                          name: 'yearGraduate',
-                          value: year.toString(),
-                        },
-                      } as React.ChangeEvent<{ name?: string; value?: string }>;
-                      handleEducationChange(event, index);
-                    }}
-                  />
+                  id={`educations.${index}.yearGraduate`}
+                  value={educations.yearGraduate ? parseInt(educations.yearGraduate, 10) : null}
+                  onChange={(year) => {
+                    const event = {
+                      target: {
+                        name: `educations[${index}].yearGraduate`,
+                        value: year.toString(),
+                      },
+                    } as React.ChangeEvent<{ name?: string; value: unknown }>;
+                    handleEducationChange(event, index);
+                  }}
+                />
                 </div>
                   <div>
                     <label className="flex mb-1">
@@ -554,7 +584,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     </label>
                     <input
                       type="text"
-                      name="certificateNumber"
+                      id={`educations[${index}].certificateNumber`}
+                      name={`educations[${index}].certificateNumber`}
+                      value={educations.certificateNumber}
                       placeholder="Input Certificate Number"
                       onChange={(e) => handleEducationChange(e, index)}
                       className={styles.inputField}
@@ -565,9 +597,11 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       Academic Certificate<div className="text-red-600">*</div>
                     </label>
                     <FileInput
-                      id={`certificate-file-${index}`}
-                      label={`Academic Certificate ${index + 1}`}
-                      onChange={handleEducationFileChange(index, 'certificate')}
+                      id={`educations[${index}].certificate`}
+                      label="Upload Certificate"
+                      onChange={(file) => handleEducationFileChange(index, 'certificate')(file)}
+                      initialValue={educations.certificate}
+                      initialFilename={educations.certificateOrigin}
                     />
                   </div>
                 </div>
@@ -593,6 +627,24 @@ export const MentorView: React.FC<MentorViewProps> = ({
           </div>
         </form>
       </div>
+
+      <ResponseModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={confirmSubmit}
+        title="Information"
+        message={`Are you sure want to ${form.id ? 'Edit' : 'Add'} it?`}
+        confirmText="OK!"
+        showCancel
+      />
+      <ResponseModal
+        isOpen={showResultModal}
+        onClose={() => setShowResultModal(false)}
+        onConfirm={() => setShowResultModal(false)}
+        title={isSuccess ? "Success" : "Error"}
+        message={isSuccess ? "Berhasil Menambahkan Mentor" : "Gagal Menambahkan Mentor"}
+        confirmText="OK!"
+      />
     </>
   );
 };

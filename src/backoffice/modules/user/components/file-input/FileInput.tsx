@@ -9,11 +9,20 @@ interface FileInputProps {
   label: string;
   onChange: (file: File | null) => void;
   onReset?: (resetFunction: () => void) => void;
+  initialValue?: string;
+  initialFilename?: string | null;
 }
 
+export function Component({ id, label, onChange, onReset, initialValue, initialFilename }: FileInputProps) {
+  const [fileName, setFileName] = useState(initialFilename || 'Select File');
 
-export function Component({ id, label, onChange, onReset }: FileInputProps) {
-  const [fileName, setFileName] = useState('Select File');
+  useEffect(() => {
+    if (initialFilename) {
+      setFileName(initialFilename);
+    } else if (initialValue) {
+      setFileName(initialValue.split('/').pop() || 'Select File');
+    }
+  }, [initialFilename, initialValue]);
 
   useEffect(() => {
     if (onReset) {

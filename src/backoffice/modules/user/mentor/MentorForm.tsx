@@ -1,21 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import { Education, MentorFormData } from './addMentor.type';
-import { MentorView } from './AddMentor.view';
+import { Education, MentorFormData } from '../mentor/MentorForm.type';
+import { MentorView } from './MentorForm.view';
 import { userAPI } from '../api/userApi';
+import { useSearchParams } from 'next/navigation';
+import { ResponseModal } from '../components/response-modal/responseModal';
+import { useRouter } from 'next/navigation';
 
-export const useMentorForm = () => {
+export const useMentorForm = (id: string | null = null) => {
   const [form, setForm] = useState<MentorFormData>({
+    id: id || '',
     role: 3,
     active: 1,
     profilePicture: '',
+    profilePictureOrigin: '',
     name: '',
     nik: '',
     npwp: '',
     photoKtp: '',
+    photoKtpOrigin: '',
     photoNpwp: '',
+    photoNpwpOrigin: '',
     placeOfBirth: '',
     dateOfBirth: '',
     religionId: null,
@@ -23,6 +30,7 @@ export const useMentorForm = () => {
     mariageStatus: '',
     numberOfChildren: '',
     contract: '',
+    contractOrigin: '',
     phone: '',
     email: '',
     linkedin: '',
@@ -33,18 +41,43 @@ export const useMentorForm = () => {
     zipCode: '',
     addressKtp: '',
     addressDomicile: '',
-    educations: [
-      {
-        name: '',
-        titleId: '',
-        major: '',
-        gpa: '',
-        yearGraduate: '',
-        certificateNumber: '',
-        certificate: ''
-      }
-    ],
+    educations: !id ? [{
+      name: '',
+      titleId: null,
+      major: '',
+      gpa: '',
+      yearGraduate: '',
+      certificateNumber: '',
+      certificate: '',
+      certificateOrigin: ''
+    }] : [],
   });
+
+  useEffect(() => {
+    if (id) {
+      fetchMentorData(id);
+    }
+  }, [id]);
+
+  const fetchMentorData = async (id: string) => {
+    try {
+      const response = await userAPI.show(id);
+      if (response.success && response.data) {
+        const mentorData = response.data;
+        setForm(prevForm => ({
+          ...prevForm,
+          ...mentorData,
+          photoKtp: mentorData.photoKtp || '',
+          photoNpwp: mentorData.photoNpwp || '',
+          contract: mentorData.contract || '',
+          profilePicture: mentorData.profilePicture || '',
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching mentor data:', error);
+    }
+  };
+
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -57,16 +90,15 @@ export const useMentorForm = () => {
   };
 
   const handleEducationChange = (
-    event: React.ChangeEvent<{ name?: string; value?: string }>,
+    event: React.ChangeEvent<{ name?: string; value: unknown }>,
     index: number
   ) => {
     const { name, value } = event.target;
-
     if (name) {
       setForm((prevForm) => ({
         ...prevForm,
         educations: prevForm.educations.map((edu, i) =>
-          i === index ? { ...edu, [name]: value } : edu
+          i === index ? { ...edu, [name.split('.')[1]]: value } : edu
         )
       }));
     }
@@ -75,23 +107,23 @@ export const useMentorForm = () => {
   const handleFileChange = (fieldName: string) => async (file: File | null) => {
     try {
       const response = file ? await userAPI.uploadFile(file, 'users') : null;
-      console.log(response)
       setForm(prevForm => ({
         ...prevForm,
         [fieldName]: response || '',
+        [`${fieldName}Origin`]: file ? file.name : '',
       }));
     } catch (error) {
       console.error(`Error uploading ${fieldName}:`, error);
     }
   };
 
-  const handleProfilePictureChange = async (file: File | null) => {
+  const handleProfilePictureChange = async (file: File | null, originalFilename: string | null) => {
     try {
       const response = file ? await userAPI.uploadFile(file, 'users') : null;
-      console.log(response);
       setForm(prevForm => ({
         ...prevForm,
         profilePicture: response || '',
+        profilePictureOrigin: originalFilename,
       }));
     } catch (error) {
       console.error('Failed to upload profile picture:', error);
@@ -101,17 +133,21 @@ export const useMentorForm = () => {
   const handleEducationFileChange = (index: number, fieldName: string) => async (file: File | null) => {
     try {
       const response = file ? await userAPI.uploadFile(file, 'users') : null;
-      console.log(response);
       setForm(prevForm => ({
         ...prevForm,
         educations: prevForm.educations.map((edu, i) =>
-          i === index ? { ...edu, [fieldName]: response || '' } : edu
+          i === index ? {
+            ...edu,
+            [fieldName]: response || '',
+            [`${fieldName}Origin`]: file ? file.name : ''
+          } : edu
         )
       }));
     } catch (error) {
       console.error(`Failed to upload education file (${fieldName}):`, error);
     }
   };
+  
 
   const addEducation = () => {
     setForm((prevForm) => ({
@@ -125,7 +161,8 @@ export const useMentorForm = () => {
           gpa: '',
           yearGraduate: '',
           certificateNumber: '',
-          certificate: ''
+          certificate: '',
+          certificateOrigin: ''
         }
       ],
     }));
@@ -138,29 +175,48 @@ export const useMentorForm = () => {
     }));
   };
 
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const router = useRouter();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setShowConfirmModal(true);
+  };
+
+  const confirmSubmit = async () => {
+    setShowConfirmModal(false);
     try {
-      const response = await userAPI.add(form);
+      let response;
+      if (form.id) {
+        response = await userAPI.update(form.id, form);
+      } else {
+        response = await userAPI.add(form);
+      }
       if (response) {
-        console.log('Mentor added successfully');
-        resetForm();
+        router.push('/backoffice/manage-user?success=true&action=' + (form.id ? 'edit' : 'add'));
       }
     } catch (error) {
-      console.error('Error adding mentor:', error);
+      console.error(form.id ? 'Error updating mentor:' : 'Error adding mentor:', error);
+      router.push('/backoffice/manage-user?success=false');
     }
   };
 
   const resetForm = () => {
     setForm({
+      id: id || '',
       role: 3,
       active: 1,
       profilePicture: '',
+      profilePictureOrigin: '',
       name: '',
       nik: '',
       npwp: '',
       photoKtp: '',
+      photoKtpOrigin: '',
       photoNpwp: '',
+      photoNpwpOrigin: '',
       placeOfBirth: '',
       dateOfBirth: '',
       religionId: null,
@@ -168,6 +224,7 @@ export const useMentorForm = () => {
       mariageStatus: '',
       numberOfChildren: '',
       contract: '',
+      contractOrigin: '',
       phone: '',
       email: '',
       linkedin: '',
@@ -193,11 +250,19 @@ export const useMentorForm = () => {
     handleProfilePictureChange,
     handleEducationFileChange,
     handleSubmit,
+    showConfirmModal,
+    setShowConfirmModal,
+    showResultModal,
+    setShowResultModal,
+    isSuccess,
+    confirmSubmit,
   };
 };
 
 export const Mentor: React.FC = () => {
-  const mentorFormProps = useMentorForm();
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+  const mentorFormProps = useMentorForm(id);
 
   return <MentorView {...mentorFormProps} />;
 };

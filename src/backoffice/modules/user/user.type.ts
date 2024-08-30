@@ -2,10 +2,12 @@ import React from 'react';
 
 export interface User {
   id: string;
+  photoProfile: string;
   name: string;
   email: string;
   phone: string;
 }
+
 
 export interface IUserView {
   Filter: string;

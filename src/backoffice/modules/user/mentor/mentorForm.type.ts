@@ -6,17 +6,22 @@ export interface Education {
   yearGraduate: string;
   certificateNumber: string;
   certificate: string;
+  certificateOrigin: string | null;
 }
 
 export interface MentorFormData {
+  id: string | null;
   role: number;
   active: number;
   profilePicture: string;
+  profilePictureOrigin: string | null;
   name: string;
   nik: string;
   npwp: string;
   photoKtp: string;
+  photoKtpOrigin: string | null;
   photoNpwp: string;
+  photoNpwpOrigin: string | null;
   placeOfBirth: string;
   dateOfBirth: string;
   religionId: string | null;
@@ -24,6 +29,7 @@ export interface MentorFormData {
   mariageStatus: string;
   numberOfChildren: string;
   contract: string;
+  contractOrigin: string | null;
   phone: string;
   email: string;
   linkedin: string;

@@ -1,58 +1,52 @@
-import React from 'react';
-import { Select } from 'flowbite-react';
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Image from 'next/image';
 
+
 interface SelectYearProps {
-  id: string;
-  onChange: (year: number) => void;
-  value: number | null;
-  placeholder?: string;
+  id: string;
+  onChange: (year: number) => void;
+  value: number | null;
+  placeholder?: string;
 }
 
-export const SelectYear: React.FC<SelectYearProps> = ({
-  id,
-  onChange,
-  value,
-  placeholder = 'Select year',
-}) => {
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const year = parseInt(event.target.value, 10);
-    onChange(year);
-  };
 
-  const CalendarIcon = () => (
-    <Image
-      src="/img/manage-user/calendar.svg"
-      width={25}
-      height={24}
-      alt="Calendar"
-    />
-  );
+export const Component: React.FC<SelectYearProps> = ({ id, onChange, value, placeholder = 'Select year' }) => {
+  const [selectedYear, setSelectedYear] = useState<Date | null>(value ? new Date(value, 0) : null);
 
-  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
 
-  return (
-    <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins">
-      <div className="flex items-center bg-gray-50 none text-sm rounded-lg focus:ring-blue-500 pl-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins">
-        <CalendarIcon />
-        <div className='border-white'>
-        <Select
-          id={id}
-          value={value?.toString() || ''}
-          onChange={handleChange}
-          className="ml-2 bg-transparent border-white focus:ring-0"
-        >
-          <option value="" disabled>
-            {placeholder}
-          </option>
-          {years.map((year) => (
-            <option key={year} value={year.toString()}>
-              {year}
-            </option>
-          ))}
-        </Select>
-        </div>
-      </div>
-    </div>
-  );
+  const handleYearChange = (date: Date | null) => {
+    setSelectedYear(date);
+    if (date) {
+      onChange(date.getFullYear());
+    }
+  };
+
+
+  const CalendarIcon = () => (
+  <Image
+    src="/img/manage-user/calendar.svg"
+    width={25}
+    height={24}
+    alt="Calendar"
+  />
+);
+
+
+  return (
+    <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 pl-4 flex">
+    <CalendarIcon />
+    <DatePicker
+      id={id}
+      selected={selectedYear}
+      onChange={handleYearChange}
+      showYearPicker
+      dateFormat="yyyy"
+      yearItemNumber={9}
+      placeholderText={'Select Year'}
+      className="border border-none ml-0 pl-0 focus:ring-transparent  focus:border-white font-poppins text-sm text-gray-900"
+    />
+    </div>
+  );
 };

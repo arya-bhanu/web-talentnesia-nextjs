@@ -1,19 +1,10 @@
 import axios from 'axios';
 import { User } from '../user.type';
-import { MentorFormData } from '../mentor/addMentor.type';
+import { MentorFormData } from '../mentor/MentorForm.type';
 
 const API_URL = 'http://127.0.0.1:8000/api/v1';
 
 export const userAPI = {
-  fetchMentors: async () => {
-    try {
-      const response = await axios.get(`${API_URL}/manage-user/3/table`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch mentors');
-      return [];
-    }
-  },
 
   fetchStudents: async () => {
     try {
@@ -46,7 +37,7 @@ export const userAPI = {
           'Content-Type': 'multipart/form-data',
         },
       });
-      
+
       if (response.data.success) {
         return response.data.path.origins;
       } else {
@@ -72,6 +63,7 @@ export const userAPI = {
       return null;
     }
   },
+
 
   add: async (data: MentorFormData) => {
     try {
@@ -103,6 +95,29 @@ export const userAPI = {
     }
 
   },
+
+  getFile: async (filePath: string): Promise<Blob | null> => {
+    try {
+      const response = await axios.get(`${API_URL}/file/${filePath}`, {
+        responseType: 'blob'
+      });
+      return new Blob([response.data], { type: response.headers['content-type'] });
+    } catch (error) {
+      console.error('Error fetching file:', error);
+      return null;
+    }
+  },
+
+  show: async (id: string) => {
+    try {
+      const response = await axios.get(`${API_URL}/manage-user/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching mentor:', error);
+      return null;
+    }
+  },
+
   update: async (id: string, data: MentorFormData) => {
     try {
       const response = await axios.put(`${API_URL}/manage-user/${id}`, data);
