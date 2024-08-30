@@ -16,6 +16,8 @@ import FormSchedule from '../../form-program/components/form-schedule';
 import FormContent from '../../form-program/components/form-course/components/form-content';
 import AlertModal from '@/backoffice/components/alert-modal';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const ListDraggableView: React.FC<
   IListDraggable &
@@ -54,6 +56,13 @@ const ListDraggableView: React.FC<
   const router = useRouter();
   const params = useSearchParams();
   const programId = params.get('programId');
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
   const generateIcon = useMemo(() => {
     switch (type) {
       case '1':
@@ -67,7 +76,11 @@ const ListDraggableView: React.FC<
     }
   }, [type]);
   return (
-    <div className={clsx('flex items-center justify-between', className)}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={clsx('flex items-center justify-between', className)}
+    >
       <Modal
         title="Edit Schedule"
         state={{
@@ -96,7 +109,7 @@ const ListDraggableView: React.FC<
         setOpenModal={setModalDelContent}
       />
       <div className="flex items-center gap-2">
-        <button>
+        <button type="button" {...listeners} {...attributes}>
           <DragIndicator />
         </button>
         {generateIcon}

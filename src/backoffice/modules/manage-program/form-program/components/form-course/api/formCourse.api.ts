@@ -90,6 +90,24 @@ export const editContent = async ({
   }
 };
 
+export const reorderContent = async ({
+  chapterId,
+  contents,
+}: {
+  chapterId: string;
+  contents: string[];
+}) => {
+  try {
+    const response = await backOfficeAPI.post(
+      '/program-content/reorder-contents/' + chapterId,
+      { contents },
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // exam
 export const deleteExam = async (examId: string) => {
   try {
