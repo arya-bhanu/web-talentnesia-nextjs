@@ -5,6 +5,7 @@ import { SchoolAPI } from '../api/schoolApi';
 import { getImageUrl } from '../api/minioApi';
 import { SchoolData } from './detailSchool.type';
 import useSchoolCustomizations from './detailSchool.data';
+import { useSearchParams } from 'next/navigation';
 
 const columns = [
   { key: 'no', val: 'No' },
@@ -37,11 +38,7 @@ const mappedNumberRows = rows.map((el, index) => {
   return { ...el, no: index + 1 };
 });
 
-interface DetailSchoolProps {
-  schoolId: string;
-}
-
-const DetailSchool: React.FC<DetailSchoolProps> = ({ schoolId }) => {
+const DetailSchool: React.FC = () => {
   const [status, setStatus] = useState('On Going');
   const [selectedStudents, setSelectedStudents] = useState(['']);
   const [activeAccordion, setActiveAccordion] = useState(-1);
@@ -49,21 +46,25 @@ const DetailSchool: React.FC<DetailSchoolProps> = ({ schoolId }) => {
   const [openModalModul, setOpenModalModul] = useState(false);
   const [schoolData, setSchoolData] = useState<SchoolData | null>(null);
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
+  const params = useSearchParams();
+  const schoolId = params.get('schoolId')!;
 
   useSchoolCustomizations(schoolId);
 
   useEffect(() => {
     const fetchSchoolData = async () => {
-      try {
-        const data = await SchoolAPI.getById(schoolId);
-        setSchoolData(data);
+      if (schoolId) {
+        try {
+          const data = await SchoolAPI.getById(schoolId);
+          setSchoolData(data);
 
-        if (data.imageUrl) {
-          const imageUrl = await getImageUrl(data.imageUrl);
-          setFullImageUrl(imageUrl);
+          if (data.imageUrl) {
+            const imageUrl = await getImageUrl(data.imageUrl);
+            setFullImageUrl(imageUrl);
+          }
+        } catch (error) {
+          console.error('Failed to fetch school data:', error);
         }
-      } catch (error) {
-        console.error('Failed to fetch school data:', error);
       }
     };
 

@@ -8,7 +8,6 @@ interface Props {
 
 const useSchoolCustomizations = (id: string) => {
   useEffect(() => {
-    console.log(id)
     const loadSchoolData = async () => {
       try {
         const schoolData = await SchoolAPI.getById(id);

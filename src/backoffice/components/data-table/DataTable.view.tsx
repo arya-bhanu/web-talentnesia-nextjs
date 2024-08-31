@@ -28,7 +28,7 @@ export function DataTableView<T>({
   const [Sorting, setSorting] = React.useState<SortingState>(sorting);
 
   const table = useReactTable({
-    data,
+    data: data || [],
     columns,
     state: {
       columnOrder,
@@ -83,7 +83,7 @@ export function DataTableView<T>({
             ))}
           </thead>
           <tbody>
-            {data.length > 0 ? (
+            {data &&data.length > 0 ? (
               table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="bg-[#FFFFFF] border-b">
                   {row.getVisibleCells().map((cell, cellIndex) => (
@@ -136,7 +136,7 @@ export function DataTableView<T>({
               </option>
             ))}
           </select>
-          <p className="w-full min-w-max">data out of {data.length}</p>
+          <p className="w-full min-w-max">data out of {data && data.length}</p>
         </div>
         <div className="flex items-center gap-2">
           <p className="text-[#667085]">Data per page</p>
