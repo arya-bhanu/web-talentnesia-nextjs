@@ -1,4 +1,7 @@
 // courseSidebar.type.ts
+import { Chapter } from '../course-detail/courseDetail.type';
+import { IListDraggable } from '../list-draggable/listDraggable.type';
+
 export interface TabItem {
   id: string;
   label: string;
@@ -18,8 +21,6 @@ export interface SectionItem {
 export interface CourseSidebarProps {
   isSidebarVisible: boolean;
   setIsSidebarVisible: (visible: boolean) => void;
-  handleSectionToggle: (id: string) => void;
-  sections: SectionItem[];
-  selectedTab: string | null;
-  handleTabClick: (id: string) => void;
+  content: IListDraggable | null;
+  accordionData: Chapter[];
 }

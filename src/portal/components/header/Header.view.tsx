@@ -25,11 +25,11 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
   const getDashboardLink = () => {
     switch (userRole) {
       case 1:
-        return '/backoffice/example';
+        return '/backoffice/dashboard';
       case 2:
-        return '/operator/example';
+        return '/operator/dashboard';
       case 3:
-        return '/mentor/example';
+        return '/mentor/dashboard';
       default:
         return '/';
     }

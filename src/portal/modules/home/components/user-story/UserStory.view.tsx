@@ -7,6 +7,7 @@ import { UserStorySectionViewProps } from './userStory.type';
 const UserStorySectionView: React.FC<UserStorySectionViewProps> = ({
   className,
   testimonials,
+  isLoading
 }) => {
   const [activeNumber, setActiveNumber] = useState(0);
   return (
@@ -15,6 +16,7 @@ const UserStorySectionView: React.FC<UserStorySectionViewProps> = ({
         testimonials={testimonials}
         activeNumber={activeNumber}
         setActiveNumber={setActiveNumber}
+        isLoading={isLoading}
       />
     </section>
   );

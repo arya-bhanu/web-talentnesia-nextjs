@@ -10,11 +10,3 @@
   transform: scale(0.95);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
-
-.cancel-button:hover {
-  background-color: #fee2e2;
-}
-
-.submit-button:hover {
-  background-color: #fbbf24;
-}

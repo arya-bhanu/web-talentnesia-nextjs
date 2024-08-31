@@ -2,7 +2,7 @@ export interface ModalFormProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (id: string | undefined, data: any) => Promise<void>;
-  initialData?: { [key: string]: string } | null;
+  initialData?: { name: string; code: string; active: number } | null;
   id?: string;
   title: string;
 }

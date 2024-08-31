@@ -9,11 +9,11 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/program.svg',
     title: 'Program',
-    path: '/operator/program/add-program-iicp',
+    path: '/operator/program',
   },
   {
     icon: '/icons/sidebar/user.svg',
-    title: 'User',
-    path: '/operator/user',
+    title: 'Student',
+    path: '/operator/student',
   },
 ];

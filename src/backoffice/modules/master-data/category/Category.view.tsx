@@ -10,13 +10,14 @@ import ModalForm from './components/modal-form-category/ModalForm';
 import { useCategoryActions } from './hooks/useCategoryAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import { BadgeStatus } from '@/backoffice/components/badge-status';
 
 const columnHelper = createColumnHelper<any>();
 
 const CategoryView: React.FC<ICategoryView> = ({
   data,
   Filter,
-  setFilter,  
+  setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
@@ -53,8 +54,9 @@ const CategoryView: React.FC<ICategoryView> = ({
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditCategory, handleAddCategory, fetchData],
+    [handleEditCategory, handleAddCategory, fetchData]
   );
+
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -62,17 +64,19 @@ const CategoryView: React.FC<ICategoryView> = ({
         header: ({ column }) => <SortingTable column={column} title="Code" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('category', {
+      columnHelper.accessor('name', {
         header: ({ column }) => (
           <SortingTable column={column} title="Category" />
         ),
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('status', {
+      columnHelper.accessor('active', {
         header: ({ column }) => (
           <SortingTable column={column} title="Status" />
         ),
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <BadgeStatus status={info.getValue() as number} />
+        ),
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -110,6 +114,7 @@ const CategoryView: React.FC<ICategoryView> = ({
     ],
     [handleEdit, handleDelete]
   );
+  
 
   return (
     <div>
@@ -129,12 +134,13 @@ const CategoryView: React.FC<ICategoryView> = ({
         sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
       />
+
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
           setIsPopupOpen(false);
-          setSelectedId(null); 
-          setSelectedRowData(null); 
+          setSelectedId(null);
+          setSelectedRowData(null);
         }}
         onSave={handleAddOrEditCategory}
         initialData={selectedRowData}

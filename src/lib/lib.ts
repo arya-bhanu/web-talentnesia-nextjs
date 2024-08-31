@@ -2,11 +2,13 @@ import jwt from 'jsonwebtoken';
 import Cookies from 'js-cookie';
 
 export interface SessionData {
-  userId?: string;
-  name?: string;
-  email?: string;
-  role?: number;
-  isLoggedIn?: boolean;
+  userId: string;
+  name: string;
+  email: string;
+  profilePicture: string;
+  role: number;
+  token?: string;
+  isLoggedIn: boolean;
 }
 
 const JWT_SECRET = 'your_secret_key_here';

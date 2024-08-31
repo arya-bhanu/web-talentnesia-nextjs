@@ -6,19 +6,26 @@ import BestCourse from './components/best-courses';
 import AllClass from './components/all-class';
 import { courseDataArray } from '@/portal/components/course-card/courseCard.data';
 import { filterCategories } from '@/portal/components/filter/filter.data';
-import { getHomeData } from '../home/hooks/getHomeData';
+import { CoursesViewProps } from './course.type';
 
 
-const CourseView = async () => {
-  const data = await getHomeData();
+const CourseView: React.FC<CoursesViewProps> = ({ data }) => {
 
+  const [skeletonAnimation, setTime] = React.useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setTime(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <>
-      <Hero />
+      <Hero isLoading={skeletonAnimation} />
       <main className="container">
-       <PopularCourses courses={data.courses} className='mb-16'/>
-       <BestCourse courses={data.courses}/>
-       <AllClass courses={courseDataArray} filterOptions={filterCategories} />
+       <PopularCourses courses={data?.courses} className='mb-16' isLoading={skeletonAnimation}/>
+       <BestCourse courses={data?.courses} isLoading={skeletonAnimation}/>
+       <AllClass courses={courseDataArray} filterOptions={filterCategories} isLoading={skeletonAnimation}/>
       </main>
     </>
   );

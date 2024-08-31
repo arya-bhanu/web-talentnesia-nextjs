@@ -1,8 +1,12 @@
 import React from 'react';
-import Example from '@/backoffice/modules/example';
+import DashboardMentorView from '@/backoffice/modules/dashboard/dashboard-mentor/DashboardMentor.view';
+import DashboardMentor from '@/backoffice/modules/dashboard/dashboard-mentor/DashboardMentor';
 
-const DashboardPage = () => {
-  return <Example />;
+const DashboardMentorIndex = () => {
+  return <DashboardMentor />;
 };
 
-export default DashboardPage;
+export default DashboardMentorIndex;
+
+
+

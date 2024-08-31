@@ -4,11 +4,17 @@ import { categoryAPI } from '../api/categoryApi';
 export const useCategoryActions = () => {
   const handleAddCategory = useCallback(async (name: string) => {
     try {
-      await categoryAPI.add({ name });
+      await categoryAPI.add({
+        name,
+        code: '',
+        status: 1,
+      });
     } catch (error) {
       console.error('Failed to add category');
     }
   }, []);
+  
+
 
   const handleEditCategory = useCallback(async (id: string, data: any) => {
     try {

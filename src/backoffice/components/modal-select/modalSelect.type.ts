@@ -1,12 +1,16 @@
 import { Dispatch, SetStateAction } from 'react';
 
 export interface IModalSelect extends IModalSelectState, IModalSelectOpenState {
-  title: string;
-  columns: {
-    key: string;
-    val: string;
-  }[];
-  rows: {}[];
+  columns: Array<{ key: string; val: string }>;
+  rows: Array<{
+    no: number;
+    name: () => JSX.Element | string;
+    periode: string;
+    id: number | string;
+  }>;
+  title?: string;
+  selected: string[];
+  setSelected: Dispatch<SetStateAction<string[]>>;
 }
 
 export interface IModalSelectState {

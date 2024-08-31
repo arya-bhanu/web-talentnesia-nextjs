@@ -1,4 +1,10 @@
-import React, { Dispatch, FormEvent, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 
 import DragIndicator from '@/../public/icons/drag_indicator.svg';
 import ArrowUp from '@/../public/icons/arrow-up.svg';
@@ -21,7 +27,20 @@ import PopoverAction from '@/backoffice/components/popover-action/PopoverAction'
 import Modal from '@/backoffice/components/modal';
 import FormMentoring from '../../form-program/components/form-mentoring';
 import FormCertificate from '../../form-program/components/form-certificate';
-import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
+
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import AlertModal from '@/backoffice/components/alert-modal';
+import FormContent from '../../form-program/components/form-course/components/form-content';
+import { useFormMentoringStore } from '../../form-program/components/form-mentoring/formMentoring.store';
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
+
+import { CSS } from '@dnd-kit/utilities';
+import { useDragContents } from '../../form-program/components/add-exam/store';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { reorderContent } from '../../form-program/components/form-course/api/formCourse.api';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -32,7 +51,11 @@ const AccordionPanelDraggableView: React.FC<
       handleOpenModalContent: (action: 'open' | 'close') => void;
       handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
       handleSubmitModalCertificate: (e: FormEvent<HTMLFormElement>) => void;
-      handleSubmitModalContent: (e: FormEvent<HTMLFormElement>) => void;
+      handleSubmitModalContent: (
+        e: FormEvent<HTMLFormElement>,
+        chapterId: string,
+      ) => void;
+      handleDeleteChapter: (chapterId: string) => void;
       openModalContent: boolean;
       setOpenModalContent: Dispatch<SetStateAction<boolean>>;
       openModalCertificate: boolean;
@@ -62,11 +85,83 @@ const AccordionPanelDraggableView: React.FC<
   handleOpenModalContent,
   openModalContent,
   setOpenModalContent,
+  handleDeleteChapter,
+  id,
 }) => {
+  const [openModalConfirm, setOpenModalConfirm] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const params = useSearchParams();
+  const programId = params.get('programId');
+  const schoolId = params.get('schoolId');
+  const { clear } = useFormMentoringStore();
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+  const { setSortContents, sortActionContents, sortContents } =
+    useDragContents();
+
+  const { mutateAsync: reorderContentAsync } = useMutation({
+    mutationFn: reorderContent,
+    mutationKey: ['contents', 'reorder'],
+  });
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (deleteConfirm) {
+      handleDeleteChapter(id);
+    }
+  }, [deleteConfirm]);
+
+  useEffect(() => {
+    if (contents && index === activeAccordion) {
+      const sortData = contents.sort((a, b) => a.order - b.order);
+      if (sortData && sortData.length > 0) {
+        setSortContents(sortData);
+      }
+    }
+  }, [JSON.stringify(contents), index === activeAccordion]);
+
+  useEffect(() => {
+    if (id && sortContents) {
+      const executeMutation = async () => {
+        if (sortContents && sortContents.length > 0) {
+          try {
+            await reorderContentAsync({
+              chapterId: id,
+              contents: sortContents.map((el) => el.id),
+            });
+            queryClient.invalidateQueries({ queryKey: ['module'] });
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      };
+      executeMutation();
+    }
+  }, [JSON.stringify(sortContents)]);
+
+  function handleDragEnd(event: DragEndEvent): void {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      sortActionContents(active, over);
+    }
+  }
   return (
     <div
+      ref={setNodeRef}
+      style={style}
       className={clsx('p-4', index === activeAccordion ? 'bg-[#219EBC0F]' : '')}
     >
+      <AlertModal
+        openModal={openModalConfirm}
+        setIsConfirmed={setDeleteConfirm}
+        setOpenModal={setOpenModalConfirm}
+      />
       <Modal
         title="Mentoring"
         buttonConfirmTitle="Submit"
@@ -76,7 +171,7 @@ const AccordionPanelDraggableView: React.FC<
           setOpenModal: setOpenModalMentoring,
         }}
       >
-        <FormMentoring />
+        <FormMentoring chapterId={id} isModalOpen={openModalMentoring} />
       </Modal>
       <Modal
         title="Certificate"
@@ -92,7 +187,7 @@ const AccordionPanelDraggableView: React.FC<
       <Modal
         title="Add content"
         buttonConfirmTitle="Submit"
-        handleSubmit={handleSubmitModalContent}
+        handleSubmit={(e) => handleSubmitModalContent(e, id)}
         state={{
           openModal: openModalContent,
           setOpenModal: setOpenModalContent,
@@ -101,7 +196,7 @@ const AccordionPanelDraggableView: React.FC<
         <FormContent />
       </Modal>
       <div className="flex items-center gap-4">
-        <button>
+        <button type="button" {...listeners} {...attributes} className="button">
           <DragIndicator />
         </button>
         <div
@@ -134,7 +229,11 @@ const AccordionPanelDraggableView: React.FC<
               <ul className="p-3 flex flex-col gap-3">
                 <li>
                   <button
-                    onClick={() => handleOpenModalMentoring('open')}
+                    type="button"
+                    onClick={() => {
+                      clear();
+                      handleOpenModalMentoring('open');
+                    }}
                     className="text-sm font-lato flex items-center gap-2 font-normal"
                   >
                     <FluentShiftTeam />
@@ -143,6 +242,7 @@ const AccordionPanelDraggableView: React.FC<
                 </li>
                 <li>
                   <button
+                    type="button"
                     onClick={() => handleOpenModalContent('open')}
                     className="text-sm font-lato font-normal flex items-center gap-2"
                   >
@@ -151,13 +251,18 @@ const AccordionPanelDraggableView: React.FC<
                   </button>
                 </li>
                 <li>
-                  <button className="text-sm flex items-center gap-2 font-lato font-normal">
+                  <Link
+                    href={`/backoffice/manage-program/update-program-IICP/add-exam/?programId=${programId}&chapterId=${id}`}
+                    type="button"
+                    className="text-sm flex items-center gap-2 font-lato font-normal"
+                  >
                     <AddXs />
                     Add Exam
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <button
+                    type="button"
                     onClick={() => handleOpenModalCertificate('open')}
                     className="text-sm font-lato font-normal flex items-center gap-2"
                   >
@@ -166,13 +271,20 @@ const AccordionPanelDraggableView: React.FC<
                   </button>
                 </li>
                 <li>
-                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                  <Link
+                    href={`/backoffice/manage-program/update-program-IICP/edit-chapter/?programId=${programId}&chapterId=${id}&schoolId=${schoolId}`}
+                    className="text-sm font-lato font-normal flex items-center gap-2"
+                  >
                     <Edit />
                     Edit
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button className="text-sm font-lato font-normal flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setOpenModalConfirm(true)}
+                    className="text-sm font-lato font-normal flex items-center gap-2"
+                  >
                     <TrashXs />
                     Delete
                   </button>
@@ -195,16 +307,25 @@ const AccordionPanelDraggableView: React.FC<
           </span>
         </div>
       </div>
-      <div
-        className={clsx(
-          'flex flex-col gap-6 mt-7 pl-8',
-          index === activeAccordion ? 'block' : 'hidden',
-        )}
-      >
-        {contents.map((el, index) => (
-          <ListDraggable key={index} {...el} />
-        ))}
-      </div>
+      {sortContents && (
+        <div
+          className={clsx(
+            'flex flex-col gap-6 mt-7 pl-8',
+            index === activeAccordion ? 'block' : 'hidden',
+          )}
+        >
+          <DndContext
+            onDragEnd={handleDragEnd}
+            modifiers={[restrictToVerticalAxis]}
+          >
+            <SortableContext items={sortContents}>
+              {sortContents.map((el) => (
+                <ListDraggable key={el.id} {...el} />
+              ))}
+            </SortableContext>
+          </DndContext>
+        </div>
+      )}
     </div>
   );
 };

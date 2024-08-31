@@ -8,7 +8,6 @@ const PdfReader: React.FC<{ url: string }> = ({ url }) => {
       <iframe
         src={googleDocsUrl}
         className="w-full h-full"
-        frameBorder="0"
         allowFullScreen
       ></iframe>
     </div>

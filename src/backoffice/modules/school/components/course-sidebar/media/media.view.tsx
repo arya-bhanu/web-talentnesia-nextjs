@@ -14,12 +14,11 @@ const Media: React.FC<{ url: string }> = ({ url }) => {
   }
 
   return (
-    <div className="w-full h-screen bg-gray-100 pt-8">
+    <div className="w-full bg-gray-100">
       <div className="w-full max-w-4xl mx-auto aspect-video">
         <iframe
           src={`https://www.youtube.com/embed/${videoId}`}
           className="w-full h-full"
-          frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         ></iframe>

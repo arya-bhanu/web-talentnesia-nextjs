@@ -4,4 +4,5 @@ export interface ProgramProps {
   description: string;
   check: string;
   course: string[];
+  isLoading?: boolean
 }

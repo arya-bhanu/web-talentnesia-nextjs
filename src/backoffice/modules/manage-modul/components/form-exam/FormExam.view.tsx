@@ -6,11 +6,14 @@ import TimeInput from '@/backoffice/components/time-input';
 import Add from '@/../public/icons/add.svg';
 import QuestionListDraggable from '@/backoffice/components/question-list-draggable';
 import { defaultQuestionRadio } from './formExam.data';
-import { useExamStore, useQuestionExamStore } from '@/lib/store';
+import { useExamStore, useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { uuid } from 'uuidv4';
 import Link from 'next/link';
-import { convertStrToDate } from '@/helpers/formatter.helper';
+import { convertStrToTime } from '@/helpers/formatter.helper';
 import { useSearchParams } from 'next/navigation';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { SortableContext } from '@dnd-kit/sortable';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 
 const FormExamView: React.FC<
   IFormExam & {
@@ -19,10 +22,14 @@ const FormExamView: React.FC<
 > = ({ className, handleSubmitExam }) => {
   const params = useSearchParams();
   const examId = params.get('examId');
-  const { question, setNewQuestion: setQuestion } = useQuestionExamStore();
+  const {
+    question,
+    setNewQuestion: setQuestion,
+    sortActionExam,
+  } = useQuestionExamStore();
   const { dataExam, setTime } = useExamStore();
   const [timeState, setTimeState] = useState<Date>(
-    convertStrToDate(dataExam.duration),
+    convertStrToTime(dataExam?.duration || '01.00'),
   );
 
   useEffect(() => {
@@ -37,6 +44,13 @@ const FormExamView: React.FC<
     setQuestion({ ...rest, id: createdId });
   };
 
+  function handleDragEnd(event: DragEndEvent): void {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      sortActionExam(active, over);
+    }
+  }
+
   return (
     <form onSubmit={handleSubmitExam} className={className}>
       <div className="flex gap-5 items-stretch">
@@ -48,8 +62,8 @@ const FormExamView: React.FC<
             id="exam_name"
             name="exam_name"
             placeholder="UI/UX Designer"
-            defaultValue={dataExam.title}
-            key={dataExam.title}
+            defaultValue={dataExam?.title}
+            key={dataExam?.title}
             required
           />
         </div>
@@ -57,7 +71,7 @@ const FormExamView: React.FC<
           <TimeInput
             label={{ isImportant: true, text: 'Duration' }}
             setTime={setTimeState}
-            time={convertStrToDate(dataExam.duration || '01:00')}
+            time={convertStrToTime(dataExam?.duration || '01:00')}
             className="h-full"
           />
         </div>
@@ -76,19 +90,27 @@ const FormExamView: React.FC<
         </div>
 
         <div className="mt-10 flex flex-col gap-14">
-          {question &&
-            question.map((el, index) => {
-              return (
-                <QuestionListDraggable
-                  questionType={{
-                    type: el.type,
-                  }}
-                  id={el.id}
-                  key={el.id + index}
-                  options={el.options}
-                />
-              );
-            })}
+          {question && (
+            <DndContext
+              modifiers={[restrictToVerticalAxis]}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={question}>
+                {question.map((el) => {
+                  return (
+                    <QuestionListDraggable
+                      questionType={{
+                        type: el.type,
+                      }}
+                      id={el.id}
+                      key={el.id}
+                      options={el.options}
+                    />
+                  );
+                })}
+              </SortableContext>
+            </DndContext>
+          )}
         </div>
         <div className="flex gap-5 w-fit ml-auto mt-24">
           <Button

@@ -55,6 +55,6 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/school.svg',
     title: 'School',
-    path: '#',
+    path: '/backoffice/school',
   },
 ];

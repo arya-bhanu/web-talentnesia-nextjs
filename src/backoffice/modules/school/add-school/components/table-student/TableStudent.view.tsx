@@ -16,16 +16,6 @@ const TableStudentView: React.FC<TableStudentViewProps> = ({
 }) => {
   return (
     <div className={clsx("p-4", className)}>
-      <div className="flex justify-between items-center mb-5">
-        <form className="flex items-center max-w-xs w-full">
-          <label htmlFor="simple-search" className="sr-only">Search</label>
-          <div className="relative w-full">
-            <div className="absolute inset-y-0 start-0 flex items-center pl-3 pointer-events-none">
-              <Search />
-            </div>
-          </div>
-        </form>
-      </div>
       <div className="overflow-x-auto max-h-[60vh] overflow-y-auto sm:rounded-lg">
         {schools.length > 0 ? (
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

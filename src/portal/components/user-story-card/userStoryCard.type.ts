@@ -3,6 +3,7 @@ export interface UserStoryCardViewProps {
   activeNumber?: number;
   setActiveNumber?: React.Dispatch<React.SetStateAction<number>>;
   testimonials?: Testimonials[];
+  isLoading?: boolean
 }
 
 export interface Testimonials {
