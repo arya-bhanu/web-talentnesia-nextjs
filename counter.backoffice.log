@@ -1,0 +1,38 @@
+Total useQuery count: 36
+Files with useQuery:
+{"file":"src\\backoffice\\modules\\school\\School.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\school\\detail-school\\components\\list-table-student\\ListTableStudent.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\role\\Role.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\religion\\Religion.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\region\\zip-code\\ZipCode.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\region\\sub-disctrict\\SubDistrict.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\region\\province\\Province.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\region\\city\\City.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\quiz-type\\QuizType.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\level\\Level.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\discount\\Discount.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\certificate\\Certificate.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\category\\Category.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\academic-title\\AcademicTitle.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\master-data\\academic-level\\AcademicLevel.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-program\\iicp\\IICP.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\FormProgram.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\table-students\\TableStudents.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\list-mentoring\\ListMentoring.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\form-schedule\\FormSchedule.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\form-mentoring\\FormMentoring.tsx","fileCount":2}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\form-exam\\FormExam.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\form-detail\\FormDetail.tsx","fileCount":3}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\form-course\\FormCourse.tsx","fileCount":2}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\form-course\\components\\form-content\\FormContent.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-program\\form-program\\components\\form-course\\components\\form-chapter\\FormChapter.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-modul\\ManageModul.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-modul\\components\\form-modul\\FormManageModul.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-modul\\components\\form-exam\\FormExam.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-modul\\components\\form-content\\FormContent.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\manage-modul\\components\\form-chapter\\FormChapter.tsx","fileCount":1}
+{"file":"src\\backoffice\\modules\\example\\Example.tsx","fileCount":1}
+
+Total fetchServer count: 1
+Files with fetchServer:
+{"file":"src\\backoffice\\modules\\student\\profile\\api\\ProfileApi.ts","fileCount":1}

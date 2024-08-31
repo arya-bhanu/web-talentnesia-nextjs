@@ -1,0 +1,6 @@
+Total useQuery count: 1
+Files with useQuery:
+{"file":"src\\portal\\modules\\iicp\\hooks\\useIicp.ts","fileCount":1}
+
+Total fetchServer count: 0
+Files with fetchServer:
