@@ -7,7 +7,7 @@ import Trash from '@/../public/icons/trash.svg';
 import clsx from 'clsx';
 import { IStateChapter } from '@/backoffice/modules/manage-modul/components/chapter/chapter.type';
 import ListDraggable from '../list-draggable';
-import AlertModal from '../alert-modal/AlertModal';
+import AlertDeleteModal from '../alert-delete-modal/AlertDeleteModal';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
@@ -98,7 +98,7 @@ const AccordionPanelDraggableView: React.FC<
 
   return (
     <div className="py-3">
-      <AlertModal
+      <AlertDeleteModal
         openModal={openModal}
         setIsConfirmed={setIsConfirmed}
         setOpenModal={setOpenModal}

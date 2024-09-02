@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import custom500Image from '../../public/images/505.png'; 
+import custom500Image from '@/../public/images/505.png'; 
 
 export default function Custom500() {
   return (

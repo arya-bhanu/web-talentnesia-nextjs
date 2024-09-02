@@ -4,22 +4,39 @@ import { Label } from 'flowbite-react/components/Label';
 import { Radio } from 'flowbite-react/components/Radio';
 import { TextInput } from 'flowbite-react/components/TextInput';
 import Link from 'next/link';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { IManageModulForm, ISubmitType } from './formManageModul.type';
 import Chapter from '../chapter';
+import AlertEditModal from '@/backoffice/components/alert-edit-modal';
 
 const FormManageModulView: React.FC<
   IManageModulForm &
     ISubmitType & { setSubmitType: Dispatch<SetStateAction<ISubmitType>> }
-> = ({
-  handleSubmitForm,
-  populatedDatas,
-  id,
-  setSubmitType,
-}) => {
+> = ({ handleSubmitForm, populatedDatas, id, setSubmitType }) => {
+  const formRef = useRef(null);
+  const [editModalActive, setEditModalActive] = useState(false);
+  const [isEditConfrm, setIsEditConfrm] = useState(false);
+  useEffect(() => {
+    const form = formRef.current;
+    if (isEditConfrm && form) {
+      (form as HTMLFormElement).requestSubmit();
+      setSubmitType({ type: 'defaultSubmit' });
+    }
+  }, [isEditConfrm]);
   return (
     <section>
-      <form onSubmit={handleSubmitForm} action="" className="">
+      <AlertEditModal
+        openModal={editModalActive}
+        setOpenModal={setEditModalActive}
+        setIsConfirmed={setIsEditConfrm}
+      />
+      <form ref={formRef} onSubmit={handleSubmitForm} action="" className="">
         <div className="flex items-center">
           <div className="flex-1">
             <div className="max-w-md">
@@ -90,10 +107,8 @@ const FormManageModulView: React.FC<
             </Link>
           </Button>
           <Button
-            onClick={() => {
-              setSubmitType({ type: 'defaultSubmit' });
-            }}
-            type="submit"
+            onClick={() => setEditModalActive(true)}
+            type="button"
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >

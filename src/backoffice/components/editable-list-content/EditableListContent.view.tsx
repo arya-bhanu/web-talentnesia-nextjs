@@ -19,7 +19,7 @@ import PlayCircle from '@/../public/icons/play-circle.svg';
 import Edit2 from '@/../public/icons/edit-2.svg';
 import Book from '@/../public/icons/manage-program/book.svg';
 import Video from '@/../public/icons/videocam.svg';
-import AlertModal from '../alert-modal';
+import AlertModal from '../alert-delete-modal';
 import Modal from '@/backoffice/components/modal';
 import FormContent from '@/backoffice/modules/manage-modul/components/form-content';
 import { useRouter } from 'next/navigation';

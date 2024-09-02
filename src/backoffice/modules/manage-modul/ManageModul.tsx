@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ManageModulView from './ManageModul.view';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteModule, fetchModules } from './api/manageModelApi';
+import { useStatusModalStore } from '@/lib/store';
 
 const ManageModul = () => {
   const queryClient = useQueryClient();
@@ -11,19 +12,26 @@ const ManageModul = () => {
     mutationFn: deleteModule,
   });
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
+  const { openModal } = useStatusModalStore();
 
   const handleActionButtonRow = async (
     id: string,
     action: 'delete' | 'edit',
   ) => {
-    switch (action) {
-      case 'delete':
-        await deleteModuleAsync(id);
-        break;
-      default:
-        break;
+    try {
+      switch (action) {
+        case 'delete':
+          await deleteModuleAsync(id);
+          break;
+        default:
+          break;
+      }
+      openModal({ status: 'success', action: 'delete' });
+      queryClient.invalidateQueries({ queryKey: ['modules'] });
+    } catch (err) {
+      console.error(err);
+      openModal({ status: 'error' });
     }
-    queryClient.invalidateQueries({ queryKey: ['modules'] });
   };
   return (
     <ManageModulView
@@ -31,6 +39,7 @@ const ManageModul = () => {
       setOpenPopoverIndex={setOpenPopoverIndex}
       data={query.data?.data?.items}
       handleActionButtonRow={handleActionButtonRow}
+      isLoading={query.isLoading}
     />
   );
 };

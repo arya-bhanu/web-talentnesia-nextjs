@@ -9,11 +9,14 @@ import {
   updateModul,
 } from '../../api/manageModelApi';
 import { APIResponseManageModul } from '../../manageModul.type';
+import Loading from '@/components/loading';
+import { useStatusModalStore } from '@/lib/store';
 
 const FormManageModul = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const params = useSearchParams();
+  const { openModal } = useStatusModalStore();
 
   const moduleId = params.get('modulId');
 
@@ -58,6 +61,12 @@ const FormManageModul = () => {
             '/backoffice/manage-modul/update/chapter?modulId=' + moduleId,
           );
         }
+        openModal({
+          status: 'success',
+          timeOut: 2000,
+          action: 'update',
+          message: 'data modul berhasil diupdate',
+        });
       } else {
         const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
@@ -67,23 +76,31 @@ const FormManageModul = () => {
         } else {
           router.push(`/backoffice/manage-modul/create/chapter?modulId=${id}`);
         }
+        openModal({ status: 'success', timeOut: 2000, action: 'create' });
       }
     } catch (err) {
       console.error(err);
+      openModal({
+        status: 'error',
+        timeOut: 2000,
+        message: JSON.stringify(err),
+      });
     }
   };
 
   return (
-    <FormManageModulView
-      handleSubmitForm={handleSubmitForm}
-      populatedDatas={{
-        data: dataModule?.data,
-        isLoading,
-      }}
-      setSubmitType={setSubmitType}
-      type={submitType.type}
-      id={moduleId || undefined}
-    />
+    <Loading isLoading={isLoading}>
+      <FormManageModulView
+        handleSubmitForm={handleSubmitForm}
+        populatedDatas={{
+          data: dataModule?.data,
+          isLoading,
+        }}
+        setSubmitType={setSubmitType}
+        type={submitType.type}
+        id={moduleId || undefined}
+      />
+    </Loading>
   );
 };
 

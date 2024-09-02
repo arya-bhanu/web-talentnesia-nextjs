@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { getSession } from '@/lib/action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import Loading from '@/components/loading';
 
 const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
   ssr: false,
@@ -61,7 +62,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   }, [pathname]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading isLoading={isLoading} />;
   }
 
   if (!user) {
@@ -69,7 +70,10 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   }
 
   // Determine if background color should be hidden based on current route
-  const customPageStyle = ['/backoffice/report/', '/backoffice/program/'].includes(pathname);
+  const customPageStyle = [
+    '/backoffice/report/',
+    '/backoffice/program/',
+  ].includes(pathname);
 
   return (
     <div className="bg-[#FAFAFA]">
@@ -83,7 +87,16 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       >
         <div
           className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}
-          style={isDashboard ? { marginLeft: '-50px', padding: '0', backgroundColor: 'transparent', marginTop:'-1px' } : { marginRight: '50px' }}
+          style={
+            isDashboard
+              ? {
+                  marginLeft: '-50px',
+                  padding: '0',
+                  backgroundColor: 'transparent',
+                  marginTop: '-1px',
+                }
+              : { marginRight: '50px' }
+          }
         >
           {children}
         </div>
