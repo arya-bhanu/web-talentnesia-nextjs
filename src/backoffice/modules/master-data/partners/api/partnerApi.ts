@@ -27,7 +27,6 @@ export const partnerAPI = {
     try {
       const requestData = {
         ...data,
-        logo: '',
         active: 1,
         createdBy: ""
       };
@@ -52,7 +51,6 @@ export const partnerAPI = {
       return response.data;
     } catch (error) {
       console.error('Failed to update partner');
-      console.log(error)
       return;
     }
   },
