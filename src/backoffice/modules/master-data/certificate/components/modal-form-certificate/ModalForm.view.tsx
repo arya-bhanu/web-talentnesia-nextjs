@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from 'flowbite-react';
 import { ModalFormViewProps } from './modalForm.type';
+import { FileInputComponent } from '@/backoffice/components/file-input/FileInput';
 
 export const ModalFormView: React.FC<ModalFormViewProps> = ({
   isOpen,
@@ -18,19 +19,27 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
         <Modal.Body>
           <div className="space-y-4">
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900">Certificate name<label className="text-red-500">*</label></label>
+              <label className="block mb-2 text-sm font-medium text-gray-900">
+                Certificate name<label className="text-red-500">*</label>
+              </label>
               <input
                 type="text"
                 placeholder="Input Certificate name"
-                value={formData.certificate || ''}
-                onChange={(e) => handleInputChange('certificate', e.target.value)}
+                value={formData.name || ''}
+                onChange={(e) => handleInputChange('name', e.target.value)}
                 required
-                className={`block w-full p-2 border ${hasError && !formData.certificate ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+                className={`block w-full p-2 border ${hasError && !formData.name ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
               />
-              {hasError && !formData.certificate && (
+              {hasError && !formData.name && (
                 <p className="text-red-500 text-xs mt-1">Certificate name is required.</p>
               )}
             </div>
+
+            <FileInputComponent
+              id="certificate-file"
+              label="Upload Certificate File"
+              onFileChange={(file) => handleInputChange('file', file.name)}
+            />
           </div>
         </Modal.Body>
         <Modal.Footer className='flex justify-end space-x-2'>

@@ -14,7 +14,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
   const [formData, setFormData] = useState({
     category: '',
     code: '',
-    status: 1, 
+    status: 1,
   });
   const [hasError, setHasError] = useState(false);
 
@@ -23,15 +23,13 @@ const ModalForm: React.FC<ModalFormProps> = ({
       setFormData({
         category: initialData.name || '',
         code: initialData.code || '',
-        status: initialData.active === 1 ? 1 : 0, 
+        status: initialData.active === 1 ? 1 : 0,
       });
-      console.log('Initial Data:', initialData);
-      console.log('Form Data After Initialization:', formData.status); 
     } else {
       setFormData({
         category: '',
         code: '',
-        status: 1, 
+        status: 1,
       });
     }
   }, [initialData]);
@@ -39,7 +37,6 @@ const ModalForm: React.FC<ModalFormProps> = ({
   const handleInputChange = (field: string, value: string) => {
     const newValue = field === 'status' ? (value === 'Active' ? 1 : 0) : value;
     setFormData(prevData => ({ ...prevData, [field]: newValue }));
-    console.log(`Field ${field} changed to`, newValue); 
   };
 
   const handleSave = async () => {
@@ -52,15 +49,16 @@ const ModalForm: React.FC<ModalFormProps> = ({
       const data = {
         name: formData.category,
         code: formData.code,
-        active: formData.status, 
-      }; 
+        active: formData.status,
+      };
 
       if (id) {
+        // Handle update logic here if needed
       } else {
-        await categoryAPI.add(data); 
+        await categoryAPI.add(data);
       }
 
-      onClose();
+      handleClose(); // Close the modal and reset the state
       if (onSave) {
         await onSave(id, data);
       }
@@ -70,18 +68,31 @@ const ModalForm: React.FC<ModalFormProps> = ({
     }
   };
 
+  const handleClose = () => {
+    console.log('Handle close called');
+    setFormData({
+      category: '',
+      code: '',
+      status: 1,
+    });
+    setHasError(false);
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
     <ModalFormView
       isOpen={isOpen}
       title={title}
       formData={{
         ...formData,
-        status: formData.status === 1 ? 'Active' : 'Non Active', 
+        status: formData.status === 1 ? 'Active' : 'Non Active',
       }}
       hasError={hasError}
       handleInputChange={handleInputChange}
       handleSave={handleSave}
-      onClose={onClose}
+      onClose={handleClose} 
     />
   );
 };

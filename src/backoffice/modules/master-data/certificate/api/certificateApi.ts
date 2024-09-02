@@ -23,36 +23,38 @@ export const certificateAPI = {
     }
   },
 
-  add: async (data: { name: string }) => {
+  add: async (data: { name: string, file: string }) => {
     try {
       const requestData = {
         ...data,
         active: 1,
         createdBy: ""
       };
-
+      console.log('Request data:', requestData);
       const response = await axios.post(`${API_URL}/certificate`, requestData);
+      console.log('Response:', response.data);
       return response.data;
-    } catch (error) {
-      console.error('Failed to add certificate');
-      return;
+    } catch (error: unknown) {
+      console.error('Failed to add certificate', error);
+      throw error;
     }
-  },
-
-  update: async (id: string, data: { code: string; name: string }) => {
+  },  
+  update: async (id: string, data: { name: string, file: string }) => {
     try {
-        const requestData = {
+      const requestData = {
         ...data,
-        active: 1
+        active: 1,
+        createdBy: ""
       };
-
+      console.log('Request data:', requestData);
       const response = await axios.put(`${API_URL}/certificate/${id}`, requestData);
+      console.log('Response:', response.data);
       return response.data;
-    } catch (error) {
-      console.error('Failed to update certificate');
-      return;
+    } catch (error: unknown) {
+      console.error('Failed to update certificate', error);
+      throw error;
     }
-  },
+  },  
 
   delete: async (id: string) => {
     try {

@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FileInput as FlowbiteFileInput, Label } from 'flowbite-react';
@@ -7,10 +5,11 @@ import { FileInput as FlowbiteFileInput, Label } from 'flowbite-react';
 interface FileInputProps {
   id: string;
   label: string;
+  onFileChange?: (file: File) => void;
   onReset?: (resetFunction: () => void) => void;
 }
 
-export function Component({ id, label, onReset }: FileInputProps) {
+export function FileInputComponent({ id, label, onFileChange, onReset }: FileInputProps) {
   const [fileName, setFileName] = useState('Select File');
 
   useEffect(() => {
@@ -21,7 +20,9 @@ export function Component({ id, label, onReset }: FileInputProps) {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setFileName(event.target.files[0].name);
+      const file = event.target.files[0];
+      setFileName(file.name);
+      onFileChange?.(file);  // Pass the actual File object here
     }
   };
 
