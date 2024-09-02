@@ -1,7 +1,7 @@
 
 import React from 'react';
 import CourseView from './Course.view';
-import { getHomeData } from '../home/hooks/getHomeData';
+import { getHomeData } from '../home/hooks/useHomeData';
 
 export const Course = async () => {
   try {

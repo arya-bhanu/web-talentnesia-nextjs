@@ -13,7 +13,7 @@ export interface ICertificateView {
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
-  handleAddCertificate: (name: string) => Promise<void>;
+  handleAddCertificate: (name: string, file: string) => Promise<void>;
   Filter: string;
   setFilter: (value: string) => void;
   isPopupOpen: boolean;

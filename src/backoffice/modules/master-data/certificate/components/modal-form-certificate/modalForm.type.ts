@@ -10,9 +10,15 @@ export interface ModalFormProps {
 export interface ModalFormViewProps {
   isOpen: boolean;
   title: string;
-  formData: { [key: string]: string };
+  formData: { [key: string]: string | number };
   hasError: boolean;
-  handleInputChange: (certificate: string, value: string) => void;
+  handleInputChange: (name: string, value: string) => void;
   handleSave: () => void;
   onClose: () => void;
 }
+
+export type FileInputComponentProps = {
+  id: string;
+  label: string;
+  onFileChange: (field: string, value: string,) => void;
+};

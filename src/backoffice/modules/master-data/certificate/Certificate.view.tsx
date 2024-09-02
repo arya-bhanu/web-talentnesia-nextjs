@@ -5,11 +5,13 @@ import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
-import AlertModal from '@/backoffice/components/alert-modal';
+import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-certificate';
 import { useCertificateActions } from './hooks/useCertificateAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import { BadgeStatus } from '@/backoffice/components/badge-status';
+import { format } from 'date-fns';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -41,28 +43,31 @@ const CertificateView: React.FC<ICertificateView> = ({
     setSelectedId(id);
     setDeleteModalOpen(true);
   }, []);
-
   const handleAddOrEditCertificate = useCallback(
-    async (id: string | undefined, data: { name: string }) => {
-      if (id) {
-        await handleEditCertificate(id, data);
-      } else {
-        await handleAddCertificate(data.name);
+    async (id: string | undefined, data: { name: string, file: string }) => {
+      try {
+        if (id) {
+          await handleEditCertificate(id, data);
+        } else {
+          await handleAddCertificate(data.name, data.file);
+        }
+        fetchData();
+        setSelectedId(null);
+        setSelectedRowData(null);
+      } catch (error) {
+        console.error('Failed to add or edit certificate', error);
       }
-      fetchData();
-      setSelectedId(null);
-      setSelectedRowData(null);
     },
-    [handleEditCertificate, handleAddCertificate, fetchData],
+    [handleEditCertificate, handleAddCertificate, fetchData]
   );
-
+   
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      columnHelper.accessor('template-name', {
+      columnHelper.accessor('name', {
         header: ({ column }) => <SortingTable column={column} title="Template Name" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('template', {
+      columnHelper.accessor('file', {
         header: ({ column }) => (
           <SortingTable column={column} title="Template" />
         ),
@@ -70,15 +75,28 @@ const CertificateView: React.FC<ICertificateView> = ({
       }),
       columnHelper.accessor('data-uploaded', {
         header: ({ column }) => (
-          <SortingTable column={column} title="Data Uploaded" />
+          <SortingTable column={column} title="Date Uploaded" />
         ),
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor('status', {
+        cell: (info) => {
+          const date = info.getValue() as string || new Date().toISOString();
+          const parsedDate = new Date(date);
+
+          const formattedDate = format(parsedDate, "MMMM do yyyy");
+          const formattedTime = format(parsedDate, "HH:mm 'WIB'");
+
+          return (
+            <div>
+              <div className='font-bold text-gray-900'>{formattedDate}</div>
+              <div className='pl-6 text-start'>{formattedTime}</div>
+            </div>
+          );
+        },
+      }),      
+      columnHelper.accessor('active', {
         header: ({ column }) => (
           <SortingTable column={column} title="Status" />
         ),
-        cell: (info) => info.getValue(),
+        cell: (info) => <BadgeStatus status={info.getValue() as number} type={1}/>,
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -132,7 +150,7 @@ const CertificateView: React.FC<ICertificateView> = ({
       <DataTable
         data={data}
         columns={columns}
-        sorting={[{ id: 'template-name', desc: false }]}
+        sorting={[{ id: 'name', desc: false }]}
         filter={{ Filter, setFilter }}
       />
       <ModalForm

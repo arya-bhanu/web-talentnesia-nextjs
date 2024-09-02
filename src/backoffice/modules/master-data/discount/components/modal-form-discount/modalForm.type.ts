@@ -1,8 +1,17 @@
+// modalForm.type.ts
+
 export interface ModalFormProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (id: string | undefined, data: any) => Promise<void>;
-  initialData?: { [key: string]: string } | null;
+  initialData?: {
+    name: string;
+    persentage: number;
+    code: string;
+    startDate: string;
+    endDate: string;
+    active?: number; 
+  } | null;
   id?: string;
   title: string;
 }
@@ -10,9 +19,16 @@ export interface ModalFormProps {
 export interface ModalFormViewProps {
   isOpen: boolean;
   title: string;
-  formData: { [key: string]: string };
+  formData: {
+    name: string;
+    persentage: number;
+    code: string;
+    startDate: string;
+    endDate: string;
+    active: number; 
+  };
   hasError: boolean;
-  handleInputChange: (discount: string, value: string) => void;
+  handleInputChange: (field: string, value: string | number | boolean) => void; 
   handleSave: () => void;
   onClose: () => void;
 }

@@ -5,18 +5,20 @@ import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
-import AlertModal from '@/backoffice/components/alert-modal';
+import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-discount';
 import { useDiscountActions } from './hooks/useDiscountAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import { BadgeStatus } from '@/backoffice/components/badge-status';
+import { format } from 'date-fns'; 
 
 const columnHelper = createColumnHelper<any>();
 
 const DiscountView: React.FC<IDiscountView> = ({
   data,
   Filter,
-  setFilter,  
+  setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
@@ -25,17 +27,16 @@ const DiscountView: React.FC<IDiscountView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const {
-    handleAddDiscount,
-    handleEditDiscount,
-    handleDeleteDiscount,
-  } = useDiscountActions();
+  const { handleAddDiscount, handleEditDiscount, handleDeleteDiscount } = useDiscountActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
-    setSelectedId(id);
-    setSelectedRowData(rowData);
-    setIsPopupOpen(true);
-  }, [setIsPopupOpen]);
+  const handleEdit = useCallback(
+    (id: string, rowData: any) => {
+      setSelectedId(id);
+      setSelectedRowData(rowData);
+      setIsPopupOpen(true);
+    },
+    [setIsPopupOpen]
+  );
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
@@ -53,7 +54,7 @@ const DiscountView: React.FC<IDiscountView> = ({
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditDiscount, handleAddDiscount, fetchData],
+    [handleEditDiscount, handleAddDiscount, fetchData]
   );
 
   const columns = useMemo<ColumnDef<any>[]>(
@@ -62,23 +63,37 @@ const DiscountView: React.FC<IDiscountView> = ({
         header: ({ column }) => <SortingTable column={column} title="Code" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('discount-name', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Discount Name" />
-        ),
+      columnHelper.accessor('name', {
+        header: ({ column }) => <SortingTable column={column} title="Discount Name" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('start-date-end-date', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Start Date -> End Date" />
+      columnHelper.accessor('persentage', {
+        header: ({ column }) => <SortingTable column={column} title="Percentage" />,
+        cell: (info) => (
+          <div className="w-full">
+            {String(info.getValue())}%
+          </div>
         ),
-        cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('status', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Status" />
-        ),
-        cell: (info) => info.getValue(),
+      columnHelper.accessor('startDate-endDate', {
+        header: ({ column }) => <SortingTable column={column} title="Start Date -> End Date" />,
+        cell: (info) => {
+          const startDate = info.row.original.startDate as string;
+          const endDate = info.row.original.endDate as string;
+          const formatDate = (dateString: string) => {
+            const date = new Date(dateString);
+            return isNaN(date.getTime()) ? 'Invalid Date' : format(date, 'MMM-dd-yyyy');
+          };
+      
+          const formattedStartDate = formatDate(startDate);
+          const formattedEndDate = formatDate(endDate);
+      
+          return `${formattedStartDate} -> ${formattedEndDate}`;
+        },
+      }),
+      columnHelper.accessor('active', {
+        header: ({ column }) => <SortingTable column={column} title="Status" />,
+        cell: (info) => <BadgeStatus status={info.getValue() as number}  type={1}/>,
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -86,21 +101,15 @@ const DiscountView: React.FC<IDiscountView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-  
+
           return (
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
-                  >
+                  <button onClick={() => handleEdit(id, rowData)} className="hover:text-blue-700 hover:underline">
                     Edit
                   </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
-                  >
+                  <button onClick={() => handleDelete(id)} className="hover:text-red-700 hover:underline">
                     Delete
                   </button>
                 </div>
@@ -129,18 +138,13 @@ const DiscountView: React.FC<IDiscountView> = ({
           text="Add Discount"
         />
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <DataTable data={data} columns={columns} sorting={[{ id: 'code', desc: false }]} filter={{ Filter, setFilter }} />
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
           setIsPopupOpen(false);
-          setSelectedId(null); 
-          setSelectedRowData(null); 
+          setSelectedId(null);
+          setSelectedRowData(null);
         }}
         onSave={handleAddOrEditDiscount}
         initialData={selectedRowData}

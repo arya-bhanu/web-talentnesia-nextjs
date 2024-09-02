@@ -5,7 +5,7 @@ import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
-import AlertModal from '@/backoffice/components/alert-modal';
+import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-category/ModalForm';
 import { useCategoryActions } from './hooks/useCategoryAction';
 import { Popover } from 'flowbite-react';
@@ -75,7 +75,7 @@ const CategoryView: React.FC<ICategoryView> = ({
           <SortingTable column={column} title="Status" />
         ),
         cell: (info) => (
-          <BadgeStatus status={info.getValue() as number} />
+          <BadgeStatus status={info.getValue() as number} type={1}/>
         ),
       }),
       columnHelper.accessor('id', {

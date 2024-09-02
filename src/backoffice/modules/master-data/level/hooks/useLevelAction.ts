@@ -4,9 +4,13 @@ import { levelAPI } from '../api/levelApi';
 export const useLevelActions = () => {
   const handleAddLevel = useCallback(async (name: string) => {
     try {
-       levelAPI.add({name});
+      await levelAPI.add({
+        name,
+        code: '',
+        status: 0,
+      });
     } catch (error) {
-      console.error('Failed to  level');
+      console.error('Failed to add category');
     }
   }, []);
 

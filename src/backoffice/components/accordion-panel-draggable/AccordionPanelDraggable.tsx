@@ -6,6 +6,7 @@ import { IStateChapter } from '@/backoffice/modules/manage-modul/components/chap
 import { deleteChapter } from '@/backoffice/modules/manage-modul/api/manageModelApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useStatusModalStore } from '@/lib/store';
 
 const AccordionPanelDraggable: React.FC<
   IAccordionPanelDraggable &
@@ -14,6 +15,7 @@ const AccordionPanelDraggable: React.FC<
   const [openModal, setOpenModal] = useState(false);
   const [isConfirmDel, setIsConfirmDel] = useState(false);
   const [idDelete, setIdDelete] = useState('');
+  const { openModal: openModalToast } = useStatusModalStore();
   const pathname = usePathname();
   const params = useSearchParams();
   const router = useRouter();
@@ -38,10 +40,20 @@ const AccordionPanelDraggable: React.FC<
   useEffect(() => {
     (async function () {
       if (isConfirmDel && idDelete) {
-        await deleteChapterAsync(idDelete);
-        await queryClient.invalidateQueries({ queryKey: ['chapter'] });
-        await queryClient.invalidateQueries({ queryKey: ['module'] });
-        await queryClient.invalidateQueries({ queryKey: ['modules'] });
+        try {
+          await deleteChapterAsync(idDelete);
+          openModalToast({
+            status: 'success',
+            action: 'delete',
+            message: 'data chapter berhasil dihapus',
+          });
+          await queryClient.invalidateQueries({ queryKey: ['chapter'] });
+          await queryClient.invalidateQueries({ queryKey: ['module'] });
+          await queryClient.invalidateQueries({ queryKey: ['modules'] });
+        } catch (err) {
+          console.error(err);
+          openModalToast({ status: 'error', message: JSON.stringify(err) });
+        }
       }
     })();
   }, [isConfirmDel]);

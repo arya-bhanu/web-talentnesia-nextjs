@@ -7,7 +7,7 @@ import {
   convertDateIntoIDDate,
   convertTimeHHmmss,
 } from '@/helpers/formatter.helper';
-import AlertModal from '@/backoffice/components/alert-modal';
+import AlertModal from '@/backoffice/components/alert-delete-modal';
 
 const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
   handleDeleteMentoring,

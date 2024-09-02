@@ -1,15 +1,9 @@
 import { Popover } from 'flowbite-react';
-import React, {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import MoreHoriz from '../../../../public/icons/more_horiz.svg';
 import { IPopover } from './popover.type';
 import Link from 'next/link';
-import AlertModal from '../alert-modal';
+import AlertModal from '../alert-delete-modal';
 
 const renderContent = (
   setOpenModal: Dispatch<SetStateAction<boolean>>,

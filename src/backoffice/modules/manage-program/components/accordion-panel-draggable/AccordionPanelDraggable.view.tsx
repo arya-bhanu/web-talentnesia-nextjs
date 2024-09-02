@@ -30,7 +30,7 @@ import FormCertificate from '../../form-program/components/form-certificate';
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import AlertModal from '@/backoffice/components/alert-modal';
+import AlertModal from '@/backoffice/components/alert-delete-modal';
 import FormContent from '../../form-program/components/form-course/components/form-content';
 import { useFormMentoringStore } from '../../form-program/components/form-mentoring/formMentoring.store';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';

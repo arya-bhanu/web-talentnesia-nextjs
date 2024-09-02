@@ -18,11 +18,11 @@ export const fetchAxios = async <T = any>({
   token,
 }: UseFetchProps): Promise<T> => {
   // token = token || (await getAuthToken());
-  token = token || (getToken()?.token);
+  token = token || getToken()?.token;
 
   const config: AxiosRequestConfig = {
     method,
-    url,
+    url: `${process.env.API_SERVER_URL}${url}`,
     headers: {
       Authorization: `Bearer ${token}`,
     },

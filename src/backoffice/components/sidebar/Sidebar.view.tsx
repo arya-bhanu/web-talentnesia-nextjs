@@ -31,7 +31,7 @@ const SidebarView: React.FC<SidebarViewProps> = ({
   return (
     <aside
       id="icon-sidebar"
-      className={`fixed top-0 left-0 z-50 h-screen  flex flex-col transition-all duration-300 md:w-64 md:translate-x-0 ${
+      className={`fixed top-0 left-0 z-40 h-screen  flex flex-col transition-all duration-300 md:w-64 md:translate-x-0 ${
         isSidebarOpen ? 'w-64' : 'w-0 -translate-x-full'
       } ${isSidebarOpen ? 'bg-[#FFFFFF] shadow-md overflow-y-auto' : 'bg-transparent'}`}
       aria-label="Sidebar"
