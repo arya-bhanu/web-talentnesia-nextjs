@@ -15,6 +15,8 @@ export interface IUserView {
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: User) => void;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface TabFlexProps {
@@ -22,6 +24,8 @@ export interface TabFlexProps {
     title: string;
     content: React.ReactNode;
     active: boolean;
+    disabled?: boolean;
   }[];
   onTabChange: (tabTitle: string) => void;
 }
+

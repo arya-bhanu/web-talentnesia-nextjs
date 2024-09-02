@@ -3,32 +3,29 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useMentorForm } from './MentorForm';
+import { useStudentForm } from './StudentForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
 import { cityAPI } from '../../master-data/region/city/api/cityApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
-import { academicTitleAPI } from '../../master-data/academic-title/api/academicTitleApi';
+import { academicLevelAPI } from '../../master-data/academic-level/api/academicLevelApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
 import { Component as Datepicker } from '../components/datepicker/Datepicker';
 import { Component as FileInput } from '../components/file-input/FileInput';
 import { ProfilePictureInput } from '../components/profile-picture-input/ProfilePictureInput';
 import { Component as SelectYear } from '../components/select-year/selectYear';
-import { Region } from '../mentor/mentorForm.type';
+import { Region } from '../student/studentForm.type';
 import Link from 'next/link';
 import { ResponseModal } from '../components/response-modal/responseModal';
+import { educationLevels } from '../studentt/addStudent.data';
 
-type MentorViewProps = ReturnType<typeof useMentorForm>;
+type StudentViewProps = ReturnType<typeof useStudentForm>;
 
-export const MentorView: React.FC<MentorViewProps> = ({
+export const StudentView: React.FC<StudentViewProps> = ({
   form,
     handleInputChange,
-    handleEducationChange,
-    addEducation,
-    removeEducation,
     resetForm,
     handleFileChange,
     handleProfilePictureChange,
-    handleEducationFileChange,
     handleSubmit,
     showConfirmModal,
     setShowConfirmModal,
@@ -40,7 +37,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
   const [provinces, setProvinces] = useState<Region[]>([]);
   const [districts, setDistricts] = useState<Region[]>([]);
   const [subDistricts, setSubDistricts] = useState<Region[]>([]);
-  const [academicTitles, setAcademicTitles] = useState<Region[]>([]);
+  const [academicLevels, setAcademicLevels] = useState<Region[]>([]);
   const [religions, setReligions] = useState<Region[]>([]);
 
   const styles = {
@@ -59,8 +56,8 @@ export const MentorView: React.FC<MentorViewProps> = ({
         const fetchedSubDistricts = await subDistrictAPI.all();
         setSubDistricts(fetchedSubDistricts);
 
-        const fetchedAcademicTitles = await academicTitleAPI.all();
-        setAcademicTitles(fetchedAcademicTitles);
+        const fetchedAcademicLevels = await academicLevelAPI.all();
+        setAcademicLevels(fetchedAcademicLevels);
 
         const fetchedReligions = await religionAPI.all();
         setReligions(fetchedReligions);
@@ -111,7 +108,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
               <div className="rounded-lg w-full p-2.5 hidden md:block"></div>
               <div>
                 <label className="flex mb-1">
-                  NIK<div className="text-red-600">*</div>
+                  NIK/Identity Number<div className="text-red-600">*</div>
                 </label>
                 <input
                   type="text"
@@ -124,17 +121,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 />
               </div>
               <div>
-                <label className="block mb-1">NPWP</label>
-                <input
-                  type="text"
-                  name="npwp"
-                  value={form.npwp}
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                  placeholder="Input NPWP"
-                />
-              </div>
-              <div>
                 <label className="block mb-1">Foto KTP</label>
                 <FileInput
                   id="photoKtp"
@@ -142,16 +128,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   onChange={handleFileChange('photoKtp')}
                   initialValue={form.photoKtp}
                   initialFilename={form.photoKtpOrigin}
-                />
-              </div>
-              <div>
-                <label className="block mb-1">Foto NPWP</label>
-                <FileInput
-                  id="photoNpwp"
-                  label="Upload NPWP"
-                  onChange={handleFileChange('photoNpwp')}
-                  initialValue={form.photoNpwp}
-                  initialFilename={form.photoNpwpOrigin}
                 />
               </div>
               <div>
@@ -236,47 +212,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
               </label>
             </div>
           </div>
-              <div>
-                <label className="flex mb-1">
-                  Mariage Status<div className="text-red-600">*</div>
-                </label>
-                <select
-                  name="mariageStatus"
-                  onChange={handleInputChange}
-                  value={form.mariageStatus || ''}
-                  className={styles.inputField}
-                >
-                  <option className="hidden" value="" disabled>
-                    Select Mariage Status
-                  </option>
-                  <option value="single">Single</option>
-                  <option value="married">Married</option>
-                  <option value="divorced">Divorced</option>
-                </select>
-              </div>
-              <div>
-                <label className="block mb-1">Number of Children</label>
-                <input
-                  type="number"
-                  name="numberOfChildren"
-                  value={form.numberOfChildren}
-                  placeholder="Input Number of Child"
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                />
-              </div>
-              <div>
-                <label className="flex mb-1">
-                  Employee Contract<div className="text-red-600">*</div>
-                </label>
-                <FileInput
-                  id="contract"
-                  label="Upload Contract"
-                  onChange={handleFileChange('contract')}
-                  initialValue={form.contract}
-                  initialFilename={form.contractOrigin}
-                />
-              </div>
             </div>
           </div>
 
@@ -302,20 +237,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
               </div>
               <div>
                 <label className="flex mb-1">
-                  LinkedIn Link<div className="text-red-600">*</div>
-                </label>
-                <input
-                  type="text"
-                  name="linkedin"
-                  value={form.linkedin}
-                  placeholder="Linkedin Link"
-                  required
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                />
-              </div>
-              <div>
-                <label className="flex mb-1">
                   Email<div className="text-red-600">*</div>
                 </label>
                 <input
@@ -323,20 +244,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   name="email"
                   value={form.email}
                   placeholder="Email"
-                  required
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                />
-              </div>
-              <div>
-                <label className="flex mb-1">
-                  Emergency Contact<div className="text-red-600">*</div>
-                </label>
-                <input
-                  type="text"
-                  name="emergencyContact"
-                  value={form.emergencyContact}
-                  placeholder="Emergency Contact"
                   required
                   onChange={handleInputChange}
                   className={styles.inputField}
@@ -452,162 +359,75 @@ export const MentorView: React.FC<MentorViewProps> = ({
               </div>
             </div>
           </div>
-                    {/* Section D: Education */}
-                    <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg md:text-xl font-semibold">D. Education</h2>
 
-              <button
-                type="button"
-                onClick={addEducation}
-                className="text-black px-4 py-2 rounded"
-              >
-                <div className="flex text-[12px] md:text-lg font-poppins">
-                  <Image
-                    src="/img/manage-user/mdi_plus-circle.svg"
-                    width={20}
-                    height={20}
-                    alt="AddEducation"
-                    className="w-4 h-4 md:w-6 md:h-6 cursor-pointer"
-                  />
-                  Add New Education
-                </div>
-              </button>
-            </div>
 
-            {form.educations.map((educations, index) => (
-              <div key={index} className="border-b pb-4 mb-4">
-                <div className="flex justify-between items-center mb-4 w-full">
-                  <div>
-                    <h3 className="text-lg font-semibold">{index + 1}.</h3>
-                  </div>
-                  <div>
-                    {form.educations.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeEducation(index)}
-                        className="text-red-500 px-4 py-2 rounded flex items-center"
-                      >
-                        <Image
-                          src="/img/manage-user/Delete.svg"
-                          width={50}
-                          height={50}
-                          alt="RemoveEducation"
-                          className="w-8 h-8 md:w-12 md:h-12 cursor-pointer mr-2"
-                        />
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Section D. Last Education */}
+          <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
+            <h2 className="text-lg md:text-xl font-semibold mb-4">
+              D. Last Education
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="flex mb-1">
-                      University Name<div className="text-red-600">*</div>
+                      Institution Name<div className="text-red-600">*</div>
                     </label>
                     <input
-                      id={`educations[${index}].name`}
-                      name={`educations[${index}].name`}
-                      value={educations.name}
+                      type="text"
+                      name="educationName"
+                      value={form.educationName}
                       placeholder="University Name"
-                      onChange={(e) => handleEducationChange(e, index)}
+                      required
+                      onChange={handleInputChange}
                       className={styles.inputField}
                     />
                   </div>
                   <div>
                     <label className="flex mb-1">
-                      Academic Title<div className="text-red-600">*</div>
+                      Academic Level<div className="text-red-600">*</div>
                     </label>
                     <select
-                    id={`educations[${index}].titleId`}
-                    name={`educations[${index}].titleId`}
-                    value={educations.titleId || ''}
-                    onChange={(e) => handleEducationChange(e, index)}
-                    className={styles.inputField}
+                      name="educationLevelId"
+                      value={form.educationLevelId || ''}
+                      onChange={handleInputChange}
+                      className={styles.inputField}
                     >
-                    <option value="">Select Title</option>
-                    {academicTitles.map((title) => (
-                      <option key={title.id} value={title.id}>
-                        {title.name}
+                      <option className="hidden" value="" disabled>
+                        Select Academic Level
                       </option>
-                    ))}
-                  </select>
-                  </div>
-                  <div>
-                    <label className="flex mb-1">
-                      Major<div className="text-red-600">*</div>
-                    </label>
-                    <input
-                      type="text"
-                      id={`educations[${index}].major`}
-                      name={`educations[${index}].major`}
-                      value={educations.major}
-                      placeholder="Input Major"
-                      onChange={(e) => handleEducationChange(e, index)}
-                      className={styles.inputField}
-                    />
-                  </div>
-                  <div>
-                    <label className="flex mb-1">
-                      GPA<div className="text-red-600">*</div>
-                    </label>
-                    <input
-                      type="text"
-                      id={`educations[${index}].gpa`}
-                      name={`educations[${index}].gpa`}
-                      value={educations.gpa}
-                      placeholder="Input GPA"
-                      onChange={(e) => handleEducationChange(e, index)}
-                      className={styles.inputField}
-                    />
+                      {academicLevels?.map((education, index) => (
+                        <option key={index} value={education.id}>
+                          {education.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                   <label className="flex mb-1">
-                    Year Graduated<div className="text-red-600">*</div>
-                  </label>
-                  <SelectYear
-                  id={`educations.${index}.yearGraduate`}
-                  value={educations.yearGraduate ? parseInt(educations.yearGraduate, 10) : null}
-                  onChange={(year) => {
-                    const event = {
-                      target: {
-                        name: `educations[${index}].yearGraduate`,
-                        value: year.toString(),
-                      },
-                    } as React.ChangeEvent<{ name?: string; value: unknown }>;
-                    handleEducationChange(event, index);
-                  }}
-                />
-                </div>
-                  <div>
-                    <label className="flex mb-1">
-                      Certificate Number<div className="text-red-600">*</div>
+                    Start From<div className="text-red-600">*</div>
                     </label>
-                    <input
-                      type="text"
-                      id={`educations[${index}].certificateNumber`}
-                      name={`educations[${index}].certificateNumber`}
-                      value={educations.certificateNumber}
-                      placeholder="Input Certificate Number"
-                      onChange={(e) => handleEducationChange(e, index)}
-                      className={styles.inputField}
+                    <SelectYear
+                      id="educationStart"
+                      value={form.educationStart ? parseInt(form.educationStart, 10) : null}
+                      onChange={(year) => {
+                        handleInputChange({ target: { name: 'educationStart', value: year.toString() } });
+                      }}
                     />
-                  </div>
-                  <div>
-                    <label className="flex mb-1">
-                      Academic Certificate<div className="text-red-600">*</div>
-                    </label>
-                    <FileInput
-                      id={`educations[${index}].certificate`}
-                      label="Upload Certificate"
-                      onChange={(file) => handleEducationFileChange(index, 'certificate')(file)}
-                      initialValue={educations.certificate}
-                      initialFilename={educations.certificateOrigin}
-                    />
-                  </div>
                 </div>
-              </div>
-            ))}
+                <div>
+                  <label className="flex mb-1">
+                    Until<div className="text-red-600">*</div>
+                    </label>
+                    <SelectYear
+                      id="educationEnd"
+                      value={form.educationEnd ? parseInt(form.educationEnd, 10) : null}
+                      onChange={(year) => {
+                        handleInputChange({ target: { name: 'educationEnd', value: year.toString() } });
+                      }}
+                    />
+                </div>
+            </div>
           </div>
+
           {/* Submit Button */}
           <div className="flex justify-end space-x-4">
             <Link href={'/backoffice/manage-user'}>
@@ -642,11 +462,11 @@ export const MentorView: React.FC<MentorViewProps> = ({
         onClose={() => setShowResultModal(false)}
         onConfirm={() => setShowResultModal(false)}
         title={isSuccess ? "Success" : "Error"}
-        message={isSuccess ? "Berhasil Menambahkan Mentor" : "Gagal Menambahkan Mentor"}
+        message={isSuccess ? "Berhasil Menambahkan Student" : "Gagal Menambahkan Student"}
         confirmText="OK!"
       />
     </>
   );
 };
 
-export default MentorView;
+export default StudentView;

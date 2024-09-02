@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { User } from '../user.type';
-import { MentorFormData } from '../mentor/MentorForm.type';
+import { MentorFormData } from '../mentor/mentorForm.type';
 
 const API_URL = 'http://127.0.0.1:8000/api/v1';
 
@@ -65,14 +65,10 @@ export const userAPI = {
   },
 
 
-  add: async (data: MentorFormData) => {
+  add: async <T>(data: T) => {
     try {
       console.log('Sending data to API:', data);
-      const response = await axios.post(`${API_URL}/manage-user`, {
-        ...data,
-        role: 3,
-        active: 1
-      });
+      const response = await axios.post(`${API_URL}/manage-user`, data);
       console.log('API response:', response.data);
       return response.data;
     } catch (error) {
@@ -93,7 +89,6 @@ export const userAPI = {
       }
       return null;
     }
-
   },
 
   getFile: async (filePath: string): Promise<Blob | null> => {
@@ -118,12 +113,26 @@ export const userAPI = {
     }
   },
 
-  update: async (id: string, data: MentorFormData) => {
+  update: async <T>(id: string, data: T) => {
     try {
       const response = await axios.put(`${API_URL}/manage-user/${id}`, data);
       return response.data;
     } catch (error) {
       console.error('Failed to update user');
+      if (axios.isAxiosError(error)) {
+        const axiosError = error;
+        if (axiosError.response) {
+          console.error('Response data:', axiosError.response.data);
+          console.error('Response status:', axiosError.response.status);
+          console.error('Response headers:', axiosError.response.headers);
+        } else if (axiosError.request) {
+          console.error('No response received:', axiosError.request);
+        } else {
+          console.error('Error message:', axiosError.message);
+        }
+      } else {
+        console.error('Non-Axios error:', error);
+      }
       return null;
     }
   },

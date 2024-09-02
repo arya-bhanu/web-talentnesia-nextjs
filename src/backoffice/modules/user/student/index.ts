@@ -1,1 +1,1 @@
-export { Student } from './AddStudent';
+export { Student } from './StudentForm';

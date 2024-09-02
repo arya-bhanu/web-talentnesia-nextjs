@@ -12,6 +12,7 @@ import { Popover } from 'flowbite-react';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import { userAPI } from './api/userApi';
 import { mentorAPI } from './mentor/api/mentorApi';
+import { studentAPI } from './student/api/studentApi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ResponseModal } from './components/response-modal/responseModal';
@@ -21,6 +22,8 @@ import Image from 'next/image';
 const UserView: React.FC<IUserView> = ({
   Filter,
   setFilter,
+  isLoading,
+  setIsLoading,
   isPopupOpen,
   setIsPopupOpen,
   handleActionButtonRow,
@@ -37,9 +40,15 @@ const UserView: React.FC<IUserView> = ({
   useEffect(() => {
     const success = searchParams.get('success');
     const action = searchParams.get('action');
+    const userType = searchParams.get('userType');
     if (success === 'true') {
       setIsSuccess(true);
-      setModalMessage(action === 'add' ? 'Berhasil Menambahkan Mentor' : 'Berhasil Mengubah Mentor');
+      if (userType === 'student') {
+        setModalMessage(action === 'add' ? 'Berhasil Menambahkan Student' : 'Berhasil Mengubah Student');
+        setActiveTab('Student');
+      } else {
+        setModalMessage(action === 'add' ? 'Berhasil Menambahkan Mentor' : 'Berhasil Mengubah Mentor');
+      }
       setShowResultModal(true);
       router.replace('/backoffice/manage-user');
     }
@@ -50,35 +59,43 @@ const UserView: React.FC<IUserView> = ({
   }, [activeTab]);
 
   const fetchData = async () => {
+    setIsLoading(true);
     let fetchedData: User[] = [];
-    switch (activeTab) {
-      case 'Mentor':
-        fetchedData = await mentorAPI.fetchMentors();
-        break;
-      case 'Student':
-        fetchedData = await userAPI.fetchStudents();
-        break;
-      case 'School Operator':
-        fetchedData = await userAPI.fetchSchoolOperators();
-        break;
-    }
-    setData(fetchedData);
-    
-    // Load profile pictures
-    const pictures: Record<string, string> = {};
-    for (const user of fetchedData) {
-      if (user.photoProfile) {
-        try {
-          const blob = await userAPI.getFile(user.photoProfile);
-          if (blob) {
-            pictures[user.id] = URL.createObjectURL(blob);
+    try {
+      switch (activeTab) {
+        case 'Mentor':
+          fetchedData = await mentorAPI.fetchMentors();
+          break;
+        case 'Student':
+          fetchedData = await studentAPI.fetchStudents();
+          break;
+        case 'School Operator':
+          fetchedData = await userAPI.fetchSchoolOperators();
+          break;
+      }
+      setData(fetchedData);
+      
+      // Load profile pictures
+      const pictures: Record<string, string> = {};
+      for (const user of fetchedData) {
+        if (user.photoProfile) {
+          try {
+            const thumbPath = user.photoProfile.replace('/origins/', '/thumbs/');
+            const blob = await userAPI.getFile(thumbPath);
+            if (blob) {
+              pictures[user.id] = URL.createObjectURL(blob);
+            }
+          } catch (error) {
+            console.error('Error loading profile picture:', error);
           }
-        } catch (error) {
-          console.error('Error loading profile picture:', error);
         }
       }
+      setProfilePictures(pictures);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
     }
-    setProfilePictures(pictures);
   };
 
   const handleDelete = async (id: string) => {
@@ -132,7 +149,7 @@ const UserView: React.FC<IUserView> = ({
         cell: (info) => {
           const id = info.row.original.id;
           const rowData = info.row.original;
-  
+      
           return (
             <Popover
               content={
@@ -141,6 +158,8 @@ const UserView: React.FC<IUserView> = ({
                     onClick={() => {
                       if (activeTab === 'Mentor') {
                         router.push(`/backoffice/manage-user/edit-mentor?id=${rowData.id}`);
+                      } else if (activeTab === 'Student') {
+                        router.push(`/backoffice/manage-user/edit-student?id=${rowData.id}`);
                       } else {
                         handleActionButtonRow(id, 'edit', rowData);
                       }
@@ -171,6 +190,12 @@ const UserView: React.FC<IUserView> = ({
 
   const renderTabContent = (tabName: string) => (
     <div>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+        </div>
+      ) : (
+        <div>
       <ResponseModal
         isOpen={showResultModal}
         onClose={() => setShowResultModal(false)}
@@ -189,6 +214,14 @@ const UserView: React.FC<IUserView> = ({
         />
         </Link>
       )}
+      {tabName === 'Student' && (
+        <Link href={'/backoffice/manage-user/add-student/'} >
+        <AddButton
+        onClick={() => ('')}
+          text="Add Student"
+        />
+        </Link>
+      )}
       </div>
       <DataTable
         data={data}
@@ -196,6 +229,8 @@ const UserView: React.FC<IUserView> = ({
         sorting={[{ id: 'name', desc: false }]}
         filter={{ Filter, setFilter }}
       />
+      </div>
+    )}
     </div>
   );
 
@@ -203,21 +238,27 @@ const UserView: React.FC<IUserView> = ({
     {
       title: "Mentor",
       content: renderTabContent("Mentor"),
-      active: activeTab === 'Mentor'
+      active: activeTab === 'Mentor',
+      disabled: isLoading && activeTab !== 'Mentor'
     },
     {
       title: "Student",
       content: renderTabContent("Student"),
-      active: activeTab === 'Student'
+      active: activeTab === 'Student',
+      disabled: isLoading && activeTab !== 'Student'
     },
     {
       title: "School Operator",
       content: renderTabContent("School Operator"),
-      active: activeTab === 'School Operator'
+      active: activeTab === 'School Operator',
+      disabled: isLoading && activeTab !== 'School Operator'
     }
   ];
+
   const handleTabChange: TabFlexProps['onTabChange'] = (tabTitle) => {
-    setActiveTab(tabTitle);
+    if (!isLoading) {
+      setActiveTab(tabTitle);
+    }
   };
 
   return (

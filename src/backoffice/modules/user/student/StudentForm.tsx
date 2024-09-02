@@ -2,107 +2,80 @@
 
 import { useState, useEffect } from 'react';
 
-import { Education, MentorFormData } from '../mentor/mentorForm.type';
-import { MentorView } from './MentorForm.view';
+import { StudentFormData } from '../student/studentForm.type';
+import { StudentView } from './StudentForm.view';
 import { userAPI } from '../api/userApi';
 import { useSearchParams } from 'next/navigation';
 import { ResponseModal } from '../components/response-modal/responseModal';
 import { useRouter } from 'next/navigation';
 
-export const useMentorForm = (id: string | null = null) => {
-  const [form, setForm] = useState<MentorFormData>({
+export const useStudentForm = (id: string | null = null) => {
+  const [form, setForm] = useState<StudentFormData>({
     id: id || '',
-    role: 3,
+    role: 4,
     active: 1,
     profilePicture: '',
     profilePictureOrigin: '',
     name: '',
     nik: '',
-    npwp: '',
     photoKtp: '',
     photoKtpOrigin: '',
-    photoNpwp: '',
-    photoNpwpOrigin: '',
     placeOfBirth: '',
     dateOfBirth: '',
     religionId: null,
     gender: 0,
-    mariageStatus: '',
-    numberOfChildren: '',
-    contract: '',
-    contractOrigin: '',
+
     phone: '',
     email: '',
-    linkedin: '',
-    emergencyContact: '',
+
     provinceId: null,
     districtId: null,
     subDistrictId: null,
     zipCode: '',
     addressKtp: '',
     addressDomicile: '',
-    educations: !id ? [{
-      name: '',
-      titleId: null,
-      major: '',
-      gpa: '',
-      yearGraduate: '',
-      certificateNumber: '',
-      certificate: '',
-      certificateOrigin: ''
-    }] : [],
+
+    educationName: '',
+    educationLevelId: '',
+    educationStart: '',
+    educationEnd: '',
   });
 
   useEffect(() => {
     if (id) {
-      fetchMentorData(id);
+      fetchStudentData(id);
     }
   }, [id]);
 
-  const fetchMentorData = async (id: string) => {
+  const fetchStudentData = async (id: string) => {
     try {
       const response = await userAPI.show(id);
       if (response.success && response.data) {
-        const mentorData = response.data;
+        const studentData = response.data;
         setForm(prevForm => ({
           ...prevForm,
-          ...mentorData,
-          photoKtp: mentorData.photoKtp || '',
-          photoNpwp: mentorData.photoNpwp || '',
-          contract: mentorData.contract || '',
-          profilePicture: mentorData.profilePicture || '',
+          ...studentData,
+          photoKtp: studentData.photoKtp || '',
+          profilePicture: studentData.profilePicture || '',
+          educationStart: studentData.educationStart ? parseInt(studentData.educationStart, 10) : null,
+          educationEnd: studentData.educationEnd ? parseInt(studentData.educationEnd, 10) : null,
         }));
       }
     } catch (error) {
-      console.error('Error fetching mentor data:', error);
+      console.error('Error fetching student data:', error);
     }
   };
 
-
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: unknown } }
   ) => {
     const { name, value } = event.target;
     setForm((prevForm) => ({
       ...prevForm,
-      [name]: name === 'gender' ? parseInt(value, 10) : value,
+      [name]: value,
     }));
   };
-
-  const handleEducationChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
-    index: number
-  ) => {
-    const { name, value } = event.target;
-    if (name) {
-      setForm((prevForm) => ({
-        ...prevForm,
-        educations: prevForm.educations.map((edu, i) =>
-          i === index ? { ...edu, [name.split('.')[1]]: value } : edu
-        )
-      }));
-    }
-  };
+  
 
   const handleFileChange = (fieldName: string) => async (file: File | null) => {
     try {
@@ -130,51 +103,6 @@ export const useMentorForm = (id: string | null = null) => {
     }
   };
 
-  const handleEducationFileChange = (index: number, fieldName: string) => async (file: File | null) => {
-    try {
-      const response = file ? await userAPI.uploadFile(file, 'users') : null;
-      setForm(prevForm => ({
-        ...prevForm,
-        educations: prevForm.educations.map((edu, i) =>
-          i === index ? {
-            ...edu,
-            [fieldName]: response || '',
-            [`${fieldName}Origin`]: file ? file.name : ''
-          } : edu
-        )
-      }));
-    } catch (error) {
-      console.error(`Failed to upload education file (${fieldName}):`, error);
-    }
-  };
-  
-
-  const addEducation = () => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      educations: [
-        ...prevForm.educations,
-        {
-          name: '',
-          titleId: null,
-          major: '',
-          gpa: '',
-          yearGraduate: '',
-          certificateNumber: '',
-          certificate: '',
-          certificateOrigin: ''
-        }
-      ],
-    }));
-  };
-
-  const removeEducation = (index: number) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      educations: prevForm.educations.filter((_, i) => i !== index),
-    }));
-  };
-
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -195,11 +123,11 @@ export const useMentorForm = (id: string | null = null) => {
         response = await userAPI.add(form);
       }
       if (response) {
-        router.push('/backoffice/manage-user?success=true&action=' + (form.id ? 'edit' : 'add'));
+        router.push('/backoffice/manage-user?success=true&action=' + (form.id ? 'edit' : 'add') + '&userType=student');
       }
     } catch (error) {
-      console.error(form.id ? 'Error updating mentor:' : 'Error adding mentor:', error);
-      router.push('/backoffice/manage-user?success=false');
+      console.error(form.id ? 'Error updating student:' : 'Error adding student:', error);
+      router.push('/backoffice/manage-user?success=false&userType=student');
     }
   };
 
@@ -212,43 +140,36 @@ export const useMentorForm = (id: string | null = null) => {
       profilePictureOrigin: '',
       name: '',
       nik: '',
-      npwp: '',
       photoKtp: '',
       photoKtpOrigin: '',
-      photoNpwp: '',
-      photoNpwpOrigin: '',
       placeOfBirth: '',
       dateOfBirth: '',
       religionId: null,
       gender: 0,
-      mariageStatus: '',
-      numberOfChildren: '',
-      contract: '',
-      contractOrigin: '',
+
       phone: '',
       email: '',
-      linkedin: '',
-      emergencyContact: '',
+
       provinceId: null,
       districtId: null,
       subDistrictId: null,
       zipCode: '',
       addressKtp: '',
       addressDomicile: '',
-      educations: []
+
+      educationName: '',
+      educationLevelId: '',
+      educationStart: '',
+      educationEnd: '',
     });
   };
 
   return {
     form,
     handleInputChange,
-    handleEducationChange,
-    addEducation,
-    removeEducation,
     resetForm,
     handleFileChange,
     handleProfilePictureChange,
-    handleEducationFileChange,
     handleSubmit,
     showConfirmModal,
     setShowConfirmModal,
@@ -259,10 +180,10 @@ export const useMentorForm = (id: string | null = null) => {
   };
 };
 
-export const Mentor: React.FC = () => {
+export const Student: React.FC = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
-  const mentorFormProps = useMentorForm(id);
+  const studentFormProps = useStudentForm(id);
 
-  return <MentorView {...mentorFormProps} />;
+  return <StudentView {...studentFormProps} />;
 };

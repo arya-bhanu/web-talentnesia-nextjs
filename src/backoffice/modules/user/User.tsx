@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import type { User } from './user.type';
 import { userAPI } from './api/userApi';
 import UserView from './User.view';
-import { MentorFormData } from './mentor/MentorForm.type';
+import { MentorFormData } from './mentor/mentorForm.type';
 
 const convertUserToMentorFormData = (user: User): MentorFormData => {
   return {
@@ -45,6 +45,8 @@ const convertUserToMentorFormData = (user: User): MentorFormData => {
 const User: React.FC = () => {
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleActionButtonRow = async (id: string, action: "edit" | "delete", rowData?: User) => {
     if (action === 'edit' && rowData) {
@@ -72,6 +74,8 @@ const User: React.FC = () => {
       isPopupOpen={isPopupOpen}
       setIsPopupOpen={setIsPopupOpen}
       handleActionButtonRow={handleActionButtonRow}
+      isLoading={isLoading}
+      setIsLoading={setIsLoading}
     />
   );
 };
