@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { SchoolAPI } from '../../../api/schoolApi';
 import { AddSchoolViewProps } from './addSchool.type';
 import { getImageUrl } from '../../../api/minioApi';
+import NotificationModal from '@/backoffice/components/notification-modal/notificationModal';
 
 const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
   const router = useRouter();
@@ -24,6 +25,8 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
   });
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
   const [hasError, setHasError] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const handleInputChange = (field: keyof APIResponseSchool, value: string) => {
     setFormData((prevData) => ({
@@ -60,15 +63,23 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
 
     if (!isFormValid) {
       console.log(formData)
+      setModalMessage('Please fill in all required fields.');
+      setShowModal(true);
       return;
     }
 
     try {
       const newSchool = await SchoolAPI.add(formData as APIResponseSchool);
       console.log('School added successfully:', newSchool);
+      setModalMessage('School added successfully!');
+      setHasError(false);
+      setShowModal(true);
       router.push('/backoffice/school');
     } catch (error) {
       console.error('Failed to add school:', error);
+      setModalMessage('Failed to add school. Please try again.');
+      setHasError(true);
+      setShowModal(true);
     }
   };
 
@@ -187,6 +198,12 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
           Submit
         </button>
       </div>
+      <NotificationModal
+      show={showModal}
+      onClose={() => setShowModal(false)}
+      message={modalMessage}
+      isError={hasError}
+    />
     </form>
   );
 };

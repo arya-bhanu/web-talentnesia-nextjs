@@ -12,6 +12,9 @@ const UpdateSchool: React.FC = () => {
   const [hasError, setHasError] = useState(false);
   const params = useSearchParams();
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
 
   const id = params.get('schoolId');
 
@@ -53,11 +56,11 @@ const UpdateSchool: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!schoolData) return;
-
+  
     setHasError(true);
-
+  
     const requiredFields: (keyof APIResponseSchool)[] = [
       'name',
       'pic',
@@ -66,16 +69,33 @@ const UpdateSchool: React.FC = () => {
       'address',
     ];
     const isFormValid = requiredFields.every((field) => schoolData[field]);
-
-    if (!isFormValid) return;
-
+  
+    if (!isFormValid) {
+      setModalMessage('Please fill in all required fields.');
+      setShowModal(true);
+      return;
+    }
+  
     try {
       await SchoolAPI.update(schoolData.id, schoolData);
-      router.push('/backoffice/school');
+      setModalMessage('School updated successfully!');
+      setHasError(false);
+      setShowModal(true);
     } catch (error) {
       console.error('Failed to update school:', error);
+      setModalMessage('Failed to update school. Please try again.');
+      setShowModal(true);
     }
   };
+  
+  const handleModalClose = () => {
+    setShowModal(false);
+    if (!hasError) {
+      router.push('/backoffice/school');
+    }
+  };
+  
+  
 
   if (!schoolData) return <div>Loading...</div>;
 
@@ -87,6 +107,11 @@ const UpdateSchool: React.FC = () => {
       handleInputChange={handleInputChange}
       handleImageChange={handleImageChange}
       handleSubmit={handleSubmit}
+      showModal={showModal}
+      setModalMessage={setModalMessage}
+      setShowModal={setShowModal}
+      modalMessage={modalMessage}
+      handleModalClose={handleModalClose}
     />
   );
 };
