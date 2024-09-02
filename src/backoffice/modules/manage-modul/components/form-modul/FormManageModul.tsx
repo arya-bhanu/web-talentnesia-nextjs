@@ -56,27 +56,29 @@ const FormManageModul = () => {
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         if (submitType.type === 'defaultSubmit') {
           router.push('/backoffice/manage-modul');
+          openModal({
+            status: 'success',
+            timeOut: 2000,
+            action: 'update',
+            message: 'data modul berhasil diupdate',
+          });
         } else {
           router.push(
             '/backoffice/manage-modul/update/chapter?modulId=' + moduleId,
           );
         }
-        openModal({
-          status: 'success',
-          timeOut: 2000,
-          action: 'update',
-          message: 'data modul berhasil diupdate',
-        });
       } else {
         const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         const id = responseCreate.data.id;
+
+        openModal({ status: 'success', timeOut: 2000, action: 'create' });
+
         if (submitType.type === 'defaultSubmit') {
           router.push(`/backoffice/manage-modul`);
         } else {
           router.push(`/backoffice/manage-modul/create/chapter?modulId=${id}`);
         }
-        openModal({ status: 'success', timeOut: 2000, action: 'create' });
       }
     } catch (err) {
       console.error(err);

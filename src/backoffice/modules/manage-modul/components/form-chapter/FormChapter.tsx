@@ -11,12 +11,14 @@ import {
 } from '../../api/manageModelApi';
 import useCreateQueryParams from '@/hooks/useCreateQueryParams';
 import { ISubmitType } from './formChapter.type';
+import { useStatusModalStore } from '@/lib/store';
 
 const FormChapter = () => {
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
+  const { openModal } = useStatusModalStore();
 
   const createQuery = useCreateQueryParams();
   const [actionSubChapter, setActionSubChapter] = useState<'exam' | 'content'>(
@@ -26,6 +28,7 @@ const FormChapter = () => {
     type: 'nextSubmit',
   });
   const [openModalAddContent, setOpenModalAddContent] = useState(false);
+  
   const { mutateAsync: createChapterAsync } = useMutation({
     mutationKey: ['chapter'],
     mutationFn: createChapter,
@@ -67,9 +70,15 @@ const FormChapter = () => {
         });
         setOpenModalAddContent(false);
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
+        openModal({
+          status: 'success',
+          action: 'create',
+          message: 'Konten berhasil dibuat',
+        });
       }
     } catch (err) {
       console.error(err);
+      openModal({ status: 'error', message: JSON.stringify(err) });
     }
   };
 
@@ -89,7 +98,11 @@ const FormChapter = () => {
         const chapterId = response.data.id;
 
         if (submitType.type === 'defaultSubmit') {
-          // router.back()
+          openModal({
+            status: 'success',
+            action: 'create',
+            message: 'chapter berhasil dibuat',
+          });
           return router.replace(
             `/backoffice/manage-modul/create/?modulId=${moduleId}`,
           );
@@ -107,7 +120,11 @@ const FormChapter = () => {
         await editChapterAsync({ chapterId, title: chapter });
 
         if (submitType.type === 'defaultSubmit') {
-           // router.back()
+          openModal({
+            status: 'success',
+            action: 'update',
+            message: 'chapter berhasil diupdate',
+          });
           return router.replace(
             `/backoffice/manage-modul/update/?modulId=${moduleId}`,
           );
@@ -123,6 +140,7 @@ const FormChapter = () => {
       }
     } catch (err) {
       console.error(err);
+      openModal({ status: 'error', message: JSON.stringify(err) });
     }
   };
 

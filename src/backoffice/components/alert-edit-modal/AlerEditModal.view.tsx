@@ -21,7 +21,7 @@ const AlertEditModalView: React.FC<IAlertEditModal> = ({
           </h3>
           <div className="flex justify-center gap-4">
             <Button
-              color="success"
+              className="bg-cyan-600 hover:bg-cyan-600/50"
               onClick={() => {
                 setIsConfirmed(true);
                 setOpenModal(false);

@@ -28,7 +28,7 @@ const ToasterProvider = ({ children }: { children: ReactNode }) => {
             dismissible
             show={isModalActive}
             onClose={closeModal}
-            size={'md'}
+            size={status === 'error' ? 'xl' : 'md'}
           >
             <Modal.Body>
               <div className="flex flex-col items-center">

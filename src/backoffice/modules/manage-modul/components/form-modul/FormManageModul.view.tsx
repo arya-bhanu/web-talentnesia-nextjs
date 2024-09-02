@@ -25,8 +25,10 @@ const FormManageModulView: React.FC<
   useEffect(() => {
     const form = formRef.current;
     if (isEditConfrm && form) {
-      (form as HTMLFormElement).requestSubmit();
       setSubmitType({ type: 'defaultSubmit' });
+      setTimeout(() => {
+        (form as HTMLFormElement).requestSubmit();
+      }, 200);
     }
   }, [isEditConfrm]);
   return (
@@ -107,7 +109,13 @@ const FormManageModulView: React.FC<
             </Link>
           </Button>
           <Button
-            onClick={() => setEditModalActive(true)}
+            onClick={() => {
+              if (id) {
+                setEditModalActive(true);
+              } else {
+                setIsEditConfrm(true);
+              }
+            }}
             type="button"
             color={'warning'}
             className="bg-[#FFC862] text-black"

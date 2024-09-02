@@ -105,6 +105,8 @@ const EditableListContentView: React.FC<
           setOpenModal: setOpenModalEdit,
         }}
         handleSubmit={handleSubmitEdit}
+        buttonConfirmTitle='Update'
+        isEdit
         title="Update Content"
       >
         {openModalEdit && <FormContent contentId={injectId} />}

@@ -22,13 +22,15 @@ export const useStatusModalStore = create<IStatusModalStore>((set) => ({
   closeModal: () => set({ isModalActive: false }),
   modalMessage: '',
   openModal: (params) => {
-    setTimeout(() => {
-      set(() => {
-        return {
-          isModalActive: false,
-        };
-      });
-    }, params.timeOut || 1500);
+    if (params.status !== 'error') {
+      setTimeout(() => {
+        set(() => {
+          return {
+            isModalActive: false,
+          };
+        });
+      }, params.timeOut || 1500);
+    }
     set(() => {
       return {
         isModalActive: true,
