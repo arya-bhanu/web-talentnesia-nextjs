@@ -4,7 +4,7 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/dashboard.svg',
     title: 'Dashboard',
-    path: '#',
+    path: '/backoffice/dashboard',
   },
   {
     icon: '/icons/sidebar/course.svg',
@@ -14,12 +14,12 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/program.svg',
     title: 'Manage Program',
-    path: '#',
+    path: '/backoffice/manage-program',
   },
   {
     icon: '/icons/sidebar/user.svg',
     title: 'Manage User',
-    path: '#',
+    path: '/backoffice/manage-user',
   },
   {
     icon: '/icons/sidebar/setting.svg',
@@ -40,7 +40,7 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/cms.svg',
     title: 'CMS',
-    path: '',
+    path: '#',
   },
   {
     icon: '/icons/sidebar/faq.svg',

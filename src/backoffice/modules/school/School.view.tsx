@@ -63,12 +63,12 @@ const SchoolView: React.FC<ISchoolView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <Link href={`/backoffice/school/detail-school/${id}`}>
+                  <Link href={`/backoffice/school/detail-school?schoolId=${id}`}>
                     <button className="hover:text-green-500 hover:underline">
                       Detail
                     </button>
                   </Link>
-                  <Link href={`/backoffice/school/edit-school/${id}`}>
+                  <Link href={`/backoffice/school/edit-school?schoolId=${id}`}>
                     <button className="hover:text-blue-700 hover:underline">
                       Edit
                     </button>

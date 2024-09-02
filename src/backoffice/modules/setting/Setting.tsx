@@ -7,7 +7,7 @@ import { getImageUrl } from '../school/api/minioApi';
 import { DropFile } from './components/drop-files-input/dropFilesInput';
 import Link from 'next/link';
 import { Modal } from 'flowbite-react';
-import { HiOutlineCheckCircle } from 'react-icons/hi';
+import { HiOutlineCheckCircle, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { DecodedToken, decodeToken } from '@/lib/tokenDecoder';
 
 interface UserData extends DecodedToken {
@@ -25,6 +25,7 @@ export const Setting = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [userData, setUserData] = useState<UserData>({
     userId: '',
@@ -35,7 +36,7 @@ export const Setting = () => {
     isLoggedIn: '',
     token: '',
     password: '',
-    hashedPassword: ''
+    hashedPassword: '',
   });
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
   const [password, setPassword] = useState('');
@@ -48,7 +49,9 @@ export const Setting = () => {
       if (decodedToken) {
         setUserData(decodedToken as UserData);
         try {
-          const data = await getUserProfile(decodedToken.userId || 'fngdme2va5ndvivq');
+          const data = await getUserProfile(
+            decodedToken.userId || 'fngdme2va5ndvivq',
+          );
           if (data.profilePicture) {
             try {
               const imageUrl = await getImageUrl(data.profilePicture);
@@ -60,17 +63,19 @@ export const Setting = () => {
           } else {
             setFullImageUrl('');
           }
-          setUserData(prevData => ({ ...prevData, ...data, hashedPassword: data.password }));
+          setUserData((prevData) => ({
+            ...prevData,
+            ...data,
+            hashedPassword: data.password,
+          }));
         } catch (error) {
           console.error('Error fetching user data');
         }
       }
     };
-  
+
     fetchUserData();
   }, []);
-  
-  
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -83,16 +88,16 @@ export const Setting = () => {
 
   const handleFileChange = async (fileUrl: string) => {
     const fullUrl = await getImageUrl(fileUrl);
-    setUserData(prevData => ({ ...prevData, profilePicture: fileUrl }));
+    setUserData((prevData) => ({ ...prevData, profilePicture: fileUrl }));
     setFullImageUrl(fullUrl);
   };
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (password !== confirmPassword) {
         setModalMessage('Passwords do not match');
+        setIsError(true);
         setShowModal(true);
         return;
       }
@@ -101,16 +106,17 @@ export const Setting = () => {
         updatedData.password = password;
       }
       await updateUserProfile(userData.userId, updatedData);
-      
+
       setModalMessage('Profile updated successfully!');
+      setIsError(false);
       setShowModal(true);
     } catch (error) {
       console.error('Error updating profile', error);
       setModalMessage('Failed to update profile');
+      setIsError(true);
       setShowModal(true);
     }
   };
-  
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-row space-x-8 p-6">
@@ -236,7 +242,9 @@ export const Setting = () => {
             value={userData.gender || ''}
             onChange={handleInputChange}
           >
-            <option value="" hidden>Select gender</option>
+            <option value="" hidden>
+              Select gender
+            </option>
             <option value="1">Male</option>
             <option value="2">Female</option>
           </select>
@@ -332,29 +340,6 @@ export const Setting = () => {
             Submit
           </button>
         </div>
-        <Modal show={showModal} onClose={() => setShowModal(false)}>
-          <Modal.Header >
-            <div className="flex items-center">
-              <HiOutlineCheckCircle className="mr-2 h-5 w-5 text-green-500" />
-              <span>Success</span>
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="text-center">
-              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                {modalMessage}
-              </p>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              onClick={() => setShowModal(false)}
-            >
-              Close
-            </button>
-          </Modal.Footer>
-        </Modal>
       </div>
     </form>
   );

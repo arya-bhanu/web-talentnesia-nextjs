@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { ListProgramCardView } from './ListProgramCard.view';
 import { ListProgramCardAPI } from './api/listProgramCardApi';
 import { ListProgramCardType } from './listProgramCard.type';
@@ -11,7 +11,8 @@ interface ListProgramCardProps {
 }
 
 const ListProgramCard: React.FC<ListProgramCardProps> = ({ className }) => {
-    const { id } = useParams<{ id: string }>();
+    const params = useSearchParams();
+    const schoolId = params.get('schoolId')!;
     const [programCards, setProgramCards] = useState<ListProgramCardType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -20,21 +21,21 @@ const ListProgramCard: React.FC<ListProgramCardProps> = ({ className }) => {
 
     useEffect(() => {
         const fetchProgramCards = async () => {
-            if (!id) {
+            if (!schoolId) {
                 setError("No school ID provided");
                 return;
             }
 
             try {
-                const data = await ListProgramCardAPI.fetchProgram(id);
+                const data = await ListProgramCardAPI.fetchProgram(schoolId);
                 setProgramCards(data);
             } catch (error) {
-                console.error('Failed to fetch program cards:');
+                console.error('Failed to fetch program cards');
                 setError("Failed to load program cards. Please try again.");
             }
         };
         fetchProgramCards();
-    }, [id]);
+    }, [schoolId]);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -50,7 +51,6 @@ const ListProgramCard: React.FC<ListProgramCardProps> = ({ className }) => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
-    
     const nextPage = () => {
         if (currentPage < Math.ceil(filteredItems.length / itemsPerPage)) {
             setCurrentPage(currentPage + 1);

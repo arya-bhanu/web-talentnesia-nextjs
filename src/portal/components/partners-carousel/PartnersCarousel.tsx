@@ -30,7 +30,7 @@ const PartnersCarousel = ({
       
       <div className="mt-5 md:mt-16 lg:mt-20 flex items-center flex-wrap justify-center gap-1 sm:gap-3 lg:justify-between mx-auto">
         {partners.map((partner, index: number) => (
-          <>
+          <div key={index}>
           <SkeletonLoader visible={isLoading ? isLoading : false} variant='image' width={120}
           height={120} />
           {
@@ -45,7 +45,7 @@ const PartnersCarousel = ({
               />
             </Link>
           }
-          </>
+          </div>
           
         ))}
       </div>

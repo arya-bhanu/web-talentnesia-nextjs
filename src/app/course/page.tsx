@@ -1,8 +1,8 @@
 import React from 'react'
-import CourseView from '@/portal/modules/course/Course.view'
+import { Course } from '@/portal/modules/course'
 
 export default function CoursePage() {
   return (
-    <CourseView data={{ courses: [] }}/>
+    <Course />
   )
 }

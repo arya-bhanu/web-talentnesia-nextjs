@@ -7,6 +7,7 @@ import { HomeProps, HomeData } from './home.type';
 export const Home = async () => {
   try {
     const data = await getHomeData();
+    console.log('data', data);
     return <HomeView data={data} />;
   } catch (error) {
     return <div>Error loading data</div>;

@@ -1,5 +1,5 @@
 export interface CoursesData {
-    courses: any[];
+    courses: any[] ;
   }
   
   export interface CoursesViewProps {
