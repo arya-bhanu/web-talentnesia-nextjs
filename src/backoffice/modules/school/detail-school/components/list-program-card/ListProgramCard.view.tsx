@@ -17,8 +17,6 @@ export const ListProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) =>
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [programDetail, setProgramDetail] = useState<ProgramDetail | null>(null);
 
-  console.log('data', data);
-
   useEffect(() => {
     const fetchImageUrl = async () => {
       if (data.imageUrl) {
@@ -47,6 +45,7 @@ export const ListProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) =>
     try {
       const response = await ListProgramCardAPI.fetchDetailProgram(data.id);
       setProgramDetail(response.data);
+      console.log('data', data);
       setSidebarVisible(false);
     } catch (error) {
       console.error('Error fetching program details:', error);

@@ -1,88 +1,36 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { SchoolAPI } from '../../../api/schoolApi';
+import React from 'react';
+import { APIResponseSchool } from '../../../school.type';
 import ImageUploadInput from '../../../components/image-upload-input/ImageUploadInput';
 import Link from 'next/link';
-import { APIResponseSchool } from '../../../school.type';
-import { getImageUrl } from '../../../api/minioApi';
+import NotificationModal from '@/backoffice/modules/school/components/notification-modal/notificationModal';
 
 interface UpdateSchoolViewProps {
   initialData: APIResponseSchool;
+  fullImageUrl: string;
+  hasError: boolean;
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  handleInputChange: (field: keyof APIResponseSchool, value: string) => void;
+  handleImageChange: (imageUrl: string) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  setModalMessage: (message: string) => void;
+  modalMessage: string;
+  handleModalClose: () => void;
 }
 
-const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
-  const router = useRouter();
-  const [formData, setFormData] = useState<APIResponseSchool | null>(null);
-  const [fullImageUrl, setFullImageUrl] = useState<string>('');
-  const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    if (initialData) {
-      setFormData(initialData);
-  
-      if (initialData.imageUrl) {
-        getImageUrl(initialData.imageUrl)
-          .then(url => {
-            if (url) {
-              setFullImageUrl(url);
-            } else {
-              console.error('Fetched image URL is undefined or empty');
-            }
-          })
-          .catch(error => console.error('Error fetching image URL:', error));
-      }
-    }
-  }, [initialData]);
-
-  const handleInputChange = (field: keyof APIResponseSchool, value: string) => {
-    setFormData((prevData) => prevData ? ({
-      ...prevData,
-      [field]: value,
-    }) : null);
-  };
-
-  const handleImageChange = async (imageUrl: string) => {
-    try {
-      const fullUrl = await getImageUrl(imageUrl);
-      console.log('Image URL:', imageUrl);
-      console.log('Full image URL:', fullUrl);
-      setFullImageUrl(fullUrl);
-      handleInputChange('imageUrl', imageUrl);
-    } catch (error) {
-      console.error('Failed to get full image URL:', error);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!formData) {
-      return;
-    }
-
-    setHasError(true);
-
-    const requiredFields: (keyof APIResponseSchool)[] = ['name', 'pic', 'email', 'phone', 'address'];
-    const isFormValid = requiredFields.every(field => formData[field]);
-
-    if (!isFormValid) {
-      return;
-    }
-
-    try {
-      const updatedSchool = await SchoolAPI.update(formData.id, formData);
-      router.push('/backoffice/school');
-    } catch (error) {
-      console.error('Failed to update school:');
-    }
-  };
-
-  if (!formData) {
-    return <div>Loading...</div>;
-  }
-
+const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({
+  initialData,
+  fullImageUrl,
+  hasError,
+  showModal,
+  handleModalClose,
+  modalMessage,
+  handleInputChange,
+  handleImageChange,
+  handleSubmit,
+}) => {
   return (
     <form onSubmit={handleSubmit} className="p-6 rounded-lg bg-white">
       <div className="mb-6 flex">
@@ -99,12 +47,16 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
           <input
             type="text"
             placeholder="Input School Name"
-            value={formData.name || ''}
+            value={initialData.name || ''}
             onChange={(e) => handleInputChange('name', e.target.value)}
             required
-            className={`block w-full p-2 border ${hasError && !formData.name ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+            className={`block w-full p-2 border ${
+              hasError && !initialData.name
+                ? 'border-red-500'
+                : 'border-gray-300'
+            } rounded-lg`}
           />
-          {hasError && !formData.name && (
+          {hasError && !initialData.name && (
             <p className="text-red-500 text-xs mt-1">
               School Name is required.
             </p>
@@ -118,12 +70,16 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
           <input
             type="text"
             placeholder="Input PIC"
-            value={formData.pic || ''}
+            value={initialData.pic || ''}
             onChange={(e) => handleInputChange('pic', e.target.value)}
             required
-            className={`block w-full p-2 border ${hasError && !formData.pic ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+            className={`block w-full p-2 border ${
+              hasError && !initialData.pic
+                ? 'border-red-500'
+                : 'border-gray-300'
+            } rounded-lg`}
           />
-          {hasError && !formData.pic && (
+          {hasError && !initialData.pic && (
             <p className="text-red-500 text-xs mt-1">PIC is required.</p>
           )}
         </div>
@@ -135,12 +91,16 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
           <input
             type="email"
             placeholder="Input Email"
-            value={formData.email || ''}
+            value={initialData.email || ''}
             onChange={(e) => handleInputChange('email', e.target.value)}
             required
-            className={`block w-full p-2 border ${hasError && !formData.email ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+            className={`block w-full p-2 border ${
+              hasError && !initialData.email
+                ? 'border-red-500'
+                : 'border-gray-300'
+            } rounded-lg`}
           />
-          {hasError && !formData.email && (
+          {hasError && !initialData.email && (
             <p className="text-red-500 text-xs mt-1">Email is required.</p>
           )}
         </div>
@@ -152,12 +112,16 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
           <input
             type="tel"
             placeholder="Input Phone Number"
-            value={formData.phone || ''}
+            value={initialData.phone || ''}
             onChange={(e) => handleInputChange('phone', e.target.value)}
             required
-            className={`block w-full p-2 border ${hasError && !formData.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+            className={`block w-full p-2 border ${
+              hasError && !initialData.phone
+                ? 'border-red-500'
+                : 'border-gray-300'
+            } rounded-lg`}
           />
-          {hasError && !formData.phone && (
+          {hasError && !initialData.phone && (
             <p className="text-red-500 text-xs mt-1">
               Phone Number is required.
             </p>
@@ -171,12 +135,16 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
           <input
             type="text"
             placeholder="Input School Address"
-            value={formData.address || ''}
+            value={initialData.address || ''}
             onChange={(e) => handleInputChange('address', e.target.value)}
             required
-            className={`block w-full p-2 border ${hasError && !formData.address ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+            className={`block w-full p-2 border ${
+              hasError && !initialData.address
+                ? 'border-red-500'
+                : 'border-gray-300'
+            } rounded-lg`}
           />
-          {hasError && !formData.address && (
+          {hasError && !initialData.address && (
             <p className="text-red-500 text-xs mt-1">Address is required.</p>
           )}
         </div>
@@ -194,6 +162,12 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({ initialData }) => {
           Update
         </button>
       </div>
+      <NotificationModal
+        show={showModal}
+        onClose={handleModalClose}
+        message={modalMessage}
+        isError={hasError}
+      />
     </form>
   );
 };
