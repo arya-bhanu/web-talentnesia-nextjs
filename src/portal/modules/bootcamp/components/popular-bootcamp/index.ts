@@ -1,0 +1,1 @@
+export { PopularCourses } from "./PopularCourse";

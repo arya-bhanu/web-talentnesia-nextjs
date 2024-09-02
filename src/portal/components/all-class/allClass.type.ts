@@ -4,5 +4,6 @@ import { CourseCardProps } from '@/portal/components/course-card/courseCard.type
 export interface AllClassProps {
   courses: CourseCardProps[];
   filterOptions: FilterCategory[]; 
-  isLoading?: boolean
+  isLoading?: boolean,
+  title?: string
 }

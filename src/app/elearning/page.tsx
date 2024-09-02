@@ -1,8 +1,8 @@
 import React from 'react'
-import { Course } from '@/portal/modules/course'
+import { Elearning } from '@/portal/modules/elearning'
 
 export default function CoursePage() {
   return (
-    <Course />
+    <Elearning />
   )
 }

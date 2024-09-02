@@ -16,6 +16,7 @@ const FilterView: React.FC<FilterViewProps> = ({ filterCategories }) => {
         <details
           key={index}
           className="group overflow-hidden transition-all duration-300 ease-in-out"
+          open={index === 0}
         >
           <summary
             className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-700 transition"
