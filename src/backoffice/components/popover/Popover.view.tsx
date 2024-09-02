@@ -16,19 +16,21 @@ const renderContent = (
   id: string,
 ) => {
   return (
-    <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-      <Link
-        href={`/backoffice/manage-modul/update?modulId=${id}`}
-        className="hover:text-blue-500 hover:underline"
-      >
-        Edit
-      </Link>
-      <button
-        className="hover:text-red-500 hover:underline"
-        onClick={() => setOpenModal(true)}
-      >
-        Delete
-      </button>
+    <div className="relative flex justify-center">
+      <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
+        <Link
+          href={`/backoffice/manage-modul/update?modulId=${id}`}
+          className="hover:text-blue-500 hover:underline"
+        >
+          Edit
+        </Link>
+        <button
+          className="hover:text-red-500 hover:underline"
+          onClick={() => setOpenModal(true)}
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 };
@@ -49,7 +51,6 @@ const PopoverView: React.FC<IPopover> = ({
     if (isConfirmed) {
       handleActionButtonRow(id, 'delete');
     }
-    // dont change dependencies
   }, [isConfirmed]);
 
   return (

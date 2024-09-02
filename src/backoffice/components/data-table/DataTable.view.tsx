@@ -91,7 +91,7 @@ export function DataTableView<T>({
                       key={cell.id}
                       className={
                         cell.column.id === 'action'
-                          ? 'px-6 py-4 text-center'
+                          ? 'px-6 py-4 text-center items-center '
                           : 'px-6 py-4'
                       }
                     >

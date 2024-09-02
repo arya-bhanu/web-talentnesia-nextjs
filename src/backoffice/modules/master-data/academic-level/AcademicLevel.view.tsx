@@ -20,7 +20,6 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
-  role
 }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);

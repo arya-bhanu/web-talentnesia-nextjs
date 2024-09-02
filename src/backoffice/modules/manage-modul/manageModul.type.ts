@@ -58,8 +58,10 @@ export interface ExamQuestion {
 }
 
 export interface IManageModulView {
-  data?: APIResponseManageModul[];
+  data: APIResponseManageModul[];
+  Filter: string;
   openPopoverIndex: number;
+  setFilter: React.Dispatch<SetStateAction<string>>;
+  handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
   setOpenPopoverIndex: React.Dispatch<SetStateAction<number>>;
-  handleActionButtonRow: (id: string, action: 'delete' | 'edit') => void;
 }

@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { SchoolAPI } from '../../../api/schoolApi';
 import { AddSchoolViewProps } from './addSchool.type';
 import { getImageUrl } from '../../../api/minioApi';
-import NotificationModal from '@/backoffice/components/notification-modal/notificationModal';
+import NotificationModal from '@/backoffice/modules/school/components/notification-modal/notificationModal';
 
 const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
   const router = useRouter();

@@ -4,7 +4,7 @@ import React from 'react';
 import { APIResponseSchool } from '../../../school.type';
 import ImageUploadInput from '../../../components/image-upload-input/ImageUploadInput';
 import Link from 'next/link';
-import NotificationModal from '@/backoffice/components/notification-modal/notificationModal';
+import NotificationModal from '@/backoffice/modules/school/components/notification-modal/notificationModal';
 
 interface UpdateSchoolViewProps {
   initialData: APIResponseSchool;
