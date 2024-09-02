@@ -79,14 +79,14 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
               <div className="w-1/2">
                 <label className="block mb-2 text-sm font-medium text-gray-900">Start Date</label>
                 <Datepicker
-                  selectedDate={formatDate(formData.startDate)} // Format tanggal yang sudah diperbaiki
+                  selectedDate={formatDate(formData.startDate)} 
                   setSelectedDate={(date) => handleInputChange('startDate', date)}
                 />
               </div>
               <div className="w-1/2">
                 <label className="block mb-2 text-sm font-medium text-gray-900">End Date</label>
                 <Datepicker
-                  selectedDate={formatDate(formData.endDate)} // Format tanggal yang sudah diperbaiki
+                  selectedDate={formatDate(formData.endDate)} 
                   setSelectedDate={(date) => handleInputChange('endDate', date)}
                 />
               </div>

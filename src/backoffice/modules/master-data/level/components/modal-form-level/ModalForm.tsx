@@ -35,7 +35,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
         });
       }
     } 
-    // Reset form data when the modal is closed
+
     else {
       setFormData({
         level: '',
@@ -63,12 +63,9 @@ const ModalForm: React.FC<ModalFormProps> = ({
         code: formData.code,
         active: formData.status,
       };
-
-      if (id) {
-        //update
-      } else {
+      
         await levelAPI.add(data);
-      }
+      
 
       handleClose(); 
       if (onSave) {

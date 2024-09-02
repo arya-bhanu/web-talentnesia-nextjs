@@ -28,7 +28,7 @@ export interface ModalFormViewProps {
     active: number; 
   };
   hasError: boolean;
-  handleInputChange: (field: string, value: string | number | boolean) => void; // Updated to handle multiple types
+  handleInputChange: (field: string, value: string | number | boolean) => void; 
   handleSave: () => void;
   onClose: () => void;
 }

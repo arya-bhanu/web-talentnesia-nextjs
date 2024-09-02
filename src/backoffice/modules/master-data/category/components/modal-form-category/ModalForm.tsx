@@ -53,12 +53,12 @@ const ModalForm: React.FC<ModalFormProps> = ({
       };
 
       if (id) {
-        // Handle update logic here if needed
+        
       } else {
         await categoryAPI.add(data);
       }
 
-      handleClose(); // Close the modal and reset the state
+      handleClose(); 
       if (onSave) {
         await onSave(id, data);
       }
