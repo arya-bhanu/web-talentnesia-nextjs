@@ -2,24 +2,22 @@
 
 import { useState, useEffect } from 'react';
 
-import { StudentFormData } from '../student/studentForm.type';
-import { StudentView } from './StudentForm.view';
+import { SchoolOperatorFormData } from '../school-operator/schoolOperatorForm.type';
+import { SchoolOperatorView } from './SchoolOperatorForm.view';
 import { userAPI } from '../api/userApi';
 import { useSearchParams } from 'next/navigation';
 import { ResponseModal } from '../components/response-modal/responseModal';
 import { useRouter } from 'next/navigation';
 
-export const useStudentForm = (id: string | null = null) => {
-  const [form, setForm] = useState<StudentFormData>({
+export const useSchoolOperatorForm = (id: string | null = null) => {
+  const [form, setForm] = useState<SchoolOperatorFormData>({
     id: id || '',
-    role: 4,
+    role: 2,
     active: 1,
     profilePicture: '',
     profilePictureOrigin: '',
     name: '',
     nik: '',
-    photoKtp: '',
-    photoKtpOrigin: '',
     placeOfBirth: '',
     dateOfBirth: '',
     religionId: null,
@@ -32,54 +30,43 @@ export const useStudentForm = (id: string | null = null) => {
     districtId: null,
     subDistrictId: null,
     zipCode: '',
-    addressKtp: '',
     addressDomicile: '',
 
-    educationName: '',
-    educationLevelId: '',
-    educationStart: '',
-    educationEnd: '',
+    educationInstitutionId: '',
   });
 
   useEffect(() => {
     if (id) {
-      fetchStudentData(id);
+      fetchSchoolOperatorData(id);
     }
   }, [id]);
 
-  const fetchStudentData = async (id: string) => {
+  const fetchSchoolOperatorData = async (id: string) => {
     try {
       const response = await userAPI.show(id);
       if (response.success && response.data) {
-        const studentData = response.data;
+        const schoolOperatorData = response.data;
         setForm(prevForm => ({
           ...prevForm,
-          ...studentData,
-          photoKtp: studentData.photoKtp || '',
-          profilePicture: studentData.profilePicture || '',
-          educationStart: studentData.educationStart ? parseInt(studentData.educationStart, 10) : null,
-          educationEnd: studentData.educationEnd ? parseInt(studentData.educationEnd, 10) : null,
+          ...schoolOperatorData,
+          profilePicture: schoolOperatorData.profilePicture || '',
         }));
       }
     } catch (error) {
-      console.error('Error fetching student data:', error);
+      console.error('Error fetching schoolOperator data:', error);
     }
   };
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: unknown } }
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = event.target;
     setForm((prevForm) => ({
       ...prevForm,
-      [name]: name === 'gender' 
-        ? typeof value === 'string' ? parseInt(value, 10) : prevForm.gender
-        : ['educationStart', 'educationEnd'].includes(name)
-          ? typeof value === 'string' ? value : prevForm[name as keyof StudentFormData]
-          : value,
+      [name]: name === 'gender' ? parseInt(value, 10) : value,
     }));
   };
-
+  
 
   const handleFileChange = (fieldName: string) => async (file: File | null) => {
     try {
@@ -127,11 +114,11 @@ export const useStudentForm = (id: string | null = null) => {
         response = await userAPI.add(form);
       }
       if (response) {
-        router.push('/backoffice/manage-user?success=true&action=' + (form.id ? 'edit' : 'add') + '&userType=student');
+        router.push('/backoffice/manage-user?success=true&action=' + (form.id ? 'edit' : 'add') + '&userType=School Operator');
       }
     } catch (error) {
-      console.error(form.id ? 'Error updating student:' : 'Error adding student:', error);
-      router.push('/backoffice/manage-user?success=false&userType=student');
+      console.error(form.id ? 'Error updating School Operator:' : 'Error adding School Operator:', error);
+      router.push('/backoffice/manage-user?success=false&userType=School Operator');
     }
   };
 
@@ -144,8 +131,6 @@ export const useStudentForm = (id: string | null = null) => {
       profilePictureOrigin: '',
       name: '',
       nik: '',
-      photoKtp: '',
-      photoKtpOrigin: '',
       placeOfBirth: '',
       dateOfBirth: '',
       religionId: null,
@@ -158,13 +143,9 @@ export const useStudentForm = (id: string | null = null) => {
       districtId: null,
       subDistrictId: null,
       zipCode: '',
-      addressKtp: '',
       addressDomicile: '',
 
-      educationName: '',
-      educationLevelId: '',
-      educationStart: '',
-      educationEnd: '',
+      educationInstitutionId: '',
     });
   };
 
@@ -184,10 +165,10 @@ export const useStudentForm = (id: string | null = null) => {
   };
 };
 
-export const Student: React.FC = () => {
+export const SchoolOperator: React.FC = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
-  const studentFormProps = useStudentForm(id);
+  const schoolOperatorFormProps = useSchoolOperatorForm(id);
 
-  return <StudentView {...studentFormProps} />;
+  return <SchoolOperatorView {...schoolOperatorFormProps} />;
 };

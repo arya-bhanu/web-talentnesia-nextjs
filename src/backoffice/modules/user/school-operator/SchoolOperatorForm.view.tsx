@@ -3,24 +3,23 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { useStudentForm } from './StudentForm';
+import { useSchoolOperatorForm } from './SchoolOperatorForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
 import { cityAPI } from '../../master-data/region/city/api/cityApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
-import { academicLevelAPI } from '../../master-data/academic-level/api/academicLevelApi';
+import { academicInstitutionAPI } from '../../school/api/schoolApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
 import { Component as Datepicker } from '../components/datepicker/Datepicker';
 import { Component as FileInput } from '../components/file-input/FileInput';
 import { ProfilePictureInput } from '../components/profile-picture-input/ProfilePictureInput';
 import { Component as SelectYear } from '../components/select-year/selectYear';
-import { Region } from '../student/studentForm.type';
+import { Region } from '../school-operator/schoolOperatorForm.type';
 import Link from 'next/link';
 import { ResponseModal } from '../components/response-modal/responseModal';
 
+type SchoolOperatorViewProps = ReturnType<typeof useSchoolOperatorForm>;
 
-type StudentViewProps = ReturnType<typeof useStudentForm>;
-
-export const StudentView: React.FC<StudentViewProps> = ({
+export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
   form,
     handleInputChange,
     resetForm,
@@ -37,7 +36,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
   const [provinces, setProvinces] = useState<Region[]>([]);
   const [districts, setDistricts] = useState<Region[]>([]);
   const [subDistricts, setSubDistricts] = useState<Region[]>([]);
-  const [academicLevels, setAcademicLevels] = useState<Region[]>([]);
+  const [academicInstitutions, setAcademicInstitutions] = useState<Region[]>([]);
   const [religions, setReligions] = useState<Region[]>([]);
 
   const styles = {
@@ -56,8 +55,8 @@ export const StudentView: React.FC<StudentViewProps> = ({
         const fetchedSubDistricts = await subDistrictAPI.all();
         setSubDistricts(fetchedSubDistricts);
 
-        const fetchedAcademicLevels = await academicLevelAPI.all();
-        setAcademicLevels(fetchedAcademicLevels);
+        const fetchedAcademicInstitutions = await academicInstitutionAPI.all();
+        setAcademicInstitutions(fetchedAcademicInstitutions);
 
         const fetchedReligions = await religionAPI.all();
         setReligions(fetchedReligions);
@@ -105,7 +104,6 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   required
                 />
               </div>
-              <div className="rounded-lg w-full p-2.5 hidden md:block"></div>
               <div>
                 <label className="flex mb-1">
                   NIK/Identity Number<div className="text-red-600">*</div>
@@ -118,16 +116,6 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   className={styles.inputField}
                   placeholder="Input NIK"
                   required
-                />
-              </div>
-              <div>
-                <label className="block mb-1">Foto KTP</label>
-                <FileInput
-                  id="photoKtp"
-                  label="Upload KTP"
-                  onChange={handleFileChange('photoKtp')}
-                  initialValue={form.photoKtp}
-                  initialFilename={form.photoKtpOrigin}
                 />
               </div>
               <div>
@@ -333,19 +321,6 @@ export const StudentView: React.FC<StudentViewProps> = ({
               </div>
               <div>
                 <label className="flex mb-1">
-                  Address (KTP)<div className="text-red-600">*</div>
-                </label>
-                <input
-                  type="text"
-                  name="addressKtp"
-                  value={form.addressKtp}
-                  placeholder="Input Address (KTP)"
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                />
-              </div>
-              <div>
-                <label className="flex mb-1">
                   Address (Domicile)<div className="text-red-600">*</div>
                 </label>
                 <input
@@ -361,70 +336,32 @@ export const StudentView: React.FC<StudentViewProps> = ({
           </div>
 
 
-          {/* Section D. Last Education */}
+          {/* Section D. School */}
           <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <h2 className="text-lg md:text-xl font-semibold mb-4">
-              D. Last Education
+              D. School
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                   <div>
                     <label className="flex mb-1">
-                      Institution Name<div className="text-red-600">*</div>
-                    </label>
-                    <input
-                      type="text"
-                      name="educationName"
-                      value={form.educationName}
-                      placeholder="University Name"
-                      required
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                    />
-                  </div>
-                  <div>
-                    <label className="flex mb-1">
-                      Academic Level<div className="text-red-600">*</div>
+                      School of origin<div className="text-red-600">*</div>
                     </label>
                     <select
-                      name="educationLevelId"
-                      value={form.educationLevelId || ''}
+                      name="educationInstitutionId"
+                      value={form.educationInstitutionId || ''}
                       onChange={handleInputChange}
                       className={styles.inputField}
                     >
                       <option className="hidden" value="" disabled>
-                        Select Academic Level
+                        Select Academic Institution
                       </option>
-                      {academicLevels?.map((education, index) => (
+                      {academicInstitutions?.map((education, index) => (
                         <option key={index} value={education.id}>
                           {education.name}
                         </option>
                       ))}
                     </select>
                   </div>
-                  <div>
-                  <label className="flex mb-1">
-                    Start From<div className="text-red-600">*</div>
-                    </label>
-                    <SelectYear
-                      id="educationStart"
-                      value={form.educationStart ? parseInt(form.educationStart, 10) : null}
-                      onChange={(year) => {
-                        handleInputChange({ target: { name: 'educationStart', value: year.toString() } });
-                      }}
-                    />
-                </div>
-                <div>
-                  <label className="flex mb-1">
-                    Until<div className="text-red-600">*</div>
-                    </label>
-                    <SelectYear
-                      id="educationEnd"
-                      value={form.educationEnd ? parseInt(form.educationEnd, 10) : null}
-                      onChange={(year) => {
-                        handleInputChange({ target: { name: 'educationEnd', value: year.toString() } });
-                      }}
-                    />
-                </div>
             </div>
           </div>
 
@@ -462,11 +399,11 @@ export const StudentView: React.FC<StudentViewProps> = ({
         onClose={() => setShowResultModal(false)}
         onConfirm={() => setShowResultModal(false)}
         title={isSuccess ? "Success" : "Error"}
-        message={isSuccess ? "Berhasil Menambahkan Student" : "Gagal Menambahkan Student"}
+        message={isSuccess ? "Berhasil Menambahkan SchoolOperator" : "Gagal Menambahkan SchoolOperator"}
         confirmText="OK!"
       />
     </>
   );
 };
 
-export default StudentView;
+export default SchoolOperatorView;

@@ -12,6 +12,7 @@ import { Popover } from 'flowbite-react';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import { userAPI } from './api/userApi';
 import { mentorAPI } from './mentor/api/mentorApi';
+import { schoolOperatorAPI } from './school-operator/api/schoolOperatorApi';
 import { studentAPI } from './student/api/studentApi';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -46,8 +47,12 @@ const UserView: React.FC<IUserView> = ({
       if (userType === 'student') {
         setModalMessage(action === 'add' ? 'Berhasil Menambahkan Student' : 'Berhasil Mengubah Student');
         setActiveTab('Student');
+      } else if (userType ==='School Operator') {
+        setModalMessage(action === 'add' ? 'Berhasil Menambahkan School Operator' : 'Berhasil Mengubah School Operator');
+        setActiveTab('School Operator');
       } else {
         setModalMessage(action === 'add' ? 'Berhasil Menambahkan Mentor' : 'Berhasil Mengubah Mentor');
+        setActiveTab('Mentor');
       }
       setShowResultModal(true);
       router.replace('/backoffice/manage-user');
@@ -70,7 +75,7 @@ const UserView: React.FC<IUserView> = ({
           fetchedData = await studentAPI.fetchStudents();
           break;
         case 'School Operator':
-          fetchedData = await userAPI.fetchSchoolOperators();
+          fetchedData = await schoolOperatorAPI.fetchSchoolOperators();
           break;
       }
       setData(fetchedData);
@@ -160,7 +165,10 @@ const UserView: React.FC<IUserView> = ({
                         router.push(`/backoffice/manage-user/edit-mentor?id=${rowData.id}`);
                       } else if (activeTab === 'Student') {
                         router.push(`/backoffice/manage-user/edit-student?id=${rowData.id}`);
-                      } else {
+                      } else if (activeTab === 'School Operator') {
+                        router.push(`/backoffice/manage-user/edit-school-operator?id=${rowData.id}`);
+                      }
+                       else {
                         handleActionButtonRow(id, 'edit', rowData);
                       }
                     }}
@@ -219,6 +227,14 @@ const UserView: React.FC<IUserView> = ({
         <AddButton
         onClick={() => ('')}
           text="Add Student"
+        />
+        </Link>
+      )}
+      {tabName === 'School Operator' && (
+        <Link href={'/backoffice/manage-user/add-school-operator/'} >
+        <AddButton
+        onClick={() => ('')}
+          text="Add School Operator"
         />
         </Link>
       )}

@@ -1,15 +1,14 @@
 
 
-export interface StudentFormData {
+export interface SchoolOperatorFormData {
   id: string | null;
   role: number;
   active: number;
   profilePicture: string;
   profilePictureOrigin: string | null;
+
   name: string;
   nik: string;
-  photoKtp: string;
-  photoKtpOrigin: string | null;
   placeOfBirth: string;
   dateOfBirth: string;
   religionId: string | null;
@@ -22,13 +21,9 @@ export interface StudentFormData {
   districtId: string | null;
   subDistrictId: string | null;
   zipCode: string;
-  addressKtp: string;
   addressDomicile: string;
 
-  educationName: string;
-  educationLevelId: string | null;
-  educationStart: string | null;
-  educationEnd: string | null;
+  educationInstitutionId: string | null;
 }
 
 export interface Region {

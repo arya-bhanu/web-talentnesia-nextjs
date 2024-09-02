@@ -1,1 +1,1 @@
-export { SchoolOperator } from './AddSchoolOperator';
+export { SchoolOperator } from './SchoolOperatorForm';

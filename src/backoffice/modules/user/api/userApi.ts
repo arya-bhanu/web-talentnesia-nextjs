@@ -6,26 +6,6 @@ const API_URL = 'http://127.0.0.1:8000/api/v1';
 
 export const userAPI = {
 
-  fetchStudents: async () => {
-    try {
-      const response = await axios.get(`${API_URL}/manage-user/4/table`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch students');
-      return [];
-    }
-  },
-
-  fetchSchoolOperators: async () => {
-    try {
-      const response = await axios.get(`${API_URL}/manage-user/2/table`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch school operators');
-      return [];
-    }
-  },
-
   uploadFile: async (file: File, path: string) => {
     try {
       const formData = new FormData();
