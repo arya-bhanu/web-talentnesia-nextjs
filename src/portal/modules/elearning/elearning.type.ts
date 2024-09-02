@@ -1,8 +1,9 @@
 export interface CoursesData {
     courses: any[] ;
+    testimonials: any[];
   }
   
-  export interface CoursesViewProps {
+  export interface ElearningViewProps {
     data: CoursesData;
   }
   
