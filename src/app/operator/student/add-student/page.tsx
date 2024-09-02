@@ -1,5 +1,5 @@
+import { Student } from '@/backoffice/modules/user/student';
 import React from 'react';
-import { Student } from '@/backoffice/modules/user/student/Student';
 
 const AddStudentPage = () => {
   return (

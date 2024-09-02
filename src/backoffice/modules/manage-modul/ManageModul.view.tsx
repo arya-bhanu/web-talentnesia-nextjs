@@ -30,7 +30,7 @@ const ManageModulView: React.FC<
         <DataTable
           data={data}
           columns={columns}
-          sorting={[{ id: 'id', desc: false }]}
+          sorting={[]}
           filter={{ Filter, setFilter }}
         />
       </div>

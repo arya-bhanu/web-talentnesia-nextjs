@@ -1,10 +1,10 @@
 import React from "react";
 import BootcampView from "./bootcamp.view";
-import { getHomeData } from "../home/hooks/getHomeData";
+import homeApi from "../home/api/homeApi";
 
 export const Bootcamp = async() => {
     try {
-        const data = await getHomeData();
+        const data = await homeApi();
         return <BootcampView data={data} />
     } catch (error) {
         return <div>Error loading data...</div>

@@ -70,7 +70,7 @@ const FormManageModul = () => {
       } else {
         const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
-        const id = responseCreate.data.id;
+        const id = responseCreate.id;
 
         openModal({ status: 'success', timeOut: 2000, action: 'create' });
 
@@ -95,7 +95,7 @@ const FormManageModul = () => {
       <FormManageModulView
         handleSubmitForm={handleSubmitForm}
         populatedDatas={{
-          data: dataModule?.data,
+          data: dataModule,
           isLoading,
         }}
         setSubmitType={setSubmitType}

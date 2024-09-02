@@ -83,7 +83,7 @@ const ManageModul = () => {
     <ManageModulView
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
-      data={query.data?.data?.items}
+      data={query.data || []}
       handleActionButtonRow={handleActionButtonRow}
       isLoading={query.isLoading}
       Filter={Filter}
