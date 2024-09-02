@@ -10,41 +10,62 @@ const ModalForm: React.FC<ModalFormProps> = ({
   id = undefined,
   title, 
 }) => {
-
   const [formData, setFormData] = useState({
-    certificate: '',
+    name: '',
+    file: ''
   });
+  
+  
   const [hasError, setHasError] = useState(false);
+  
+  const handleClose = () => {
+    setFormData({ name: '', file: '' });
+    setHasError(false);
+    onClose();
+  };
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        certificate: initialData.certificate || '',
+        name: initialData.name || '',
+        file: initialData.file || '',
       });
     } else {
       setFormData({
-        certificate: '',
+        name: '',
+        file: '',
       });
     }
+
   }, [initialData]);
 
-  const handleInputChange = (certificate: string, value: string) => {
-    setFormData(prevData => ({ ...prevData, [certificate]: value }));
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({ name: '', file: '' });
+      setHasError(false);
+    }
+  }, [isOpen]);
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prevData => ({ ...prevData, [field]: value }));
   };
 
   const handleSave = async () => {
-    if (!formData.certificate) {
+    if (!formData.name || !formData.file) {
       setHasError(true);
+      console.log('Missing required fields:', formData); 
       return;
     }
-
+  
     try {
+      console.log('Saving data with formData:', formData);
       await onSave(id, formData);
       onClose();
     } catch (error) {
-      console.error('Failed to save data');
+      console.error('Failed to save data', error);
     }
   };
+  
 
   return (
     <ModalFormView
@@ -54,9 +75,10 @@ const ModalForm: React.FC<ModalFormProps> = ({
       hasError={hasError}
       handleInputChange={handleInputChange}
       handleSave={handleSave}
-      onClose={onClose}
+      onClose={handleClose}
     />
   );
 };
 
 export default ModalForm;
+

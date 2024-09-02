@@ -5,7 +5,7 @@ const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
 export const levelAPI = {
   fetch: async () => {
     try {
-      const response = await axios.get(`${API_URL}/level`);
+      const response = await axios.get(`${API_URL}/levels`);
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch level');
@@ -15,7 +15,7 @@ export const levelAPI = {
 
   getById: async (id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/level/${id}`);
+      const response = await axios.get(`${API_URL}/levels/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch level details');
@@ -23,33 +23,24 @@ export const levelAPI = {
     }
   },
 
-  add: async (data: { name: string }) => {
+  add: async (data: { name: string; code: string; status?: number }) => {
     try {
-      const requestData = {
-        ...data,
-        active: 1,
-        createdBy: ""
-      };
-
-      const response = await axios.post(`${API_URL}/level`, requestData);
+      const response = await axios.post(`${API_URL}/levels`, data);
       return response.data;
     } catch (error) {
-      console.error('Failed to add level');
-      return;
+      console.error('Failed to add levels', error);
+      throw error; 
     }
   },
+  
+  
 
-  update: async (id: string, data: { code: string; name: string }) => {
+  update: async (id: string, data: { name: string; code: string; status: string }) => {
     try {
-        const requestData = {
-        ...data,
-        active: 1
-      };
-
-      const response = await axios.put(`${API_URL}/level/${id}`, requestData);
+      const response = await axios.put(`${API_URL}/levels/${id}`, data);
       return response.data;
     } catch (error) {
-      console.error('Failed to update level');
+      console.error('Failed to update levels', error);
       return;
     }
   },
@@ -60,7 +51,7 @@ export const levelAPI = {
         throw new Error('Invalid ID format');
       }
 
-      const response = await axios.delete(`${API_URL}/level/${id}`);
+      const response = await axios.delete(`${API_URL}/levels/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to delete level');

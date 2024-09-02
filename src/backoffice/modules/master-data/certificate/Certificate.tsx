@@ -21,7 +21,7 @@ const Certificate = () => {
       return response;
     },
   });
-  
+
   const fetchData = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: ['certificate'] });
   }, [queryClient]);
@@ -36,11 +36,12 @@ const Certificate = () => {
     }
   }, [fetchData, handleDeleteCertificate, handleEditCertificate]);
 
-  const handleAdd = useCallback(async (name: string) => {
-    await handleAddCertificate(name);
+  const handleAdd = useCallback(async (name: string, file: string) => {
+    await handleAddCertificate(name, file);
     fetchData();
     setIsPopupOpen(false);
   }, [fetchData, handleAddCertificate]);
+  
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
@@ -60,5 +61,4 @@ const Certificate = () => {
     />
   );
 };
-
 export default Certificate;

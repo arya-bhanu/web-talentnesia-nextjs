@@ -23,36 +23,36 @@ export const discountAPI = {
     }
   },
 
-  add: async (data: { name: string }) => {
+  add: async (data: { code: string; name: string; persentage: number; startDate: string; endDate: string; active: number; }) => {
     try {
       const requestData = {
         ...data,
-        active: 1,
-        createdBy: ""
+        createdBy: "fngdme2va5ndvivq"
       };
-
+      console.log('Request data:', requestData);
       const response = await axios.post(`${API_URL}/discount`, requestData);
+      console.log('Response:', response.data);
       return response.data;
-    } catch (error) {
-      console.error('Failed to add discount');
-      return;
+    } catch (error: unknown) {
+      console.error('Failed to add discount', error);
+      throw error;
     }
-  },
-
-  update: async (id: string, data: { code: string; name: string }) => {
+  },  
+  update: async (id: string, data: { code: string; name: string; persentage: number; startDate: string; endDate: string; active: number; }) => {
     try {
-        const requestData = {
+      const requestData = {
         ...data,
-        active: 1
+        createdBy: "fngdme2va5ndvivq"
       };
-
+      console.log('Request data:', requestData);
       const response = await axios.put(`${API_URL}/discount/${id}`, requestData);
+      console.log('Response:', response.data);
       return response.data;
-    } catch (error) {
-      console.error('Failed to update discount');
-      return;
+    } catch (error: unknown) {
+      console.error('Failed to update discount', error);
+      throw error;
     }
-  },
+  },  
 
   delete: async (id: string) => {
     try {

@@ -10,6 +10,7 @@ import ModalForm from './components/modal-form-level';
 import { useLevelActions } from './hooks/useLevelAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import { BadgeStatus } from '@/backoffice/components/badge-status';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -62,17 +63,19 @@ const LevelView: React.FC<ILevelView> = ({
         header: ({ column }) => <SortingTable column={column} title="Code" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('level-name', {
+      columnHelper.accessor('name', {
         header: ({ column }) => (
           <SortingTable column={column} title="Level Name" />
         ),
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('status', {
+      columnHelper.accessor('active', {
         header: ({ column }) => (
           <SortingTable column={column} title="Status" />
         ),
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <BadgeStatus status={info.getValue() as number} type={1} />
+        ),
       }),
       columnHelper.accessor('id', {
         id: 'action',

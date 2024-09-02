@@ -75,7 +75,7 @@ const CategoryView: React.FC<ICategoryView> = ({
           <SortingTable column={column} title="Status" />
         ),
         cell: (info) => (
-          <BadgeStatus status={info.getValue() as number} />
+          <BadgeStatus status={info.getValue() as number} type={1}/>
         ),
       }),
       columnHelper.accessor('id', {

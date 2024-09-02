@@ -4,7 +4,14 @@ import { discountAPI } from '../api/discountApi';
 export const useDiscountActions = () => {
   const handleAddDiscount = useCallback(async (name: string) => {
     try {
-      await discountAPI.add({name});
+      await discountAPI.add({
+        name,
+        code: '',
+        active: 0,
+        persentage: 0,
+        startDate: '',
+        endDate: ''
+      });
     } catch (error) {
       console.error('Failed to add Discount');
     }
