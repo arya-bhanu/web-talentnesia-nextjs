@@ -11,6 +11,7 @@ export interface IModal {
   title: string;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   buttonConfirmTitle?: string;
+  isEdit?: boolean;
   childProps?: {
     id?: string;
   };

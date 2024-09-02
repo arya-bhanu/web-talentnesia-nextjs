@@ -2,7 +2,10 @@
 import React, { FormEvent, useEffect, useTransition } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useExamStore, useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
+import {
+  useExamStore,
+  useQuestionExamStore,
+} from '@/backoffice/modules/manage-modul/add-exam/store';
 import { APIExamChapter } from '../../manageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -12,11 +15,13 @@ import {
   updateExam,
 } from '../../api/manageModelApi';
 import { defaultExamData, defaultQuestionRadio } from './formExam.data';
+import { useStatusModalStore } from '@/lib/store';
 
 const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   const params = useSearchParams();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { openModal } = useStatusModalStore();
 
   const [isPending, startTransition] = useTransition();
   const { question, updateQuestion } = useQuestionExamStore();
@@ -36,17 +41,17 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
 
   useEffect(() => {
     setDataExam(defaultExamData);
-    if (dataExam?.data) {
+    if (dataExam) {
       setDataExam({
-        chapterId: dataExam.data?.chapterId,
-        duration: dataExam.data?.duration,
-        id: dataExam.data?.id,
-        order: dataExam.data?.order,
-        title: dataExam.data?.title,
+        chapterId: dataExam.chapterId,
+        duration: dataExam.duration,
+        id: dataExam.id,
+        order: dataExam.order,
+        title: dataExam.title,
       });
-      updateQuestion(dataExam.data?.exams);
+      updateQuestion(dataExam.exams);
     }
-  }, [JSON.stringify(dataExam?.data)]);
+  }, [JSON.stringify(dataExam)]);
 
   const { mutateAsync: createExamAsync } = useMutation({
     mutationFn: createExam,
@@ -89,17 +94,20 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
             examId,
             questions: question.map((el) => el.id),
           });
+          openModal({
+            status: 'success',
+            action: 'update',
+            message: 'Exam berhasil diupdate',
+          });
         } else {
           console.log('creating exam...');
           const response = await createExamAsync(dataExam);
           console.log(response);
-          // console.log('reordering exam...');
-          // if (response?.data) {
-          //   await reorderExamsAynsc({
-          //     examId: response?.data.id,
-          //     questions: question.map((el) => el.id),
-          //   });
-          // }
+          openModal({
+            status: 'success',
+            action: 'create',
+            message: 'Exam berhasil dibuat',
+          });
         }
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['exam'] });

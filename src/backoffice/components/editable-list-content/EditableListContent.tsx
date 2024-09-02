@@ -8,11 +8,13 @@ import {
   deleteExam,
   editContent,
 } from '../../modules/manage-modul/api/manageModelApi';
+import { useStatusModalStore } from '@/lib/store';
 
 const EditableListContent: React.FC<IEditableListContent> = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [isConfirmDel, setIsConfirmDel] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const { openModal: openModalToast } = useStatusModalStore();
 
   const queryClient = useQueryClient();
 
@@ -44,9 +46,27 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
 
   const handleDeleteContent = async (isexam: boolean, id: string) => {
     try {
-      isexam ? await deleteContentAsync(id) : await deleteExamAsync(id);
+      if (isexam) {
+        await deleteContentAsync(id);
+        openModalToast({
+          status: 'success',
+          action: 'delete',
+          message: 'data konten berhasil dihapus',
+        });
+      } else {
+        await deleteExamAsync(id);
+        openModalToast({
+          status: 'success',
+          action: 'delete',
+          message: 'data exam berhasil dihapus',
+        });
+      }
     } catch (err) {
       console.error(err);
+      openModalToast({
+        status: 'error',
+        message: JSON.stringify(err),
+      });
     }
   };
 
@@ -61,14 +81,27 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     const convertedTime = time.substring(0, 5);
 
     if (props.id) {
-      await editContentAsync({
-        id: props.id,
-        data: { duration: convertedTime, title, type, body: 'test_1' },
-      });
-      await queryClient.invalidateQueries({ queryKey: ['chapter'] });
-      await queryClient.invalidateQueries({ queryKey: ['content'] });
-      await queryClient.invalidateQueries({ queryKey: ['modules'] });
-      setOpenModalEdit(false);
+      try {
+        await editContentAsync({
+          id: props.id,
+          data: { duration: convertedTime, title, type, body: 'test_1' },
+        });
+        await queryClient.invalidateQueries({ queryKey: ['chapter'] });
+        await queryClient.invalidateQueries({ queryKey: ['content'] });
+        await queryClient.invalidateQueries({ queryKey: ['modules'] });
+        openModalToast({
+          status: 'success',
+          message: 'data konten berhasil diupdate',
+          action: 'update',
+        });
+        setOpenModalEdit(false);
+      } catch (err) {
+        console.error(err);
+        openModalToast({
+          status: 'error',
+          message: JSON.stringify(err),
+        });
+      }
     }
   };
 

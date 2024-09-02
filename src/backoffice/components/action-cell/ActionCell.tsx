@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AlertModal from '../alert-modal';
+import AlertModal from '../alert-delete-modal';
 import { Popover } from 'flowbite-react';
 // import { ModalFormEdit } from '../../modules/master-data/academic-level/components/modal-form-edit/ModalFormEdit';
 import MoreHoriz from '../../../../public/icons/more_horiz.svg';

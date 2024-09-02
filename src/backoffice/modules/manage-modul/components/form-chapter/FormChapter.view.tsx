@@ -2,7 +2,14 @@
 import LabelForm from '@/backoffice/components/label-form/LabelForm';
 import { Button } from 'flowbite-react/components/Button';
 import { TextInput } from 'flowbite-react/components/TextInput';
-import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Add from '@/../public/icons/add.svg';
 import AddWhite from '@/../public/icons/add-white.svg';
 import EditableListContent from '@/backoffice/components/editable-list-content';
@@ -18,6 +25,7 @@ import { SortableContext } from '@dnd-kit/sortable';
 import { useDragContents } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { contentsReorder } from '../../api/manageModelApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import AlertEditModal from '@/backoffice/components/alert-edit-modal';
 
 const FormChapterView: React.FC<
   IFormChapter &
@@ -34,8 +42,11 @@ const FormChapterView: React.FC<
   const params = useSearchParams();
   const chapterId = params.get('chapterId');
   const queryClient = useQueryClient();
+  const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
+  const [isEditConfrm, setIsEditConfrm] = useState(false);
   const { setSortContents, sortContents, sortActionContents } =
     useDragContents();
+  const formRef = useRef(null);
 
   const { mutateAsync: reorderContentsAsync } = useMutation({
     mutationKey: ['contents'],
@@ -94,6 +105,16 @@ const FormChapterView: React.FC<
     }
   }, [JSON.stringify(sortContents)]);
 
+  useEffect(() => {
+    const form = formRef.current;
+    if (isEditConfrm && form) {
+      setTimeout(() => {
+        (form as HTMLFormElement).requestSubmit();
+      }, 200);
+      setSubmitType({ type: 'defaultSubmit' });
+    }
+  }, [isEditConfrm]);
+
   function handleDragEnd(event: DragEndEvent): void {
     const { active, over } = event;
     if (over && active.id !== over.id) {
@@ -103,6 +124,11 @@ const FormChapterView: React.FC<
 
   return (
     <div>
+      <AlertEditModal
+        openModal={isOpenModalEdit}
+        setIsConfirmed={setIsEditConfrm}
+        setOpenModal={setIsOpenModalEdit}
+      />
       <Modal
         handleSubmit={handleSubmitAddContent}
         state={stateFormAddContent}
@@ -110,11 +136,7 @@ const FormChapterView: React.FC<
       >
         <FormContent />
       </Modal>
-      <form
-        onSubmit={(el) => {
-          handleSubmitCreateChapter(el);
-        }}
-      >
+      <form ref={formRef} onSubmit={handleSubmitCreateChapter}>
         <div>
           <div className="mb-2 block">
             <LabelForm aria-required htmlFor="chapter" isImportant>
@@ -169,8 +191,14 @@ const FormChapterView: React.FC<
             </Link>
           </Button>
           <Button
-            onClick={() => setSubmitType({ type: 'defaultSubmit' })}
-            type="submit"
+            onClick={() => {
+              if (chapterId) {
+                setIsOpenModalEdit(true);
+              } else {
+                setIsEditConfrm(true);
+              }
+            }}
+            type="button"
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >

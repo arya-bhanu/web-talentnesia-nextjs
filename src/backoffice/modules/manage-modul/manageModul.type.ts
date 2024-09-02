@@ -64,4 +64,5 @@ export interface IManageModulView {
   setFilter: React.Dispatch<SetStateAction<string>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
   setOpenPopoverIndex: React.Dispatch<SetStateAction<number>>;
+  isLoading: boolean;
 }

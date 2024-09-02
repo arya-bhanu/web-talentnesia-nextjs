@@ -5,7 +5,7 @@ import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
-import AlertModal from '@/backoffice/components/alert-modal';
+import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-role';
 import { useRoleActions } from './hooks/useRoleAction';
 import { Popover } from 'flowbite-react';

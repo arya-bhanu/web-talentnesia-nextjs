@@ -14,7 +14,7 @@ import { formatDateIndonesian } from '@/helpers/formatter.helper';
 import Modal from '@/backoffice/components/modal';
 import FormSchedule from '../../form-program/components/form-schedule';
 import FormContent from '../../form-program/components/form-course/components/form-content';
-import AlertModal from '@/backoffice/components/alert-modal';
+import AlertModal from '@/backoffice/components/alert-delete-modal';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';

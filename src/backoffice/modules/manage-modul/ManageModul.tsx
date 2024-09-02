@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import ManageModulView from './ManageModul.view';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteModule, fetchModules } from './api/manageModelApi';
+import { useStatusModalStore } from '@/lib/store';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
@@ -17,20 +18,27 @@ const ManageModul = () => {
     mutationFn: deleteModule,
   });
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
+  const { openModal } = useStatusModalStore();
   const [Filter, setFilter] = useState('');
 
   const handleActionButtonRow = async (
     id: string,
     action: 'delete' | 'edit',
   ) => {
-    switch (action) {
-      case 'delete':
-        await deleteModuleAsync(id);
-        break;
-      default:
-        break;
+    try {
+      switch (action) {
+        case 'delete':
+          await deleteModuleAsync(id);
+          break;
+        default:
+          break;
+      }
+      openModal({ status: 'success', action: 'delete' });
+      queryClient.invalidateQueries({ queryKey: ['modules'] });
+    } catch (err) {
+      console.error(err);
+      openModal({ status: 'error' });
     }
-    queryClient.invalidateQueries({ queryKey: ['modules'] });
   };
 
   const columns = useMemo<ColumnDef<any>[]>(
@@ -77,6 +85,7 @@ const ManageModul = () => {
       setOpenPopoverIndex={setOpenPopoverIndex}
       data={query.data?.data?.items}
       handleActionButtonRow={handleActionButtonRow}
+      isLoading={query.isLoading}
       Filter={Filter}
       setFilter={setFilter}
       columns={columns} // Pass the columns as a prop

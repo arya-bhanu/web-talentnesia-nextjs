@@ -4,6 +4,8 @@ import {
   APIExamChapter,
   APIResponseManageModul,
 } from '../manageModul.type';
+import { fetchAxios } from '@/lib/fetchAxios';
+import { questions } from '../../school/components/course-sidebar/exam/exam.data';
 
 // modul
 export const fetchModules = async () => {
@@ -38,7 +40,10 @@ export const updateModul = async ({
   data: Pick<APIResponseManageModul, 'active' | 'name'>;
   moduleId: string;
 }) => {
-  const response = await backOfficeAPI.put(`/v1/manage-module/${moduleId}`, data);
+  const response = await backOfficeAPI.put(
+    `/v1/manage-module/${moduleId}`,
+    data,
+  );
   return response.data;
 };
 
@@ -68,7 +73,9 @@ export const editChapter = async ({
   chapterId: string;
   title: string;
 }) => {
-  const response = await backOfficeAPI.put('/v1/chapter/' + chapterId, { title });
+  const response = await backOfficeAPI.put('/v1/chapter/' + chapterId, {
+    title,
+  });
   return response.data;
 };
 
@@ -113,7 +120,11 @@ export const deleteContent = async (id: string) => {
 export const createExam = async (
   data: Omit<APIExamChapter, 'id' | 'order'>,
 ) => {
-  const response = await backOfficeAPI.post('/v1/exam', data);
+  const response = await fetchAxios({
+    url: '/v1/exam',
+    method: 'POST',
+    formData: data,
+  });
   return response.data;
 };
 
@@ -124,20 +135,27 @@ export const updateExam = async ({
   data: Omit<APIExamChapter, 'id' | 'order'>;
   id: string;
 }) => {
-  const response = await backOfficeAPI.put(`/v1/exam/${id}`, data);
+  const response = await fetchAxios({
+    method: 'PUT',
+    url: `/v1/exam/${id}`,
+    formData: data,
+  });
   return response.data;
 };
 
 export const getExam = async (id: string | null | undefined) => {
   if (id) {
-    const response = await backOfficeAPI.get('/v1/exam/' + id);
+    const response = await fetchAxios({ method: 'GET', url: '/v1/exam/' + id });
     return response.data;
   }
   return null;
 };
 
 export const deleteExam = async (id: string) => {
-  const response = await backOfficeAPI.delete('/v1/exam/' + id);
+  const response = await fetchAxios({
+    method: 'DELETE',
+    url: '/v1/exam/' + id,
+  });
   return response.data;
 };
 
@@ -149,8 +167,10 @@ export const examReorder = async ({
   questions: string[];
   examId: string;
 }) => {
-  const response = await backOfficeAPI.post('/v1/exam/reorder-exams/' + examId, {
-    questions,
+  const response = await fetchAxios({
+    method: 'POST',
+    url: '/v1/exam/reorder-exams/' + examId,
+    formData: { questions },
   });
   return response.data;
 };
