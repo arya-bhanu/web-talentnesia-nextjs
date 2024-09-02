@@ -6,6 +6,10 @@ export interface IListDraggable {
   date: Date;
   className?: string;
   durationMinute: number;
+  id: string;
+  chapterId: string;
+  order: number;
+  isexam: boolean;
 }
 
 export interface IListDraggableState {

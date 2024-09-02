@@ -15,7 +15,7 @@ const BootcampView: React.FC<BootcampViewProps> = ({ data }) => {
     React.useEffect(() => {
         const timer = setTimeout(() => {
         setTime(false);
-        }, 10000);
+        }, 2000);
         return () => clearTimeout(timer);
     }, []);
 

@@ -1,8 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'flowbite-react';
+import { useFormDetailStore } from '@/backoffice/modules/manage-program/form-program/components/form-detail/formDetail.store';
 
 export function DropFile() {
+  const { data, setData } = useFormDetailStore();
   const [file, setFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const { image, ...res } = data;
+        setData({ ...res, image: e.target?.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [file]);
+  
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FormManageModulView from './FormManageModul.view';
 import { IManageModulForm, ISubmitType } from './formManageModul.type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   createModul,
   fetchModule,
@@ -10,9 +10,12 @@ import {
 } from '../../api/manageModelApi';
 import { APIResponseManageModul } from '../../manageModul.type';
 
-const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
+const FormManageModul = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const params = useSearchParams();
+
+  const moduleId = params.get('modulId');
 
   const [submitType, setSubmitType] = useState<ISubmitType>({
     type: 'nextSubmit',
@@ -31,7 +34,7 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
   });
 
   const { data: dataModule, isLoading } = useQuery({
-    queryKey: ['module'],
+    queryKey: ['module', moduleId],
     queryFn: () => fetchModule(moduleId),
   });
 
@@ -62,9 +65,7 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
         if (submitType.type === 'defaultSubmit') {
           router.push(`/backoffice/manage-modul`);
         } else {
-          router.push(
-            `/backoffice/manage-modul/create/chapter?modulId=${id}`,
-          );
+          router.push(`/backoffice/manage-modul/create/chapter?modulId=${id}`);
         }
       }
     } catch (err) {
@@ -81,7 +82,7 @@ const FormManageModul = ({ moduleId }: { moduleId?: string }) => {
       }}
       setSubmitType={setSubmitType}
       type={submitType.type}
-      id={moduleId}
+      id={moduleId || undefined}
     />
   );
 };

@@ -159,12 +159,20 @@ export default function ProgramDetail({ params }: ProgramDetailProps) {
                   durationMinute: 30,
                   title: 'Law',
                   type: '1',
+                  chapterId: '1',
+                  isexam: false,
+                  order: 1,
+                  id: "1",
                 },
                 {
                   date: new Date(),
                   durationMinute: 20,
                   title: 'Law Hick',
                   type: '2',
+                  chapterId: '2',
+                  isexam: false,
+                  order: 2,
+                  id: "2",
                 },
               ]}
               totalMinuteDuration={58}

@@ -14,6 +14,7 @@ const FormContent = ({ contentId }: { contentId?: string }) => {
     queryKey: ['chapter', contentId],
     queryFn: () => fetchContent(contentId),
   });
+
   useEffect(() => {
     if (dataContent?.data) {
       const time = dataContent.data.duration as string;
@@ -24,7 +25,7 @@ const FormContent = ({ contentId }: { contentId?: string }) => {
       setTime(date);
     }
   }, [dataContent?.data]);
- 
+
   return (
     <FormContentView
       file={file}

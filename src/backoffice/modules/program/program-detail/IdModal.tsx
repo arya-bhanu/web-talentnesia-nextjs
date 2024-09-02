@@ -18,8 +18,12 @@ const IdModal: React.FC<IdModalProps> = ({ open, setOpen }) => {
   ];
 
   const rows = programData.map((data, index) => ({
-    ...data,
     no: index + 1,
+    id: data.id,
+    name: () => data.name,
+    periode: '', // Add this line
+    email: data.email,
+    nis: data.nis
   }));
 
   return (

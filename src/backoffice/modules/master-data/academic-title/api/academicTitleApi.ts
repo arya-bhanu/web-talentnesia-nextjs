@@ -1,11 +1,9 @@
-import axios from 'axios';
-
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+import { backOfficeAPI } from '@/lib/axiosConfig';
 
 export const academicTitleAPI = {
   fetch: async () => {
     try {
-      const response = await axios.get(`${API_URL}/academic-title`);
+      const response = await backOfficeAPI.get('/v1/academic-title');
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch academic title');
@@ -15,7 +13,7 @@ export const academicTitleAPI = {
 
   getById: async (id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/academic-title/${id}`);
+      const response = await backOfficeAPI.get(`/v1/academic-title/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch academic title details');
@@ -31,7 +29,7 @@ export const academicTitleAPI = {
         createdBy: ""
       };
 
-      const response = await axios.post(`${API_URL}/academic-title`, requestData);
+      const response = await backOfficeAPI.post('/v1/academic-title', requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to add academic title');
@@ -41,12 +39,12 @@ export const academicTitleAPI = {
 
   update: async (id: string, name: string) => {
     try {
-        const requestData = {
+      const requestData = {
         name,
         active: 1
       };
 
-      const response = await axios.put(`${API_URL}/academic-title/${id}`, requestData);
+      const response = await backOfficeAPI.put(`/v1/academic-title/${id}`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to update academic title');
@@ -60,7 +58,7 @@ export const academicTitleAPI = {
         throw new Error('Invalid ID format');
       }
 
-      const response = await axios.delete(`${API_URL}/academic-title/${id}`);
+      const response = await backOfficeAPI.delete(`/v1/academic-title/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to delete academic title');
