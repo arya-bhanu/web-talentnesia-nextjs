@@ -3,7 +3,7 @@ import { Card } from 'flowbite-react';
 import { TabFlex } from '@/backoffice/components/tabs/tabs';
 import { IHistoryView } from './history.type';
 import Attendance from './components/attendance';
-import Assigement from './components/assignment/Assignment';
+import Assignment from './components/assignment';
 
 const HistoryView = ({ activeTab, setActiveTab }: IHistoryView) => {
   const tabs = [
@@ -14,9 +14,9 @@ const HistoryView = ({ activeTab, setActiveTab }: IHistoryView) => {
       </div>,
     },
     {
-      title: 'Assigement',
+      title: 'Assignment',
       content: <div>
-        <Assigement />
+        <Assignment />
       </div>,
     },
   ];

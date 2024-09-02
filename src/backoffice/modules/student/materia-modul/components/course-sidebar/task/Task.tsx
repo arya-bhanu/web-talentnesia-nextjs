@@ -55,7 +55,7 @@ const Task: React.FC = () => {
     <div className="flex">
       <div className="flex flex-col items-center">
         <div className="w-48">
-          <div className="grid grid-cols-5 gap-x-9 gap-y-4">
+          <div className="grid grid-cols-5 gap-x-2 gap-y-4">
             {questions.map(question => (
               <TaskView
                 key={question.id}
@@ -68,7 +68,7 @@ const Task: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex justify-center mt-2">
+        <div className="flex justify-center mt-6">
           <div className="flex space-x-4">
             <div className="flex items-center space-x-2">
               <div className={`w-3 h-3 rounded-full ${selectedAnswers[activeQuestionId] !== undefined ? 'bg-blue-500' : 'bg-gray-500'}`} />
@@ -82,7 +82,7 @@ const Task: React.FC = () => {
         </div>
       </div>
 
-      <div className="ml-8 p-4 border bg-gray-50 rounded-lg w-full">
+      <div className="ml-8 p-4 w-full">
         {selectedQuestion ? (
           <div>
             <div className="flex items-center mb-4">

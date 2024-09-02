@@ -7,6 +7,7 @@ import Exam from './components/course-sidebar/exam/exam.view';
 import Media from './components/course-sidebar/media/media.view';
 import Mentoring from './components/course-sidebar/mentoring/Mentoring.view';
 import PdfReader from './components/course-sidebar/pdf/PdfReader.view';
+import Assignment from './components/course-sidebar/assignment/Assignment';
 
 const useMaterialModul = () => {
   const [selectedTab, setSelectedTab] = useState<string>('');
@@ -34,7 +35,7 @@ const useMaterialModul = () => {
           setSelectedContent(<Mentoring meetLink={selectedSection.content} />);
           break;
         case 5: 
-          setSelectedContent(<PdfReader url={selectedSection.content} />);
+          setSelectedContent(<Assignment />);
           break;
         default:
           setSelectedContent(null);

@@ -3,7 +3,7 @@ import { AssignmentData } from './assignment.type';
 import { assignmentData } from './assignment.data';
 import AssignmentView from './Assignment.view';
 
-const Assigement: React.FC = () => {
+const Assignment: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);
   const [sortColumn, setSortColumn] = useState<keyof AssignmentData>('no');
@@ -65,4 +65,4 @@ const Assigement: React.FC = () => {
   );
 };
 
-export default Assigement;
+export default Assignment;

@@ -101,7 +101,7 @@ const AssignmentView: React.FC<AssignmentViewProps> = ({
 
       <div className="overflow-x-auto max-h-[60vh] overflow-y-auto sm:rounded-lg mt-5">
         <table className="w-full text-sm text-left text-gray-500">
-          <thead className="text-sm font-semibold text-gray-700">
+          <thead className="text-sm font-semibold text-gray-700 mx-4">
             <tr>
               <th
                 scope="col"

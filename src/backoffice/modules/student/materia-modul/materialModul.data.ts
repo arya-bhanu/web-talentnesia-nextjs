@@ -12,6 +12,7 @@ export const initialSections: SectionItem[] = [
       { id: '3', label: 'Consistency in your design', iconId: 1, content: 'https://youtu.be/sZgffn4OYiA?si=5Yl-Gy2CAVil76fv' },
       { id: '4', label: 'Hick\'s Law', iconId: 2, content: 'https://www.princexml.com/samples/invoice/invoicesample.pdf' },
       { id: '5', label: 'Exam Hick\'s Law', iconId: 3, content: 'Content for Exam Hick\'s Law' },
+      { id: '10', label: 'Task Example', iconId: 5, content: '11' }
     ],
   },
   {
@@ -32,8 +33,6 @@ export const initialSections: SectionItem[] = [
     isOpen: false,
     tabs: [
       { id: '9', label: 'Pixel Perfect Design', iconId: 2, content: 'https://www.princexml.com/howcome/2016/samples/magic6/magic.pdf' },
-      { id: '10', label: 'Tes', iconId: 5, content: 'https://www.princexml.com/howcome/2016/samples/magic6/magic.pdf' },
-      { id: '11', label: 'Task Example', iconId: 5, content: '11' }
     ],
   },
 ];
