@@ -54,7 +54,7 @@ const PopoverView: React.FC<IPopover> = ({
   }, [isConfirmed]);
 
   return (
-    <td className="px-6 py-4">
+    <td className="px-6 py-4 items-center relative flex justify-center">
       <AlertModal
         openModal={openModal}
         setOpenModal={setOpenModal}
