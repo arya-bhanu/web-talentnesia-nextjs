@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+// const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+const API_URL = 'http://127.0.0.1:8000/api/v1';
 
 export const cityAPI = {
   fetch: async () => {
@@ -9,6 +10,16 @@ export const cityAPI = {
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch city');
+      return [];
+    }
+  },
+
+  all: async () => {
+    try {
+      const response = await axios.get(`${API_URL}/district/all`);
+      return response.data.data;
+    } catch (error) {
+      console.error('Failed to get all city');
       return [];
     }
   },
