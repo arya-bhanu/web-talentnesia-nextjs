@@ -13,7 +13,7 @@ import {
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useAdminForm } from './AddAdmin';
-import './admin.style.css';
+import './addAdmin.style.css';
 
 const Datepicker = dynamic(
   () =>
