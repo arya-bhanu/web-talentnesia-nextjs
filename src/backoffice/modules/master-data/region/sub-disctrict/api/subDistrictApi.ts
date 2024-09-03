@@ -1,12 +1,9 @@
-import axios from 'axios';
-
-// const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
-const API_URL = 'http://127.0.0.1:8000/api/v1';
+import { backOfficeAPI } from '@/lib/axiosConfig';
 
 export const subDistrictAPI = {
   fetch: async () => {
     try {
-      const response = await axios.get(`${API_URL}/sub-district`);
+      const response = await backOfficeAPI.get(`/v1/sub-district`);
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch sub district');
@@ -16,7 +13,7 @@ export const subDistrictAPI = {
 
   all: async () => {
     try {
-      const response = await axios.get(`${API_URL}/subdistrict/all`);
+      const response = await backOfficeAPI.get(`/v1/subdistrict/all`);
       return response.data.data;
     } catch (error) {
       console.error('Failed to get all sub district');
@@ -26,7 +23,7 @@ export const subDistrictAPI = {
 
   getById: async (id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/sub-district/${id}`);
+      const response = await backOfficeAPI.get(`/v1/sub-district/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch sub district details');
@@ -42,7 +39,7 @@ export const subDistrictAPI = {
         createdBy: ""
       };
 
-      const response = await axios.post(`${API_URL}/sub-district`, requestData);
+      const response = await backOfficeAPI.post(`/v1/sub-district`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to add sub district');
@@ -57,7 +54,7 @@ export const subDistrictAPI = {
         active: 1
       };
 
-      const response = await axios.put(`${API_URL}/sub-district/${id}`, requestData);
+      const response = await backOfficeAPI.put(`/v1/sub-district/${id}`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to update sub district');
@@ -71,7 +68,7 @@ export const subDistrictAPI = {
         throw new Error('Invalid ID format');
       }
 
-      const response = await axios.delete(`${API_URL}/sub-district/${id}`);
+      const response = await backOfficeAPI.delete(`/v1/sub-district/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to delete sub district');

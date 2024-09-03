@@ -5,7 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useStudentForm } from './StudentForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
-import { cityAPI } from '../../master-data/region/city/api/cityApi';
+import { districtAPI } from '../../master-data/region/city/api/cityApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
 import { academicLevelAPI } from '../../master-data/academic-level/api/academicLevelApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
@@ -16,6 +16,8 @@ import { Component as SelectYear } from '../components/select-year/selectYear';
 import { Region } from '../student/studentForm.type';
 import Link from 'next/link';
 import { ResponseModal } from '../components/response-modal/responseModal';
+import { AcademicLevelResponse } from '../../master-data/academic-level/academicLevel.type';
+
 
 
 type StudentViewProps = ReturnType<typeof useStudentForm>;
@@ -37,7 +39,9 @@ export const StudentView: React.FC<StudentViewProps> = ({
   const [provinces, setProvinces] = useState<Region[]>([]);
   const [districts, setDistricts] = useState<Region[]>([]);
   const [subDistricts, setSubDistricts] = useState<Region[]>([]);
-  const [academicLevels, setAcademicLevels] = useState<Region[]>([]);
+  const [academicLevels, setAcademicLevels] = useState<{ items: Region[] }>({ items: [] });
+
+
   const [religions, setReligions] = useState<Region[]>([]);
 
   const styles = {
@@ -50,14 +54,14 @@ export const StudentView: React.FC<StudentViewProps> = ({
         const fetchedProvinces = await provinceAPI.all();
         setProvinces(fetchedProvinces);
 
-        const fetchedDistricts = await cityAPI.all();
+        const fetchedDistricts = await districtAPI.all();
         setDistricts(fetchedDistricts);
 
         const fetchedSubDistricts = await subDistrictAPI.all();
         setSubDistricts(fetchedSubDistricts);
 
         const fetchedAcademicLevels = await academicLevelAPI.all();
-        setAcademicLevels(fetchedAcademicLevels);
+        setAcademicLevels(fetchedAcademicLevels.data);
 
         const fetchedReligions = await religionAPI.all();
         setReligions(fetchedReligions);
@@ -394,11 +398,11 @@ export const StudentView: React.FC<StudentViewProps> = ({
                       <option className="hidden" value="" disabled>
                         Select Academic Level
                       </option>
-                      {academicLevels?.map((education, index) => (
-                        <option key={index} value={education.id}>
-                          {education.name}
-                        </option>
-                      ))}
+                      {academicLevels.items.map((education, index) => (
+                      <option key={index} value={education.id}>
+                        {education.name}
+                      </option>
+                    ))}
                     </select>
                   </div>
                   <div>

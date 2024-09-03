@@ -5,9 +5,9 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useSchoolOperatorForm } from './SchoolOperatorForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
-import { cityAPI } from '../../master-data/region/city/api/cityApi';
+import { districtAPI } from '../../master-data/region/city/api/cityApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
-import { academicInstitutionAPI } from '../../school/api/schoolApi';
+import { SchoolAPI } from '../../school/api/schoolApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
 import { Component as Datepicker } from '../components/datepicker/Datepicker';
 import { Component as FileInput } from '../components/file-input/FileInput';
@@ -49,13 +49,13 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
         const fetchedProvinces = await provinceAPI.all();
         setProvinces(fetchedProvinces);
 
-        const fetchedDistricts = await cityAPI.all();
+        const fetchedDistricts = await districtAPI.all();
         setDistricts(fetchedDistricts);
 
         const fetchedSubDistricts = await subDistrictAPI.all();
         setSubDistricts(fetchedSubDistricts);
 
-        const fetchedAcademicInstitutions = await academicInstitutionAPI.all();
+        const fetchedAcademicInstitutions = await SchoolAPI.all();
         setAcademicInstitutions(fetchedAcademicInstitutions);
 
         const fetchedReligions = await religionAPI.all();
