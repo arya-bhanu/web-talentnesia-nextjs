@@ -59,13 +59,13 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
               <InputDropdown
                 value={formData.status || ''}
                 onChange={(value) => handleInputChange('status', value)}
-                options={['Active', 'Inactive']}
+                options={['Active', 'Non Active']}
               />
 
               {hasError && !formData.status && (
-                <p className="text-red-500 text-xs mt-1">
+                <><p className="text-red-500 text-xs mt-1">
                   Status is required.
-                </p>
+                </p><p className="text-red-500 text-xs mt-1">level name is required.</p></>
               )}
             </div>
           </div>
