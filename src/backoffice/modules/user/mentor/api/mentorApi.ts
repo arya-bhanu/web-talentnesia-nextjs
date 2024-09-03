@@ -1,11 +1,9 @@
-import axios from 'axios';
-
-const API_URL = 'http://127.0.0.1:8000/api/v1';
+import { backOfficeAPI } from '@/lib/axiosConfig';
 
 export const mentorAPI = {
   fetchMentors: async () => {
     try {
-      const response = await axios.get(`${API_URL}/manage-user/3/table`);
+      const response = await backOfficeAPI.get(`v1/manage-user/3/table`);
       if (response.data && response.data.data && response.data.data.items) {
         return response.data.data.items;
       } else {

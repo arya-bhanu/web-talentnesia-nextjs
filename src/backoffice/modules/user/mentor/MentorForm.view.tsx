@@ -5,7 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useMentorForm } from './MentorForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
-import { cityAPI } from '../../master-data/region/city/api/cityApi';
+import { districtAPI } from '../../master-data/region/city/api/cityApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
 import { academicTitleAPI } from '../../master-data/academic-title/api/academicTitleApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
@@ -53,7 +53,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
         const fetchedProvinces = await provinceAPI.all();
         setProvinces(fetchedProvinces);
 
-        const fetchedDistricts = await cityAPI.all();
+        const fetchedDistricts = await districtAPI.all();
         setDistricts(fetchedDistricts);
 
         const fetchedSubDistricts = await subDistrictAPI.all();
@@ -77,7 +77,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
       <div className="container mx-auto p-1 max-w-full">
         <form className="space-y-8" onSubmit={handleSubmit}>
           <input type="hidden" name="id" value={form.id || ''} />
-          <div className="border p-6 rounded-lg shadow-sm bg-white">
+          <div className=" p-6 rounded-lg shadow-sm bg-white">
             <div className="flex items-center space-x-4">
             <ProfilePictureInput
               onChange={handleProfilePictureChange}
@@ -89,7 +89,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
           </div>
 
           {/* Section A: Information Detail */}
-          <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
+          <div className=" p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <h2 className="md:text-xl font-semibold mb-4">
               A. Information Detail
             </h2>
@@ -281,7 +281,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
           </div>
 
           {/* Section B: Contact Information */}
-          <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
+          <div className=" p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <h2 className="text-lg md:text-xl font-semibold mb-4">
               B. Contact Information
             </h2>
@@ -346,7 +346,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
           </div>
 
           {/* Section C: Address */}
-          <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
+          <div className=" p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <h2 className="text-lg md:text-xl font-semibold mb-4">
               C. Address
             </h2>
@@ -453,7 +453,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
             </div>
           </div>
                     {/* Section D: Education */}
-                    <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
+                    <div className=" p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg md:text-xl font-semibold">D. Education</h2>
 

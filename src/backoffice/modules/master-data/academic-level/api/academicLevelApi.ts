@@ -10,13 +10,10 @@ export const academicLevelAPI = {
   },
 
   all: async () => {
-    try {
-      const response = await axios.get(`${API_URL}/education-level/all`);
-      return response.data.data;
-    } catch (error) {
-      console.error('Failed to get all academic level', error);
-      return [];
-    }
+    return fetchAxios<AcademicLevelResponse>({
+      url: `${process.env.API_SERVER_URL}/v1/education-level/all`,
+      method: 'GET',
+    });
   },
 
   getById: async (id: string) => {

@@ -4,6 +4,16 @@ import { APIResponseSchool } from '../school.type';
 import { backOfficeAPI } from '@/lib/axiosConfig';
 
 export const SchoolAPI = {
+
+  all: async (): Promise<APIResponseSchool[]> => {
+    try {
+      const response = await backOfficeAPI.get(`/v1/educational-institution/all`);
+      return response.data.data;
+    } catch (error) {
+      console.error('Failed to fetch all schools');
+      throw new Error('Failed to fetch all schools');
+    }
+  },
   fetch: async (): Promise<APIResponseSchool[]> => {
     try {
       const response = await backOfficeAPI.get(`/v1/educational-institution`);

@@ -53,7 +53,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
       };
 
       if (id) {
-        
+        await categoryAPI.update(id, data);
       } else {
         await categoryAPI.add(data);
       }
