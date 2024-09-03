@@ -19,6 +19,12 @@ const ModalForm: React.FC<ModalFormProps> = ({
   });
   const [hasError, setHasError] = useState(false);
 
+  const handleClose = () => {
+    setFormData({ name: '', address: '', logo: '', description: '' });
+    setHasError(false);
+    onClose();
+  };
+
   useEffect(() => {
     if (initialData) {
       setFormData({
@@ -37,6 +43,13 @@ const ModalForm: React.FC<ModalFormProps> = ({
     }
   }, [initialData]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({ name: '', address: '', logo: '', description: '' });
+      setHasError(false);
+    }
+  }, [isOpen]);
+
   const handleInputChange = (partner: string , value: string) => {
     setFormData(prevData => ({ ...prevData, [partner]: value }));
   };
@@ -44,15 +57,16 @@ const ModalForm: React.FC<ModalFormProps> = ({
   const handleSave = async () => {
     if (!formData.name || !formData.address || !formData.logo || !formData.description) {
       setHasError(true);
+      console.log('Missing required fields:', formData); 
       return;
     }
 
     try {
+      console.log('Saving data with formData:', formData);
       await onSave(id, formData);
       onClose();
     } catch (error) {
       console.error('Failed to save data');
-      console.log(error)
     }
   };
 
@@ -64,7 +78,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
       hasError={hasError}
       handleInputChange={handleInputChange}
       handleSave={handleSave}
-      onClose={onClose}
+      onClose={handleClose}
     />
   );
 };

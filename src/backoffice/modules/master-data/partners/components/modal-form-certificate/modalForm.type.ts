@@ -16,3 +16,9 @@ export interface ModalFormViewProps {
   handleSave: () => void;
   onClose: () => void;
 }
+
+export type FileInputComponentProps = {
+  id: string;
+  label: string;
+  onFileChange: (field: string, value: string,) => void;
+};

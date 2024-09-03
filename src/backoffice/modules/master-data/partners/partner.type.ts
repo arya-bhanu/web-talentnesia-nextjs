@@ -8,6 +8,8 @@ export interface APIResponsePartner {
   active: number;
   createdBy?: string;
   createdAt?: Date;
+  updatedAt?: Date,
+  deletedAt?: Date
 }
 
 export interface IPartnerView {

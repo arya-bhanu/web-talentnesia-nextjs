@@ -24,11 +24,18 @@ export const partnerAPI = {
   },
 
   add: async (data: { name: string, address: string, logo: string, description: string }) => {
+    const partners = await partnerAPI.fetch();
+    const lastPartner = partners[partners.length - 1];
+    const lastCodeID = lastPartner?.code || 'P000';
+    const lastNumber = parseInt(lastCodeID.replace('P', '')) + 1;
+    const newCodeID = `P${lastNumber.toString().padStart(Math.max(3, lastNumber.toString().length), '0')}`;
     try {
       const requestData = {
         ...data,
         active: 1,
-        createdBy: ""
+        createdBy: "",
+        code: newCodeID,
+        
       };
 
       const response = await axios.post(`${API_URL}/partner`, requestData);
@@ -41,16 +48,20 @@ export const partnerAPI = {
   },
 
   update: async (id: string, data: { name: string, address: string, logo: string, description: string }) => {
+    const response = await partnerAPI.getById(id);
+    const codeID = response.data.code;
     try {
         const requestData = {
         ...data,
-        active: 1
+        active: 1,
+        code: codeID
       };
 
       const response = await axios.put(`${API_URL}/partner/${id}`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to update partner');
+      console.log(error)
       return;
     }
   },
@@ -69,3 +80,12 @@ export const partnerAPI = {
     }
   }
 };
+
+const codeID = async () => {
+  const partners = await partnerAPI.fetch();
+  const lastPartner = partners[partners.length - 1];
+  const lastCodeID = lastPartner?.code || 'P000';
+  const lastNumber = parseInt(lastCodeID.replace('P', '')) + 1;
+
+
+}

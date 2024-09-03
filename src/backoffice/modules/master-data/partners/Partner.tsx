@@ -15,7 +15,7 @@ const Partner = () => {
   const { handleAddPartner, handleEditPartner, handleDeletePartner } = usePartnerActions();
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['certificate'],
+    queryKey: ['partner'],
     queryFn: async () => {
       const response = await partnerAPI.fetch();
       return response;
