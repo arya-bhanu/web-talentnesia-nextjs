@@ -26,5 +26,5 @@ export const Elearning: React.FC = () => {
         return <div>{error}</div>;
     }
 
-    return <ElearningView data={data} />;
+    return <ElearningView data={data || []} />;
 };

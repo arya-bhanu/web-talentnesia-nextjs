@@ -30,7 +30,7 @@ const ElearningView: React.FC<ElearningViewProps> = ({ data }) => {
             <AllClass courses={courseDataArray} filterOptions={filterCategories} isLoading={skeletonAnimation} title="Jelajahi Semua Course"/>
             <UserStoryCard 
                 className="mt-16 md:mt-20 lg:mt-32"
-                testimonials={data.testimonials}
+                testimonials={data.testimonials || []}
                 isLoading={skeletonAnimation}
             />
         </main>

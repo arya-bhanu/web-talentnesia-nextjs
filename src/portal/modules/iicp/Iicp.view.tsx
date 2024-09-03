@@ -45,7 +45,7 @@ export const IicpView: React.FC = () => {
         <PartnersCarousel className="py-5 md:py-10" partners={data.partners} isLoading={skeletonAnimation} />
         <UserStoryCard
           className="mt-16 md:mt-20 lg:mt-32"
-          testimonials={data.testimonials}
+          testimonials={data.testimonials || []}
           isLoading={skeletonAnimation}
         />
         <Divider className="py-10 md:mt-20" />

@@ -13,7 +13,7 @@ const UserStorySectionView: React.FC<UserStorySectionViewProps> = ({
   return (
     <section className={className}>
       <UserStoryCard
-        testimonials={testimonials}
+        testimonials={testimonials || []}
         activeNumber={activeNumber}
         setActiveNumber={setActiveNumber}
         isLoading={isLoading}

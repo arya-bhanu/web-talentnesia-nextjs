@@ -30,7 +30,7 @@ const BootcampView: React.FC<BootcampViewProps> = ({ data }) => {
             <AllClass courses={courseDataArray} filterOptions={filterCategories} isLoading={skeletonAnimation} title="Jelajahi Semua Bootcamp"/>
             <UserStoryCard 
                 className="mt-16 md:mt-20 lg:mt-32"
-                testimonials={data.testimonials}
+                testimonials={data.testimonials || []}
                 isLoading={skeletonAnimation}
             />
         </main>
