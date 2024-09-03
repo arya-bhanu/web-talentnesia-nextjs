@@ -21,7 +21,6 @@ export const fetchModules = async () => {
     url: '/v1/manage-module',
     method: 'GET',
   });
-  console.log('response: fetchModules', response);
   return response.data.items;
 };
 
@@ -31,7 +30,6 @@ export const fetchModule = async (id?: string | null) => {
       url: '/v1/manage-module/' + id,
       method: 'GET',
     });
-    console.log('response: fetchModule', response.data);
     return response.data;
   }
   return null;
@@ -42,7 +40,6 @@ export const deleteModule = async (id: string) => {
     url: '/v1/manage-module/' + id,
     method: 'DELETE',
   });
-  console.log('response: deleteModule', response);
   return response;
 };
 
@@ -54,7 +51,6 @@ export const createModul = async (
     method: 'POST',
     formData: data,
   });
-  console.log('response: createModul', response);
   return response.data;
 };
 
@@ -70,7 +66,6 @@ export const updateModul = async ({
     method: 'PUT',
     formData: data,
   });
-  console.log('response: updateModul', response);
   return response.data;
 };
 
@@ -81,7 +76,6 @@ export const fetchChapter = async (chapterId?: string | null) => {
       url: '/v1/chapter/' + chapterId,
       method: 'GET',
     });
-    console.log('response: fetchChapter', response);
     return response;
   }
   return null;
@@ -99,7 +93,6 @@ export const createChapter = async ({
     method: 'POST',
     formData: { moduleId, title },
   });
-  console.log('response: createChapter', response);
   return response;
 };
 
@@ -115,7 +108,6 @@ export const editChapter = async ({
     method: 'PUT',
     formData: { title },
   });
-  console.log('response: editChapter', response);
   return response;
 };
 
@@ -124,7 +116,6 @@ export const deleteChapter = async (id: string) => {
     url: '/v1/chapter/' + id,
     method: 'DELETE',
   });
-  console.log('response: deleteChapter', response);
   return response;
 };
 
@@ -135,7 +126,6 @@ export const fetchContent = async (id?: string) => {
       url: '/v1/content/' + id,
       method: 'GET',
     });
-    console.log('response: fetchContent', response);
     return response;
   }
   return null;
@@ -149,7 +139,6 @@ export const createContent = async (
     method: 'POST',
     formData: payload,
   });
-  console.log('response: createContent', response);
   return response;
 };
 
@@ -166,7 +155,6 @@ export const editContent = async ({
       method: 'PUT',
       formData: data,
     });
-    console.log('response: editContent', response);
     return response;
   }
   return null;
@@ -177,7 +165,6 @@ export const deleteContent = async (id: string) => {
     url: '/v1/content/' + id,
     method: 'DELETE',
   });
-  console.log('response: deleteContent', response);
   return response;
 };
 
@@ -252,7 +239,6 @@ export const contentsReorder = async ({
     url: '/v1/content/reorder-contents/' + chapterId,
     formData: { contents },
   });
-  console.log('response: contentsReorder', response);
   return response;
 };
 
@@ -268,6 +254,5 @@ export const chapterReorder = async ({
     url: '/v1/chapter/reorder-chapters/' + modulId,
     formData: { chapters },
   });
-  console.log('response: chapterReorder', response);
   return response;
 };

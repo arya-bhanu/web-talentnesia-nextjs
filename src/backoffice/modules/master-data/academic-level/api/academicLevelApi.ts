@@ -1,5 +1,6 @@
 import { fetchAxios } from '@/lib/fetchAxios';
 import { AcademicLevelResponse, SingleAcademicLevelResponse } from '../academicLevel.type';
+import axios from 'axios';
 
 export const academicLevelAPI = {
   fetch: async () => {
@@ -10,10 +11,13 @@ export const academicLevelAPI = {
   },
 
   all: async () => {
-    return fetchAxios<AcademicLevelResponse>({
-      url: `${process.env.API_SERVER_URL}/v1/education-level/all`,
-      method: 'GET',
-    });
+    try {
+      const response = await axios.get(`/education-level/all`);
+      return response.data.data;
+    } catch (error) {
+      console.error('Failed to get all academic level', error);
+      return [];
+    }
   },
 
   getById: async (id: string) => {

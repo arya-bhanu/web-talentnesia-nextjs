@@ -3,12 +3,13 @@ import { Button } from 'flowbite-react/components/Button';
 import { Modal } from 'flowbite-react/components/Modal';
 import React from 'react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { IAlertEditModal } from './alertEditModal.type';
+import { IAlertModal } from './alertModal.type';
 
-const AlertEditModalView: React.FC<IAlertEditModal> = ({
+const AlertModalView: React.FC<IAlertModal> = ({
   openModal,
   setOpenModal,
   setIsConfirmed,
+  messageText,
 }) => {
   return (
     <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
@@ -17,7 +18,7 @@ const AlertEditModalView: React.FC<IAlertEditModal> = ({
         <div className="text-center">
           <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
           <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-            Are you sure you want to update this item?
+            {messageText || ''}
           </h3>
           <div className="flex justify-center gap-4">
             <Button
@@ -30,7 +31,7 @@ const AlertEditModalView: React.FC<IAlertEditModal> = ({
               {"Yes, I'm sure"}
             </Button>
             <Button color="gray" onClick={() => setOpenModal(false)}>
-              No, cancel
+              {"No, cancel"}
             </Button>
           </div>
         </div>
@@ -39,4 +40,4 @@ const AlertEditModalView: React.FC<IAlertEditModal> = ({
   );
 };
 
-export default AlertEditModalView;
+export default AlertModalView;

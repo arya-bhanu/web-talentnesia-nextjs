@@ -1,7 +1,8 @@
 import { SetStateAction } from 'react';
 
-export interface IAlertEditModal {
+export interface IAlertModal {
   openModal: boolean;
   setOpenModal: React.Dispatch<SetStateAction<boolean>>;
   setIsConfirmed: React.Dispatch<SetStateAction<boolean>>;
+  messageText?: string;
 }
