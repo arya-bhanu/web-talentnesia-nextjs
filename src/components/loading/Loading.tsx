@@ -8,7 +8,7 @@ const Loading = ({
   children?: ReactNode;
   isLoading: boolean;
 }) => {
-  return <LoadingView isLoading={isLoading} children={children} />;
+  return <LoadingView isLoading={isLoading}>{children}</LoadingView>;
 };
 
 export default Loading;

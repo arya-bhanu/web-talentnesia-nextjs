@@ -3,7 +3,7 @@ import { Button } from 'flowbite-react/components/Button';
 import { Modal } from 'flowbite-react/components/Modal';
 import React, { useEffect, useRef, useState } from 'react';
 import { IModal } from './modal.type';
-import AlertEditModal from '../alert-edit-modal';
+import AlertEditModal from '../alert-modal';
 
 const ModalView: React.FC<IModal> = ({
   state,
@@ -22,6 +22,7 @@ const ModalView: React.FC<IModal> = ({
     if (isConfrm && form) {
       (form as HTMLFormElement).requestSubmit();
     }
+    setIsConfrm(false);
   }, [isConfrm]);
   return (
     <Modal

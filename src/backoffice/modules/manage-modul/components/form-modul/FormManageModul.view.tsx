@@ -13,7 +13,7 @@ import React, {
 } from 'react';
 import { IManageModulForm, ISubmitType } from './formManageModul.type';
 import Chapter from '../chapter';
-import AlertEditModal from '@/backoffice/components/alert-edit-modal';
+import AlertEditModal from '@/backoffice/components/alert-modal';
 
 const FormManageModulView: React.FC<
   IManageModulForm &
