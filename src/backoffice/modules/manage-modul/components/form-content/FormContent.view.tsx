@@ -30,6 +30,7 @@ const FormContentView: React.FC<
             required
             id="title"
             name="title"
+            placeholder='Enter content name'
             defaultValue={populatedData?.title}
             key={populatedData?.title}
             className="w-full"
@@ -54,14 +55,14 @@ const FormContentView: React.FC<
           </Select>
         </div>
       </div>
-      <div className="flex gap-3 items-stretch">
+      <div className="flex gap-3">
         <div className={clsx('flex-1 flex flex-col', styles.custom_input)}>
           <LabelForm isImportant htmlFor="upload_file">
             Upload File
           </LabelForm>
           <Label
             htmlFor="upload_file"
-            className="h-11 flex items-center max-w-80 overflow-hidden  px-3 mt-1 border border-[#D3D7DD] rounded-lg"
+            className="h-11 flex items-center px-3 mt-1 border border-[#D3D7DD] rounded-lg w-full"
           >
             <div className="flex items-center gap-2">
               <DocumentUpload />
@@ -70,7 +71,7 @@ const FormContentView: React.FC<
                   {file.name}
                 </span>
               ) : (
-                <span className="text-sm text-[#219EBC] font-normal w-max">
+                <span className="text-sm font-normal">
                   Choose file
                 </span>
               )}
@@ -84,7 +85,7 @@ const FormContentView: React.FC<
                 }
               }}
               id="upload_file"
-              className="hidden"
+              className="hidden w-full"
               name="upload_file"
             />
           </Label>
