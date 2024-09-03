@@ -1,13 +1,30 @@
-import React from "react";
-import ElearningView  from "./elearning.view";
-import { getHomeData } from "../home/hooks/getHomeData";
+'use client';
 
-export const Elearning = async() => {
-    try {
-        const data = await getHomeData();
-        return <ElearningView data={data} />
-    } catch (error) {
-        return <div>Error loading data...</div>
+import React, { useEffect, useState } from "react";
+import ElearningView from "./elearning.view";
+import homeApi from "../home/api/homeApi";
+
+export const Elearning: React.FC = () => {
+    const [data, setData] = useState<any>();
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await homeApi();
+                setData(result);
+            } catch (err) {
+                console.error(err);
+                setError('Error loading data...');
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (error) {
+        return <div>{error}</div>;
     }
-    
+
+    return <ElearningView data={data} />;
 };

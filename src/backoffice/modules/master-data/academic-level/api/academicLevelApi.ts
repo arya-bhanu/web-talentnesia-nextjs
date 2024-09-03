@@ -4,7 +4,7 @@ import { AcademicLevelResponse, SingleAcademicLevelResponse } from '../academicL
 export const academicLevelAPI = {
   fetch: async () => {
     return fetchAxios<AcademicLevelResponse>({
-      url: `${process.env.API_SERVER_URL}v1/education-level`,
+      url: `${process.env.API_SERVER_URL}/v1/education-level`,
       method: 'GET',
     });
   },
