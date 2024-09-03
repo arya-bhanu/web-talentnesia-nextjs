@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FileInput as FlowbiteFileInput, Label } from 'flowbite-react';
+import clsx from 'clsx';
 
 interface FileInputProps {
   id: string;
   label: string;
   onReset?: (resetFunction: () => void) => void;
   accept?: string;
+  className?: string;
 }
 
-export function FileInput({ id, label, onReset, accept }: FileInputProps) {
+export function FileInput({ id, label, onReset, accept, className }: FileInputProps) {
   const [fileName, setFileName] = useState('Upload file');
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export function FileInput({ id, label, onReset, accept }: FileInputProps) {
   };
 
   return (
-    <div className="relative w-full"> {/* Pastikan div ini memiliki lebar penuh */}
+    <div className={clsx("w-full", className)}> {/* Pastikan div ini memiliki lebar penuh */}
       <FlowbiteFileInput
         id={id}
         className="hidden"
@@ -34,7 +36,7 @@ export function FileInput({ id, label, onReset, accept }: FileInputProps) {
       />
       <Label htmlFor={id} className="cursor-pointer w-full"> {/* Tambahkan w-full di sini */}
         <span className="sr-only">{label}</span>
-        <div className="flex items-center px-4 py-2 bg-white border border-gray-300 text-gray-500 text-sm rounded-lg w-full">
+        <div className="flex items-center px-4 py-2.5 bg-white border border-gray-300 text-gray-500 text-sm rounded-lg w-full">
           <Image
             src="/img/manage-user/file.svg"
             width={20}

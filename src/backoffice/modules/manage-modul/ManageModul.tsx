@@ -53,7 +53,7 @@ const ManageModul = () => {
       }),
       columnHelper.accessor('active', {
         header: ({ column }) => <SortingTable column={column} title="Status" />,
-        cell: (info) => (info.getValue() === 0 ? 'Inactive' : 'Active'),
+        cell: (info) => (info.getValue() === 0 ? 'Non Active' : 'Active'),
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -83,7 +83,7 @@ const ManageModul = () => {
     <ManageModulView
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
-      data={query.data?.data?.items}
+      data={query.data || []}
       handleActionButtonRow={handleActionButtonRow}
       isLoading={query.isLoading}
       Filter={Filter}

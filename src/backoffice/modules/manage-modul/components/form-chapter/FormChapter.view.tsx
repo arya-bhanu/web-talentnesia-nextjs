@@ -25,7 +25,7 @@ import { SortableContext } from '@dnd-kit/sortable';
 import { useDragContents } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { contentsReorder } from '../../api/manageModelApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import AlertEditModal from '@/backoffice/components/alert-edit-modal';
+import AlertEditModal from '@/backoffice/components/alert-modal';
 
 const FormChapterView: React.FC<
   IFormChapter &

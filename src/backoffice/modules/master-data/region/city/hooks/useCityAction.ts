@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
-import { cityAPI } from '../api/cityApi';
+import { districtAPI } from '../api/cityApi';
 
 export const useCityActions = () => {
   const handleAddCity = useCallback(async (name: string) => {
     try {
-      cityAPI.add({name});
+      districtAPI.add({name});
     } catch (error) {
       console.error('Failed to city');
     }
@@ -12,7 +12,7 @@ export const useCityActions = () => {
 
   const handleEditCity = useCallback(async (id: string, data: any) => {
     try {
-      cityAPI.update(id, data);
+      districtAPI.update(id, data);
     } catch (error) {
       console.error('Failed to city');
     }
@@ -20,7 +20,7 @@ export const useCityActions = () => {
 
   const handleDeleteCity = useCallback(async (id: string) => {
     try {
-      cityAPI.delete(id);
+      districtAPI.delete(id);
     } catch (error) {
       console.error('Failed to city');
     }

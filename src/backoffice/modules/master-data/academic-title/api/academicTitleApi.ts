@@ -11,6 +11,16 @@ export const academicTitleAPI = {
     }
   },
 
+  all: async () => {
+    try {
+      const response = await backOfficeAPI.get('/v1/academic-title/all');
+      return response.data.data;
+    } catch (error) {
+      console.error('Failed to get all academic title', error);
+      return [];
+    }
+  },
+
   getById: async (id: string) => {
     try {
       const response = await backOfficeAPI.get(`/v1/academic-title/${id}`);
@@ -26,10 +36,13 @@ export const academicTitleAPI = {
       const requestData = {
         name,
         active: 1,
-        createdBy: ""
+        createdBy: '',
       };
 
-      const response = await backOfficeAPI.post('/v1/academic-title', requestData);
+      const response = await backOfficeAPI.post(
+        '/v1/academic-title',
+        requestData,
+      );
       return response.data;
     } catch (error) {
       console.error('Failed to add academic title');
@@ -41,10 +54,13 @@ export const academicTitleAPI = {
     try {
       const requestData = {
         name,
-        active: 1
+        active: 1,
       };
 
-      const response = await backOfficeAPI.put(`/v1/academic-title/${id}`, requestData);
+      const response = await backOfficeAPI.put(
+        `/v1/academic-title/${id}`,
+        requestData,
+      );
       return response.data;
     } catch (error) {
       console.error('Failed to update academic title');
@@ -64,5 +80,5 @@ export const academicTitleAPI = {
       console.error('Failed to delete academic title');
       return;
     }
-  }
+  },
 };

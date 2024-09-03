@@ -35,7 +35,7 @@ export const categoryAPI = {
   
   
 
-  update: async (id: string, data: { name: string; code: string; status: string }) => {
+  update: async (id: string, data: { name: string; code: string; status?: number }) => {
     try {
       const response = await axios.put(`${API_URL}/category/${id}`, data);
       return response.data;

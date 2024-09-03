@@ -1,11 +1,11 @@
 
 import React from 'react';
 import CourseView from './Course.view';
-import { getHomeData } from '../home/hooks/useHomeData';
+import homeApi from '../home/api/homeApi';
 
 export const Course = async () => {
   try {
-    const data = await getHomeData();
+    const data = await homeApi();
     return <CourseView data={data} />
   } catch (error) {
     return <div>Error loading data</div>

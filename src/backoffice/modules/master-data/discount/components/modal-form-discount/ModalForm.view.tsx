@@ -97,9 +97,9 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
                 Status<span className="text-red-500">*</span>
               </label>
               <InputDropdown
-                value={Number(formData.active) === 1 ? 'Active' : 'Inactive'}
+                value={Number(formData.active) === 1 ? 'Active' : 'Non Active'}
                 onChange={(value) => handleInputChange('active', value)}
-                options={['Active', 'Inactive']}
+                options={['Active', 'Non Active']}
               />
               {hasError && !formData.active && (
                 <p className="text-red-500 text-xs mt-1">Status is required.</p>

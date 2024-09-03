@@ -1,11 +1,9 @@
-import axios from 'axios';
-
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+import { backOfficeAPI } from '@/lib/axiosConfig';
 
 export const provinceAPI = {
   fetch: async () => {
     try {
-      const response = await axios.get(`${API_URL}/province`);
+      const response = await backOfficeAPI.get('/v1/province');
       return response.data.data.items;
     } catch (error) {
       console.error('Failed to fetch province');
@@ -13,9 +11,19 @@ export const provinceAPI = {
     }
   },
 
+  all: async () => {
+    try {
+      const response = await backOfficeAPI.get('/v1/province/all');
+      return response.data.data;
+    } catch (error) {
+      console.error('Failed to get all province', error);
+      return [];
+    }
+  },
+
   getById: async (id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/province/${id}`);
+      const response = await backOfficeAPI.get(`/v1/province/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch province details');
@@ -31,7 +39,7 @@ export const provinceAPI = {
         createdBy: ""
       };
 
-      const response = await axios.post(`${API_URL}/province`, requestData);
+      const response = await backOfficeAPI.post(`/v1/province`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to add province');
@@ -46,7 +54,7 @@ export const provinceAPI = {
         active: 1
       };
 
-      const response = await axios.put(`${API_URL}/province/${id}`, requestData);
+      const response = await backOfficeAPI.put(`/v1/province/${id}`, requestData);
       return response.data;
     } catch (error) {
       console.error('Failed to update province');
@@ -60,7 +68,7 @@ export const provinceAPI = {
         throw new Error('Invalid ID format');
       }
 
-      const response = await axios.delete(`${API_URL}/province/${id}`);
+      const response = await backOfficeAPI.delete(`/v1/province/${id}`);
       return response.data;
     } catch (error) {
       console.error('Failed to delete province');
