@@ -1,33 +1,33 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import TableProgramView from './TableProgram.view';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { TableProgramData } from './tableProgram.data';
+import { useQuery } from '@tanstack/react-query';
+import { fetchReportPrograms } from '../../api/reportApi';
+import Loading from '@/components/loading';
 
 const TableProgram = () => {
-  const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const data = TableProgramData;
-
-  const fetchData = useCallback(async () => {
-    console.log("Data fetched");
-  }, []);
+  const { data: programs, isLoading: isLoadingPrograms } = useQuery({
+    queryKey: ['report', 'program'],
+    queryFn: fetchReportPrograms,
+  });
 
   return (
-    <TableProgramView
-      data={data}
-      openPopoverIndex={openPopoverIndex}
-      setOpenPopoverIndex={setOpenPopoverIndex}
-      Filter={Filter}
-      setFilter={setFilter}
-      isPopupOpen={isPopupOpen}
-      setIsPopupOpen={setIsPopupOpen}
-      fetchData={fetchData}
-    />
+    <Loading isLoading={isLoadingPrograms}>
+      <TableProgramView
+        data={programs?.data?.items}
+        openPopoverIndex={openPopoverIndex}
+        setOpenPopoverIndex={setOpenPopoverIndex}
+        Filter={Filter}
+        setFilter={setFilter}
+        isPopupOpen={isPopupOpen}
+        setIsPopupOpen={setIsPopupOpen}
+      />
+    </Loading>
   );
 };
 
