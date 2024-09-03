@@ -26,5 +26,5 @@ export const Bootcamp: React.FC = () => {
         return <div>{error}</div>;
     }
 
-    return <BootcampView data={data} />;
+    return <BootcampView data={data || []} />;
 };

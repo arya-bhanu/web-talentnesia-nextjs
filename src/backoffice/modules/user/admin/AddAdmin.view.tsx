@@ -14,18 +14,11 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useAdminForm } from './AddAdmin';
 import './addAdmin.style.css';
+import { FileInput } from '../../list-student/components/input-file-type/InputFileType';
 
 const Datepicker = dynamic(
   () =>
     import('@/backoffice/components/datepicker/Datepicker').then(
-      (mod) => mod.Component,
-    ),
-  { ssr: false },
-);
-
-const FileInput = dynamic(
-  () =>
-    import('@/backoffice/components/file-input/FileInput').then(
       (mod) => mod.Component,
     ),
   { ssr: false },

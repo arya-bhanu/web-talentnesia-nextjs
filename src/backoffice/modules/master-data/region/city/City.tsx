@@ -4,7 +4,7 @@ import React, { useState, useCallback } from 'react';
 import CityView from './City.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCityActions } from './hooks/useCityAction';
-import { cityAPI } from './api/cityApi';
+import { districtAPI } from './api/cityApi';
 
 const City = () => {
   const queryClient = useQueryClient();
@@ -17,7 +17,7 @@ const City = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['city'],
     queryFn: async () => {
-      const response = await cityAPI.fetch();
+      const response = await districtAPI.fetch();
       return response;
     },
   });
