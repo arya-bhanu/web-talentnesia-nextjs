@@ -13,7 +13,7 @@ import React, {
 } from 'react';
 import { IManageModulForm, ISubmitType } from './formManageModul.type';
 import Chapter from '../chapter';
-import AlertEditModal from '@/backoffice/components/alert-modal';
+import AlertModal from '@/backoffice/components/alert-modal';
 
 const FormManageModulView: React.FC<
   IManageModulForm &
@@ -33,10 +33,11 @@ const FormManageModulView: React.FC<
   }, [isEditConfrm]);
   return (
     <section>
-      <AlertEditModal
+      <AlertModal
         openModal={editModalActive}
         setOpenModal={setEditModalActive}
         setIsConfirmed={setIsEditConfrm}
+        messageText="Are you sure you want to update this item?"
       />
       <form ref={formRef} onSubmit={handleSubmitForm} action="" className="">
         <div className="flex items-center">

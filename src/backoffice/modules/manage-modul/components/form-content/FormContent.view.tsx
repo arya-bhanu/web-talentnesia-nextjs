@@ -1,6 +1,6 @@
 import LabelForm from '@/backoffice/components/label-form';
 import { FileInput, Label, Select, TextInput } from 'flowbite-react';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './formContent.module.css';
 import clsx from 'clsx';
 import DocumentUpload from '@/../public/icons/document-upload.svg';
@@ -11,6 +11,7 @@ import { APIContentChapter } from '../../manageModul.type';
 const FormContentView: React.FC<
   IFormContent & { populatedData?: APIContentChapter }
 > = ({ setTime, time, setFile, file, populatedData }) => {
+  const [uploadedFileUrl, setUploadedFileUrl] = useState('');
   return (
     <div className="flex flex-col gap-6">
       <input

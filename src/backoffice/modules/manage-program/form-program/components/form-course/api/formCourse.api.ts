@@ -5,7 +5,7 @@ import { backOfficeAPI } from '@/lib/axiosConfig';
 export const fetchChapterCourse = async (programId: string | null) => {
   try {
     if (programId) {
-      return backOfficeAPI.get(`/manage-program/course/${programId}`);
+      return backOfficeAPI.get(`/v1/manage-program/course/${programId}`);
     }
     return null;
   } catch (err) {
