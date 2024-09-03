@@ -64,13 +64,19 @@ const ModalForm: React.FC<ModalFormProps> = ({
         active: formData.status,
       };
       
+      if (id) {
+        await levelAPI.update(id, data);
+      } else {
         await levelAPI.add(data);
+      }
       
 
       handleClose(); 
       if (onSave) {
         await onSave(id, data);
       }
+      await onSave(id, formData);
+      onClose();
     } catch (error) {
       console.error('Failed to save data', error);
       alert('An error occurred while saving the data. Please try again.');
@@ -95,7 +101,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
       title={title}
       formData={{
         ...formData,
-        status: formData.status === 1 ? 'Active' : 'Inactive', 
+        status: formData.status === 1 ? 'Active' : 'Non Active', 
       }}
       hasError={hasError}
       handleInputChange={handleInputChange}

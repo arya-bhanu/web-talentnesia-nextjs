@@ -1,65 +1,35 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { BadgeStatusProps } from './badgeStatus.type';
-// 1 = active / inactive
-
+// 1 = Active / Non Active
 
 export const BadgeStatus: React.FC<BadgeStatusProps> = ({ status, type }) => {
-  let textStatus:string = '';
-  let styling:string = '';
 
-  if (type == 1) {
-     textStatus = useMemo(() => {
+  const { textStatus, styling } = (() => {
+    if (type === 1) {
       switch (status) {
         case 0:
-          return 'Inactive';
+          return { textStatus: 'Non Active', styling: 'bg-red-100 text-red-500/80' };
         case 1:
-          return 'Active';
+          return { textStatus: 'Active', styling: 'bg-green-100 text-green-500/80' };
         default:
-          return 'Inactive';
+          return { textStatus: 'Non Active', styling: 'bg-red-100 text-red-500/80' };
       }
-    }, [status]);
-  } else {
-     textStatus = useMemo(() => {
+    } else {
       switch (status) {
         case 0:
-          return 'Not Started';
+          return { textStatus: 'Not Started', styling: 'bg-red-100 text-red-500/80' };
         case 1:
-          return 'On Going';
+          return { textStatus: 'On Going', styling: 'bg-yellow-100/50 text-yellow-500/80' };
         default:
-          return 'Finished';
+          return { textStatus: 'Finished', styling: 'bg-green-100 text-green-500/80' };
       }
-    }, [status]);
-  }
+    }
+  })();
 
-  
-  if (type == 1) {
-     styling = useMemo(() => {
-      switch (status) {
-        case 0:
-          return 'bg-red-100 text-red-500/80';
-        case 1:
-          return 'bg-green-100/50 text-green-500/80';
-        default:
-          return 'bg-green-100 text-green-500/80';
-      }
-    }, [status]);
-  } else {
-    styling = useMemo(() => {
-      switch (status) {
-        case 0:
-          return 'bg-red-100 text-red-500/80';
-        case 1:
-          return 'bg-yellow-100/50 text-yellow-500/80';
-        default:
-          return 'bg-green-100 text-green-500/80';
-      }
-    }, [status]);
-  }
-  
-  return (
-    <span className={clsx('px-3 py-2 rounded-lg text-xs font-medium', styling)}>
-      {textStatus}
-    </span>
-  );
-};
+    return (
+      <span className={clsx('px-3 py-2 rounded-lg text-xs font-medium', styling)}>
+        {textStatus}
+      </span>
+    );
+  };

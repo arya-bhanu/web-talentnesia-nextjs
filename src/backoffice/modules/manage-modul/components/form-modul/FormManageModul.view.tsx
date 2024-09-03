@@ -87,7 +87,7 @@ const FormManageModulView: React.FC<
                   }
                   key={populatedDatas?.data?.active}
                 />
-                <Label htmlFor="status-2">Inactive</Label>
+                <Label htmlFor="status-2">Non Active</Label>
               </div>
             </div>
           </div>
