@@ -2,10 +2,23 @@ export interface APIResponseSubDistrict {
   id: string;
   code: string;
   name: string;
-  description?: string;
-  active: number;
-  createdAt: Date;
-  updatedAt: Date;
+  active?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IComboSubDistrict {
+  data: APIResponseSubDistrict[];
+}
+
+export interface SubDistrictResponse {
+  data: {
+    items: APIResponseSubDistrict[];
+  };
+}
+
+export interface SingleSubDistrictResponse {
+  data: APIResponseSubDistrict;
 }
 
 export interface ISubDistrictView {
@@ -19,6 +32,5 @@ export interface ISubDistrictView {
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   fetchData: () => Promise<void>;
+  role: number;
 }
-
-

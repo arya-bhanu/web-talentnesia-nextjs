@@ -1,27 +1,36 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import ReligionView from './Religion.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useReligionActions } from './hooks/useReligionAction';
 import { religionAPI } from './api/religionApi';
+import { useReligionActions } from './hooks/useReligionAction';
+import { decodeToken } from '@/lib/tokenDecoder';
 
 const Religion = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState<number>(NaN);
 
   const { handleAddReligion, handleEditReligion, handleDeleteReligion } = useReligionActions();
+
+  useEffect(() => {
+    const decodedToken = decodeToken();
+    if (decodedToken) {
+      setUserRole(decodedToken.role);
+    }
+  }, []);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['religion'],
     queryFn: async () => {
       const response = await religionAPI.fetch();
-      return response;
+      return response.data.items;
     },
   });
-  
+
   const fetchData = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: ['religion'] });
   }, [queryClient]);
@@ -47,7 +56,8 @@ const Religion = () => {
 
   return (
     <ReligionView
-      data={data}
+      role={userRole}
+      data={data || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}

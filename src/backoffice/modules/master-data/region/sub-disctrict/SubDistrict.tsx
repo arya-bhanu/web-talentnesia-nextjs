@@ -1,27 +1,36 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import SubDistrictView from './SubDistrict.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSubDistrictActions } from './hooks/useSubDistrictAction';
 import { subDistrictAPI } from './api/subDistrictApi';
+import { useSubDistrictActions } from './hooks/useSubDistrictAction';
+import { decodeToken } from '@/lib/tokenDecoder';
 
 const SubDistrict = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState<number>(NaN);
 
   const { handleAddSubDistrict, handleEditSubDistrict, handleDeleteSubDistrict } = useSubDistrictActions();
+
+  useEffect(() => {
+    const decodedToken = decodeToken();
+    if (decodedToken) {
+      setUserRole(decodedToken.role);
+    }
+  }, []);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['subDistrict'],
     queryFn: async () => {
       const response = await subDistrictAPI.fetch();
-      return response;
+      return response.data.items;
     },
   });
-  
+
   const fetchData = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: ['subDistrict'] });
   }, [queryClient]);
@@ -47,7 +56,8 @@ const SubDistrict = () => {
 
   return (
     <SubDistrictView
-      data={data}
+      role={userRole}
+      data={data || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}

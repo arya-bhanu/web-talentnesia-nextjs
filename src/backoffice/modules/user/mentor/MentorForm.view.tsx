@@ -5,7 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useMentorForm } from './MentorForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
-import { districtAPI } from '../../master-data/region/city/api/cityApi';
+import { districtAPI } from '../../master-data/region/district/api/districtApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
 import { academicTitleAPI } from '../../master-data/academic-title/api/academicTitleApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
@@ -16,6 +16,12 @@ import { Component as SelectYear } from '../components/select-year/selectYear';
 import { Region } from '../mentor/mentorForm.type';
 import Link from 'next/link';
 import { ResponseModal } from '../components/response-modal/responseModal';
+import { APIResponseReligion, IComboReligion } from '../../master-data/religion/religion.type';
+import { APIResponseProvince, IComboProvince } from '../../master-data/region/province/province.type';
+import { APIResponseDistrict, IComboDistrict } from '../../master-data/region/district/district.type';
+import { APIResponseSubDistrict, IComboSubDistrict } from '../../master-data/region/sub-disctrict/subDistrict.type';
+import { APIResponseAcademicLevel } from '../../master-data/academic-level/academicLevel.type';
+import { APIResponseAcademicTitle, IComboAcademicTitle } from '../../master-data/academic-title/academicTitle.type';
 
 type MentorViewProps = ReturnType<typeof useMentorForm>;
 
@@ -37,11 +43,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
     isSuccess,
     confirmSubmit,
 }) => {
-  const [provinces, setProvinces] = useState<Region[]>([]);
-  const [districts, setDistricts] = useState<Region[]>([]);
-  const [subDistricts, setSubDistricts] = useState<Region[]>([]);
-  const [academicTitles, setAcademicTitles] = useState<Region[]>([]);
-  const [religions, setReligions] = useState<Region[]>([]);
+  const [religions, setReligions] = useState<APIResponseReligion[]>([]);
+  const [provinces, setProvinces] = useState<APIResponseProvince[]>([]);
+  const [districts, setDistricts] = useState<APIResponseDistrict[]>([]);
+  const [subDistricts, setSubDistricts] = useState<APIResponseSubDistrict[]>([]);
+  const [academicLevels, setAcademicLevels] = useState<APIResponseAcademicLevel[]>([]);
+  const [academicTitles, setAcademicTitles] = useState<APIResponseAcademicTitle[]>([]);
 
   const styles = {
     inputField: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins",
@@ -50,20 +57,25 @@ export const MentorView: React.FC<MentorViewProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedProvinces = await provinceAPI.all();
-        setProvinces(fetchedProvinces);
+        const [
+          fetchedReligions,
+          fetchedProvinces,
+          fetchedDistricts,
+          fetchedSubDistricts,
+          fetchedAcademicTitles
+        ] = await Promise.all([
+          religionAPI.all(),
+          provinceAPI.all(),
+          districtAPI.all(),
+          subDistrictAPI.all(),
+          academicTitleAPI.all()
+        ]);
 
-        const fetchedDistricts = await districtAPI.all();
-        setDistricts(fetchedDistricts);
-
-        const fetchedSubDistricts = await subDistrictAPI.all();
-        setSubDistricts(fetchedSubDistricts);
-
-        const fetchedAcademicTitles = await academicTitleAPI.all();
-        setAcademicTitles(fetchedAcademicTitles);
-
-        const fetchedReligions = await religionAPI.all();
-        setReligions(fetchedReligions);
+        setReligions((fetchedReligions as IComboReligion).data);
+        setProvinces((fetchedProvinces as IComboProvince).data);
+        setDistricts((fetchedDistricts as IComboDistrict).data);
+        setSubDistricts((fetchedSubDistricts as IComboSubDistrict).data);
+        setAcademicTitles((fetchedAcademicTitles as IComboAcademicTitle).data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -200,11 +212,14 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion, index) => (
-                    <option key={index} value={religion.id}>
-                      {religion.name}
-                    </option>
-                  ))}
+                  {religions.map((religion: any, index: number) => {
+                    console.log(religion);
+                    return (
+                      <option key={index} value={religion.id}>
+                        {religion.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -356,20 +371,23 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   Province<div className="text-red-600">*</div>
                 </label>
                 <select
-                name="provinceId"
-                value={form.provinceId || ''}
-                onChange={handleInputChange}
-                className={styles.inputField}
-              >
-                <option className="hidden" value="" disabled>
-                  Select Province
-                </option>
-                {provinces?.map((province, index) => (
-                  <option key={index} value={province.id}>
-                    {province.name}
+                  name="provinceId"
+                  value={form.provinceId || ''}
+                  onChange={handleInputChange}
+                  className={styles.inputField}
+                >
+                  <option className="hidden" value="" disabled>
+                    Select Province
                   </option>
-                ))}
-              </select>
+                  {provinces.map((province: any, index: number) => {
+                    console.log(province);
+                    return (
+                      <option key={index} value={province.id}>
+                        {province.name}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
               <div>
                 <label className="flex mb-1">
@@ -384,11 +402,14 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select City/District
                   </option>
-                  {districts?.map((district, index) => (
-                    <option key={index} value={district.id}>
-                      {district.name}
-                    </option>
-                  ))}
+                  {districts.map((district: any, index: number) => {
+                    console.log(district);
+                    return (
+                      <option key={index} value={district.id}>
+                        {district.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -404,11 +425,14 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Sub District
                   </option>
-                  {subDistricts?.map((subDistrict, index) => (
-                    <option key={index} value={subDistrict.id}>
-                      {subDistrict.name}
-                    </option>
-                  ))}
+                  {subDistricts.map((subDistrict: any, index: number) => {
+                    console.log(subDistrict);
+                    return (
+                      <option key={index} value={subDistrict.id}>
+                        {subDistrict.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -518,19 +542,22 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       Academic Title<div className="text-red-600">*</div>
                     </label>
                     <select
-                    id={`educations[${index}].titleId`}
-                    name={`educations[${index}].titleId`}
-                    value={educations.titleId || ''}
-                    onChange={(e) => handleEducationChange(e, index)}
-                    className={styles.inputField}
+                      id={`educations[${index}].titleId`}
+                      name={`educations[${index}].titleId`}
+                      value={educations.titleId || ''}
+                      onChange={(e) => handleEducationChange(e, index)}
+                      className={styles.inputField}
                     >
-                    <option value="">Select Title</option>
-                    {academicTitles.map((title) => (
-                      <option key={title.id} value={title.id}>
-                        {title.name}
-                      </option>
-                    ))}
-                  </select>
+                      <option value="">Select Title</option>
+                      {academicTitles.map((title: any, index: number) => {
+                        console.log(title);
+                        return (
+                          <option key={index} value={title.id}>
+                            {title.name}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                   <div>
                     <label className="flex mb-1">

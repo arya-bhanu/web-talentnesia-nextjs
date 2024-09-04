@@ -1,31 +1,32 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { ICityView } from './city.type';
+import { IDistrictView } from './district.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-city';
-import { useCityActions } from './hooks/useCityAction';
+import { useDistrictActions } from './hooks/useDistrictAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../../public/icons/more_horiz.svg';
 
 const columnHelper = createColumnHelper<any>();
 
-const CityView: React.FC<ICityView> = ({
+const DistrictView: React.FC<IDistrictView> = ({
   data,
   Filter,
   setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
+  role,
 }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const { handleAddCity, handleEditCity, handleDeleteCity } = useCityActions();
+  const { handleAddDistrict, handleEditDistrict, handleDeleteDistrict } = useDistrictActions();
 
   const handleEdit = useCallback(
     (id: string, rowData: any) => {
@@ -41,34 +42,30 @@ const CityView: React.FC<ICityView> = ({
     setDeleteModalOpen(true);
   }, []);
 
-  const handleAddOrEditCity = useCallback(
+  const handleAddOrEditDistrict = useCallback(
     async (id: string | undefined, data: { name: string }) => {
       if (id) {
-        await handleEditCity(id, data);
+        await handleEditDistrict(id, data);
       } else {
-        await handleAddCity(data.name);
+        await handleAddDistrict(data.name);
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditCity, handleAddCity, fetchData],
+    [handleEditDistrict, handleAddDistrict, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {
-        header: ({ column }) => <SortingTable column={column} title="City Code" />,
+        header: ({ column }) => <SortingTable column={column} title="District Code" />,
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('City-name', {
+      columnHelper.accessor('name', {
         header: ({ column }) => (
-          <SortingTable column={column} title="City Name" />
+          <SortingTable column={column} title="District Name" />
         ),
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor('province', {
-        header: ({ column }) => <SortingTable column={column} title="Province" />,
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('id', {
@@ -115,9 +112,10 @@ const CityView: React.FC<ICityView> = ({
         <AddButton
           onClick={() => {
             setSelectedId(null);
+            setSelectedRowData(null);
             setIsPopupOpen(true);
           }}
-          text="Add City"
+          text="Add District"
         />
       </div>
       <DataTable
@@ -126,6 +124,7 @@ const CityView: React.FC<ICityView> = ({
         sorting={[{ id: 'code', desc: false }]}
         filter={{ Filter, setFilter }}
       />
+
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
@@ -133,17 +132,17 @@ const CityView: React.FC<ICityView> = ({
           setSelectedId(null);
           setSelectedRowData(null);
         }}
-        onSave={handleAddOrEditCity}
+        onSave={handleAddOrEditDistrict}
         initialData={selectedRowData}
         id={selectedId || undefined}
-        title={selectedId ? 'Edit City' : 'Add City'}
+        title={selectedId ? 'Edit District' : 'Add District'}
       />
 
       <AlertModal
         openModal={deleteModalOpen}
         setOpenModal={setDeleteModalOpen}
         setIsConfirmed={async () => {
-          await handleDeleteCity(selectedId!);
+          await handleDeleteDistrict(selectedId!);
           fetchData();
           setDeleteModalOpen(false);
         }}
@@ -152,4 +151,4 @@ const CityView: React.FC<ICityView> = ({
   );
 };
 
-export default CityView;
+export default DistrictView;

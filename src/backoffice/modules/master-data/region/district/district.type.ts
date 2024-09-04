@@ -1,4 +1,4 @@
-export interface APIResponseReligion {
+export interface APIResponseDistrict {
   id: string;
   code: string;
   name: string;
@@ -7,26 +7,26 @@ export interface APIResponseReligion {
   updatedAt?: Date;
 }
 
-export interface IComboReligion {
-  data: APIResponseReligion[];
+export interface IComboDistrict {
+  data: APIResponseDistrict[];
 }
 
-export interface ReligionResponse {
+export interface DistrictResponse {
   data: {
-    items: APIResponseReligion[];
+    items: APIResponseDistrict[];
   };
 }
 
-export interface SingleReligionResponse {
-  data: APIResponseReligion;
+export interface SingleDistrictResponse {
+  data: APIResponseDistrict;
 }
 
-export interface IReligionView {
-  data: APIResponseReligion[];
+export interface IDistrictView {
+  data: APIResponseDistrict[];
   openPopoverIndex: number | null;
   setOpenPopoverIndex: React.Dispatch<React.SetStateAction<number | null>>;
   handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
-  handleAddReligion: (name: string) => Promise<void>;
+  handleAddDistrict: (name: string) => Promise<void>;
   Filter: string;
   setFilter: (value: string) => void;
   isPopupOpen: boolean;
