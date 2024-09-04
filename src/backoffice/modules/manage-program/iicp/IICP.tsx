@@ -1,19 +1,16 @@
-// In IICP.tsx
+import React, { useState, useCallback, useEffect } from 'react';
+import IICPView from './IICP.view';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchIICPProgram, deleteIICPProgram } from './api/iicp.api';
-import { useIICPStore } from './iicp.store';
 import AlertDeleteModal from '@/backoffice/components/alert-delete-modal/AlertDeleteModal';
-import { useEffect, useState } from 'react';
-import IICPView from './IICP.view';
 
 const IICP = () => {
-  const [popoverIndex, setPopoverIndex] = useState(0);
+  const queryClient = useQueryClient();
+  const [Filter, setFilter] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [programIdToDelete, setProgramIdToDelete] = useState<string | null>(null);
-  const { setPrograms } = useIICPStore();
-  const queryClient = useQueryClient();
 
-  const { data: dataProgramsIICP, isLoading: isLoadingPrograms } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['programs'],
     queryFn: fetchIICPProgram,
   });
@@ -27,16 +24,12 @@ const IICP = () => {
     },
   });
 
-  useEffect(() => {
-    if (dataProgramsIICP?.data?.data?.items) {
-      setPrograms(dataProgramsIICP.data.data.items);
+  const handleActionButtonRow = useCallback((id: string, action: "delete") => {
+    if (action === "delete") {
+      setProgramIdToDelete(id);
+      setOpenModal(true);
     }
-  }, [JSON.stringify(dataProgramsIICP?.data)]);
-
-  const handleDeleteClick = (id: string) => {
-    setProgramIdToDelete(id);
-    setOpenModal(true);
-  };
+  }, []);
 
   const handleConfirmDelete = () => {
     if (programIdToDelete) {
@@ -44,12 +37,16 @@ const IICP = () => {
     }
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+
   return (
     <>
-      <IICPView 
-        popoverIndex={popoverIndex} 
-        setPopoverIndex={setPopoverIndex} 
-        onDeleteClick={handleDeleteClick}
+      <IICPView
+        data={data?.data?.data?.items || []}
+        Filter={Filter}
+        setFilter={setFilter}
+        handleActionButtonRow={handleActionButtonRow}
       />
       <AlertDeleteModal
         openModal={openModal}
@@ -59,6 +56,5 @@ const IICP = () => {
     </>
   );
 };
-
 
 export default IICP;

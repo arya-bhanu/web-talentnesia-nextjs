@@ -3,6 +3,17 @@ import { Dispatch, SetStateAction } from 'react';
 
 export interface IICPType {}
 
+export interface IICPViewProps {
+  data: APIDetailProgramIICP[];
+  Filter: string;
+  setFilter: (value: string) => void;
+  handleActionButtonRow: (
+    id: string,
+    action: 'delete',
+    rowData?: string,
+  ) => void;
+}
+
 export interface IICPProgramItemApiResponse {
   data: {
     items: APIDetailProgramIICP[];

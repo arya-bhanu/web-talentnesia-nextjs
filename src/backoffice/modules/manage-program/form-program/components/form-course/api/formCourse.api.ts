@@ -58,9 +58,7 @@ export const fetchModule = async () => {
 export const fetchContent = async (contentId?: string | null) => {
   if (contentId) {
     const response = await fetchAxios<{
-      data: {
         data: APIContentChapter;
-      };
     }>({
       url: `/v1/program-content/${contentId}`,
       method: 'GET',
@@ -74,9 +72,7 @@ export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
 ) => {
   const response = await fetchAxios<{
-    data: {
       data: APIContentChapter;
-    };
   }>({
     url: '/v1/program-content',
     method: 'POST',
@@ -87,9 +83,7 @@ export const createContent = async (
 
 export const deleteContent = async (contentId: string) => {
   const response = await fetchAxios<{
-    data: {
       data: string;
-    };
   }>({
     url: `/v1/program-content/${contentId}`,
     method: 'DELETE',
@@ -105,9 +99,7 @@ export const editContent = async ({
   payload: APIContentChapter;
 }) => {
   const response = await fetchAxios<{
-    data: {
       data: APIContentChapter;
-    };
   }>({
     url: `/v1/program-content/${contentId}`,
     method: 'PUT',
