@@ -13,6 +13,7 @@ import { formatNumericDateToEng } from '@/helpers/formatter.helper';
 const IICPView: React.FC<IICPStateType> = ({
   popoverIndex,
   setPopoverIndex,
+  onDeleteClick,
 }) => {
   const { programs } = useIICPStore();
   return (
@@ -170,7 +171,7 @@ const IICPView: React.FC<IICPStateType> = ({
                           >
                             Edit
                           </Link>
-                          <button className="hover:text-red-500 hover:underline">
+                          <button onClick={() => onDeleteClick(el.id || '')} className="hover:text-red-500 hover:underline">
                             Delete
                           </button>
                         </div>

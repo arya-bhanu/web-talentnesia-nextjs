@@ -13,3 +13,16 @@ export const fetchIICPProgram = async () => {
     throw err;
   }
 };
+
+export const deleteIICPProgram = async (id: string) => {
+  const response = await fetchAxios<{
+    data: {
+      data: string;
+    };
+  }>({
+    url: `/v1/manage-program/${id}`,
+    method: 'DELETE',
+  });
+  return { data: response };
+};
+

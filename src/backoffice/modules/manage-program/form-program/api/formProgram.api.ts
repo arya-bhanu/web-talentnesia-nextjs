@@ -1,4 +1,5 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
+import { IAPIStudentProgram } from '../components/table-students/tableStudents.type';
 
 export const fetchSchoolStudents = async ({
   programId,
@@ -7,14 +8,17 @@ export const fetchSchoolStudents = async ({
   programId: string | null;
   schoolId: string | null;
 }) => {
-  try {
-    if (programId && schoolId) {
-      return await backOfficeAPI.get(
-        `/program-student/browse-all/${programId}/${schoolId}`,
-      );
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
+  if (programId && schoolId) {
+    const response = await fetchAxios<{
+      data: {
+        items: IAPIStudentProgram[];
+      };
+    }>({
+      url: `/v1/program-student/browse-all/${programId}/${schoolId}`,
+      method: 'GET',
+    });
+    return { data: response };
   }
+  return null;
 };
+

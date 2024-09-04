@@ -12,4 +12,5 @@ export interface IICPProgramItemApiResponse {
 export interface IICPStateType {
   popoverIndex: number;
   setPopoverIndex: Dispatch<SetStateAction<number>>;
+  onDeleteClick: (id: string) => void;
 }

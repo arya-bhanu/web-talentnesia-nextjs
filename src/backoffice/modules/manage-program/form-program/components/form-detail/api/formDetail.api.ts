@@ -18,7 +18,6 @@ export const fetchSchools = async () => {
     url: '/v1/educational-institution/all',
     method: 'GET',
   });
-  console.log('Fetched schools:', response);
   return { data: response };
 };
 
@@ -26,12 +25,13 @@ export const createProgram = async (
   data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] },
 ) => {
   try {
-    const response = await fetchAxios<{ data: any }>({
+    const response = await fetchAxios<{
+      data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] };
+    }>({
       url: '/v1/manage-program',
       method: 'POST',
       formData: data,
     });
-    console.log('Created program:', response);
     return response;
   } catch (err) {
     console.error('Error creating program:', err);
@@ -42,10 +42,15 @@ export const createProgram = async (
 export const fetchDetailProgram = async (programId?: string | null) => {
   try {
     if (programId) {
-      return await backOfficeAPI.get('/manage-program/detail/' + programId);
+      const response = await fetchAxios<{ data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] } }>({
+        url: `/v1/manage-program/detail/${programId}`,
+        method: 'GET',
+      });
+      return { data: response };
     }
     return null;
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching program detail:', err);
+    throw err;
   }
 };

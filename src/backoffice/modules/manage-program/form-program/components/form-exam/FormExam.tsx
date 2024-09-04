@@ -88,11 +88,11 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         if (examId) {
           console.log('updating program exam...');
           await updateExamAsync({ payload: dataExam, examId: examId });
-          console.log('reordering exam program...');
-          await reorderExamsAynsc({
-            examId,
-            questions: question.map((el) => el.id),
-          });
+          // console.log('reordering exam program...');
+          // await reorderExamsAynsc({
+          //   examId,
+          //   questions: question.map((el) => el.id),
+          // });
         } else {
           console.log('creating program exam...');
           await createExamAsync(dataExam);

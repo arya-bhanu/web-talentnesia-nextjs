@@ -4,10 +4,12 @@ import axios from 'axios';
 
 export const academicLevelAPI = {
   fetch: async () => {
-    return fetchAxios<AcademicLevelResponse>({
-      url: `${process.env.API_SERVER_URL}/v1/education-level`,
+    const response = await fetchAxios<AcademicLevelResponse>({
+      url: `/v1/education-level`,
       method: 'GET',
     });
+    console.log(response);
+    return response;
   },
 
   all: async () => {
@@ -22,7 +24,7 @@ export const academicLevelAPI = {
 
   getById: async (id: string) => {
     return fetchAxios<SingleAcademicLevelResponse>({
-      url: `${process.env.API_SERVER_URL}/v1/education-level/${id}`,
+      url: `/v1/education-level/${id}`,
       method: 'GET',
     });
   },
@@ -30,7 +32,7 @@ export const academicLevelAPI = {
   add: async (name: string) => {
     const requestData = { name, active: 1, createdBy: "" };
     return fetchAxios<SingleAcademicLevelResponse>({
-      url: `${process.env.API_SERVER_URL}/v1/education-level`,
+      url: `/v1/education-level`,
       method: 'POST',
       formData: requestData,
     });
@@ -39,7 +41,7 @@ export const academicLevelAPI = {
   update: async (id: string, name: string) => {
     const requestData = { name, active: 1 };
     return fetchAxios<SingleAcademicLevelResponse>({
-      url: `${process.env.API_SERVER_URL}/v1/education-level/${id}`,
+      url: `/v1/education-level/${id}`,
       method: 'PUT',
       formData: requestData,
     });
@@ -47,7 +49,7 @@ export const academicLevelAPI = {
 
   delete: async (id: string) => {
     return fetchAxios<{ success: boolean }>({
-      url: `${process.env.API_SERVER_URL}/v1/education-level/${id}`,
+      url: `/v1/education-level/${id}`,
       method: 'DELETE',
     });
   }
