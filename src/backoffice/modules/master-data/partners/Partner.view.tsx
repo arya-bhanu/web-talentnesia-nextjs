@@ -73,7 +73,12 @@ const PartnersView: React.FC<IPartnerView> = ({
         header: ({ column }) => (
           <SortingTable column={column} title="Logo" />
         ),
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+          const logoURL = info.getValue() as string;
+          return(
+            <img src={logoURL}  alt='Logo' />
+          )
+        },
       }),
       columnHelper.accessor('description', {
         header: ({ column }) => (
