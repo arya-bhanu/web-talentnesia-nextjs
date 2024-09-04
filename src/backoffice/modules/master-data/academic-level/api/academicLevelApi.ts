@@ -1,25 +1,23 @@
 import { fetchAxios } from '@/lib/fetchAxios';
-import { AcademicLevelResponse, SingleAcademicLevelResponse } from '../academicLevel.type';
-import axios from 'axios';
+import {
+  AcademicLevelResponse,
+  IComboAcademicLevel,
+  SingleAcademicLevelResponse,
+} from '../academicLevel.type';
 
 export const academicLevelAPI = {
   fetch: async () => {
-    const response = await fetchAxios<AcademicLevelResponse>({
+    return fetchAxios<AcademicLevelResponse>({
       url: `/v1/education-level`,
       method: 'GET',
     });
-    console.log(response);
-    return response;
   },
 
-  all: async () => {
-    try {
-      const response = await axios.get(`/education-level/all`);
-      return response.data.data;
-    } catch (error) {
-      console.error('Failed to get all academic level', error);
-      return [];
-    }
+  all: () => {
+    return fetchAxios<IComboAcademicLevel>({
+      url: `/v1/education-level/all`,
+      method: 'GET',
+    });
   },
 
   getById: async (id: string) => {
@@ -30,7 +28,7 @@ export const academicLevelAPI = {
   },
 
   add: async (name: string) => {
-    const requestData = { name, active: 1, createdBy: "" };
+    const requestData = { name, active: 1, createdBy: '' };
     return fetchAxios<SingleAcademicLevelResponse>({
       url: `/v1/education-level`,
       method: 'POST',
@@ -52,6 +50,5 @@ export const academicLevelAPI = {
       url: `/v1/education-level/${id}`,
       method: 'DELETE',
     });
-  }
+  },
 };
-
