@@ -1,57 +1,67 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
-import CityView from './City.view';
+import React, { useState, useCallback, useEffect } from 'react';
+import DistrictView from './District.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCityActions } from './hooks/useCityAction';
-import { districtAPI } from './api/cityApi';
+import { districtAPI } from './api/districtApi';
+import { useDistrictActions } from './hooks/useDistrictAction';
+import { decodeToken } from '@/lib/tokenDecoder';
 
-const City = () => {
+const District = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState<number>(NaN);
 
-  const { handleAddCity, handleEditCity, handleDeleteCity } = useCityActions();
+  const { handleAddDistrict, handleEditDistrict, handleDeleteDistrict } = useDistrictActions();
+
+  useEffect(() => {
+    const decodedToken = decodeToken();
+    if (decodedToken) {
+      setUserRole(decodedToken.role);
+    }
+  }, []);
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['city'],
+    queryKey: ['district'],
     queryFn: async () => {
       const response = await districtAPI.fetch();
-      return response;
+      return response.data.items;
     },
   });
-  
+
   const fetchData = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey: ['city'] });
+    await queryClient.invalidateQueries({ queryKey: ['district'] });
   }, [queryClient]);
 
   const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
-      await handleDeleteCity(id);
+      await handleDeleteDistrict(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditCity(id, rowData);
+      await handleEditDistrict(id, rowData);
       fetchData();
     }
-  }, [fetchData, handleDeleteCity, handleEditCity]);
+  }, [fetchData, handleDeleteDistrict, handleEditDistrict]);
 
   const handleAdd = useCallback(async (name: string) => {
-    await handleAddCity(name);
+    await handleAddDistrict(name);
     fetchData();
     setIsPopupOpen(false);
-  }, [fetchData, handleAddCity]);
+  }, [fetchData, handleAddDistrict]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <CityView
-      data={data}
+    <DistrictView
+      role={userRole}
+      data={data || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
-      handleAddCity={handleAdd}
+      handleAddDistrict={handleAdd}
       Filter={Filter}
       setFilter={setFilter}
       isPopupOpen={isPopupOpen}
@@ -61,4 +71,4 @@ const City = () => {
   );
 };
 
-export default City;
+export default District;

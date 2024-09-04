@@ -1,70 +1,44 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios, UseFetchProps } from '@/lib/fetchAxios';
 
 export const userAPI = {
+  add: async (data: FormData | { [key: string]: any }) => {
+    const config: UseFetchProps = {
+      url: '/v1/manage-user',
+      method: 'POST',
+      formData: data,
+    };
 
-  uploadFile: async (file: File, path: string) => {
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('path', path);
-  
-      const response = await backOfficeAPI.post(`v1/file`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.data.success) {
-        return response.data.path.origins;
-      } else {
-        console.error('Failed to upload file:', response.data);
-        return null;
-      }
-    } catch (error) {
-      console.error('Failed to upload file');
-      return null;
-    }
-  },
-
-
-  add: async <T>(data: T) => {
-    try {
-      console.log('Sending data to API:', data);
-      const response = await backOfficeAPI.post(`v1/manage-user`, data);
-      console.log('API response:', response.data);
-      return response.data;
+      return await fetchAxios(config);
     } catch (error) {
       console.error('Failed to add user');
       return null;
     }
   },
 
-  getFile: async (filePath: string): Promise<Blob | null> => {
-    try {
-      const response = await backOfficeAPI.get(`v1/file/${filePath}`, {
-        responseType: 'blob'
-      });
-      return new Blob([response.data], { type: response.headers['content-type'] });
-    } catch (error) {
-      console.error('Error fetching file:', error);
-      return null;
-    }
-  },
-
   show: async (id: string) => {
+    const config: UseFetchProps = {
+      url: `/v1/manage-user/${id}`,
+      method: 'GET',
+    };
+
     try {
-      const response = await backOfficeAPI.get(`v1/manage-user/${id}`);
-      return response.data;
+      return await fetchAxios(config);
     } catch (error) {
       console.error('Error fetching mentor:', error);
       return null;
     }
   },
 
-  update: async <T>(id: string, data: T) => {
+  update: async (id: string, data: FormData | { [key: string]: any }) => {
+    const config: UseFetchProps = {
+      url: `/v1/manage-user/${id}`,
+      method: 'PUT',
+      formData: data,
+    };
+
     try {
-      const response = await backOfficeAPI.put(`v1/manage-user/${id}`, data);
-      return response.data;
+      return await fetchAxios(config);
     } catch (error) {
       console.error('Failed to update user');
       return null;
@@ -72,15 +46,14 @@ export const userAPI = {
   },
 
   delete: async (id: string) => {
+    const config: UseFetchProps = {
+      url: `/v1/manage-user/${id}`,
+      method: 'DELETE',
+    };
+
     try {
-      const response = await backOfficeAPI.delete(`v1/manage-user/${id}`);
-      if (response.status === 200) {
-        console.log('User deleted successfully');
-        return true;
-      } else {
-        console.error('Failed to delete user');
-        return false;
-      }
+      const response = await fetchAxios(config);
+      return response !== null;
     } catch (error) {
       console.error('Error deleting user:', error);
       return false;

@@ -8,6 +8,7 @@ import { userAPI } from '../api/userApi';
 import { useSearchParams } from 'next/navigation';
 import { ResponseModal } from '../components/response-modal/responseModal';
 import { useRouter } from 'next/navigation';
+import { fileHelper } from '@/helpers/file-manager/fileUpload.helper';
 
 export const useMentorForm = (id: string | null = null) => {
   const [form, setForm] = useState<MentorFormData>({
@@ -106,7 +107,7 @@ export const useMentorForm = (id: string | null = null) => {
 
   const handleFileChange = (fieldName: string) => async (file: File | null) => {
     try {
-      const response = file ? await userAPI.uploadFile(file, 'users') : null;
+      const response = file ? await fileHelper.uploadFile(file, 'users') : null;
       setForm(prevForm => ({
         ...prevForm,
         [fieldName]: response || '',
@@ -119,12 +120,24 @@ export const useMentorForm = (id: string | null = null) => {
 
   const handleProfilePictureChange = async (file: File | null, originalFilename: string | null) => {
     try {
-      const response = file ? await userAPI.uploadFile(file, 'users') : null;
-      setForm(prevForm => ({
-        ...prevForm,
-        profilePicture: response || '',
-        profilePictureOrigin: originalFilename,
-      }));
+      if (file) {
+        const response = await fileHelper.uploadFile(file, 'users');
+        if (response) {
+          setForm(prevForm => ({
+            ...prevForm,
+            profilePicture: response,
+            profilePictureOrigin: originalFilename || file.name,
+          }));
+        } else {
+          throw new Error('File upload failed');
+        }
+      } else {
+        setForm(prevForm => ({
+          ...prevForm,
+          profilePicture: '',
+          profilePictureOrigin: '',
+        }));
+      }
     } catch (error) {
       console.error('Failed to upload profile picture:', error);
     }
@@ -132,7 +145,7 @@ export const useMentorForm = (id: string | null = null) => {
 
   const handleEducationFileChange = (index: number, fieldName: string) => async (file: File | null) => {
     try {
-      const response = file ? await userAPI.uploadFile(file, 'users') : null;
+      const response = file ? await fileHelper.uploadFile(file, 'users') : null;
       setForm(prevForm => ({
         ...prevForm,
         educations: prevForm.educations.map((edu, i) =>

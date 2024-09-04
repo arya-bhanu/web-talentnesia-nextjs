@@ -1,27 +1,36 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import ProvinceView from './Province.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useProvinceActions } from './hooks/useProvinceAction';
 import { provinceAPI } from './api/provinceApi';
+import { useProvinceActions } from './hooks/useProvinceAction';
+import { decodeToken } from '@/lib/tokenDecoder';
 
 const Province = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState<number>(NaN);
 
   const { handleAddProvince, handleEditProvince, handleDeleteProvince } = useProvinceActions();
+
+  useEffect(() => {
+    const decodedToken = decodeToken();
+    if (decodedToken) {
+      setUserRole(decodedToken.role);
+    }
+  }, []);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['province'],
     queryFn: async () => {
       const response = await provinceAPI.fetch();
-      return response;
+      return response.data.items;
     },
   });
-  
+
   const fetchData = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: ['province'] });
   }, [queryClient]);
@@ -47,7 +56,8 @@ const Province = () => {
 
   return (
     <ProvinceView
-      data={data}
+      role={userRole}
+      data={data || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}

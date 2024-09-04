@@ -2,8 +2,23 @@ export interface APIResponseAcademicTitle {
   id: string;
   code: string;
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  active?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IComboAcademicTitle {
+  data: APIResponseAcademicTitle[];
+}
+
+export interface AcademicTitleResponse {
+  data: {
+    items: APIResponseAcademicTitle[];
+  };
+}
+
+export interface SingleAcademicTitleResponse {
+  data: APIResponseAcademicTitle;
 }
 
 export interface IAcademicTitleView {
@@ -17,6 +32,5 @@ export interface IAcademicTitleView {
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   fetchData: () => Promise<void>;
+  role: number;
 }
-
-

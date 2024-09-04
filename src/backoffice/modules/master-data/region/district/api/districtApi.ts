@@ -1,36 +1,36 @@
 import { fetchAxios } from '@/lib/fetchAxios';
 import {
-  ProvinceResponse,
-  IComboProvince,
-  SingleProvinceResponse,
-} from '../province.type';
+  DistrictResponse,
+  IComboDistrict,
+  SingleDistrictResponse,
+} from '../district.type';
 
-export const provinceAPI = {
+export const districtAPI = {
   fetch: async () => {
-    return fetchAxios<ProvinceResponse>({
-      url: `/v1/province`,
+    return fetchAxios<DistrictResponse>({
+      url: `/v1/district`,
       method: 'GET',
     });
   },
 
   all: () => {
-    return fetchAxios<IComboProvince>({
-      url: `/v1/province/all`,
+    return fetchAxios<IComboDistrict>({
+      url: `/v1/district/all`,
       method: 'GET',
     });
   },
 
   getById: async (id: string) => {
-    return fetchAxios<SingleProvinceResponse>({
-      url: `/v1/province/${id}`,
+    return fetchAxios<SingleDistrictResponse>({
+      url: `/v1/district/${id}`,
       method: 'GET',
     });
   },
 
   add: async (name: string) => {
     const requestData = { name, active: 1, createdBy: '' };
-    return fetchAxios<SingleProvinceResponse>({
-      url: `/v1/province`,
+    return fetchAxios<SingleDistrictResponse>({
+      url: `/v1/district`,
       method: 'POST',
       formData: requestData,
     });
@@ -38,8 +38,8 @@ export const provinceAPI = {
 
   update: async (id: string, name: string) => {
     const requestData = { name, active: 1 };
-    return fetchAxios<SingleProvinceResponse>({
-      url: `/v1/province/${id}`,
+    return fetchAxios<SingleDistrictResponse>({
+      url: `/v1/district/${id}`,
       method: 'PUT',
       formData: requestData,
     });
@@ -47,7 +47,7 @@ export const provinceAPI = {
 
   delete: async (id: string) => {
     return fetchAxios<{ success: boolean }>({
-      url: `/v1/province/${id}`,
+      url: `/v1/district/${id}`,
       method: 'DELETE',
     });
   },

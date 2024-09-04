@@ -5,17 +5,20 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useSchoolOperatorForm } from './SchoolOperatorForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
-import { districtAPI } from '../../master-data/region/city/api/cityApi';
+import { districtAPI } from '../../master-data/region/district/api/districtApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
 import { SchoolAPI } from '../../school/api/schoolApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
 import { Component as Datepicker } from '../components/datepicker/Datepicker';
-import { Component as FileInput } from '../components/file-input/FileInput';
 import { ProfilePictureInput } from '../components/profile-picture-input/ProfilePictureInput';
-import { Component as SelectYear } from '../components/select-year/selectYear';
 import { Region } from '../school-operator/schoolOperatorForm.type';
 import Link from 'next/link';
 import { ResponseModal } from '../components/response-modal/responseModal';
+import { APIResponseReligion, IComboReligion } from '../../master-data/religion/religion.type';
+import { APIResponseProvince, IComboProvince } from '../../master-data/region/province/province.type';
+import { APIResponseDistrict, IComboDistrict } from '../../master-data/region/district/district.type';
+import { APIResponseSubDistrict, IComboSubDistrict } from '../../master-data/region/sub-disctrict/subDistrict.type';
+import { APIResponseSchool } from '../../school/school.type';
 
 type SchoolOperatorViewProps = ReturnType<typeof useSchoolOperatorForm>;
 
@@ -33,11 +36,11 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
     isSuccess,
     confirmSubmit,
 }) => {
-  const [provinces, setProvinces] = useState<Region[]>([]);
-  const [districts, setDistricts] = useState<Region[]>([]);
-  const [subDistricts, setSubDistricts] = useState<Region[]>([]);
-  const [academicInstitutions, setAcademicInstitutions] = useState<Region[]>([]);
-  const [religions, setReligions] = useState<Region[]>([]);
+  const [religions, setReligions] = useState<APIResponseReligion[]>([]);
+  const [provinces, setProvinces] = useState<APIResponseProvince[]>([]);
+  const [districts, setDistricts] = useState<APIResponseDistrict[]>([]);
+  const [subDistricts, setSubDistricts] = useState<APIResponseSubDistrict[]>([]);
+  const [academicInstitutions, setAcademicInstitutions] = useState<APIResponseSchool[]>([]);
 
   const styles = {
     inputField: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins",
@@ -46,20 +49,37 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedProvinces = await provinceAPI.all();
-        setProvinces(fetchedProvinces);
-
-        const fetchedDistricts = await districtAPI.all();
-        setDistricts(fetchedDistricts);
-
-        const fetchedSubDistricts = await subDistrictAPI.all();
-        setSubDistricts(fetchedSubDistricts);
 
         const fetchedAcademicInstitutions = await SchoolAPI.all();
         setAcademicInstitutions(fetchedAcademicInstitutions);
 
-        const fetchedReligions = await religionAPI.all();
-        setReligions(fetchedReligions);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [
+          fetchedReligions,
+          fetchedProvinces,
+          fetchedDistricts,
+          fetchedSubDistricts
+        ] = await Promise.all([
+          religionAPI.all(),
+          provinceAPI.all(),
+          districtAPI.all(),
+          subDistrictAPI.all(),
+        ]);
+
+        setReligions((fetchedReligions as IComboReligion).data);
+        setProvinces((fetchedProvinces as IComboProvince).data);
+        setDistricts((fetchedDistricts as IComboDistrict).data);
+        setSubDistricts((fetchedSubDistricts as IComboSubDistrict).data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -164,11 +184,14 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion, index) => (
-                    <option key={index} value={religion.id}>
-                      {religion.name}
-                    </option>
-                  ))}
+                  {religions.map((religion: any, index: number) => {
+                    console.log(religion);
+                    return (
+                      <option key={index} value={religion.id}>
+                        {religion.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -251,20 +274,23 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   Province<div className="text-red-600">*</div>
                 </label>
                 <select
-                name="provinceId"
-                value={form.provinceId || ''}
-                onChange={handleInputChange}
-                className={styles.inputField}
-              >
-                <option className="hidden" value="" disabled>
-                  Select Province
-                </option>
-                {provinces?.map((province, index) => (
-                  <option key={index} value={province.id}>
-                    {province.name}
+                  name="provinceId"
+                  value={form.provinceId || ''}
+                  onChange={handleInputChange}
+                  className={styles.inputField}
+                >
+                  <option className="hidden" value="" disabled>
+                    Select Province
                   </option>
-                ))}
-              </select>
+                  {provinces.map((province: any, index: number) => {
+                    console.log(province);
+                    return (
+                      <option key={index} value={province.id}>
+                        {province.name}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
               <div>
                 <label className="flex mb-1">
@@ -279,11 +305,14 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select City/District
                   </option>
-                  {districts?.map((district, index) => (
-                    <option key={index} value={district.id}>
-                      {district.name}
-                    </option>
-                  ))}
+                  {districts.map((district: any, index: number) => {
+                    console.log(district);
+                    return (
+                      <option key={index} value={district.id}>
+                        {district.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -299,11 +328,14 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Sub District
                   </option>
-                  {subDistricts?.map((subDistrict, index) => (
-                    <option key={index} value={subDistrict.id}>
-                      {subDistrict.name}
-                    </option>
-                  ))}
+                  {subDistricts.map((subDistrict: any, index: number) => {
+                    console.log(subDistrict);
+                    return (
+                      <option key={index} value={subDistrict.id}>
+                        {subDistrict.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -347,20 +379,20 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                       School of origin<div className="text-red-600">*</div>
                     </label>
                     <select
-                      name="educationInstitutionId"
-                      value={form.educationInstitutionId || ''}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                    >
-                      <option className="hidden" value="" disabled>
-                        Select Academic Institution
+                    name="educationInstitutionId"
+                    value={form.educationInstitutionId || ''}
+                    onChange={handleInputChange}
+                    className={styles.inputField}
+                  >
+                    <option className="hidden" value="" disabled>
+                      Select Academic Institution
+                    </option>
+                    {academicInstitutions.map((institution) => (
+                      <option key={institution.id} value={institution.id}>
+                        {institution.name}
                       </option>
-                      {academicInstitutions?.map((education, index) => (
-                        <option key={index} value={education.id}>
-                          {education.name}
-                        </option>
-                      ))}
-                    </select>
+                    ))}
+                  </select>
                   </div>
             </div>
           </div>

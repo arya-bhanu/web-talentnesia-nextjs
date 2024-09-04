@@ -4,7 +4,7 @@ import { subDistrictAPI } from '../api/subDistrictApi';
 export const useSubDistrictActions = () => {
   const handleAddSubDistrict = useCallback(async (name: string) => {
     try {
-      subDistrictAPI.add({name});
+      subDistrictAPI.add(name);
     } catch (error) {
       console.error('Failed to sub district');
     }

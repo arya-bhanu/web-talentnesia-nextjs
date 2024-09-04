@@ -5,7 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useStudentForm } from './StudentForm';
 import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
-import { districtAPI } from '../../master-data/region/city/api/cityApi';
+import { districtAPI } from '../../master-data/region/district/api/districtApi';
 import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
 import { academicLevelAPI } from '../../master-data/academic-level/api/academicLevelApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
@@ -21,6 +21,10 @@ import {
   IComboAcademicLevel,
 } from '../../master-data/academic-level/academicLevel.type';
 import { fetchAxios } from '@/lib/fetchAxios';
+import { IComboProvince, APIResponseProvince   } from '../../master-data/region/province/province.type';
+import { APIResponseDistrict, IComboDistrict } from '../../master-data/region/district/district.type';
+import { APIResponseSubDistrict, IComboSubDistrict } from '../../master-data/region/sub-disctrict/subDistrict.type';
+import { APIResponseReligion, IComboReligion } from '../../master-data/religion/religion.type';
 
 type StudentViewProps = ReturnType<typeof useStudentForm>;
 
@@ -38,13 +42,11 @@ export const StudentView: React.FC<StudentViewProps> = ({
   isSuccess,
   confirmSubmit,
 }) => {
-  const [provinces, setProvinces] = useState<Region[]>([]);
-  const [districts, setDistricts] = useState<Region[]>([]);
-  const [subDistricts, setSubDistricts] = useState<Region[]>([]);
-  const [religions, setReligions] = useState<Region[]>([]);
-  const [academicLevels, setAcademicLevels] = useState<
-    APIResponseAcademicLevel[]
-  >([]);
+  const [religions, setReligions] = useState<APIResponseReligion[]>([]);
+  const [provinces, setProvinces] = useState<APIResponseProvince[]>([]);
+  const [districts, setDistricts] = useState<APIResponseDistrict[]>([]);
+  const [subDistricts, setSubDistricts] = useState<APIResponseSubDistrict[]>([]);
+  const [academicLevels, setAcademicLevels] = useState<APIResponseAcademicLevel[]>([]);
 
   const styles = {
     inputField:
@@ -54,21 +56,25 @@ export const StudentView: React.FC<StudentViewProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedProvinces = await provinceAPI.all();
-        setProvinces(fetchedProvinces);
+        const [
+          fetchedReligions,
+          fetchedProvinces,
+          fetchedDistricts,
+          fetchedSubDistricts,
+          fetchedAcademicLevels
+        ] = await Promise.all([
+          religionAPI.all(),
+          provinceAPI.all(),
+          districtAPI.all(),
+          subDistrictAPI.all(),
+          academicLevelAPI.all()
+        ]);
 
-        const fetchedDistricts = await districtAPI.all();
-        setDistricts(fetchedDistricts);
-
-        const fetchedSubDistricts = await subDistrictAPI.all();
-        setSubDistricts(fetchedSubDistricts);
-
-        const fetchedAcademicLevels: IComboAcademicLevel =
-          await academicLevelAPI.all();
-        setAcademicLevels(fetchedAcademicLevels.data);
-
-        const fetchedReligions = await religionAPI.all();
-        setReligions(fetchedReligions);
+        setReligions((fetchedReligions as IComboReligion).data);
+        setProvinces((fetchedProvinces as IComboProvince).data);
+        setDistricts((fetchedDistricts as IComboDistrict).data);
+        setSubDistricts((fetchedSubDistricts as IComboSubDistrict).data);
+        setAcademicLevels((fetchedAcademicLevels as IComboAcademicLevel).data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -184,11 +190,14 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion, index) => (
-                    <option key={index} value={religion.id}>
-                      {religion.name}
-                    </option>
-                  ))}
+                  {religions.map((religion: any, index: number) => {
+                    console.log(religion);
+                    return (
+                      <option key={index} value={religion.id}>
+                        {religion.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -279,11 +288,14 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Province
                   </option>
-                  {provinces?.map((province, index) => (
-                    <option key={index} value={province.id}>
-                      {province.name}
-                    </option>
-                  ))}
+                  {provinces.map((province: any, index: number) => {
+                    console.log(province);
+                    return (
+                      <option key={index} value={province.id}>
+                        {province.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -299,11 +311,14 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select City/District
                   </option>
-                  {districts?.map((district, index) => (
-                    <option key={index} value={district.id}>
-                      {district.name}
-                    </option>
-                  ))}
+                  {districts.map((district: any, index: number) => {
+                    console.log(district);
+                    return (
+                      <option key={index} value={district.id}>
+                        {district.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -319,11 +334,14 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Sub District
                   </option>
-                  {subDistricts?.map((subDistrict, index) => (
-                    <option key={index} value={subDistrict.id}>
-                      {subDistrict.name}
-                    </option>
-                  ))}
+                  {subDistricts.map((subDistrict: any, index: number) => {
+                    console.log(subDistrict);
+                    return (
+                      <option key={index} value={subDistrict.id}>
+                        {subDistrict.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
