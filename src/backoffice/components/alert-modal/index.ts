@@ -1,1 +1,1 @@
-export { default } from './AlertEditModal';
+export { default } from './AlertModal';
