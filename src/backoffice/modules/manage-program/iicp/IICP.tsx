@@ -1,24 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import IICPView from './IICP.view';
-import { useQuery } from '@tanstack/react-query';
-import { fetchIICPProgram } from './api/iicp.api';
-import { useIICPStore } from './iicp.store';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchIICPProgram, deleteIICPProgram } from './api/iicp.api';
+import AlertDeleteModal from '@/backoffice/components/alert-delete-modal/AlertDeleteModal';
 
 const IICP = () => {
-  const [popoverIndex, setPopoverIndex] = useState(0);
-  const { setPrograms } = useIICPStore();
-  const { data: dataProgramsIICP, isLoading: isLoadingPrograms } = useQuery({
+  const queryClient = useQueryClient();
+  const [Filter, setFilter] = useState('');
+  const [openModal, setOpenModal] = useState(false);
+  const [programIdToDelete, setProgramIdToDelete] = useState<string | null>(null);
+
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['programs'],
     queryFn: fetchIICPProgram,
   });
-  useEffect(() => {
-    if (dataProgramsIICP?.data?.data?.items) {
-      setPrograms(dataProgramsIICP.data.data.items);
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteIICPProgram,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['programs'] });
+      setOpenModal(false);
+      setProgramIdToDelete(null);
+    },
+  });
+
+  const handleActionButtonRow = useCallback((id: string, action: "delete") => {
+    if (action === "delete") {
+      setProgramIdToDelete(id);
+      setOpenModal(true);
     }
-  }, [JSON.stringify(dataProgramsIICP?.data)]);
+  }, []);
+
+  const handleConfirmDelete = () => {
+    if (programIdToDelete) {
+      deleteMutation.mutate(programIdToDelete);
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <IICPView popoverIndex={popoverIndex} setPopoverIndex={setPopoverIndex} />
+    <>
+      <IICPView
+        data={data?.data?.data?.items || []}
+        Filter={Filter}
+        setFilter={setFilter}
+        handleActionButtonRow={handleActionButtonRow}
+      />
+      <AlertDeleteModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        setIsConfirmed={handleConfirmDelete}
+      />
+    </>
   );
 };
 
