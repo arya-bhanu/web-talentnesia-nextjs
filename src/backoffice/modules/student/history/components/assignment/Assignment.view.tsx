@@ -5,7 +5,7 @@ import SortArrow from '@/../public/icons/sort-arrow.svg';
 import { AssignmentData } from './assignment.type';
 import Search from '@/../public/icons/search-normal.svg';
 import FilterMenu from '../filter/FilterMenu';
-import UserIcon from '@/../public/icons/user.svg';
+import UserIcon from '@/../public/icons/user.png';
 
 
 interface AssignmentViewProps {
