@@ -53,7 +53,7 @@ const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ notes: initialNot
   const handleAddNewNote = () => {
     setIsNavigating(true);
     setTimeout(() => {
-      router.push('/backoffice/personal-notes/add-new-notes');
+      router.push('/student/personal-notes/add-new-notes');
     }, 300);
   };
 
