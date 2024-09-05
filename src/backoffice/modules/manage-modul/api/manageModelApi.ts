@@ -1,4 +1,3 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
 import {
   APIContentChapter,
   APIExamChapter,
@@ -9,27 +8,49 @@ import { questions } from '../../school/components/course-sidebar/exam/exam.data
 
 // modul
 export const fetchModules = async () => {
-  const response = await backOfficeAPI.get('/v1/manage-module');
-  return response.data;
+  const response = await fetchAxios<{
+    data: {
+      items: APIResponseManageModul[];
+    };
+    success: boolean;
+    code: number;
+    status: string;
+    errors: any;
+    messages: string;
+  }>({
+    url: '/v1/manage-module',
+    method: 'GET',
+  });
+  return response.data.items;
 };
 
 export const fetchModule = async (id?: string | null) => {
   if (id) {
-    const response = await backOfficeAPI.get('/v1/manage-module/' + id);
+    const response = await fetchAxios<{ data: APIResponseManageModul }>({
+      url: '/v1/manage-module/' + id,
+      method: 'GET',
+    });
     return response.data;
   }
   return null;
 };
 
 export const deleteModule = async (id: string) => {
-  const response = await backOfficeAPI.delete('/v1/manage-module/' + id);
-  return response.data;
+  const response = await fetchAxios<{ success: boolean }>({
+    url: '/v1/manage-module/' + id,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 export const createModul = async (
   data: Pick<APIResponseManageModul, 'active' | 'name'>,
 ) => {
-  const response = await backOfficeAPI.post('/v1/manage-module', data);
+  const response = await fetchAxios<{ data: APIResponseManageModul }>({
+    url: '/v1/manage-module',
+    method: 'POST',
+    formData: data,
+  });
   return response.data;
 };
 
@@ -40,21 +61,26 @@ export const updateModul = async ({
   data: Pick<APIResponseManageModul, 'active' | 'name'>;
   moduleId: string;
 }) => {
-  const response = await backOfficeAPI.put(
-    `/v1/manage-module/${moduleId}`,
-    data,
-  );
+  const response = await fetchAxios<{ data: APIResponseManageModul }>({
+    url: `/v1/manage-module/${moduleId}`,
+    method: 'PUT',
+    formData: data,
+  });
   return response.data;
 };
 
 // chapter
 export const fetchChapter = async (chapterId?: string | null) => {
   if (chapterId) {
-    const response = await backOfficeAPI.get('/v1/chapter/' + chapterId);
-    return response.data;
+    const response = await fetchAxios({
+      url: '/v1/chapter/' + chapterId,
+      method: 'GET',
+    });
+    return response;
   }
   return null;
 };
+
 export const createChapter = async ({
   moduleId,
   title,
@@ -62,8 +88,12 @@ export const createChapter = async ({
   moduleId: string;
   title: string;
 }) => {
-  const response = await backOfficeAPI.post('/v1/chapter', { moduleId, title });
-  return response.data;
+  const response = await fetchAxios({
+    url: '/v1/chapter',
+    method: 'POST',
+    formData: { moduleId, title },
+  });
+  return response;
 };
 
 export const editChapter = async ({
@@ -73,31 +103,45 @@ export const editChapter = async ({
   chapterId: string;
   title: string;
 }) => {
-  const response = await backOfficeAPI.put('/v1/chapter/' + chapterId, {
-    title,
+  const response = await fetchAxios({
+    url: '/v1/chapter/' + chapterId,
+    method: 'PUT',
+    formData: { title },
   });
-  return response.data;
+  return response;
 };
 
 export const deleteChapter = async (id: string) => {
-  const response = await backOfficeAPI.delete('/v1/chapter/' + id);
-  return response.data;
+  const response = await fetchAxios({
+    url: '/v1/chapter/' + id,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 // content
 export const fetchContent = async (id?: string) => {
   if (id) {
-    const response = await backOfficeAPI.get('/v1/content/' + id);
-    return response.data;
+    const response = await fetchAxios({
+      url: '/v1/content/' + id,
+      method: 'GET',
+    });
+    return response;
   }
   return null;
 };
+
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
 ) => {
-  const response = await backOfficeAPI.post('/v1/content', payload);
-  return response.data;
+  const response = await fetchAxios({
+    url: '/v1/content',
+    method: 'POST',
+    formData: payload,
+  });
+  return response;
 };
+
 export const editContent = async ({
   id,
   data,
@@ -106,14 +150,22 @@ export const editContent = async ({
   data: Pick<APIContentChapter, 'title' | 'body' | 'type' | 'duration'>;
 }) => {
   if (id) {
-    const response = await backOfficeAPI.put('/v1/content/' + id, data);
-    return response.data;
+    const response = await fetchAxios({
+      url: '/v1/content/' + id,
+      method: 'PUT',
+      formData: data,
+    });
+    return response;
   }
   return null;
 };
+
 export const deleteContent = async (id: string) => {
-  const response = await backOfficeAPI.delete('/v1/content/' + id);
-  return response.data;
+  const response = await fetchAxios({
+    url: '/v1/content/' + id,
+    method: 'DELETE',
+  });
+  return response;
 };
 
 // exam
@@ -174,6 +226,7 @@ export const examReorder = async ({
   });
   return response.data;
 };
+
 export const contentsReorder = async ({
   contents,
   chapterId,
@@ -181,14 +234,14 @@ export const contentsReorder = async ({
   contents: string[];
   chapterId: string;
 }) => {
-  const response = await backOfficeAPI.post(
-    '/v1/content/reorder-contents/' + chapterId,
-    {
-      contents,
-    },
-  );
-  return response.data;
+  const response = await fetchAxios({
+    method: 'POST',
+    url: '/v1/content/reorder-contents/' + chapterId,
+    formData: { contents },
+  });
+  return response;
 };
+
 export const chapterReorder = async ({
   chapters,
   modulId,
@@ -196,11 +249,10 @@ export const chapterReorder = async ({
   modulId: string;
   chapters: string[];
 }) => {
-  const response = await backOfficeAPI.post(
-    '/v1/chapter/reorder-chapters/' + modulId,
-    {
-      chapters,
-    },
-  );
-  return response.data;
+  const response = await fetchAxios({
+    method: 'POST',
+    url: '/v1/chapter/reorder-chapters/' + modulId,
+    formData: { chapters },
+  });
+  return response;
 };

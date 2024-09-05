@@ -166,3 +166,24 @@ export function convertTimeHHmmssToDate(timeString: string) {
 
   return date;
 }
+
+export function calculateDuration(startDate: string, endDate: string): string {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const diffTime = Math.abs(end.getTime() - start.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  const months = Math.floor(diffDays / 30);
+  const remainingDays = diffDays % 30;
+
+  let result = '';
+  if (months > 0) {
+    result += `${months} Month${months > 1 ? 's' : ''}`;
+  }
+  // if (remainingDays > 0) {
+  //   if (result) result += ' ';
+  //   result += `${remainingDays} day${remainingDays > 1 ? 's' : ''}`;
+  // }
+  // return result || '0 days';
+  return result;
+}

@@ -3,7 +3,7 @@ import { Button } from 'flowbite-react/components/Button';
 import { Modal } from 'flowbite-react/components/Modal';
 import React, { useEffect, useRef, useState } from 'react';
 import { IModal } from './modal.type';
-import AlertEditModal from '../alert-edit-modal';
+import AlertModal from '../alert-modal';
 
 const ModalView: React.FC<IModal> = ({
   state,
@@ -22,6 +22,7 @@ const ModalView: React.FC<IModal> = ({
     if (isConfrm && form) {
       (form as HTMLFormElement).requestSubmit();
     }
+    setIsConfrm(false);
   }, [isConfrm]);
   return (
     <Modal
@@ -29,10 +30,11 @@ const ModalView: React.FC<IModal> = ({
       show={state.openModal}
       onClose={() => state.setOpenModal(false)}
     >
-      <AlertEditModal
+      <AlertModal
         openModal={isEditModal}
         setIsConfirmed={setIsConfrm}
         setOpenModal={setIsEditModal}
+        messageText='Are you sure you want to update this item?'
       />
       <Modal.Header>{title}</Modal.Header>
       <form ref={formRef} className="overflow-auto" onSubmit={handleSubmit}>

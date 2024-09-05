@@ -1,31 +1,56 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
-import { APIDetailProgramIICP } from '../formDetail.type';
+import { APIDetailProgramIICP, Schools } from '../formDetail.type';
+import { fetchAxios } from '@/lib/fetchAxios';
+import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
 
 export const fetchMentors = async () => {
-  return await backOfficeAPI.get('/manage-user/mentor');
+  const response = await fetchAxios<{
+    data: Mentor[];
+  }>({
+    url: '/v1/manage-user/mentor',
+    method: 'GET',
+  });
+  return { data: response };
 };
 
 export const fetchSchools = async () => {
-  return await backOfficeAPI.get('/educational-institution/all');
+  const response = await fetchAxios<{ data: Schools[] }>({
+    url: '/v1/educational-institution/all',
+    method: 'GET',
+  });
+  return { data: response };
 };
 
 export const createProgram = async (
   data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] },
 ) => {
   try {
-    return await backOfficeAPI.post('/manage-program', data);
+    const response = await fetchAxios<{
+      data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] };
+    }>({
+      url: '/v1/manage-program',
+      method: 'POST',
+      formData: data,
+    });
+    return response;
   } catch (err) {
-    console.error(err);
+    console.error('Error creating program:', err);
+    throw err;
   }
 };
 
 export const fetchDetailProgram = async (programId?: string | null) => {
   try {
     if (programId) {
-      return await backOfficeAPI.get('/manage-program/detail/' + programId);
+      const response = await fetchAxios<{ data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] } }>({
+        url: `/v1/manage-program/detail/${programId}`,
+        method: 'GET',
+      });
+      return { data: response };
     }
     return null;
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching program detail:', err);
+    throw err;
   }
 };

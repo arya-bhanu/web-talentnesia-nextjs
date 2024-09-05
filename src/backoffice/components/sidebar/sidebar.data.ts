@@ -31,6 +31,7 @@ export const sidebarData: SidebarProps[] = [
       { label: 'Certificate', link: '/backoffice/master-data/certificate' },
       { label: 'Discount', link: '/backoffice/master-data/discount' },
       { label: 'Level', link: '/backoffice/master-data/level' },
+      { label: 'Partner', link: '/backoffice/master-data/partner'},
       { label: 'Region', link: '/backoffice/master-data/region' },
       { label: 'Religion', link: '/backoffice/master-data/religion' },
       // { label: 'Role', link: '/backoffice/master-data/role' },

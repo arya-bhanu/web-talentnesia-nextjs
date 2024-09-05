@@ -1,1 +1,1 @@
-export { Mentor } from './Mentor';
+export { Mentor } from './MentorForm';

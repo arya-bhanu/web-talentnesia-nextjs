@@ -1,9 +1,29 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
+import { IICPProgramItemApiResponse } from '../iicp.type';
 
 export const fetchIICPProgram = async () => {
   try {
-    return await backOfficeAPI.get('/manage-program/table/iicp');
+    const response = await fetchAxios<IICPProgramItemApiResponse>({
+      url: '/v1/manage-program/table/iicp',
+      method: 'GET',
+    });
+    console.log(response);
+    return { data: response };
   } catch (err) {
     console.error(err);
+    throw err;
   }
 };
+
+export const deleteIICPProgram = async (id: string) => {
+  const response = await fetchAxios<{
+    data: {
+      data: string;
+    };
+  }>({
+    url: `/v1/manage-program/${id}`,
+    method: 'DELETE',
+  });
+  return { data: response };
+};
+

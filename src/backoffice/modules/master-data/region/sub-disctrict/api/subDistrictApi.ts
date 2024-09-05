@@ -1,70 +1,54 @@
-import axios from 'axios';
-
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+import { fetchAxios } from '@/lib/fetchAxios';
+import {
+  SubDistrictResponse,
+  IComboSubDistrict,
+  SingleSubDistrictResponse,
+} from '../subDistrict.type';
 
 export const subDistrictAPI = {
   fetch: async () => {
-    try {
-      const response = await axios.get(`${API_URL}/sub-district`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch sub district');
-      return [];
-    }
+    return fetchAxios<SubDistrictResponse>({
+      url: `/v1/subdistrict`,
+      method: 'GET',
+    });
+  },
+
+  all: () => {
+    return fetchAxios<IComboSubDistrict>({
+      url: `/v1/subdistrict/all`,
+      method: 'GET',
+    });
   },
 
   getById: async (id: string) => {
-    try {
-      const response = await axios.get(`${API_URL}/sub-district/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch sub district details');
-      return;
-    }
+    return fetchAxios<SingleSubDistrictResponse>({
+      url: `/v1/subdistrict/${id}`,
+      method: 'GET',
+    });
   },
 
-  add: async (data: { name: string }) => {
-    try {
-      const requestData = {
-        ...data,
-        active: 1,
-        createdBy: ""
-      };
-
-      const response = await axios.post(`${API_URL}/sub-district`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to add sub district');
-      return;
-    }
+  add: async (name: string) => {
+    const requestData = { name, active: 1, createdBy: '' };
+    return fetchAxios<SingleSubDistrictResponse>({
+      url: `/v1/subdistrict`,
+      method: 'POST',
+      formData: requestData,
+    });
   },
 
-  update: async (id: string, data: { code: string; name: string }) => {
-    try {
-        const requestData = {
-        ...data,
-        active: 1
-      };
-
-      const response = await axios.put(`${API_URL}/sub-district/${id}`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to update sub district');
-      return;
-    }
+  update: async (id: string, name: string) => {
+    const requestData = { name, active: 1 };
+    return fetchAxios<SingleSubDistrictResponse>({
+      url: `/v1/subdistrict/${id}`,
+      method: 'PUT',
+      formData: requestData,
+    });
   },
 
   delete: async (id: string) => {
-    try {
-      if (typeof id !== 'string' || !id) {
-        throw new Error('Invalid ID format');
-      }
-
-      const response = await axios.delete(`${API_URL}/sub-district/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to delete sub district');
-      return;
-    }
-  }
+    return fetchAxios<{ success: boolean }>({
+      url: `/v1/subdistrict/${id}`,
+      method: 'DELETE',
+    });
+  },
 };

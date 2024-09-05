@@ -4,7 +4,7 @@ import { provinceAPI } from '../api/provinceApi';
 export const useProvinceActions = () => {
   const handleAddProvince = useCallback(async (name: string) => {
     try {
-      provinceAPI.add({name});
+      provinceAPI.add(name);
     } catch (error) {
       console.error('Failed to province');
     }

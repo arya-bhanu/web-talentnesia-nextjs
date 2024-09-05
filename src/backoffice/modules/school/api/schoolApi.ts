@@ -1,77 +1,76 @@
 // schoolApi.ts
 
 import { APIResponseSchool } from '../school.type';
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios, UseFetchProps } from '@/lib/fetchAxios';
+
+const BASE_URL = '/v1/educational-institution';
 
 export const SchoolAPI = {
+  all: async (): Promise<APIResponseSchool[]> => {
+    const config: UseFetchProps = {
+      url: `${BASE_URL}/all`,
+      method: 'GET',
+    };
+    return fetchAxios<{ data: APIResponseSchool[] }>(config).then(response => response.data);
+  },
+
   fetch: async (): Promise<APIResponseSchool[]> => {
-    try {
-      const response = await backOfficeAPI.get(`/v1/educational-institution`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch schools');
-      throw new Error('Failed to fetch schools');
-    }
+    const config: UseFetchProps = {
+      url: BASE_URL,
+      method: 'GET',
+    };
+    return fetchAxios<{ data: { items: APIResponseSchool[] } }>(config).then(response => response.data.items);
   },
 
   getById: async (id: string): Promise<APIResponseSchool> => {
-    try {
-      const response = await backOfficeAPI.get(`/v1/educational-institution/${id}`);
-      return response.data.data;
-    } catch (error) {
-      console.error('Failed to fetch school details');
-      throw new Error('Failed to fetch school details');
-    }
+    const config: UseFetchProps = {
+      url: `${BASE_URL}/${id}`,
+      method: 'GET',
+    };
+    return fetchAxios<{ data: APIResponseSchool }>(config).then(response => response.data);
   },
 
   add: async (data: Partial<APIResponseSchool>): Promise<APIResponseSchool> => {
-    try {
-      const requestData = {
-        ...data,
-        active: 1,
-        createdBy: '',
-        provinceId: null,
-        districtId: null,
-        levelId: null,
-      };
-
-      const response = await backOfficeAPI.post(`/v1/educational-institution`, requestData);
-      return response.data.data;
-    } catch (error) {
-      console.error('Failed to add school');
-      console.log(error)
-      throw new Error('Failed to add school');
-    }
+    const requestData = {
+      ...data,
+      active: 1,
+      createdBy: '',
+      provinceId: null,
+      districtId: null,
+      levelId: null,
+    };
+    const config: UseFetchProps = {
+      url: BASE_URL,
+      method: 'POST',
+      formData: requestData,
+    };
+    return fetchAxios<{ data: APIResponseSchool }>(config).then(response => response.data);
   },
 
   update: async (id: string, data: Partial<APIResponseSchool>): Promise<APIResponseSchool> => {
-    try {
-      const requestData = {
-        ...data,
-        active: 1,
-        provinceId: null,
-        districtId: null,
-        levelId: null,
-      };
-
-      const response = await backOfficeAPI.put(`/v1/educational-institution/${id}`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to update school');
-      throw new Error('Failed to update school');
-    }
+    const requestData = {
+      ...data,
+      active: 1,
+      provinceId: null,
+      districtId: null,
+      levelId: null,
+    };
+    const config: UseFetchProps = {
+      url: `${BASE_URL}/${id}`,
+      method: 'PUT',
+      formData: requestData,
+    };
+    return fetchAxios<APIResponseSchool>(config);
   },
 
   delete: async (id: string): Promise<void> => {
-    try {
-      if (!id) {
-        throw new Error('Invalid ID format');
-      }
-
-      await backOfficeAPI.delete(`/v1/educational-institution/${id}`);
-    } catch (error) {
-      console.error('Failed to delete school');
-      throw new Error('Failed to delete school');
+    if (!id) {
+      throw new Error('Invalid ID format');
     }
+    const config: UseFetchProps = {
+      url: `${BASE_URL}/${id}`,
+      method: 'DELETE',
+    };
+    return fetchAxios(config);
   },
 };

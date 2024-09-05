@@ -1,70 +1,54 @@
-import axios from 'axios';
-
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+import { fetchAxios } from '@/lib/fetchAxios';
+import {
+  ReligionResponse,
+  IComboReligion,
+  SingleReligionResponse,
+} from '../religion.type';
 
 export const religionAPI = {
   fetch: async () => {
-    try {
-      const response = await axios.get(`${API_URL}/religion`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch religion');
-      return [];
-    }
+    return fetchAxios<ReligionResponse>({
+      url: `/v1/religion`,
+      method: 'GET',
+    });
+  },
+
+  all: () => {
+    return fetchAxios<IComboReligion>({
+      url: `/v1/religion/all`,
+      method: 'GET',
+    });
   },
 
   getById: async (id: string) => {
-    try {
-      const response = await axios.get(`${API_URL}/religion/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch religion details');
-      return;
-    }
+    return fetchAxios<SingleReligionResponse>({
+      url: `/v1/religion/${id}`,
+      method: 'GET',
+    });
   },
 
-  add: async (data: { name: string }) => {
-    try {
-      const requestData = {
-        ...data,
-        active: 1,
-        createdBy: ""
-      };
-
-      const response = await axios.post(`${API_URL}/religion`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to add religion');
-      return;
-    }
+  add: async (name: string) => {
+    const requestData = { name, active: 1, createdBy: '' };
+    return fetchAxios<SingleReligionResponse>({
+      url: `/v1/religion`,
+      method: 'POST',
+      formData: requestData,
+    });
   },
 
-  update: async (id: string, data: { code: string; name: string }) => {
-    try {
-        const requestData = {
-        ...data,
-        active: 1
-      };
-
-      const response = await axios.put(`${API_URL}/religion/${id}`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to update religion');
-      return;
-    }
+  update: async (id: string, name: string) => {
+    const requestData = { name, active: 1 };
+    return fetchAxios<SingleReligionResponse>({
+      url: `/v1/religion/${id}`,
+      method: 'PUT',
+      formData: requestData,
+    });
   },
 
   delete: async (id: string) => {
-    try {
-      if (typeof id !== 'string' || !id) {
-        throw new Error('Invalid ID format');
-      }
-
-      const response = await axios.delete(`${API_URL}/religion/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to delete religion');
-      return;
-    }
-  }
+    return fetchAxios<{ success: boolean }>({
+      url: `/v1/religion/${id}`,
+      method: 'DELETE',
+    });
+  },
 };

@@ -17,6 +17,7 @@ const FormChapter = () => {
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
+  const filteredPathname = pathname.replace(/\/(add|edit)-chapter/, '');
 
   const createQuery = useCreateQueryParams();
   const [actionSubChapter, setActionSubChapter] = useState<'exam' | 'content'>(
@@ -101,7 +102,7 @@ const FormChapter = () => {
 
         if (actionSubChapter === 'exam') {
           router.replace(
-            pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
+            filteredPathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
           );
         } else {
           router.push(pathname + '?' + createQuery('chapterId', chapterId));

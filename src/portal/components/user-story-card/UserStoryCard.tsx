@@ -19,7 +19,7 @@ const UserStoryCard: React.FC<UserStoryCardViewProps> = ({
       )}
       activeNumber={activeNumber}
       setActiveNumber={setActiveNumber}
-      testimonials={testimonials}
+      testimonials={testimonials || []}
       isLoading={isLoading}
     />
   );

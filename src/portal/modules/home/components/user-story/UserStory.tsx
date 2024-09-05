@@ -9,7 +9,7 @@ const UserStory: React.FC<{
   isLoading?: boolean;
 }> = ({ className, testimonials, isLoading }) => {
   return (
-    <UserStorySectionView className={className} testimonials={testimonials} isLoading={isLoading}/>
+    <UserStorySectionView className={className} testimonials={testimonials || []} isLoading={isLoading}/>
   );
 };
 
