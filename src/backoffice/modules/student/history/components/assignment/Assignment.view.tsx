@@ -1,12 +1,12 @@
-import React, { useState } from 'react';  
+import React, { useState } from 'react';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
-import SortArrow from '@/../public/icons/sort-arrow.svg'; 
+import SortArrow from '@/../public/icons/sort-arrow.svg';
 import { AssignmentData } from './assignment.type';
 import Search from '@/../public/icons/search-normal.svg';
 import FilterMenu from '../filter/FilterMenu';
 import UserIcon from '@/../public/icons/user.png';
-
+import Image from 'next/image';
 
 interface AssignmentViewProps {
   data: AssignmentData[];
@@ -50,20 +50,15 @@ const AssignmentView: React.FC<AssignmentViewProps> = ({
     if (sortColumn === column) {
       return (
         <SortArrow
-          className={`ml-2 ${sortDirection === 'asc' ? '' : ''}`}  
+          className={`ml-2 ${sortDirection === 'asc' ? '' : ''}`}
           alt="Sort Arrow"
         />
       );
     }
-    return (
-      <SortArrow
-        className="ml-2"
-        alt="Sort Arrow"
-      />
-    );
+    return <SortArrow className="ml-2" alt="Sort Arrow" />;
   };
 
-  const [statusFilter, setStatusFilter] = useState<string>('');  
+  const [statusFilter, setStatusFilter] = useState<string>('');
   const handleFilterChange = (status: string) => {
     setStatusFilter(status);
   };
@@ -74,7 +69,7 @@ const AssignmentView: React.FC<AssignmentViewProps> = ({
     });
   };
 
-  const filteredData = applyFilterLogic(data);  
+  const filteredData = applyFilterLogic(data);
 
   return (
     <div>
@@ -176,25 +171,45 @@ const AssignmentView: React.FC<AssignmentViewProps> = ({
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item) => ( 
+            {filteredData.map((item) => (
               <tr key={item.no} className="bg-white border-b">
                 <td className="px-4 py-4 w-16">{item.no}</td>
                 <td className="px-4 py-4 w-48">
-                  <div className="font-semibold text-gray-800">{item.session}</div>
-                  <div className="text-sm text-gray-600 whitespace-nowrap">{item.subsession}</div>
+                  <div className="font-semibold text-gray-800">
+                    {item.session}
+                  </div>
+                  <div className="text-sm text-gray-600 whitespace-nowrap">
+                    {item.subsession}
+                  </div>
                 </td>
-                <td className="px-4 py-4 w-48 whitespace-nowrap">{item.course}</td>
-                <td className="px-4 py-4 w-48 flex items-center">  
-                  <UserIcon className="mr-2" />  
+                <td className="px-4 py-4 w-48 whitespace-nowrap">
+                  {item.course}
+                </td>
+                <td className="px-4 py-4 w-48 flex items-center">
+                  <Image
+                    src={UserIcon}
+                    alt="user icon"
+                    width={32}
+                    height={32}
+                    className='mr-2'
+                  />
                   {item.mentor}
                 </td>
                 <td className="px-4 py-4 w-48">
-                  <div className="font-semibold text-gray-800 whitespace-nowrap">{item.date.split(' ')[0]}</div>
-                  <div className="text-sm text-gray-600">{item.date.split(' ')[1]}</div>
+                  <div className="font-semibold text-gray-800 whitespace-nowrap">
+                    {item.date.split(' ')[0]}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {item.date.split(' ')[1]}
+                  </div>
                 </td>
                 <td className="px-4 py-4 w-48">
-                  <div className="font-semibold text-gray-800">{item.submisionDate.split(' ')[0]}</div>
-                  <div className="text-sm text-gray-600">{item.submisionDate.split(' ')[1]}</div>
+                  <div className="font-semibold text-gray-800">
+                    {item.submisionDate.split(' ')[0]}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {item.submisionDate.split(' ')[1]}
+                  </div>
                 </td>
                 <td className="px-4 py-4 w-24">
                   <span
@@ -213,7 +228,9 @@ const AssignmentView: React.FC<AssignmentViewProps> = ({
 
       <div className="flex justify-between items-center w-full mt-5">
         <div className="flex items-center gap-2 text-[#667085]">
-          <label htmlFor="pagination" className="block">Showing</label>
+          <label htmlFor="pagination" className="block">
+            Showing
+          </label>
           <select
             id="pagination"
             className="bg-gray-50 border max-w-[5rem] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
