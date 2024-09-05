@@ -1,8 +1,11 @@
+"use client"
 import React from 'react';
-import DashboardMentorView from '@/backoffice/modules/dashboard/dashboard-mentor/DashboardMentor.view';
 import DashboardMentor from '@/backoffice/modules/dashboard/dashboard-mentor/DashboardMentor';
+import { useAuth } from '@/contexts/AuthContext';
 
 const DashboardMentorIndex = () => {
+  const { user } = useAuth();
+  console.log(user);
   return <DashboardMentor />;
 };
 
