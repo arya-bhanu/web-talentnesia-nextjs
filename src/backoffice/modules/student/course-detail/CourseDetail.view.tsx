@@ -10,7 +10,11 @@ import JoinDiscord from './components/join-discord/JoinDiscord';
 import Statistic from './components/statistic';
 import Mentor from './components/list-mentor';
 
-const CourseDetailView: React.FC = () => (
+interface CourseDetailViewProps {
+  courseId: string;
+}
+
+const CourseDetailView: React.FC<CourseDetailViewProps> = ({ courseId }) => (
   <div className="p-4">
     <ModulProgress progress={50} />
     <div className="mt-10 flex flex-col md:flex-row gap-6">

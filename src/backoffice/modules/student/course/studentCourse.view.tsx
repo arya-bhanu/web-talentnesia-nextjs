@@ -3,13 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import StudentCourseCard from './components/student-course-card/StudentCourseCard';
-import { courseData } from './studentCourse.data';
 import { TabFlex } from '@/backoffice/components/tabs/tabs';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
+import { StudentCourseAPI } from './api/studentCourseApi';
+import { APIResponseCourseItem } from './studentCourse.type';
+import { fileHelper } from '@/helpers/file-manager/fileUpload.helper';
 
 const StudentCourseView: React.FC = () => {
+  const [courses, setCourses] = useState<(APIResponseCourseItem & { imageUrl: string })[]>([]);
   const [filter, setFilter] = useState('');
   const [status, setStatus] = useState('All');
   const [statusFilter, setStatusFilter] = useState('Select');
@@ -17,6 +20,31 @@ const StudentCourseView: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await StudentCourseAPI.fetch();
+        const coursesWithImages = await Promise.all(response.data.items.map(async (course) => {
+          let imageUrl = '/img/course/course-image-example-1.png'; // Default fallback image
+          try {
+            const imageBlob = await fileHelper.getFile(course.image);
+            if (imageBlob) {
+              imageUrl = URL.createObjectURL(imageBlob);
+            }
+          } catch (error) {
+            console.error('Error loading image:', error);
+          }
+          return { ...course, imageUrl };
+        }));
+        setCourses(coursesWithImages);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,10 +66,10 @@ const StudentCourseView: React.FC = () => {
     setIsStatusMenuOpen(!isStatusMenuOpen);
   };
 
-  const filteredCourses = courseData.filter(
+  const filteredCourses = courses.filter(
     (course) =>
-      course.title.toLowerCase().includes(filter.toLowerCase()) &&
-      (status === 'All' || course.status === status)
+      course.name.toLowerCase().includes(filter.toLowerCase()) &&
+      (status === 'All' || (status === 'On Going' ? course.status === 123 : course.status !== 123))
   );
 
   const pageCount = Math.ceil(filteredCourses.length / itemsPerPage);
@@ -120,8 +148,17 @@ const StudentCourseView: React.FC = () => {
             </div>
           </div>
           <div className="space-y-4 mt-11">
-            {currentCourses.map((course, index) => (
-              <StudentCourseCard key={index} {...course} />
+            {currentCourses.map((course) => (
+              <StudentCourseCard
+                key={course.id}
+                id={course.id}
+                title={course.name}
+                status={course.status === 123 ? 'On Going' : 'Complete'}
+                startDate={course.startDate}
+                endDate={course.endDate}
+                progress={course.progress}
+                image={course.imageUrl}
+              />
             ))}
           </div>
           <div className="flex justify-between items-center mt-4">
@@ -169,14 +206,6 @@ const StudentCourseView: React.FC = () => {
         </>
       ),
       active: true
-    },
-    {
-      title: "Wishlist Course",
-      content: (
-        <>
-          {/* Implement Wishlist Course content here */}
-        </>
-      )
     }
   ];
 
