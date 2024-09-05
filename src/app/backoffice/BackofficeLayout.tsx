@@ -7,6 +7,7 @@ import { getSession } from '@/lib/action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Loading from '@/components/loading';
+import { accessRole } from 'data';
 
 const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
   ssr: false,
@@ -19,6 +20,26 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const [isDashboard, setIsDashboard] = useState(false);
   const router = useRouter();
   const { user, setUser } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      const role = user.role;
+      window.localStorage.removeItem('access');
+      // admin role
+      if (role === 1) {
+        window.localStorage.setItem('access', JSON.stringify(accessRole.admin));
+        return;
+      }
+      // mentor role
+      if (role === 3) {
+        window.localStorage.setItem(
+          'access',
+          JSON.stringify(accessRole.mentor),
+        );
+        return;
+      }
+    }
+  }, [JSON.stringify(user)]);
 
   const checkAuth = useCallback(async () => {
     try {
