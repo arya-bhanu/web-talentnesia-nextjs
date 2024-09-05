@@ -90,7 +90,7 @@ const TableProgramView: React.FC<ITableProgramView> = ({
                   <div className="relative flex justify-center">
                     <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
                       <Link
-                        href={`/backoffice/report/${id}`}
+                        href={`/backoffice/report/detail/?id=${id}`}
                         className="hover:text-blue-500 hover:underline"
                       >
                         Detail
