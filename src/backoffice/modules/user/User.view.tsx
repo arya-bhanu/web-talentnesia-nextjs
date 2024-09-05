@@ -126,7 +126,12 @@ const UserView: React.FC<IUserView> = ({
       {
         id: 'no',
         header: 'No',
-        cell: (info) => info.row.index + 1,
+        cell: (info) => {
+          const sortedIndex = filteredData
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .findIndex((user) => user.id === info.row.original.id);
+          return sortedIndex + 1;
+        },
       },
       {
         accessorKey: 'name',
@@ -209,6 +214,12 @@ const UserView: React.FC<IUserView> = ({
     [handleActionButtonRow, profilePictures, activeTab, router]
   );
 
+  const filteredData = useMemo(() => {
+    return data.filter((user) =>
+      user.name.toLowerCase().includes(Filter.toLowerCase())
+    );
+  }, [data, Filter]);
+
   const renderTabContent = (tabName: string) => (
     <div>
       {isLoading ? (
@@ -256,9 +267,10 @@ const UserView: React.FC<IUserView> = ({
       )}
       </div>
       <DataTable
-        data={data}
+        data={filteredData}
         columns={columns}
         filter={{ Filter, setFilter }}
+        sorting={[{ id: 'name', desc: false }]}
       />
       </div>
     )}
@@ -296,13 +308,10 @@ const UserView: React.FC<IUserView> = ({
     <div className="p-4">
       <TabFlex tabs={tabs} onTabChange={handleTabChange} />
       <ImportModal
-      isOpen={isImportModalOpen}
-      onClose={() => setIsImportModalOpen(false)}
-      onSubmit={(file) => {
-        console.log('File submitted:', file);
-        setIsImportModalOpen(false);
-      }}
-    />
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onSuccessfulImport={fetchData}
+      />
     </div>
   );
 };
