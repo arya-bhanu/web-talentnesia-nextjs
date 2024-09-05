@@ -2,10 +2,23 @@ export interface APIResponseReligion {
   id: string;
   code: string;
   name: string;
-  description?: string;
-  active: number;
-  createdAt: Date;
-  updatedAt: Date;
+  active?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IComboReligion {
+  data: APIResponseReligion[];
+}
+
+export interface ReligionResponse {
+  data: {
+    items: APIResponseReligion[];
+  };
+}
+
+export interface SingleReligionResponse {
+  data: APIResponseReligion;
 }
 
 export interface IReligionView {
@@ -19,6 +32,5 @@ export interface IReligionView {
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   fetchData: () => Promise<void>;
+  role: number;
 }
-
-

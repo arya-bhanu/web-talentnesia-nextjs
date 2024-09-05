@@ -11,13 +11,7 @@ import { DataTable } from '@/backoffice/components/data-table';
 
 const ManageModulView: React.FC<
   IManageModulView & { columns: ColumnDef<any>[] }
-> = ({
-  data,
-  isLoading,
-  Filter,
-  setFilter,
-  columns,
-}) => {
+> = ({ data, isLoading, Filter, setFilter, columns }) => {
   return (
     <Loading isLoading={isLoading}>
       <div>

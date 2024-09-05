@@ -1,24 +1,32 @@
 import { APIExamChapter } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
 
 // exam
-export const createExam = async (payload: APIExamChapter) => {
-  try {
-    return await backOfficeAPI.post('/program-exam', payload);
-  } catch (err) {
-    console.error(err);
+export const getExam = async (examId: string | null) => {
+  if (examId) {
+    const response = await fetchAxios<{
+      data: APIExamChapter;
+    }>({
+      url: `/v1/program-exam/${examId}`,
+      method: 'GET',
+    });
+    console.log(response);
+    return { data: response };
   }
+  return null;
 };
 
-export const getExam = async (examId: string | null) => {
-  try {
-    if (examId) {
-      return await backOfficeAPI.get('/program-exam/' + examId);
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
-  }
+export const createExam = async (payload: APIExamChapter) => {
+  const response = await fetchAxios<{
+    data: APIExamChapter;
+  }>({
+    url: '/v1/program-exam',
+    method: 'POST',
+    formData: payload,
+  });
+  console.log('create', response);
+  return { data: response };
 };
 
 export const updateExam = async ({
@@ -28,25 +36,26 @@ export const updateExam = async ({
   examId: string;
   payload: APIExamChapter;
 }) => {
-  try {
-    if (examId) {
-      return await backOfficeAPI.put('/program-exam/' + examId, payload);
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+      data: APIExamChapter;
+  }>({
+    url: `/v1/program-exam/${examId}`,
+    method: 'PUT',
+    formData: payload,
+  });
+  console.log(response);
+  return { data: response };
 };
 
 export const deleteExam = async (examId: string) => {
-  try {
-    if (examId) {
-      return await backOfficeAPI.delete('/program-exam/' + examId);
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+    data: string;
+  }>({
+    url: `/v1/program-exam/${examId}`,
+    method: 'DELETE',
+  });
+  console.log('delete', response);
+  return { data: response };
 };
 
 export const reorderExam = async ({
@@ -56,14 +65,13 @@ export const reorderExam = async ({
   questions: string[];
   examId: string;
 }) => {
-  try {
-    if (examId) {
-      return await backOfficeAPI.post('/program-exam/reorder-exams/' + examId, {
-        questions,
-      });
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+    data: any;
+  }>({
+    url: `/v1/program-exam/reorder-exams/${examId}`,
+    method: 'POST',
+    formData: { questions },
+  });
+  console.log('Re Order Exam', response);
+  return { data: response };
 };

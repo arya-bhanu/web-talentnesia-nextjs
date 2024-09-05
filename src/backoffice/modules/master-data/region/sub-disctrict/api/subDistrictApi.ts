@@ -1,78 +1,54 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
+import {
+  SubDistrictResponse,
+  IComboSubDistrict,
+  SingleSubDistrictResponse,
+} from '../subDistrict.type';
 
 export const subDistrictAPI = {
   fetch: async () => {
-    try {
-      const response = await backOfficeAPI.get(`/v1/sub-district`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch sub district');
-      return [];
-    }
+    return fetchAxios<SubDistrictResponse>({
+      url: `/v1/subdistrict`,
+      method: 'GET',
+    });
   },
 
-  all: async () => {
-    try {
-      const response = await backOfficeAPI.get(`/v1/subdistrict/all`);
-      return response.data.data;
-    } catch (error) {
-      console.error('Failed to get all sub district');
-      return [];
-    }
+  all: () => {
+    return fetchAxios<IComboSubDistrict>({
+      url: `/v1/subdistrict/all`,
+      method: 'GET',
+    });
   },
 
   getById: async (id: string) => {
-    try {
-      const response = await backOfficeAPI.get(`/v1/sub-district/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch sub district details');
-      return;
-    }
+    return fetchAxios<SingleSubDistrictResponse>({
+      url: `/v1/subdistrict/${id}`,
+      method: 'GET',
+    });
   },
 
-  add: async (data: { name: string }) => {
-    try {
-      const requestData = {
-        ...data,
-        active: 1,
-        createdBy: ""
-      };
-
-      const response = await backOfficeAPI.post(`/v1/sub-district`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to add sub district');
-      return;
-    }
+  add: async (name: string) => {
+    const requestData = { name, active: 1, createdBy: '' };
+    return fetchAxios<SingleSubDistrictResponse>({
+      url: `/v1/subdistrict`,
+      method: 'POST',
+      formData: requestData,
+    });
   },
 
-  update: async (id: string, data: { code: string; name: string }) => {
-    try {
-        const requestData = {
-        ...data,
-        active: 1
-      };
-
-      const response = await backOfficeAPI.put(`/v1/sub-district/${id}`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to update sub district');
-      return;
-    }
+  update: async (id: string, name: string) => {
+    const requestData = { name, active: 1 };
+    return fetchAxios<SingleSubDistrictResponse>({
+      url: `/v1/subdistrict/${id}`,
+      method: 'PUT',
+      formData: requestData,
+    });
   },
 
   delete: async (id: string) => {
-    try {
-      if (typeof id !== 'string' || !id) {
-        throw new Error('Invalid ID format');
-      }
-
-      const response = await backOfficeAPI.delete(`/v1/sub-district/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to delete sub district');
-      return;
-    }
-  }
+    return fetchAxios<{ success: boolean }>({
+      url: `/v1/subdistrict/${id}`,
+      method: 'DELETE',
+    });
+  },
 };

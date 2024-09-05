@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { userAPI } from '../../api/userApi';
+import { fileHelper } from '@/helpers/file-manager/fileUpload.helper';
 
 interface ProfilePictureInputProps {
   onChange: (file: File | null, originalFilename: string | null) => void;
   onReset?: (resetFunction: () => void) => void;
   initialValue?: string;
   id: string | null;
-  idCheck: string | null;  // Add this line
+  idCheck: string | null;
 }
 
-export function ProfilePictureInput({ onChange, onReset, initialValue, id }: ProfilePictureInputProps) {
+export function ProfilePictureInput({ onChange, onReset, initialValue, id, idCheck }: ProfilePictureInputProps) {
   const defaultImage = '/img/manage-user/profile-template.svg';
   const [profileImage, setProfileImage] = useState(defaultImage);
 
@@ -35,10 +35,12 @@ export function ProfilePictureInput({ onChange, onReset, initialValue, id }: Pro
 
   const loadProfilePicture = async (path: string) => {
     try {
-      const blob = await userAPI.getFile(path);
-      if (blob) {
-        const imageUrl = URL.createObjectURL(blob);
+      const imageUrl = `${process.env.API_SERVER_URL}/v1/file/${path}`;
+      const response = await fetch(imageUrl);
+      if (response.ok) {
         setProfileImage(imageUrl);
+      } else {
+        throw new Error('Failed to load image');
       }
     } catch (error) {
       console.error('Error loading profile picture:', error);
@@ -46,12 +48,19 @@ export function ProfilePictureInput({ onChange, onReset, initialValue, id }: Pro
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
-      onChange(file, file.name);
+      try {
+        const uploadedPath = await fileHelper.uploadFile(file, 'users');
+        if (uploadedPath) {
+          const imageUrl = `${process.env.API_SERVER_URL}/v1/file/${uploadedPath}`;
+          setProfileImage(imageUrl);
+          onChange(file, file.name);
+        }
+      } catch (error) {
+        console.error('Error uploading profile picture:', error);
+      }
     }
   };
 
@@ -75,12 +84,13 @@ export function ProfilePictureInput({ onChange, onReset, initialValue, id }: Pro
       />
       <label htmlFor="profile-picture-upload" className="cursor-pointer">
         <div className="flex text-[12px] md:text-lg font-poppins">
-          <Image
+        <Image
             src={profileImage}
             width={150}
             height={150}
             alt="Profile Picture"
             className="w-[150px] h-[150px] cursor-pointer rounded-[10px] object-cover"
+            onError={() => setProfileImage(defaultImage)}
           />
           <Image
             src="/img/manage-user/edit-profil.svg"
@@ -89,17 +99,19 @@ export function ProfilePictureInput({ onChange, onReset, initialValue, id }: Pro
             alt="Edit Profile"
             className="w-[50px] h-[50px] cursor-pointer ml-[-45px] mt-[-5px]"
           />
-          <Image
-            src="/img/manage-user/delete-profil.svg"
-            width={50}
-            height={50}
-            alt="Delete Profile"
-            className="w-[50px] h-[50px] cursor-pointer ml-[-50px] mt-[105px]"
-            onClick={(e) => {
-              e.preventDefault();
-              handleDeleteImage();
-            }}
-          />
+          {(id === idCheck || (!id && !idCheck)) && (
+            <Image
+              src="/img/manage-user/delete-profil.svg"
+              width={50}
+              height={50}
+              alt="Delete Profile"
+              className="w-[50px] h-[50px] cursor-pointer ml-[-50px] mt-[105px]"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteImage();
+              }}
+            />
+          )}
         </div>
       </label>
     </div>

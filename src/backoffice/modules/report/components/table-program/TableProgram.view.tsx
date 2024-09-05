@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
@@ -8,6 +8,8 @@ import TableHeader from '../table-header/TableHeader';
 import Dropdown from '../dropdown-type/DropdownType';
 import { ITableProgramView } from './tableProgram.type';
 import { useRouter } from 'next/navigation';
+import Popover from '@/backoffice/components/popover';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -17,6 +19,7 @@ const TableProgramView: React.FC<ITableProgramView> = ({
   setFilter,
 }) => {
   const [selectedOption, setSelectedOption] = useState('Type');
+  const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,16 +33,12 @@ const TableProgramView: React.FC<ITableProgramView> = ({
         header: ({ column }) => <SortingTable column={column} title="No" />,
         cell: (info) => info.row.index + 1,
       }),
-      columnHelper.accessor('class', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Class" />
-        ),
+      columnHelper.accessor('name', {
+        header: ({ column }) => <SortingTable column={column} title="Class" />,
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('type', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Type" />
-        ),
+        header: ({ column }) => <SortingTable column={column} title="Type" />,
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('progress', {
@@ -47,7 +46,7 @@ const TableProgramView: React.FC<ITableProgramView> = ({
           <SortingTable column={column} title="Progress" />
         ),
         cell: (info) => {
-          const progress = info.getValue<number>();
+          const progress = info.getValue<string>();
           return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div
@@ -61,7 +60,7 @@ const TableProgramView: React.FC<ITableProgramView> = ({
               >
                 <div
                   style={{
-                    width: `${progress}%`,
+                    width: `${Number(progress)}%`,
                     backgroundColor: '#219EBC',
                     height: '10px',
                   }}
@@ -72,8 +71,40 @@ const TableProgramView: React.FC<ITableProgramView> = ({
           );
         },
       }),
+      columnHelper.accessor('id', {
+        id: 'action',
+        header: 'Action',
+        cell: (info) => {
+          const id = info.getValue() as string;
+          const index = info.row.index;
+
+          return (
+            <div className="items-center">
+              <Popover
+                handleActionButtonRow={() => {}}
+                id={id}
+                index={index}
+                openPopoverIndex={openPopoverIndex}
+                setOpenPopoverIndex={setOpenPopoverIndex}
+                content={
+                  <div className="relative flex justify-center">
+                    <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
+                      <Link
+                        href={`/backoffice/report/${id}`}
+                        className="hover:text-blue-500 hover:underline"
+                      >
+                        Detail
+                      </Link>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+          );
+        },
+      }),
     ],
-    [router]
+    [router],
   );
 
   const handleSelect = (option: string) => {
@@ -86,17 +117,21 @@ const TableProgramView: React.FC<ITableProgramView> = ({
       <div className="flex justify-between items-center mb-4">
         <TableHeader title="Program Progress" />
         <Dropdown
-          options={['Type', 'IICP', 'Bootcamp']}
+          options={
+            data ? ['Type', ...new Set(data.map((el) => el.type))] : ['Type']
+          }
           selectedOption={selectedOption}
           onSelect={handleSelect}
         />
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'no', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      {data && (
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'no', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      )}
     </div>
   );
 };

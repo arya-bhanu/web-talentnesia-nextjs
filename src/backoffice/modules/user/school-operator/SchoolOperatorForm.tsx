@@ -8,6 +8,7 @@ import { userAPI } from '../api/userApi';
 import { useSearchParams } from 'next/navigation';
 import { ResponseModal } from '../components/response-modal/responseModal';
 import { useRouter } from 'next/navigation';
+import { fileHelper } from '@/helpers/file-manager/fileUpload.helper';
 
 export const useSchoolOperatorForm = (id: string | null = null) => {
   const [form, setForm] = useState<SchoolOperatorFormData>({
@@ -70,7 +71,7 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
 
   const handleFileChange = (fieldName: string) => async (file: File | null) => {
     try {
-      const response = file ? await userAPI.uploadFile(file, 'users') : null;
+      const response = file ? await fileHelper.uploadFile(file, 'users') : null;
       setForm(prevForm => ({
         ...prevForm,
         [fieldName]: response || '',
@@ -83,7 +84,7 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
 
   const handleProfilePictureChange = async (file: File | null, originalFilename: string | null) => {
     try {
-      const response = file ? await userAPI.uploadFile(file, 'users') : null;
+      const response = file ? await fileHelper.uploadFile(file, 'users') : null;
       setForm(prevForm => ({
         ...prevForm,
         profilePicture: response || '',

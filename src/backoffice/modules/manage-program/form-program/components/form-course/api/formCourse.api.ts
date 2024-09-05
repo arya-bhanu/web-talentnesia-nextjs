@@ -1,16 +1,25 @@
-import { APIContentChapter } from '@/backoffice/modules/manage-modul/manageModul.type';
+import {
+  APIChapterModul,
+  APIContentChapter,
+  APIResponseManageModul,
+} from '@/backoffice/modules/manage-modul/manageModul.type';
 import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
+import { IFormCourse } from '../formCourse.type';
+import { IListDraggable } from '@/backoffice/components/list-draggable/listDraggable.type';
 
 // course
 export const fetchChapterCourse = async (programId: string | null) => {
-  try {
-    if (programId) {
-      return backOfficeAPI.get(`/v1/manage-program/course/${programId}`);
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
+  if (programId) {
+    const response = await fetchAxios<{
+      data: IFormCourse;
+    }>({
+      url: `/v1/manage-program/course/${programId}`,
+      method: 'GET',
+    });
+    return { data: response };
   }
+  return null;
 };
 
 export const addCourseChapterDefault = async ({
@@ -20,56 +29,66 @@ export const addCourseChapterDefault = async ({
   modulId: string | null;
   programId: string | null;
 }) => {
-  try {
-    if (modulId && programId) {
-      return backOfficeAPI.post('/manage-program/save-module', {
-        modulId,
-        programId,
-      });
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
+  if (modulId && programId) {
+    const response = await fetchAxios<{
+      data: {
+        data: IFormCourse;
+      };
+    }>({
+      url: '/v1/manage-program/save-module',
+      method: 'POST',
+      formData: { modulId, programId },
+    });
+    return { data: response };
   }
+  return null;
 };
 
 export const fetchModule = async () => {
-  try {
-    return backOfficeAPI.get('/manage-module/all');
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+    data: APIResponseManageModul[];
+  }>({
+    url: '/v1/manage-module/all',
+    method: 'GET',
+  });
+  return { data: response };
 };
 
 // content
 export const fetchContent = async (contentId?: string | null) => {
-  try {
-    if (contentId) {
-      const response = await backOfficeAPI.get('/program-content/' + contentId);
-      return response;
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
+  if (contentId) {
+    const response = await fetchAxios<{
+        data: APIContentChapter;
+    }>({
+      url: `/v1/program-content/${contentId}`,
+      method: 'GET',
+    });
+    return { data: response };
   }
+  return null;
 };
 
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
 ) => {
-  const response = await backOfficeAPI.post('/program-content', payload);
-  return response.data;
+  const response = await fetchAxios<{
+      data: APIContentChapter;
+  }>({
+    url: '/v1/program-content',
+    method: 'POST',
+    formData: payload,
+  });
+  return { data: response };
 };
 
 export const deleteContent = async (contentId: string) => {
-  try {
-    const response = await backOfficeAPI.delete(
-      '/program-content/' + contentId,
-    );
-    return response;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+      data: string;
+  }>({
+    url: `/v1/program-content/${contentId}`,
+    method: 'DELETE',
+  });
+  return { data: response };
 };
 
 export const editContent = async ({
@@ -79,15 +98,14 @@ export const editContent = async ({
   contentId: string;
   payload: APIContentChapter;
 }) => {
-  try {
-    const response = await backOfficeAPI.put(
-      '/program-content/' + contentId,
-      payload,
-    );
-    return response;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+      data: APIContentChapter;
+  }>({
+    url: `/v1/program-content/${contentId}`,
+    method: 'PUT',
+    formData: payload,
+  });
+  return { data: response };
 };
 
 export const reorderContent = async ({
@@ -97,25 +115,29 @@ export const reorderContent = async ({
   chapterId: string;
   contents: string[];
 }) => {
-  try {
-    const response = await backOfficeAPI.post(
-      '/program-content/reorder-contents/' + chapterId,
-      { contents },
-    );
-    return response;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+    data: {
+      data: IListDraggable;
+    };
+  }>({
+    url: `/v1/program-content/reorder-contents/${chapterId}`,
+    method: 'POST',
+    formData: { contents },
+  });
+  return { data: response };
 };
 
 // exam
 export const deleteExam = async (examId: string) => {
-  try {
-    const response = await backOfficeAPI.delete('/program-exam/' + examId);
-    return response;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+    data: {
+      data: string;
+    };
+  }>({
+    url: `/v1/program-exam/${examId}`,
+    method: 'DELETE',
+  });
+  return { data: response };
 };
 
 export const reorderExam = async ({
@@ -125,18 +147,33 @@ export const reorderExam = async ({
   examId: string;
   questions: string[];
 }) => {
-  try {
-    const response = await backOfficeAPI.post(
-      '/program-exam/reorder-exams/' + examId,
-      { questions },
-    );
-    return response;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+      data: string;
+  }>({
+    url: `/v1/program-exam/reorder-exams/${examId}`,
+    method: 'POST',
+    formData: { questions },
+  });
+  return { data: response };
 };
 
 // chapter
+export const fetchChapter = async (chapterId?: string | null) => {
+  if (chapterId) {
+    const response = await fetchAxios<{
+      data: APIChapterModul;
+    }>({
+      url: `/v1/program-chapter/${chapterId}`,
+      method: 'GET',
+    });
+    console.log(response);
+    return {
+      data: response.data,
+    };
+  }
+  return null;
+};
+
 export const createChapter = async ({
   programId,
   title,
@@ -144,11 +181,14 @@ export const createChapter = async ({
   programId: string;
   title: string;
 }) => {
-  const response = await backOfficeAPI.post('/program-chapter', {
-    programId,
-    title,
+  const response = await fetchAxios<{
+    data: APIChapterModul;
+  }>({
+    url: '/v1/program-chapter',
+    method: 'POST',
+    formData: { programId, title },
   });
-  return response.data;
+  return { data: response.data };
 };
 
 export const editChapter = async ({
@@ -158,23 +198,25 @@ export const editChapter = async ({
   chapterId: string;
   title: string;
 }) => {
-  const response = await backOfficeAPI.put('/program-chapter/' + chapterId, {
-    title,
+  const response = await fetchAxios<{
+      data: APIChapterModul;
+  }>({
+    url: `/v1/program-chapter/${chapterId}`,
+    method: 'PUT',
+    formData: { title },
   });
-  return response.data;
-};
-
-export const fetchChapter = async (chapterId?: string | null) => {
-  if (chapterId) {
-    const response = await backOfficeAPI.get('/program-chapter/' + chapterId);
-    return response.data;
-  }
-  return null;
+  console.log(response);
+  return { data: response.data };
 };
 
 export const deleteChapter = async (id: string) => {
-  const response = await backOfficeAPI.delete('/program-chapter/' + id);
-  return response.data;
+  const response = await fetchAxios<{
+    data: string;
+  }>({
+    url: `/v1/program-chapter/${id}`,
+    method: 'DELETE',
+  });
+  return { data: response.data };
 };
 
 export const reorderChapter = async ({
@@ -184,15 +226,14 @@ export const reorderChapter = async ({
   programId: string;
   chapters: string[];
 }) => {
-  try {
-    const response = await backOfficeAPI.post(
-      '/program-chapter/reorder-chapters/' + programId,
-      { chapters },
-    );
-    return response;
-  } catch (err) {
-    console.error(err);
-  }
+  const response = await fetchAxios<{
+    data: APIChapterModul;
+  }>({
+    url: `/v1/program-chapter/reorder-chapters/${programId}`,
+    method: 'POST',
+    formData: { chapters },
+  });
+  return { data: response };
 };
 
 // schedule
@@ -206,13 +247,14 @@ export const updateSchedule = async ({
     duration: string;
   };
 }) => {
-  try {
-    const response = await backOfficeAPI.post(
-      '/program-content/update-schedule/' + contentId,
-      payload,
-    );
-    return response;
-  } catch (err) {
-    console.error(err);
-  }
+  return fetchAxios<{
+    data: {
+      date: string;
+      duration: string;
+    };
+  }>({
+    url: `/v1/program-content/update-schedule/${contentId}`,
+    method: 'POST',
+    formData: payload,
+  });
 };

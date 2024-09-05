@@ -1,78 +1,54 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
+import {
+  ProvinceResponse,
+  IComboProvince,
+  SingleProvinceResponse,
+} from '../province.type';
 
 export const provinceAPI = {
   fetch: async () => {
-    try {
-      const response = await backOfficeAPI.get('/v1/province');
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch province');
-      return [];
-    }
+    return fetchAxios<ProvinceResponse>({
+      url: `/v1/province`,
+      method: 'GET',
+    });
   },
 
-  all: async () => {
-    try {
-      const response = await backOfficeAPI.get('/v1/province/all');
-      return response.data.data;
-    } catch (error) {
-      console.error('Failed to get all province', error);
-      return [];
-    }
+  all: () => {
+    return fetchAxios<IComboProvince>({
+      url: `/v1/province/all`,
+      method: 'GET',
+    });
   },
 
   getById: async (id: string) => {
-    try {
-      const response = await backOfficeAPI.get(`/v1/province/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch province details');
-      return;
-    }
+    return fetchAxios<SingleProvinceResponse>({
+      url: `/v1/province/${id}`,
+      method: 'GET',
+    });
   },
 
-  add: async (data: { name: string }) => {
-    try {
-      const requestData = {
-        ...data,
-        active: 1,
-        createdBy: ""
-      };
-
-      const response = await backOfficeAPI.post(`/v1/province`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to add province');
-      return;
-    }
+  add: async (name: string) => {
+    const requestData = { name, active: 1, createdBy: '' };
+    return fetchAxios<SingleProvinceResponse>({
+      url: `/v1/province`,
+      method: 'POST',
+      formData: requestData,
+    });
   },
 
-  update: async (id: string, data: { code: string; name: string }) => {
-    try {
-        const requestData = {
-        ...data,
-        active: 1
-      };
-
-      const response = await backOfficeAPI.put(`/v1/province/${id}`, requestData);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to update province');
-      return;
-    }
+  update: async (id: string, name: string) => {
+    const requestData = { name, active: 1 };
+    return fetchAxios<SingleProvinceResponse>({
+      url: `/v1/province/${id}`,
+      method: 'PUT',
+      formData: requestData,
+    });
   },
 
   delete: async (id: string) => {
-    try {
-      if (typeof id !== 'string' || !id) {
-        throw new Error('Invalid ID format');
-      }
-
-      const response = await backOfficeAPI.delete(`/v1/province/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to delete province');
-      return;
-    }
-  }
+    return fetchAxios<{ success: boolean }>({
+      url: `/v1/province/${id}`,
+      method: 'DELETE',
+    });
+  },
 };
