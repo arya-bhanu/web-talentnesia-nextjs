@@ -5,56 +5,32 @@ import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import { IPopover } from './popover.type';
 import Link from 'next/link';
 import AlertModal from '../alert-delete-modal';
-import { IAccessRight } from '@/types/global.type';
-import { usePathname } from 'next/navigation';
-import { isGrantedPermission } from '@/helpers/access-permission';
 import clsx from 'clsx';
+import PermissionGranted from '../permission-granted/PermissionGranted';
 
 const renderContent = (
   setOpenModal: Dispatch<SetStateAction<boolean>>,
   id: string,
 ) => {
-  const [accessRights, setAccessRights] = useState<IAccessRight[] | null>(null);
-  const pathname = usePathname();
-  useEffect(() => {
-    const accessString = window.localStorage.getItem('access');
-    if (accessString) {
-      const access = JSON.parse(accessString) as IAccessRight[];
-      setAccessRights(access);
-    }
-  }, []);
-
   return (
     <div className="relative flex justify-center">
       <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-        <Link
-          href={`/backoffice/manage-modul/update?modulId=${id}`}
-          className={clsx(
-            'hover:text-blue-500 hover:underline',
-            !isGrantedPermission(
-              pathname,
-              '/manage-modul',
-              'manage-modul.edit',
-              accessRights,
-            ) && 'hidden',
-          )}
-        >
-          Edit
-        </Link>
-        <button
-          className={clsx(
-            'hover:text-red-500 hover:underline',
-            !isGrantedPermission(
-              pathname,
-              '/manage-modul',
-              'manage-modul.delete',
-              accessRights,
-            ) && 'hidden',
-          )}
-          onClick={() => setOpenModal(true)}
-        >
-          Delete
-        </button>
+        <PermissionGranted rule="manage-modul.edit">
+          <Link
+            href={`/backoffice/manage-modul/update?modulId=${id}`}
+            className={clsx('hover:text-blue-500 hover:underline')}
+          >
+            Edit
+          </Link>
+        </PermissionGranted>
+        <PermissionGranted rule='manage-modul.delete'>
+          <button
+            className={clsx('hover:text-red-500 hover:underline')}
+            onClick={() => setOpenModal(true)}
+          >
+            Delete
+          </button>
+        </PermissionGranted>
       </div>
     </div>
   );
