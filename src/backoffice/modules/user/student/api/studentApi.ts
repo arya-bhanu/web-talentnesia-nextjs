@@ -1,14 +1,17 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
 
 export const studentAPI = {
-
   fetchStudents: async () => {
     try {
-      const response = await backOfficeAPI.get(`v1/manage-user/4/table`);
-      if (response.data && response.data.data && response.data.data.items) {
-        return response.data.data.items;
+      const response = await fetchAxios<{ data: { items: any[] } }>({
+        url: '/v1/manage-user/4/table',
+        method: 'GET',
+      });
+
+      if (response && response.data && response.data.items) {
+        return response.data.items;
       } else {
-        console.error('Unexpected response structure:', response.data);
+        console.error('Unexpected response structure:', response);
         return [];
       }
     } catch (error) {
@@ -17,4 +20,22 @@ export const studentAPI = {
     }
   },
 
+  importStudents: async (file: File, schoolId: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('school', schoolId);
+
+    try {
+      const response = await fetchAxios<{ message: string }>({
+        url: '/v1/import-student',
+        method: 'POST',
+        formData,
+      });
+
+      return response;
+    } catch (error) {
+      console.error('Failed to import students:', error);
+      throw error;
+    }
+  },
 };

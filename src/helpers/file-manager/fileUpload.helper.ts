@@ -1,4 +1,4 @@
-import { fetchAxios, UseFetchProps } from '@/lib/fetchAxios';
+import { fetchAxios } from '@/lib/fetchAxios';
 
 export const fileHelper = {
   uploadFile: async (file: File, path: string): Promise<string | null> => {
@@ -6,29 +6,27 @@ export const fileHelper = {
     formData.append('file', file);
     formData.append('path', path);
 
-    const config: UseFetchProps = {
-      url: '/v1/file',
-      method: 'POST',
-      formData: formData,
-    };
-
     try {
-      const response = await fetchAxios<{ success: boolean; path: { origins: string } }>(config);
+      const response = await fetchAxios<{ success: boolean; path: { origins: string } }>({
+        url: '/v1/file',
+        method: 'POST',
+        formData: formData,
+      });
+
       return response.success ? response.path.origins : null;
     } catch (error) {
-      console.error('Failed to upload file');
+      console.error('Failed to upload file:', error);
       return null;
     }
   },
 
   getFile: async (filePath: string): Promise<Blob | null> => {
-    const config: UseFetchProps = {
-      url: `/v1/file/${filePath}`,
-      method: 'GET',
-    };
-
     try {
-      const response = await fetchAxios<Blob>(config);
+      const response = await fetchAxios<Blob>({
+        url: `/v1/file/${filePath}`,
+        method: 'GET',
+      });
+
       return new Blob([response], { type: 'application/octet-stream' });
     } catch (error) {
       console.error('Error fetching file:', error);
