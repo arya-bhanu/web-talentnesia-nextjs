@@ -12,8 +12,6 @@ const SearchBarView: React.FC<SearchBarViewProps> = ({
   mouseValue,
   onChangeInput
 }) => {
-
-  console.log(mouseValue);
   return (
     <div
       className={clsx(

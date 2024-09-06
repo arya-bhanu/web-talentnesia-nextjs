@@ -19,7 +19,7 @@ export const benefitsData: benefitProps[] = [
     description: 'Belajar gak pernah membosankan! Kita punya platform online yang seru banget buat ngobrol sama mentor dan temen-temen sekelas. Bikin belajar jadi makin asyik!',
   },
   {
-    imgUrl: '/icons/book.svg',
+    imgUrl: '/icons/world.png',
     title: 'Hands-On Project dari Industri',
     description:
       'Kamu bakal langsung terlibat dalam proyek-proyek seru dari dunia industri. Jadi, nggak cuma teori doang, tapi juga langsung praktek! Siapan diri kamu buat jadi pakar IT sejati!',

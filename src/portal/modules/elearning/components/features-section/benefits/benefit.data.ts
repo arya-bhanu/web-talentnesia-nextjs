@@ -19,7 +19,7 @@ export const benefitsData: benefitProps[] = [
     description: 'Setiap selesai modul, ada exam untuk ngecek pemahamanmu. Jadi, kamu bisa pastiin kamu benar-benar paham sebelum lanjut ke modul berikutnya',
   },
   {
-    imgUrl: '/icons/book.svg',
+    imgUrl: '/icons/world.png',
     title: 'Materi Seru, Gampang Dipahami',
     description:
       'ide, teks, dan materi-materi keren lainnya siap nemenin kamu belajar. Jadi, gak perlu khawatir, semuanya bakal mudah dipahami!',
