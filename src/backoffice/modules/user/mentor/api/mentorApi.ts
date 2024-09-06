@@ -1,13 +1,17 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
 
 export const mentorAPI = {
   fetchMentors: async () => {
     try {
-      const response = await backOfficeAPI.get(`v1/manage-user/3/table`);
-      if (response.data && response.data.data && response.data.data.items) {
-        return response.data.data.items;
+      const response = await fetchAxios<{ data: { items: any[] } }>({
+        url: '/v1/manage-user/3/table',
+        method: 'GET',
+      });
+
+      if (response && response.data && response.data.items) {
+        return response.data.items;
       } else {
-        console.error('Unexpected response structure:', response.data);
+        console.error('Unexpected response structure:', response);
         return [];
       }
     } catch (error) {
@@ -15,5 +19,4 @@ export const mentorAPI = {
       return [];
     }
   },
-
 };
