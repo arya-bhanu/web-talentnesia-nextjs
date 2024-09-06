@@ -34,6 +34,7 @@ export const sidebarData: SidebarProps[] = [
       { label: 'Partner', link: '/backoffice/master-data/partner'},
       { label: 'Region', link: '/backoffice/master-data/region' },
       { label: 'Religion', link: '/backoffice/master-data/religion' },
+      { label: 'Testimonial', link: '/backoffice/master-data/testimonial' },
       // { label: 'Role', link: '/backoffice/master-data/role' },
       // { label: 'Quiz Type', link: '/backoffice/master-data/quiz-type' },
     ],

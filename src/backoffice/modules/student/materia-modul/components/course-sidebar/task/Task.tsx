@@ -9,16 +9,20 @@ interface SelectedAnswers {
 }
 
 const Task: React.FC = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(questions[0]);
+  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
+    questions[0],
+  );
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
-  const [activeQuestionId, setActiveQuestionId] = useState<number>(questions[0].id);
+  const [activeQuestionId, setActiveQuestionId] = useState<number>(
+    questions[0].id,
+  );
 
   const [timeLeft, setTimeLeft] = useState<number>(7200);
   const [timerExpired, setTimerExpired] = useState<boolean>(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft(prevTime => {
+      setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
           setTimerExpired(true);
           clearInterval(interval);
@@ -39,15 +43,15 @@ const Task: React.FC = () => {
   };
 
   const handleTaskClick = (questionId: number) => {
-    const question = questions.find(q => q.id === questionId);
+    const question = questions.find((q) => q.id === questionId);
     setSelectedQuestion(question || null);
     setActiveQuestionId(questionId);
   };
 
   const handleChoiceClick = (questionId: number, choiceIndex: number) => {
-    setSelectedAnswers(prevAnswers => ({
+    setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [questionId]: choiceIndex
+      [questionId]: choiceIndex,
     }));
   };
 
@@ -56,7 +60,7 @@ const Task: React.FC = () => {
       <div className="flex flex-col items-center">
         <div className="w-48">
           <div className="grid grid-cols-5 gap-x-2 gap-y-4">
-            {questions.map(question => (
+            {questions.map((question) => (
               <TaskView
                 key={question.id}
                 question={question}
@@ -71,11 +75,15 @@ const Task: React.FC = () => {
         <div className="flex justify-center mt-6">
           <div className="flex space-x-4">
             <div className="flex items-center space-x-2">
-              <div className={`w-3 h-3 rounded-full ${selectedAnswers[activeQuestionId] !== undefined ? 'bg-blue-500' : 'bg-gray-500'}`} />
+              <div
+                className={`w-3 h-3 rounded-full ${selectedAnswers[activeQuestionId] !== undefined ? 'bg-blue-500' : 'bg-gray-500'}`}
+              />
               <span className="text-sm">Terjawab</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className={`w-3 h-3 rounded-full ${selectedAnswers[activeQuestionId] === undefined ? 'bg-blue-500' : 'bg-gray-500'}`} />
+              <div
+                className={`w-3 h-3 rounded-full ${selectedAnswers[activeQuestionId] === undefined ? 'bg-blue-500' : 'bg-gray-500'}`}
+              />
               <span className="text-sm whitespace-nowrap">Belum Terjawab</span>
             </div>
           </div>
@@ -113,6 +121,11 @@ const Task: React.FC = () => {
             </div>
           </div>
         ) : null}
+        <div className="flex space-x-4 justify-center">
+          <button className="focus:outline-none text-black bg-yellow-300 mt-6 hover:bg-yellow-400 focus:ring-1 focus:ring-yellow-500 font-bold rounded-[30px] text-sm px-44 py-3 dark:focus:ring-yellow-900">
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   );
