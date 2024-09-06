@@ -26,8 +26,8 @@ const BlogView: React.FC<IBlogView> = ({ filter, setFilter, columns }) => {
     <>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={filter} onChange={setFilter} />
-        <Link href="/backoffice/manage-modul/create" className="block">
-          <AddButton onClick={() => {}} text="Add Module" />
+        <Link href="/backoffice/cms/add-blog" className="block">
+          <AddButton onClick={() => {}} text="Add Blog" />
         </Link>
       </div>
       <DataTable

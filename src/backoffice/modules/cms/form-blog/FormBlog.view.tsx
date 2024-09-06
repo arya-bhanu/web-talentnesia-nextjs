@@ -60,7 +60,7 @@ const FormBlogView: React.FC<IFormBlogView> = ({ id }) => {
       </div>
       <div id="richtext" className={clsx('col-span-2 h-48')}>
         <LabelForm htmlFor="question" isImportant className="w-fit">
-          Question
+          Detail Blog
         </LabelForm>
         <ReactQuill className='h-24' key={id} onChange={() => {}} />
       </div>

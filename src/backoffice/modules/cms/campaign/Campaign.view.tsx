@@ -33,8 +33,8 @@ const CampaignView: React.FC<ICampaignView> = ({
     <>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={filter} onChange={setFilter} />
-        <Link href="/backoffice/manage-modul/create" className="block">
-          <AddButton onClick={() => {}} text="Add Module" />
+        <Link href="/backoffice/cms/add-campaign" className="block">
+          <AddButton onClick={() => {}} text="Add Campaign" />
         </Link>
       </div>
       <DataTable
