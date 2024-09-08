@@ -7,7 +7,6 @@ export const fetchIICPProgram = async () => {
       url: '/v1/manage-program/table/iicp',
       method: 'GET',
     });
-    console.log(response);
     return { data: response };
   } catch (err) {
     console.error(err);

@@ -48,6 +48,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         id: dataExam.id,
         order: dataExam.order,
         title: dataExam.title,
+        type: 5,
       });
       updateQuestion(dataExam.exams);
     }
@@ -84,6 +85,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
           duration: dataExamStore?.duration || '01.00',
           exams: question,
           title: examName,
+          type: 5,
         } as APIExamChapter;
 
         if (examId) {

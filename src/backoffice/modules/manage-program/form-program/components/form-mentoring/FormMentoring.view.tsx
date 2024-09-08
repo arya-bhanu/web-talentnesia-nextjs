@@ -54,6 +54,7 @@ const FormMentoringView: React.FC<
             id="mentoring_name"
             defaultValue={defaultMentoring?.title}
             key={defaultMentoring?.title}
+            placeholder='Input mentoring name'
             name="mentoring_name"
             required
           />

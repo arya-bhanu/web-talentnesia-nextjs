@@ -11,6 +11,7 @@ import { deleteExam } from '../../form-program/components/add-exam/api/exam.api'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useFormScheduleStore } from '../../form-program/components/form-schedule/formSchedule.store';
+import { usePathname, useRouter } from 'next/navigation';
 
 const ListDraggable: React.FC<IListDraggable> = (props) => {
   const params = useSearchParams();
@@ -21,6 +22,8 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
   const queryClient = useQueryClient();
   const programId = params.get('programId');
   const { content } = useFormScheduleStore();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const { mutateAsync: updateScheduleAasync } = useMutation({
     mutationKey: ['schedule'],
@@ -108,6 +111,11 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
       setModalEditContent(false);
     }
   };
+
+  const handleDetailButton = () => {
+    router.push(`${pathname}/detail-program-iicp/?contentId=${props.id}&programId=${programId}`);
+  };
+  
   return (
     <ListDraggableView
       modalSchedule={modalSchedule}
@@ -121,6 +129,7 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
       setConfirmDel={setConfrmDel}
       modalDelContent={modalDelContent}
       setModalDelContent={setModalDelContent}
+      handleDetailButton={handleDetailButton}
       {...props}
     />
   );

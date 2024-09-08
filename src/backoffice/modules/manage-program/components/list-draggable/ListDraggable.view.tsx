@@ -31,6 +31,7 @@ const ListDraggableView: React.FC<
       setModalDelContent: Dispatch<SetStateAction<boolean>>;
       confirmDel: boolean;
       setConfirmDel: Dispatch<SetStateAction<boolean>>;
+      handleDetailButton: () => void;
     }
 > = ({
   type,
@@ -52,6 +53,7 @@ const ListDraggableView: React.FC<
   isexam,
   id,
   chapterId,
+  handleDetailButton,
 }) => {
   const router = useRouter();
   const params = useSearchParams();
@@ -66,10 +68,14 @@ const ListDraggableView: React.FC<
   const generateIcon = useMemo(() => {
     switch (type) {
       case '1':
-        return <PlayCircle />;
-      case '2':
         return <Book />;
+      case '2':
+        return <PlayCircle />;
       case '3':
+        return <PlayCircle />;
+      case '4':
+        return <PlayCircle />;
+      case '5':
         return <Edit2 />;
       default:
         return <VideoCam />;
@@ -127,6 +133,9 @@ const ListDraggableView: React.FC<
         </p>
         <button type="button" onClick={() => setModalSchedule(true)}>
           <Calendar />
+        </button>
+        <button type="button" onClick={handleDetailButton}>
+          <p>Details</p>
         </button>
         <button
           onClick={() => {

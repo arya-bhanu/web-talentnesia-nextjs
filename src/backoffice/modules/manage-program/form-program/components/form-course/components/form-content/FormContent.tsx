@@ -17,14 +17,19 @@ const FormContent = ({ contentId }: { contentId?: string }) => {
   useEffect(() => {
     if (dataContent?.data?.data) {
       const time = dataContent.data.data.duration as string;
-      console.log(time);
-      const [hour, minute] = time.split(':');
-      const date = new Date();
-      date.setHours(Number(hour));
-      date.setMinutes(Number(minute));
-      setTime(date);
+      
+      if (time && typeof time === 'string' && time.includes(':')) {
+        const [hour, minute] = time.split(':');
+        const date = new Date();
+        date.setHours(Number(hour));
+        date.setMinutes(Number(minute));
+        setTime(date);
+      } else {
+        console.error('Invalid time format:', time);
+      }
     }
   }, [dataContent?.data?.data]);
+  
 
   return (
     <FormContentView

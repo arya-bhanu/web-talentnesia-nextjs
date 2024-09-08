@@ -36,6 +36,7 @@ export interface APIExamChapter {
   chapterId: string;
   title: string;
   duration: string;
+  type: number;
   exams: ExamQuestion[];
 }
 

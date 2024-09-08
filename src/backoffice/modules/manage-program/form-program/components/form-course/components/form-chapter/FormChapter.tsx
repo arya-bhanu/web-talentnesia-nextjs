@@ -120,7 +120,7 @@ const FormChapter = () => {
 
         if (actionSubChapter === 'exam') {
           router.push(
-            pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
+            filteredPathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
           );
         } else {
           setOpenModalAddContent(true);
