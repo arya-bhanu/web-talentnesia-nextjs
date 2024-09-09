@@ -16,11 +16,9 @@ const PopularCoursesSectionView = ({ className, courses, isLoading } : { classNa
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 md:mt-7 lg:mt-9 gap-10">
         {
-          courses !== undefined ? 
           courses.map((course, index: number) => (
             <FeatureCard key={index} {...course} isLoading={isLoading ? isLoading : false}/>
-          )) : 
-          <p>No available data</p>
+          ))
         }
       </div>
     </section>

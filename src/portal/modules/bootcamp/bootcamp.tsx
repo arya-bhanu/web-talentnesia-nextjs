@@ -9,6 +9,7 @@ export const Bootcamp: React.FC = () => {
     const [data, setData] = useState<any>();
     const [course, setCourse] = useState<any>();
     const [error, setError] = useState<string | null>(null);
+    const [skeletonAnimation, setSkeleton] = React.useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -17,6 +18,9 @@ export const Bootcamp: React.FC = () => {
                 const course = await courseApi();
                 setCourse(course);
                 setData(result);
+                setTimeout(() => {
+                    setSkeleton(false)
+                }, 500);
             } catch (err) {
                 console.error(err);
                 setError('Error loading data...');
@@ -30,5 +34,5 @@ export const Bootcamp: React.FC = () => {
         return <div>{error}</div>;
     }
 
-    return <BootcampView data={data || []} courses={course || []}/>;
+    return <BootcampView data={data || []} courses={course || []} isLoading={skeletonAnimation}/>;
 };

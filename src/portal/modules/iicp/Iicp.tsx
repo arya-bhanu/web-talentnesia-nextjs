@@ -5,17 +5,22 @@ import iicpApi from './api/iicpApi';
 
 export const Iicp = () => {
   const [data, setData] = React.useState<any>();
+  const [skeletonAnimation, setSkeleton] = React.useState(true);
 
   React.useEffect(() => {
     iicpApi()
-    .then((data) => setData(data))
+    .then((data) => {setData(data), 
+      setTimeout(() => {
+        setSkeleton(false);
+    }, 500);
+    })
     .catch((error) => {
       console.error(error);
       
     })
   }, []);
   try {
-    return <IicpView data={data}/>;
+    return <IicpView data={data} isLoading={skeletonAnimation} />;
   } catch (error) {
     return <div>Error loading data...</div>
   }

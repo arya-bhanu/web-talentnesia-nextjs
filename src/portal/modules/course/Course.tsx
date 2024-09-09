@@ -6,17 +6,22 @@ import courseApi from './api/course';
 
 export const Course = () => {
   const [data, setData] = React.useState<any>();
+  const [skeletonAnimation, setSkeleton] = React.useState(true);
 
   React.useEffect(() => {
     courseApi()
-    .then((data) => setData(data))
+    .then((data) => {setData(data),
+      setTimeout(() => {
+        setSkeleton(false);
+    }, 500);
+    })
     .catch((err) => {
       console.error(err);
     });
   }, []);
 
   try {
-    return <CourseView data={data} />
+    return <CourseView data={data || []} isLoading={skeletonAnimation}/>
   } catch (error) {
     return <div>Error loading data</div>
   }

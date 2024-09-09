@@ -9,23 +9,15 @@ import { filterCategories } from '@/portal/components/filter/filter.data';
 import { CoursesViewProps } from './course.type';
 
 
-const CourseView: React.FC<CoursesViewProps> = ({ data }) => {
+const CourseView: React.FC<CoursesViewProps> = ({ data, isLoading }) => {
 
-  const [skeletonAnimation, setTime] = React.useState(true);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setTime(false);
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
   return (
     <>
-      <Hero isLoading={skeletonAnimation} />
+      <Hero isLoading={isLoading} />
       <main className="container">
-       <PopularCourses courses={data?.items ?? []} className='mb-16' isLoading={skeletonAnimation}/>
-       <BestCourse courses={data?.items ?? []} isLoading={skeletonAnimation}/>
-       <AllClass courses={courseDataArray} filterOptions={filterCategories} isLoading={skeletonAnimation} title='Jelajahi Semua Kelas'/>
+       <PopularCourses courses={data.items} className='mb-16' isLoading={isLoading}/>
+       <BestCourse courses={data.items} isLoading={isLoading}/>
+       <AllClass courses={courseDataArray} filterOptions={filterCategories} isLoading={isLoading} title='Jelajahi Semua Kelas'/>
       </main>
     </>
   );

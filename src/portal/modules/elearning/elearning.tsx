@@ -9,14 +9,19 @@ export const Elearning: React.FC = () => {
     const [data, setData] = useState<any>();
     const [course, setCourse] = useState<any>();
     const [error, setError] = useState<string | null>(null);
+    const [skeletonAnimation, setSkeleton] = useState(true);
 
     useEffect(() => {
+        
         const fetchData = async () => {
             try {
                 const result = await homeApi();
                 const course = await courseApi();
                 setCourse(course);
                 setData(result);
+                setTimeout(() => {
+                    setSkeleton(false);
+                }, 500);
             } catch (err) {
                 console.error(err);
                 setError('Error loading data...');
@@ -24,11 +29,14 @@ export const Elearning: React.FC = () => {
         };
 
         fetchData();
+        
     }, []);
+
+    
 
     if (error) {
         return <div>{error}</div>; 
     }
 
-    return <ElearningView data={data || []} courses={course || []} />;
+    return <ElearningView data={data || []} courses={course || []} isLoading={skeletonAnimation} />;
 };

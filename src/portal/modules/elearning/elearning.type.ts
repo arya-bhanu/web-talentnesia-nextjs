@@ -6,5 +6,6 @@ export interface CoursesData {
   export interface ElearningViewProps {
     data: CoursesData;
     courses: {items: any[]};
+    isLoading?: boolean
   }
   
