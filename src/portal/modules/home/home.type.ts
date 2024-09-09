@@ -7,6 +7,7 @@ export interface HomeData {
 
 export interface HomeViewProps {
   data: HomeData;
+  isLoading?: boolean
 }
 
 export interface HomeProps {

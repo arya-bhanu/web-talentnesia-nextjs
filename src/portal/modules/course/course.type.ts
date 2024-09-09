@@ -4,5 +4,6 @@ export interface CoursesData {
   
   export interface CoursesViewProps {
     data: CoursesData;
+    isLoading?: boolean;
   }
   

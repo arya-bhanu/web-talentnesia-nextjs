@@ -10,44 +10,36 @@ import Partners from './components/partners';
 import NewsLetterSubscription from './components/news-letter-subscription';
 import { HomeViewProps } from './home.type';
 
-const HomeView: React.FC<HomeViewProps> = ({ data }) => {
-  const [skeletonAnimation, setTime] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTime(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
+const HomeView: React.FC<HomeViewProps> = ({ data, isLoading }) => {
+  
   return (
     <>
-      <Hero isLoading={skeletonAnimation} />
+      <Hero isLoading={isLoading} />
       <main className="container">
         <Benefits className="mt-9 md:mt-16 xl:mt-0" />
         <ProgramDimension
           className="mt-14 md:mt-16 lg:mt-20"
           programs={data?.programs ?? []}
-          isLoading={skeletonAnimation}
+          isLoading={isLoading}
         />
         <EliteClass
           className="mt-14 md:mt-16 lg:mt-24"
           courses={data?.courses ?? []}
-          isLoading={skeletonAnimation}
+          isLoading={isLoading}
         />
         <UserStory
           className=" mt-14 sm:mt-28 md:mt-36 lg:mt-48"
           testimonials={data?.testimonials ?? []}
-          isLoading={skeletonAnimation}
+          isLoading={isLoading}
         />
         <Partners
           className="mt-16 md:mt-20 lg:mt-28"
           partners={data?.partners ?? []}
-          isLoading={skeletonAnimation}
+          isLoading={isLoading}
         />
         <NewsLetterSubscription
           className="mt-16 md:mt-28 lg:mt-36"
-          isLoading={skeletonAnimation}
+          isLoading={isLoading}
         />
       </main>
     </>

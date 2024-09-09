@@ -5,6 +5,7 @@ export interface IicpData {
   
   export interface IicpViewProps {
     data: IicpData;
+    isLoading?: boolean
   }
   
   export interface HomeProps {
