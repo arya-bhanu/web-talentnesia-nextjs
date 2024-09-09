@@ -1,6 +1,10 @@
 import React from 'react';
 
-const Media: React.FC<{ url: string }> = ({ url }) => {
+const Media: React.FC<{ url: string | null }> = ({ url }) => {
+  if (!url) {
+    return <div>No media URL provided</div>;
+  }
+
   const getYoutubeId = (youtubeUrl: string) => {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = youtubeUrl.match(regExp);

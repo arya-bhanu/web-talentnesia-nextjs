@@ -2,12 +2,14 @@ import React from 'react';
 import Image from 'next/image';
 
 interface MentoringProps {
-  meetLink: string;
+  meetLink: string | null;
 }
 
 const Mentoring: React.FC<MentoringProps> = ({ meetLink }) => {
   const handleJoinNow = () => {
-    window.open(meetLink, '_blank');
+    if (meetLink) {
+      window.open(meetLink, '_blank');
+    }
   };
 
   return (
@@ -19,6 +21,7 @@ const Mentoring: React.FC<MentoringProps> = ({ meetLink }) => {
           <button 
             className="px-4 py-3 rounded-full bg-[#B9BDC7] text-white"
             onClick={handleJoinNow}
+            disabled={!meetLink}
           >
             Join Now
           </button>

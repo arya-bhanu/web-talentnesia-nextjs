@@ -1,6 +1,10 @@
 import React from 'react';
 
-const PdfReader: React.FC<{ url: string }> = ({ url }) => {
+const PdfReader: React.FC<{ url: string | null }> = ({ url }) => {
+  if (!url) {
+    return <div>No PDF URL provided</div>;
+  }
+
   const googleDocsUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
 
   return (

@@ -67,7 +67,7 @@ const MaterialModulView: React.FC = () => {
                       >
                         <div className="flex items-center space-x-2">
                           <img
-                             src={`/icons/${tab.iconId === 1 ? 'play-circle' : tab.iconId === 2 ? 'book' : tab.iconId === 3 ? 'edit-2' : tab.iconId === 4 ? 'videocam' : 'assignment'}.svg`}
+                             src={`/icons/${tab.iconId === 1 ? 'book' : tab.iconId === 2 ? 'play-circle' : tab.iconId === 3 ? 'play-circle' : tab.iconId === 4 ? 'play-circle' : tab.iconId === 5 ? 'edit-2'      : 'videocam'}.svg`}
                             alt={`${tab.label} icon`}
                             className="w-5 h-5"
                             style={{
@@ -109,7 +109,7 @@ const MaterialModulView: React.FC = () => {
             />
           </button>
         )}
-        {selectedContent} 
+        {selectedContent}
       </div>
 
       <style jsx>{`
