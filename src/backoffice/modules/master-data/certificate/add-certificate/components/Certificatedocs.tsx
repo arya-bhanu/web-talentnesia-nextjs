@@ -57,9 +57,8 @@ const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string }> = ({ i
         },
       },
     };
-    console.log(url)
 
-    const secretkey = 'sekawanmedia-onlyoffice-ee';
+    const secretkey = process.env.NEXT_PUBLIC_ONLYOFFICE_SECRET_KEY || '';
     const token = generateJWT(options, secretkey);
 
     setConfig({ ...options, token });
@@ -82,26 +81,26 @@ const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string }> = ({ i
 
     const encodedHeader = base64UrlEncode(JSON.stringify(header));
     const encodedPayload = base64UrlEncode(JSON.stringify(options));
-
     const signature = CryptoJS.HmacSHA256(`${encodedHeader}.${encodedPayload}`, secretkey)
-      .toString(CryptoJS.enc.Base64)
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-
+    .toString(CryptoJS.enc.Base64)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+    
     return `${encodedHeader}.${encodedPayload}.${signature}`;
   };
-
+  
   if (error) {
     return <div className="text-red-500">{error}</div>;
   }
-
+  const documentServerUrl = process.env.NEXT_PUBLIC_ONLYOFFICE_SERVER_URL || '';
+  
   return (
     <>
       {config && (
         <DocumentEditor
           id="docxEditor"
-          documentServerUrl="https://onlyoffice-ee.skwn.dev/"
+          documentServerUrl={documentServerUrl}
           config={config}
           events_onDocumentReady={() => console.log("Document is loaded")}
           onLoadComponentError={(errorCode, errorDescription) => {
