@@ -19,6 +19,8 @@ import AlertModal from '@/backoffice/components/alert-delete-modal';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { set } from 'date-fns';
+import FormMentoring from '../../form-program/components/form-mentoring';
 
 const ListDraggableView: React.FC<
   IListDraggable &
@@ -27,7 +29,9 @@ const ListDraggableView: React.FC<
       handleEditContent: (e: FormEvent<HTMLFormElement>) => void;
       contentId: string;
       modalEditContent: boolean;
+      modalEditMentoring: boolean;
       setModalEditContent: Dispatch<SetStateAction<boolean>>;
+      setModalEditMentoring: Dispatch<SetStateAction<boolean>>;
       modalDelContent: boolean;
       setModalDelContent: Dispatch<SetStateAction<boolean>>;
       confirmDel: boolean;
@@ -45,13 +49,16 @@ const ListDraggableView: React.FC<
   handleSubmitSchedule,
   contentId,
   modalEditContent,
+  modalEditMentoring,
   setModalEditContent,
+  setModalEditMentoring,
   handleEditContent,
   setModalDelContent,
   modalDelContent,
   confirmDel,
   setConfirmDel,
   isexam,
+  ismonitoring,
   id,
   chapterId,
   handleDetailButton,
@@ -144,6 +151,8 @@ const ListDraggableView: React.FC<
               router.push(
                 `/backoffice/manage-program/update-program-IICP/edit-exam/?examId=${id}&chapterId=${chapterId}&programId=${programId}`,
               );
+            } else if (ismonitoring) {
+              setModalEditMentoring(true);
             } else {
               setModalEditContent(true);
             }

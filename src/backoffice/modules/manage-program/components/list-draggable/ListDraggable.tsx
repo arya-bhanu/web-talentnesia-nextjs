@@ -17,6 +17,7 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
   const params = useSearchParams();
   const [modalSchedule, setModalSchedule] = useState(false);
   const [modalEditContent, setModalEditContent] = useState(false);
+  const [modalEditMentoring, setModalEditMentoring] = useState(false);
   const [modalDelContent, setModalDelContent] = useState(false);
   const [isConfrmDel, setConfrmDel] = useState(false);
   const queryClient = useQueryClient();
@@ -112,6 +113,11 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
     }
   };
 
+  const handleEditMentoring = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
   const handleDetailButton = () => {
     router.push(`${pathname}/detail-program-iicp/?contentId=${props.id}&programId=${programId}`);
   };
@@ -121,7 +127,9 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
       modalSchedule={modalSchedule}
       setModalSchedule={setModalSchedule}
       modalEditContent={modalEditContent}
+      modalEditMentoring={modalEditMentoring}
       setModalEditContent={setModalEditContent}
+      setModalEditMentoring={setModalEditMentoring}
       handleSubmitSchedule={handleSubmitSchedule}
       handleEditContent={handleEditContent}
       contentId={props.id}

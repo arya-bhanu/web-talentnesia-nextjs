@@ -97,31 +97,38 @@ const DetailMentoring: React.FC<{
         header: ({ column }) => (
           <SortingTable column={column} title="Presence" />
         ),
-        cell: ({ row }) => (
-          <div className="flex space-x-2">
-            {['Absen', 'Hadir', 'Izin'].map((status, index) => (
-              <label key={status} className="flex items-center cursor-pointer">
-                <input
-                  type="radio"
-                  name={`presence-${row.original.userId}`}
-                  value={index.toString()}
-                  checked={
-                    attendances[row.original.userId] === index.toString()
-                  }
-                  onChange={() =>
-                    handleAttendanceChange(
-                      row.original.userId,
-                      index.toString(),
-                    )
-                  }
-                  className="mr-1 cursor-pointer"
-                />
-                <span className="cursor-pointer">{status}</span>
-              </label>
-            ))}
-          </div>
-        ),
+        cell: ({ row }) => {
+          const defaultValue = '1';
+          if (!attendances[row.original.userId]) {
+            handleAttendanceChange(row.original.userId, defaultValue);
+          }
+          return (
+            <div className="flex space-x-2">
+              {['Alpha', 'Masuk', 'Izin'].map((status, index) => (
+                <label key={status} className="flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    name={`presence-${row.original.userId}`}
+                    value={index.toString()}
+                    checked={
+                      attendances[row.original.userId] === index.toString()
+                    }
+                    onChange={() =>
+                      handleAttendanceChange(
+                        row.original.userId,
+                        index.toString(),
+                      )
+                    }
+                    className="mr-1 cursor-pointer"
+                  />
+                  <span className="cursor-pointer">{status}</span>
+                </label>
+              ))}
+            </div>
+          );
+        },
       }),
+      
     ],
     [attendances],
   );
@@ -196,12 +203,6 @@ const DetailMentoring: React.FC<{
 
         <div className="flex space-x-4 justify-center">
           <button
-            className="px-4 py-2 rounded-md border border-[#B9BDC7] text-[#B9BDC7]"
-            onClick={handleInputPresence}
-          >
-            Input Presence
-          </button>
-          <button
             className="px-4 py-2 rounded-md bg-[#B9BDC7] text-white"
             onClick={handleJoinNow}
           >
@@ -212,15 +213,23 @@ const DetailMentoring: React.FC<{
 
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Presence</h1>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="pl-10 pr-4 py-2 rounded-md bg-white text-black"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2" />
+        <div className="flex gap-4">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="pl-10 pr-4 py-2 rounded-md bg-white text-black"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2" />
+          </div>
+          <button
+            className="px-4 py-2 rounded-md border bg-[#FFC862]"
+            onClick={handleInputPresence}
+          >
+            Input Presence
+          </button>
         </div>
       </div>
 
