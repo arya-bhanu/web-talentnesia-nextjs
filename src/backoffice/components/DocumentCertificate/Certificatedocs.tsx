@@ -67,7 +67,7 @@ import CryptoJS from 'crypto-js';
 
       return `${encodedHeader}.${encodedPayload}.${signature}`;
     };
-      const secretkey = 'sekawanmedia-onlyoffice-ee';
+      const secretkey = process.env.NEXT_PUBLIC_ONLYOFFICE_SECRET_KEY || '';
       const token = generateJWT(options, secretkey);
 
       const onDocumentReady = () => {
@@ -78,16 +78,17 @@ import CryptoJS from 'crypto-js';
         console.error(`Error ${errorCode}: ${errorDescription}`);
       };
 
+      const documentServerUrl = process.env.NEXT_PUBLIC_ONLYOFFICE_SERVER_URL || '';
+
       return (
         <DocumentEditor
           // ref={editorRef}
           id="docxEditor"
-          documentServerUrl="https://onlyoffice-ee.skwn.dev/"
+          documentServerUrl={documentServerUrl}
           config={{ ...options, token }}
           events_onDocumentReady={onDocumentReady}
           onLoadComponentError={onLoadComponentError}
       />
     );
   });
-
   export default DocumentEditorComponent;

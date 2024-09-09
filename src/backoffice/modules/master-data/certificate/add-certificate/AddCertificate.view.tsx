@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AddDocumentEditorComponent from './components/Certificatedocs';
 import { AddCertificateViewProps } from './addCertificate.type';
@@ -9,15 +9,55 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
   formData,
   hasError,
   handleInputChange,
-  handleSave, }) => {
+  handleSave,
+}) => {
   const router = useRouter();
-  const documentEditorRef = useRef<any>(null);
+  const [documentId, setDocumentId] = useState<string | undefined>();
+  const [documentUrl, setDocumentUrl] = useState<string | undefined>();
+  const [isFileUploaded, setIsFileUploaded] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (documentEditorRef.current) {
-      const fileContent = documentEditorRef.current.getDocumentContent();
+    setUploadError(null);
+    const fileInput = document.getElementById('certificate-file') as HTMLInputElement;
+    const file = fileInput.files?.[0];
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('https://api-talentnesia.skwn.dev/api/v1/certificate/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && result.data) {
+            console.log('Received from API:', result.data);
+            setDocumentId(result.data.id);
+            setDocumentUrl(result.data.url);
+            setIsFileUploaded(true);
+          } else {
+            setUploadError('Upload successful, but received unexpected data structure');
+            console.error('Unexpected API response structure:', result);
+          }
+        } else {
+          const errorText = await response.text();
+          setUploadError(`File upload failed: ${response.status} ${response.statusText}. ${errorText}`);
+          console.error('File upload failed:', response.status, response.statusText, errorText);
+        }
+      } catch (error) {
+        setUploadError(`Error uploading file: ${error instanceof Error ? error.message : String(error)}`);
+        console.error('Error uploading file:', error);
+      }
+    } else {
+      setUploadError('No file selected');
     }
+
     handleSave();
   };
 
@@ -32,8 +72,7 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
           placeholder="Input Certificate name"
           value={formData.name || ''}
           onChange={(e) => handleInputChange('name', e.target.value)}
-          required
-          className={`block w-full p-2 border ${hasError && !formData.name ? 'border-red-500' : 'border-gray-300'
+          required className={`block w-full p-2 border ${hasError && !formData.name ? 'border-red-500' : 'border-gray-300'
             } rounded-lg`}
         />
         {hasError && !formData.name && (
@@ -42,12 +81,16 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
           </p>
         )}
       </div>
+
       <div className="py-2 flex grid-cols-2 w-full">
         <div className='w-full'>
           <FileInputComponent
             id="certificate-file"
             label="Upload Certificate File"
-            onFileChange={(file) => handleInputChange('file', file.name)}
+            onFileChange={(file) => {
+              handleInputChange('file', file.name);
+              setIsFileUploaded(false);
+            }}
             allowedTypes={['application/vnd.openxmlformats-officedocument.wordprocessingml.document']}
           />
         </div>
@@ -74,9 +117,12 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
           <p className="text-red-500 text-xs mt-1">Status is required.</p>
         )}
       </div>
-      <div className="py-2">
-        <AddDocumentEditorComponent />
-      </div>
+      {isFileUploaded && (
+        <div className="py-2">
+          <AddDocumentEditorComponent id={documentId} url={documentUrl} />
+        </div>
+      )}
+
       <div className="flex justify-end pt-4">
         <button
           type="button"

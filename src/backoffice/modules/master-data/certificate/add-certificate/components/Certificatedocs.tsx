@@ -1,20 +1,29 @@
-'use client';
-
-import React, { useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DocumentEditor } from "@onlyoffice/document-editor-react";
 import CryptoJS from 'crypto-js';
-const AddDocumentEditorComponent = forwardRef<any>((props, ref) => {
-    const editorRef = useRef<any>(null);
+
+const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string }> = ({ id, url }) => {
+  const [config, setConfig] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!url || !id) {
+      setError('Missing document ID or URL');
+      return;
+    }
 
     const baseUrl = "https://api-talentnesia.skwn.dev/";
-    const doc = `api/v1/certificate/show_template/1725862692091532400_cC8V302TZxRGH5iw.docx`;
     const date = Date.now();
-    const key = `${date}-1725862692091532400_cC8V302TZxRGH5iw`;
-    const cb = "https://api-talentnesia.skwn.dev/api/v1/certificate/save_template"; 
+    const doc = url;
+    const key = `${date}-${id}`;
+    console.log(doc);
+    const cb = "https://api-talentnesia.skwn.dev/api/v1/certificate/save_template";
+
+
     const options = {
       width: "100%",
       height: "550px",
-      type: "desktop",  
+      type: "desktop",
       documentType: "word",
       document: {
         title: "Talentnesia",
@@ -23,7 +32,7 @@ const AddDocumentEditorComponent = forwardRef<any>((props, ref) => {
         key: key,
         info: {
           owner: "TEO",
-          uploaded: "1724058508252",
+          uploaded: date.toString(),
         },
         permissions: {
           download: true,
@@ -48,46 +57,61 @@ const AddDocumentEditorComponent = forwardRef<any>((props, ref) => {
         },
       },
     };
+    console.log(url)
 
-    const base64UrlEncode = (input: string) => {
-      return btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    const secretkey = 'sekawanmedia-onlyoffice-ee';
+    const token = generateJWT(options, secretkey);
+
+    setConfig({ ...options, token });
+    setError(null);
+
+    return () => {
+      const editorContainer = document.getElementById('docxEditor');
+      if (editorContainer) {
+        editorContainer.innerHTML = '';
+      }
     };
+  }, [id, url]);
 
-    const generateJWT = (options: object, secretkey: string) => {
-      const header = { alg: "HS256", typ: "JWT" };
+  const base64UrlEncode = (input: string) => {
+    return btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  };
 
-      const encodedHeader = base64UrlEncode(JSON.stringify(header));
-      const encodedPayload = base64UrlEncode(JSON.stringify(options));
+  const generateJWT = (options: object, secretkey: string) => {
+    const header = { alg: "HS256", typ: "JWT" };
 
-      const signature = CryptoJS.HmacSHA256(`${encodedHeader}.${encodedPayload}`, secretkey)
-        .toString(CryptoJS.enc.Base64)
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=+$/, '');
+    const encodedHeader = base64UrlEncode(JSON.stringify(header));
+    const encodedPayload = base64UrlEncode(JSON.stringify(options));
 
-      return `${encodedHeader}.${encodedPayload}.${signature}`;
-    };
-      const secretkey = 'sekawanmedia-onlyoffice-ee';
-      const token = generateJWT(options, secretkey);
+    const signature = CryptoJS.HmacSHA256(`${encodedHeader}.${encodedPayload}`, secretkey)
+      .toString(CryptoJS.enc.Base64)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
 
-      const onDocumentReady = () => {
-        console.log("Document is loaded");
-      };
+    return `${encodedHeader}.${encodedPayload}.${signature}`;
+  };
 
-      const onLoadComponentError = (errorCode: number, errorDescription: string) => {
-        console.error(`Error ${errorCode}: ${errorDescription}`);
-      };
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
-      return (
+  return (
+    <>
+      {config && (
         <DocumentEditor
-          // ref={editorRef}
           id="docxEditor"
           documentServerUrl="https://onlyoffice-ee.skwn.dev/"
-          config={{ ...options, token }}
-          events_onDocumentReady={onDocumentReady}
-          onLoadComponentError={onLoadComponentError}
-      />
-    );
-  });
+          config={config}
+          events_onDocumentReady={() => console.log("Document is loaded")}
+          onLoadComponentError={(errorCode, errorDescription) => {
+            console.error(`Error ${errorCode}: ${errorDescription}`);
+            setError(`Failed to load document: ${errorDescription}`);
+          }}
+        />
+      )}
+    </>
+  );
+};
 
-  export default AddDocumentEditorComponent;
+export default AddDocumentEditorComponent;
