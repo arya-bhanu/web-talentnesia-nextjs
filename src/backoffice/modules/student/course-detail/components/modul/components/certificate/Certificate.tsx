@@ -1,44 +1,91 @@
-import React, { useState } from 'react';
-import Medal from '@/../public/icons/medal.svg';
-import RatingModalView from '@/backoffice/components/rating-modal/RatingModal.view';
+import React, { useState, useMemo } from 'react';
+import { DataTable } from '@/backoffice/modules/user/components/data-table/DataTable';
+import { ColumnDef } from '@tanstack/react-table';
+import { SearchTable } from '@/backoffice/components/search-table';
+import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
+import Image from 'next/image';
 
-const Certificate: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+interface CertificateData {
+  id: string;
+  title: string;
+  image: string;
+  isDownload: number;
+  active: number;
+}
 
-  const handleDownloadClick = () => {
-    setTimeout(() => {
-      setIsModalOpen(true); 
-    }, 3000); 
-  };
+interface CertificateProps {
+  certificates: CertificateData[];
+}
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false); 
+const Certificate: React.FC<CertificateProps> = ({ certificates }) => {
+  const [filter, setFilter] = useState('');
+
+  const activeCertificates = certificates.filter(cert => cert.active === 1);
+
+  const columns = useMemo<ColumnDef<CertificateData>[]>(
+    () => [
+      {
+        id: 'no',
+        header: ({ column }) => <SortingTable column={column} title="No" />,
+        cell: (info) => info.row.index + 1,
+      },
+      {
+        accessorKey: 'title',
+        header: ({ column }) => <SortingTable column={column} title="Chapter" />,
+        cell: (info) => info.getValue(),
+      },
+      {
+        id: 'certificate',
+        header: 'Certificate',
+        cell: (info) => (
+          <button 
+            className={`inline-flex items-center justify-center gap-2 px-20 py-3 text-sm font-semibold text-gray-700 rounded-full shadow-sm transition-all duration-150 ${
+              info.row.original.active === 1 
+                ? 'bg-[#FFC862] hover:bg-[#ffc24f]' 
+                : 'bg-gray-300 cursor-not-allowed'
+            }`}
+            disabled={info.row.original.active !== 1}
+            onClick={() => handleDownload(info.row.original)}
+          >
+            <Image
+                    src="/icons/download.svg"
+                    alt="download"
+                    width={25}
+                    height={25}
+                    className="transition-transform"
+                  />
+            Download
+          </button>
+        ),
+      },
+    ],
+    []
+  );
+
+  const filteredData = useMemo(() => {
+    return activeCertificates.filter((item) =>
+      item.title.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [activeCertificates, filter]);
+
+  const handleDownload = (certificate: CertificateData) => {
+    if (certificate.active === 1) {
+      window.open(certificate.image, '_blank');
+    }
   };
 
   return (
-    <section className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-700">
-      <div className="container flex flex-col items-center -mt-20">
-        <div className="flex flex-col max-w-md text-center">
-          <div className="mb-4 flex justify-center">
-            <Medal />
-          </div>
-          <h2 className="font-bold text-sm text-gray-700 dark:text-gray-100 mb-2">
-            CONGRATULATIONS YOU HAVE COMPLETED THE COURSE
-          </h2>
-          <p className="text-sm text-gray-500 mb-14">
-            Your persistence in completing the course is excellent, keep it up
-            in the next course!
-          </p>
-          <a
-            onClick={handleDownloadClick}
-            className="py-4 px-6 w-48 text-sm font-semibold rounded-full bg-[#FFC862] hover:bg-[#ffbf49] text-gray-700 mx-auto cursor-pointer" 
-          >
-            Download Certificate
-          </a>
-        </div>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Certificate</h1>
+      <div className="mb-4">
+        <SearchTable value={filter} onChange={setFilter} />
       </div>
-      <RatingModalView isOpen={isModalOpen} onClose={handleCloseModal} />
-    </section>
+      <DataTable
+        data={filteredData}
+        columns={columns}
+        filter={{ Filter: filter, setFilter: setFilter }}
+      />
+    </div>
   );
 };
 

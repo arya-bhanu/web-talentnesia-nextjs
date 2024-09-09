@@ -1,6 +1,19 @@
 import React from 'react';
 
-const JoinDiscord: React.FC = () => {
+interface JoinDiscordProps {
+  data: {
+    title: string;
+    link: string;
+  };
+}
+
+const JoinDiscord: React.FC<JoinDiscordProps> = ({ data }) => {
+  const handleJoinClick = () => {
+    if (data.link) {
+      window.open(data.link, '_blank');
+    }
+  };
+
   return (
     <div className="mx-auto max-w-md">
       <div className="relative isolate overflow-hidden bg-white px-6 text-start sm:rounded-3xl sm:shadow-sm">
@@ -16,6 +29,10 @@ const JoinDiscord: React.FC = () => {
           <a
             className="inline-flex items-center justify-center gap-2 px-20 py-3 text-sm font-semibold text-gray-700 rounded-full shadow-sm transition-all duration-150 bg-[#FFC862] hover:bg-[#ffc24f]"
             href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleJoinClick();
+            }}
           >
             Join Now
           </a>

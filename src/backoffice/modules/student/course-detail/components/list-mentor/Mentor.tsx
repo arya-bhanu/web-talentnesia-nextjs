@@ -1,8 +1,13 @@
+import React from 'react';
 import MentorView from './Mentor.view';
-import { mentorData } from './mentor.data';
+import { Mentor } from './mentor.type';
 
-const Mentor = () => {
-    return <MentorView mentorData={mentorData} />;
+interface MentorProps {
+  mentors: Mentor[];
+}
+
+const MentorComponent: React.FC<MentorProps> = ({ mentors }) => {
+  return <MentorView mentorData={mentors} />;
 };
 
-export default Mentor;
+export default MentorComponent;

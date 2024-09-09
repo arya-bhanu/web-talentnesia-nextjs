@@ -5,13 +5,15 @@ import AccordionPanelDraggableView from './components/accordion-panel-draggable'
 import { accordionData } from './components/accordion-panel-draggable/accordion.data';
 import ModulProgres from './components/modul-progres';
 import Certificate from './components/certificate/Certificate';
+import { Certificate as CertificateType } from '../../courseDetail.type';
 
 interface IModulView {
   activeAccordion: number;
   setActiveAccordion: Dispatch<SetStateAction<number>>;
+  certificates: CertificateType[];
 }
 
-const ModulView = ({ activeAccordion, setActiveAccordion }: IModulView) => {
+const ModulView = ({ activeAccordion, setActiveAccordion, certificates }: IModulView) => {
   const tabs = [
     {
       title: 'Modul',
@@ -35,9 +37,7 @@ const ModulView = ({ activeAccordion, setActiveAccordion }: IModulView) => {
     },
     {
       title: 'Certificate',
-      content: <div>
-        <Certificate />
-      </div>,
+      content: <Certificate certificates={certificates} />,
     },
   ];
 
