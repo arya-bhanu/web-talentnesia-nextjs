@@ -8,6 +8,7 @@ import Book from '@/../public/icons/manage-program/book.svg';
 import Edit2 from '@/../public/icons/edit-2.svg';
 import VideoCam from '@/../public/icons/videocam.svg';
 import Calendar from '@/../public/icons/manage-program/calendar.svg';
+import Detail from '@/../public/icons/manage-program/detail.svg';
 import EditBtn from '@/../public/icons/manage-program/Edit-btn.svg';
 import TrashBtn from '@/../public/icons/manage-program/trash-btn.svg';
 import { formatDateIndonesian } from '@/helpers/formatter.helper';
@@ -135,7 +136,7 @@ const ListDraggableView: React.FC<
           <Calendar />
         </button>
         <button type="button" onClick={handleDetailButton}>
-          <p>Details</p>
+          <Detail />
         </button>
         <button
           onClick={() => {
