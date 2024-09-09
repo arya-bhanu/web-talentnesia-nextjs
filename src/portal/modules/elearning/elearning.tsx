@@ -3,15 +3,19 @@
 import React, { useEffect, useState } from "react";
 import ElearningView from "./elearning.view";
 import homeApi from "../home/api/homeApi";
+import courseApi from "../course/api/course";
 
 export const Elearning: React.FC = () => {
     const [data, setData] = useState<any>();
+    const [course, setCourse] = useState<any>();
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const result = await homeApi();
+                const course = await courseApi();
+                setCourse(course);
                 setData(result);
             } catch (err) {
                 console.error(err);
@@ -23,8 +27,8 @@ export const Elearning: React.FC = () => {
     }, []);
 
     if (error) {
-        return <div>{error}</div>;
+        return <div>{error}</div>; 
     }
 
-    return <ElearningView data={data || []} />;
+    return <ElearningView data={data || []} courses={course || []} />;
 };

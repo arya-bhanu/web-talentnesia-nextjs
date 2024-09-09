@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import SearchBar from '../search-bar/Searchbar';
@@ -36,6 +36,18 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
     }
   };
 
+  const [onMouseIn, setMouseIn] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const handleOnMouseIn = () => {setMouseIn(true)};
+  const handleOnMouseOut = () => {
+    if(searchValue === '') {
+      setMouseIn(false);
+    }
+  };
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   return (
     <header
       className={clsx(
@@ -45,7 +57,7 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
           : 'translate-y-0',
       )}
     >
-      <div className="flex items-center gap-x-8 lg:gap-x-14 xl:gap-x-24 w-full lg:w-fit">
+      <div className="flex items-center gap-x-8 lg:gap-x-14 xl:gap-x-16 w-full lg:w-fit" style={onMouseIn ? {width: '37%'} : undefined}>
         <Link href={'/'} className="w-fit flex items-center gap-1 md:gap-3">
           <Image
             alt="logo image"
@@ -58,10 +70,18 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
             talentnesia
           </h1>
         </Link>
-        <SearchBar
-          placeHolder="Jelajahi Kursus"
-          className="w-full md:max-w-60 lg:max-w-80 md:flex hidden pointer"
-        />
+        <div className='flex-grow p-0'>
+          <SearchBar
+            placeHolder="Jelajahi Kursus"
+            className="w-full md:flex hidden pointer "
+            onMouseIn={handleOnMouseIn}
+            onMouseOut={handleOnMouseOut}
+            value={searchValue}
+            onChangeInput={handleInputChange}
+            mouseValue={onMouseIn}
+          />
+        </div>
+        
       </div>
       <nav
         className={clsx(

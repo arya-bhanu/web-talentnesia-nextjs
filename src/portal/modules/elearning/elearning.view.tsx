@@ -9,7 +9,7 @@ import { courseDataArray } from "@/portal/components/course-card/courseCard.data
 import { filterCategories } from "@/portal/components/filter/filter.data";
 import UserStoryCard from "@/portal/components/user-story-card";
 
-const ElearningView: React.FC<ElearningViewProps> = ({ data }) => {
+const ElearningView: React.FC<ElearningViewProps> = ({ data, courses }) => {
     const [skeletonAnimation, setTime] = React.useState(true);
 
     React.useEffect(() => {
@@ -23,7 +23,7 @@ const ElearningView: React.FC<ElearningViewProps> = ({ data }) => {
         <>
         <HeroSection isLoading={skeletonAnimation}/>
         <main className="container">
-            <PopularCourses courses={data?.courses} isLoading={skeletonAnimation} className="mb-16" />
+            <PopularCourses courses={courses.items} isLoading={skeletonAnimation} className="mb-16" />
         </main>
         <FeatureSection isLoading={skeletonAnimation}/>
         <main className="container">

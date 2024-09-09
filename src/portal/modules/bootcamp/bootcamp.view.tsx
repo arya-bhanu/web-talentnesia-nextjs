@@ -9,13 +9,13 @@ import { courseDataArray } from "@/portal/components/course-card/courseCard.data
 import { filterCategories } from "@/portal/components/filter/filter.data";
 import UserStoryCard from "@/portal/components/user-story-card";
 
-const BootcampView: React.FC<BootcampViewProps> = ({ data }) => {
+const BootcampView: React.FC<BootcampViewProps> = ({ data, courses }) => {
     const [skeletonAnimation, setTime] = React.useState(true);
 
     React.useEffect(() => {
         const timer = setTimeout(() => {
         setTime(false);
-        }, 2000);
+        }, 2500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -23,7 +23,7 @@ const BootcampView: React.FC<BootcampViewProps> = ({ data }) => {
         <>
         <HeroSection isLoading={skeletonAnimation}/>
         <main className="container">
-            <PopularCourses courses={data?.courses} isLoading={skeletonAnimation} className="mb-16" />
+            <PopularCourses courses={courses.items} isLoading={skeletonAnimation} className="mb-16" />
         </main>
         <FeatureSection isLoading={skeletonAnimation}/>
         <main className="container">

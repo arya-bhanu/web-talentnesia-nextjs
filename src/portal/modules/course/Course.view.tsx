@@ -16,15 +16,15 @@ const CourseView: React.FC<CoursesViewProps> = ({ data }) => {
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setTime(false);
-    }, 2000);
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
   return (
     <>
       <Hero isLoading={skeletonAnimation} />
       <main className="container">
-       <PopularCourses courses={data?.courses} className='mb-16' isLoading={skeletonAnimation}/>
-       <BestCourse courses={data?.courses} isLoading={skeletonAnimation}/>
+       <PopularCourses courses={data?.items ?? []} className='mb-16' isLoading={skeletonAnimation}/>
+       <BestCourse courses={data?.items ?? []} isLoading={skeletonAnimation}/>
        <AllClass courses={courseDataArray} filterOptions={filterCategories} isLoading={skeletonAnimation} title='Jelajahi Semua Kelas'/>
       </main>
     </>
