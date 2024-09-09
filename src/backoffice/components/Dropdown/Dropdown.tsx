@@ -1,151 +1,175 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { User, userAPI } from './api/dropdownApi'; 
-import Arrow from '@/../public/icons/arrow-up.svg';
+import Arrow from '@/../public/icons/arrow-down.svg';
+import debounce from 'lodash.debounce';
 
-interface DropdownProps {
-  onUserSelect: (userId: string) => void;
-  initialUsers?: User[]; 
+interface DropdownProps<T> {
+  onItemSelect: (itemId: string) => void;
+  getItems: (limit: number, offset: number) => Promise<T[]>;
+  initialItems?: T[];
+  itemToString: (item: T) => string;  
+  containerClassName?: string;
+  inputClassName?: string;
+  dropdownClassName?: string;
+  listItemClassName?: string;
+  labelClassName?: string;
+  placeholderText?: string;
+  label?: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ onUserSelect, initialUsers = [] }) => {
-  const [users, setUsers] = useState<User[]>(initialUsers);
-  const [limit] = useState(10);
-  const [offset, setOffset] = useState(initialUsers.length);
+const Dropdown = <T extends { id: string }>({
+  onItemSelect,
+  getItems,
+  initialItems = [],
+  itemToString,
+  containerClassName = '',
+  inputClassName = '',
+  dropdownClassName = '',
+  listItemClassName = '',
+  labelClassName = '',
+  placeholderText = '',
+  label = '',
+}: DropdownProps<T>) => {
+  const [items, setItems] = useState<T[]>(initialItems);
+  const [offset, setOffset] = useState(initialItems.length);
   const [loading, setLoading] = useState(false);
   const [allLoaded, setAllLoaded] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState<string | undefined>(
-    undefined,
-  );
+  const [selectedItemId, setSelectedItemId] = useState<string | undefined>(undefined);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const loadMoreUsers = async () => {
-    if (loading || allLoaded) return;
+  const loadMoreItems = useCallback(
+    async () => {
+      if (loading || allLoaded) return;
 
-    setLoading(true);
+      setLoading(true);
 
-    try {
-      const newUsers = await userAPI.getUsers(limit, offset);
+      try {
+        const newItems = await getItems(10, offset);
 
-      if (newUsers.length === 0) {
-        setAllLoaded(true);
-      } else {
-        if (newUsers.length < limit) {
+        if (newItems.length === 0) {
           setAllLoaded(true);
+        } else {
+          setItems((prevItems) => [...prevItems, ...newItems]);
+          setOffset((prevOffset) => prevOffset + newItems.length);
         }
-
-        setUsers((prevUsers) => {
-          const uniqueUsers = [...prevUsers, ...newUsers].filter(
-            (user, index, self) =>
-              index === self.findIndex((u) => u.id === user.id),
-          );
-          return uniqueUsers;
-        });
-
-        setOffset((prevOffset) => prevOffset + limit);
+      } catch (error) {
+        console.error('Error loading items:', error);
+        setError('Failed to load items. Please try again.');
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      setAllLoaded(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [loading, allLoaded, getItems, offset]
+  );
 
   const handleDropdownToggle = useCallback(() => {
-    if (!dropdownOpen && !allLoaded) {
-      loadMoreUsers();
+    if (!dropdownOpen) {
+      loadMoreItems(); // Load items saat dropdown pertama kali dibuka
     }
     setDropdownOpen((prev) => !prev);
-  }, [dropdownOpen, allLoaded]);
+  }, [dropdownOpen, loadMoreItems]);
 
   useEffect(() => {
-    if (dropdownOpen) {
-      const handleScroll = () => {
-        if (dropdownRef.current) {
-          const { scrollTop, clientHeight, scrollHeight } = dropdownRef.current;
-          if (scrollTop + clientHeight >= scrollHeight - 50) {
-            loadMoreUsers();
-          }
+    const handleScroll = () => {
+      if (dropdownRef.current) {
+        const { scrollTop, clientHeight, scrollHeight } = dropdownRef.current;
+        if (scrollTop + clientHeight >= scrollHeight - 20 && !loading && !allLoaded) {
+          loadMoreItems();
         }
-      };
+      }
+    };
 
-      const dropdownElement = dropdownRef.current;
-      dropdownElement?.addEventListener('scroll', handleScroll);
+    const dropdownElement = dropdownRef.current;
 
-      return () => {
-        dropdownElement?.removeEventListener('scroll', handleScroll);
-      };
+    if (dropdownOpen && dropdownElement) {
+      dropdownElement.addEventListener('scroll', handleScroll);
     }
-  }, [dropdownOpen, loading, allLoaded]);
 
-  const handleUserSelect = (userId: string) => {
-    setSelectedUserId(userId);
+    return () => {
+      dropdownElement?.removeEventListener('scroll', handleScroll);
+    };
+  }, [dropdownOpen, loadMoreItems, loading, allLoaded]);
+
+  const handleItemSelect = (itemId: string) => {
+    if (selectedItemId !== itemId) {
+      setSelectedItemId(itemId);
+      onItemSelect(itemId);
+    }
     setDropdownOpen(false);
-    onUserSelect(userId); // Panggil prop onUserSelect saat user dipilih
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    const newValue = event.target.value;
+    if (selectedItem && newValue !== itemToString(selectedItem)) {
+      clearSelectedItem();
+    }
+    setSearchTerm(newValue);
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()),
+  const clearSelectedItem = () => {
+    setSelectedItemId(undefined);
+    onItemSelect('');
+  };
+
+  const filteredItems = items.filter((item) =>
+    itemToString(item).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const selectedUser = users.find((user) => user.id === selectedUserId);
+  const selectedItem = items.find((item) => item.id === selectedItemId);
 
   return (
-    <div className="relative">
-      <label className="block text-sm font-medium text-gray-700">Select User</label>
+    <div className={`relative ${containerClassName}`}>
+      <label className={`block mb-2 text-sm font-medium text-gray-900 ${labelClassName}`}>
+        {label}
+      </label>
       <div
-        className="border border-gray-300 shadow-sm flex w-[26rem] items-center rounded-lg cursor-pointer"
+        className={`border border-gray-300 shadow-sm flex w-[26rem] items-center rounded-lg cursor-pointer ${inputClassName}`}
         onClick={handleDropdownToggle}
       >
-        <input
-          type="text"
-          placeholder="Select User"
-          value={
-            selectedUser
-              ? `${selectedUser.name} - ${selectedUser.email}`
-              : searchTerm
-          }
-          onChange={handleSearchChange}
-          className="p-2 border-none flex-1 outline-none focus:rounded-l-lg pr-8"
-        />
-        <Arrow
-          className={`mx-2 transform transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`}
-        />
+        <div className="relative flex items-center w-full">
+          <input
+            type="text"
+            placeholder={placeholderText}
+            value={selectedItem ? itemToString(selectedItem) : searchTerm}
+            onChange={handleSearchChange}
+            className={`p-2 border-none flex-1 outline-none pr-8 ${inputClassName}`}
+          />
+          <Arrow className={`mx-2 transform transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
+        </div>
       </div>
       {dropdownOpen && (
         <div
           ref={dropdownRef}
-          className="absolute top-full left-0 mt-2 w-[26rem] bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto z-10"
+          className={`absolute top-full left-0 mt-2 w-[26rem] bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto z-10 ${dropdownClassName}`}
         >
-          <ul className="divide-y divide-gray-200 overflow-y-auto max-h-60">
-            {filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => (
+          {error && <div className="p-2 text-red-500 text-sm">{error}</div>}
+          <ul className="divide-y divide-gray-200">
+            {filteredItems.length > 0 ? (
+              filteredItems.map((item) => (
                 <li
-                  key={user.id}
-                  className="p-2 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => handleUserSelect(user.id)}
+                  key={item.id}
+                  className={`p-2 hover:bg-gray-200 cursor-pointer ${listItemClassName}`}
+                  onClick={() => handleItemSelect(item.id)}
                 >
-                  <span className="block font-medium">{user.name}</span>
-                  <span className="block text-gray-500 text-sm">
-                    {user.email}
-                  </span>
+                  <span className="block font-normal text-sm text-gray-700">{itemToString(item)}</span>
                 </li>
               ))
             ) : (
-              <li className="p-2 text-center text-gray-500">No users found.</li>
+              <li className="p-2 text-center text-gray-500">No items found.</li>
             )}
           </ul>
           {loading && (
             <div className="p-2 text-center text-gray-500">Loading...</div>
+          )}
+          {!loading && !allLoaded && (
+            <div className="p-2 text-center text-gray-500">Scroll for more...</div>
+          )}
+          {allLoaded && (
+            <div className="p-2 text-center text-gray-500">All items loaded</div>
           )}
         </div>
       )}
