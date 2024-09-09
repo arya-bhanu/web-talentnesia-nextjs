@@ -21,7 +21,7 @@ const DetailMentoring: React.FC<{
 }> = ({ content }) => {
   const [filter, setFilter] = useState('');
   const [attendances, setAttendances] = useState<Attendance>({});
-  const meetLink = content.data?.mentoring?.[0]?.link || '';
+  const meetLink = content.data?.mentoring?.link || '';
 
   const searchParams = useSearchParams();
   const programId = searchParams.get('programId');
@@ -194,11 +194,11 @@ const DetailMentoring: React.FC<{
         <h1 className="text-xl font-bold mb-2 text-center">Join Mentoring</h1>
         <h3 className="text-md mb-10 text-center">
           Mentoring available on{' '}
-          {content.data?.mentoring?.[0]?.date &&
-            formatDate(content.data.mentoring[0].date)}{' '}
+          {content.data?.mentoring?.date &&
+            formatDate(content.data.mentoring.date)}{' '}
           at{' '}
-          {content.data?.mentoring?.[0]?.startTime &&
-            formatTime(content.data.mentoring[0].startTime)}
+          {content.data?.mentoring?.startTime &&
+            formatTime(content.data.mentoring.startTime)}
         </h3>
 
         <div className="flex space-x-4 justify-center">

@@ -60,9 +60,10 @@ export const fetchContent = async (contentId?: string | null) => {
     const response = await fetchAxios<{
         data: APIContentChapter;
     }>({
-      url: `/v1/program-content/${contentId}`,
+      url: `/v1/program-content/detail/${contentId}`,
       method: 'GET',
     });
+    console.log(response);
     return { data: response };
   }
   return null;

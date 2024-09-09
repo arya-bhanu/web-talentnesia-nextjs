@@ -10,7 +10,11 @@ export interface IListDraggable {
   chapterId: string;
   order: number;
   isexam: boolean;
-  ismonitoring: boolean;
+  ismonitoring?: boolean;
+  startTime?: string;
+  endTime?: string;
+  link?: string;
+  mentorId?: string;
 }
 
 export interface IListDraggableState {

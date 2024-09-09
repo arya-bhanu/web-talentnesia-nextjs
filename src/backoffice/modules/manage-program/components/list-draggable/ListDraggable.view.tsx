@@ -26,7 +26,9 @@ const ListDraggableView: React.FC<
   IListDraggable &
     IListDraggableState & {
       handleSubmitSchedule: (e: FormEvent<HTMLFormElement>) => void;
+      handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
       handleEditContent: (e: FormEvent<HTMLFormElement>) => void;
+      handleEditMentoring: () => void;
       contentId: string;
       modalEditContent: boolean;
       modalEditMentoring: boolean;
@@ -47,8 +49,10 @@ const ListDraggableView: React.FC<
   modalSchedule,
   setModalSchedule,
   handleSubmitSchedule,
+  handleSubmitModalMentoring,
   contentId,
   modalEditContent,
+  handleEditMentoring,
   modalEditMentoring,
   setModalEditContent,
   setModalEditMentoring,
@@ -117,6 +121,18 @@ const ListDraggableView: React.FC<
       >
         <FormContent contentId={contentId} />
       </Modal>
+      <Modal
+        title="Mentoring"
+        buttonConfirmTitle="Submit"
+        state={{
+          openModal: modalEditMentoring,
+          setOpenModal: setModalEditMentoring,
+        }}
+        handleSubmit={handleSubmitModalMentoring}
+      >
+        <FormMentoring chapterId={chapterId} isModalOpen={modalEditMentoring} />
+      </Modal>
+
       <AlertModal
         openModal={modalDelContent}
         setIsConfirmed={setConfirmDel}
@@ -151,8 +167,8 @@ const ListDraggableView: React.FC<
               router.push(
                 `/backoffice/manage-program/update-program-IICP/edit-exam/?examId=${id}&chapterId=${chapterId}&programId=${programId}`,
               );
-            } else if (ismonitoring) {
-              setModalEditMentoring(true);
+            } else if (type === '6' || ismonitoring) {
+              handleEditMentoring();
             } else {
               setModalEditContent(true);
             }

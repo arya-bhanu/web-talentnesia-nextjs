@@ -10,5 +10,5 @@ export interface APIContentChapterProps {
   id: string;
   isexam: 0 | 1;
   order: number;
-  mentoring?: IMentoring[]
+  mentoring?: IMentoring
 }

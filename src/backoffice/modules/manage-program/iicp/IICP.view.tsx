@@ -25,9 +25,9 @@ const IICPView: React.FC<IICPViewProps> = ({
 }) => {
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      columnHelper.accessor('code', {
-        header: ({ column }) => <SortingTable column={column} title="Code" />,
-        cell: (info) => info.getValue(),
+      columnHelper.accessor('no', {
+        header: ({ column }) => <SortingTable column={column} title="No" />,
+        cell: (info) => info.row.index + 1,
       }),
       columnHelper.accessor('name', {
         header: ({ column }) => (
