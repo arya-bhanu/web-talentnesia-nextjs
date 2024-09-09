@@ -1,13 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import ModulView from './Modul.view';
-import { Certificate } from '../../courseDetail.type';
+import { Certificate, CourseData } from '../../courseDetail.type';
 
 interface ModulProps {
   certificates: Certificate[];
+  course: CourseData;
 }
 
-const Modul: React.FC<ModulProps> = ({ certificates }) => {
+const Modul: React.FC<ModulProps> = ({ certificates, course }) => {
   const [activeAccordion, setActiveAccordion] = useState(-1);
 
   return (
@@ -15,6 +16,7 @@ const Modul: React.FC<ModulProps> = ({ certificates }) => {
       activeAccordion={activeAccordion}
       setActiveAccordion={setActiveAccordion}
       certificates={certificates}
+      course={course}
     />
   );
 };

@@ -2,34 +2,32 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Card } from 'flowbite-react';
 import { TabFlex } from '@/backoffice/components/tabs/tabs';
 import AccordionPanelDraggableView from './components/accordion-panel-draggable';
-import { accordionData } from './components/accordion-panel-draggable/accordion.data';
 import ModulProgres from './components/modul-progres';
 import Certificate from './components/certificate/Certificate';
-import { Certificate as CertificateType } from '../../courseDetail.type';
+import { Certificate as CertificateType, CourseData } from '../../courseDetail.type';
 
 interface IModulView {
   activeAccordion: number;
   setActiveAccordion: Dispatch<SetStateAction<number>>;
   certificates: CertificateType[];
+  course: CourseData;
 }
 
-const ModulView = ({ activeAccordion, setActiveAccordion, certificates }: IModulView) => {
+const ModulView = ({ activeAccordion, setActiveAccordion, certificates, course }: IModulView) => {
   const tabs = [
     {
       title: 'Modul',
       content: (
         <div>
-          <ModulProgres progress={50} /> 
-          {accordionData.map((accordion, index) => (
+          <ModulProgres progress={course.progress} />
+          {course.chapters.map((chapter, index) => (
             <AccordionPanelDraggableView
-              key={index}
+              key={chapter.id}
+              {...chapter}
               index={index}
-              title={accordion.title}
-              totalMinuteDuration={accordion.totalMinuteDuration}
-              totalCurriculum={accordion.totalCurriculum}
-              contents={accordion.contents}
               activeAccordion={activeAccordion}
               setActiveAccordion={setActiveAccordion}
+              courseId={course.id} // Add this line
             />
           ))}
         </div>

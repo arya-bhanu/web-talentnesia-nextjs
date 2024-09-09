@@ -55,7 +55,7 @@ const CourseDetailView: React.FC<CourseDetailViewProps> = ({ courseId, courseDet
       <Schedule />
       <div className="mt-10 flex flex-col md:flex-row gap-6">
         <div className="w-full md:w-3/4">
-          <Modul certificates={certificates}/>
+          <Modul certificates={certificates} course={course}/>
         </div>
         <div className="w-full md:w-1/3 space-y-12">
           {joinGroup.link && joinGroup.link !== "" && (
