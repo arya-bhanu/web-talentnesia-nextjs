@@ -14,11 +14,11 @@ const Media: React.FC<{ url: string | null }> = ({ url }) => {
   const videoId = getYoutubeId(url);
 
   if (!videoId) {
-    return <div>Invalid YouTube URL</div>;
+    return <div className="bg-[#323232] rounded-lg px-8 py-52 text-white mb-8 flex flex-col items-center flex-grow">Invalid YouTube URL</div>;
   }
 
   return (
-    <div className="w-full h-screen bg-gray-100 pt-8">
+    <div className="w-full h-fit bg-[#323232] rounded-lg text-white flex flex-col items-center flex-grow">
       <div className="w-full max-w-4xl mx-auto aspect-video">
         <iframe
           src={`https://www.youtube.com/embed/${videoId}`}

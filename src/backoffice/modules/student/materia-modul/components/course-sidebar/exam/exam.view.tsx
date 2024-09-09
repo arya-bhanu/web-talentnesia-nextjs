@@ -43,10 +43,6 @@ const Exam: React.FC = () => {
               Start Exam
             </button>
           </div>
-          <div className="flex justify-between px-8 py-4 mt-10">
-            <button className="px-8 py-2 rounded-full border border-[#FFC862] text-gray-700">Previous</button>
-            <button className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">Next</button>
-          </div>
         </div>
       )}
     </div>

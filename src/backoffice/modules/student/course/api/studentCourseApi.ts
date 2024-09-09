@@ -17,4 +17,12 @@ export const StudentCourseAPI = {
     };
     return fetchAxios<APIResponseCourseDetail>(config);
   },
+
+  checkAndNext: async (contentId: string): Promise<APIResponseCourseDetail> => {
+    const config: UseFetchProps = {
+      url: `/v1/student-course/mark/${contentId}`,
+      method: 'GET',
+    };
+    return fetchAxios<APIResponseCourseDetail>(config);
+  },
 };
