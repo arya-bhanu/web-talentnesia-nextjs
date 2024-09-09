@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { SectionItem, TabItem } from './materialModul.type';
 import { StudentCourseAPI } from '../course/api/studentCourseApi';
 import Exam from './components/course-sidebar/exam/exam.view';
@@ -16,9 +16,49 @@ const useMaterialModul = () => {
   const [sections, setSections] = useState<SectionItem[]>([]);
   const [selectedContent, setSelectedContent] = useState<JSX.Element | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isContentLoading, setIsContentLoading] = useState(false);
 
   const searchParams = useSearchParams();
+  const router = useRouter();
   const courseId = searchParams.get('courseId');
+  const chapterId = searchParams.get('chapterId');
+  const contentId = searchParams.get('contentId');
+
+  const selectInitialContent = (sections: SectionItem[], contentId: string | null) => {
+    if (contentId) {
+      const selectedSection = sections.find(section => 
+        section.tabs.some(tab => tab.id === contentId)
+      );
+      if (selectedSection) {
+        const selectedTab = selectedSection.tabs.find(tab => tab.id === contentId);
+        if (selectedTab) {
+          setSelectedTab(contentId);
+          switch (selectedTab.iconId) {
+            case 1:
+              setSelectedContent(<PdfReader url={selectedTab.content} />);
+              break;
+            case 2:
+              setSelectedContent(<Media url={selectedTab.content} />);
+              break;
+            case 3:
+              setSelectedContent(<Media url={selectedTab.content} />);
+              break;
+            case 4:
+              setSelectedContent(<Media url={selectedTab.content} />);
+              break;
+            case 5:
+              setSelectedContent(<Exam />);
+              break;
+            case 6:
+              setSelectedContent(<Mentoring meetLink={selectedTab.content} />);
+              break;
+            default:
+              setSelectedContent(null);
+          }
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -32,7 +72,7 @@ const useMaterialModul = () => {
             id: chapter.id,
             title: chapter.title,
             duration: chapter.duration ? Number(chapter.duration) : null,
-            isOpen: false,
+            isOpen: chapter.id === chapterId,
             tabs: chapter.contents.map((content) => ({
               id: content.id,
               label: content.title,
@@ -42,6 +82,7 @@ const useMaterialModul = () => {
           }));
 
           setSections(formattedSections);
+          selectInitialContent(formattedSections, contentId);
         } catch (error) {
           console.error('Error fetching course data:', error);
         } finally {
@@ -51,37 +92,51 @@ const useMaterialModul = () => {
     };
 
     fetchCourseData();
-  }, [courseId]);
+  }, [courseId, chapterId, contentId]);
 
-  const handleTabClick = (tabId: string) => {
+  const handleTabClick = async (tabId: string) => {
+    if (tabId === selectedTab) return;
+
     setSelectedTab(tabId);
+    setIsContentLoading(true);
 
-    const selectedSection = sections.flatMap(section => section.tabs).find(tab => tab.id === tabId);
+    const selectedSection = sections.find(section => 
+      section.tabs.some(tab => tab.id === tabId)
+    );
 
     if (selectedSection) {
-      switch (selectedSection.iconId) {
-        case 1:
-          setSelectedContent(<PdfReader url={selectedSection.content} />);
-          break;
-        case 2:
-          setSelectedContent(<Media url={selectedSection.content} />);
-          break;
-        case 3:
-          setSelectedContent(<Media url={selectedSection.content} />);
-          break;
-        case 4:
-          setSelectedContent(<Media url={selectedSection.content} />);
-          break;
-        case 5:
-          setSelectedContent(<Exam />);
-          break;
-        case 6:
-          setSelectedContent(<Mentoring meetLink={selectedSection.content} />);
-          break;
-        default:
-          setSelectedContent(null);
+      const selectedTab = selectedSection.tabs.find(tab => tab.id === tabId);
+      if (selectedTab) {
+        router.push(`/student/course/course-detail/material-modul/?courseId=${courseId}&chapterId=${selectedSection.id}&contentId=${tabId}`);
+
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        switch (selectedTab.iconId) {
+          case 1:
+            setSelectedContent(<PdfReader url={selectedTab.content} />);
+            break;
+          case 2:
+            setSelectedContent(<Media url={selectedTab.content} />);
+            break;
+          case 3:
+            setSelectedContent(<Media url={selectedTab.content} />);
+            break;
+          case 4:
+            setSelectedContent(<Media url={selectedTab.content} />);
+            break;
+          case 5:
+            setSelectedContent(<Exam />);
+            break;
+          case 6:
+            setSelectedContent(<Mentoring meetLink={selectedTab.content} />);
+            break;
+          default:
+            setSelectedContent(null);
+        }
       }
     }
+
+    setIsContentLoading(false);
   };
 
   const handleSectionToggle = (sectionId: string) => {
@@ -99,6 +154,7 @@ const useMaterialModul = () => {
     sections,
     selectedContent,
     isLoading,
+    isContentLoading,
   };
 };
 
