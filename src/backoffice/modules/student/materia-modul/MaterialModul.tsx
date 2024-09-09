@@ -145,20 +145,28 @@ const useMaterialModul = () => {
     ));
   };
 
-  const handleNextContent = () => {
-    const currentSectionIndex = sections.findIndex(section => 
-      section.tabs.some(tab => tab.id === selectedTab)
-    );
-    const currentSection = sections[currentSectionIndex];
-    const currentTabIndex = currentSection.tabs.findIndex(tab => tab.id === selectedTab);
-
-    if (currentTabIndex < currentSection.tabs.length - 1) {
-      // Next tab in the same section
-      handleTabClick(currentSection.tabs[currentTabIndex + 1].id);
-    } else if (currentSectionIndex < sections.length - 1) {
-      // First tab of the next section
-      const nextSection = sections[currentSectionIndex + 1];
-      handleTabClick(nextSection.tabs[0].id);
+  const handleNextContent = async () => {
+    if (selectedTab) {
+      try {
+        await StudentCourseAPI.checkAndNext(selectedTab);
+        
+        const currentSectionIndex = sections.findIndex(section => 
+          section.tabs.some(tab => tab.id === selectedTab)
+        );
+        const currentSection = sections[currentSectionIndex];
+        const currentTabIndex = currentSection.tabs.findIndex(tab => tab.id === selectedTab);
+  
+        if (currentTabIndex < currentSection.tabs.length - 1) {
+          // Next tab in the same section
+          handleTabClick(currentSection.tabs[currentTabIndex + 1].id);
+        } else if (currentSectionIndex < sections.length - 1) {
+          // First tab of the next section
+          const nextSection = sections[currentSectionIndex + 1];
+          handleTabClick(nextSection.tabs[0].id);
+        }
+      } catch (error) {
+        console.error('Error marking content as complete:', error);
+      }
     }
   };
 
