@@ -30,15 +30,14 @@ export const certificateAPI = {
         active: 1,
         createdBy: ""
       };
-      console.log('Request data:', requestData);
       const response = await axios.post(`${API_URL}/certificate`, requestData);
-      console.log('Response:', response.data);
       return response.data;
     } catch (error: unknown) {
       console.error('Failed to add certificate', error);
       throw error;
     }
   },  
+  
   update: async (id: string, data: { name: string, file: string }) => {
     try {
       const requestData = {
