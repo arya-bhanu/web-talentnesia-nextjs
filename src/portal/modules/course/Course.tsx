@@ -16,7 +16,9 @@ export const Course = () => {
     }, 500);
     })
     .catch((err) => {
-      console.error(err);
+      setTimeout(() => {
+        setSkeleton(false);
+    }, 500);
     });
   }, []);
 

@@ -58,12 +58,10 @@ const ModalForm: React.FC<ModalFormProps> = ({
     }
   
     try {
-      console.log('Submitting data:', formData);
       await onSave(id, formData); 
       setFormData({ code: '', name: '', description: '', active: 0, userId: '' });
       onClose();
     } catch (error) {
-      console.error('Failed to save data', error);
     }
   };
 

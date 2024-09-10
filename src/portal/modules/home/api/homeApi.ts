@@ -7,7 +7,6 @@ const homeApi = async () => {
     );
     return data.data;
   } catch (error) {
-    console.error('Error fetching home data:', error);
     throw error;
   }
 };

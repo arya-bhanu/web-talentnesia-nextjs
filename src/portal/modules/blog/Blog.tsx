@@ -6,7 +6,7 @@ import { Article } from './blog.type';
 
 const articlesPerPage = 12;
 
-const Blog = () => {
+export const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedArticles, setPaginatedArticles] = useState<Article[]>(recentArticles);
 
@@ -32,4 +32,3 @@ const Blog = () => {
   );
 };
 
-export default Blog;
