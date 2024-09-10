@@ -1,8 +1,12 @@
 'use client';
 import React, { useState } from 'react';
 import AddCertificateView from './AddCertificate.view';
+import { useRouter } from 'next/navigation';
+import { certificateAPI } from '../api/certificateApi';
 
 const AddCertificate: React.FC = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     name: '',
     file: '',
@@ -27,19 +31,22 @@ const AddCertificate: React.FC = () => {
     }
   };
   
-  
-  
   const handleSave = async () => {
-    if (!formData.name || !formData.file || !formData.active) {
+    if (!formData.name || !formData.file || formData.active === undefined) {
       setHasError(true);
       console.log('Missing required fields:', formData);
       return;
     }
-    console.log('Saving certificate with data:', {
-      name: formData.name,
-      file: formData.file,
-      active: formData.active
-    });
+
+    try {
+      await certificateAPI.add(formData);
+      
+     
+      router.push('/backoffice/master-data/certificate/');
+    } catch (error) {
+      console.error('Error saving certificate:', error);
+      
+    }
   };
 
   return (
