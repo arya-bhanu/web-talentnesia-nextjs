@@ -39,9 +39,7 @@ const DetailMentoring: React.FC<{
 
   const handleJoinNow = () => {
     if (meetLink) {
-      const meetCode = meetLink.split('/').pop();
-      const googleMeetUrl = `https://meet.google.com/${meetCode}`;
-      window.open(googleMeetUrl, '_blank');
+      window.open(meetLink, '_blank');
     } else {
       console.error('Meet link is not available');
     }

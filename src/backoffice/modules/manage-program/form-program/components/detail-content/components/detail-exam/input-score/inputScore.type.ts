@@ -1,6 +1,6 @@
 import { questionData } from './inputScore.data';
 export interface studentDataProps {
-  id: number;
+  userId: number;
   nama: string;
   batasAkhir: string;
   tglDikerjakan: string;

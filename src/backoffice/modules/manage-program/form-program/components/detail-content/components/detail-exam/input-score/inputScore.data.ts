@@ -2,21 +2,21 @@ import { questionDataProps, studentDataProps } from "./inputScore.type";
 
 export const studentData: studentDataProps[] = [
   {
-    id: 1,
+    userId: 1,
     nama: 'Meysa Aprillia',
     batasAkhir: '17 Januari 2024 11:30 WIB',
     tglDikerjakan: '17 Januari 2024 11:30 WIB',
     tipe: 'Essay',
   },
   {
-    id: 2,
+    userId: 2,
     nama: 'Wahyu April',
     batasAkhir: '17 Januari 2024 11:30 WIB',
     tglDikerjakan: '17 Januari 2024 11:30 WIB',
     tipe: 'Essay',
   },
   {
-    id: 3,
+    userId: 3,
     nama: 'Mas ayu',
     batasAkhir: '17 Januari 2024 11:30 WIB',
     tglDikerjakan: '17 Januari 2024 11:30 WIB',
