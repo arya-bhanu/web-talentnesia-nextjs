@@ -71,7 +71,7 @@ const Task: React.FC = () => {
         <div className="flex justify-center mt-6">
           <div className="flex space-x-4">
             <div className="flex items-center space-x-2">
-              <div className={`w-3 h-3 rounded-full ${selectedAnswers[activeQuestionId] !== undefined ? 'bg-blue-500' : 'bg-gray-500'}`} />
+              <div className={`w-3 h-3 rounded-full ${selectedAnswers[activeQuestionId] !== undefined ? 'bg-[#46AEC7]' : 'bg-gray-500'}`} />
               <span className="text-sm">Terjawab</span>
             </div>
             <div className="flex items-center space-x-2">
