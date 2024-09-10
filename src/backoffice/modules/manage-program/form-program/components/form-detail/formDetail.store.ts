@@ -14,10 +14,15 @@ export interface IFormDetailStore {
   defaultSchools: Schools[];
   setDefaultSchools: (schools: Schools[]) => void;
   setDefaultMentors: (mentors: Mentor[]) => void;
-  setData: (newData: APIDetailProgramIICP) => void;
+  setData: (
+    newData:
+      | APIDetailProgramIICP
+      | ((prevData: APIDetailProgramIICP) => APIDetailProgramIICP),
+  ) => void;
   setDefaultData: (
     data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] },
   ) => void;
+  resetStore: () => void;
 }
 
 export const useFormDetailStore = create<IFormDetailStore>((set) => ({
@@ -33,6 +38,16 @@ export const useFormDetailStore = create<IFormDetailStore>((set) => ({
     set(() => ({
       defaultMentors: mentors,
     })),
-  setData: (newData) => set(() => ({ data: newData })),
+  resetStore: () =>
+    set(() => ({
+      data: defaultDataFormDetail,
+      defaultData: defaultDataFormDetailEdit,
+      defaultMentors: [],
+      defaultSchools: [],
+    })),
+  setData: (newData) =>
+    set((state) => ({
+      data: typeof newData === 'function' ? newData(state.data) : newData,
+    })),
   setDefaultData: (data) => set({ defaultData: data }),
 }));

@@ -48,7 +48,7 @@ const ModalSelectView: React.FC<IModalSelect> = ({ open, setOpen, title }) => {
     }
   };
   return (
-    <Modal show={open} onClose={() => setOpen(false)}>
+    <Modal show={open} onClose={() => setOpen(false)} size={'4xl'}>
       <form ref={formRef} onSubmit={handleFormSubmit}>
         <Modal.Header>
           <span className="text-lg font-semibold">{title}</span>

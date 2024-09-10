@@ -1,5 +1,5 @@
 'use client';
-import React, { FormEvent, useEffect } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import FormDetailView from './FormDetail.view';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useFormDetailStore } from './formDetail.store';
@@ -11,9 +11,10 @@ import {
   fetchSchools,
 } from './api/formDetail.api';
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
-import { Schools } from './formDetail.type';
+import { APIDetailProgramIICP, Schools } from './formDetail.type';
 import { convertIntoNumericDate } from '@/helpers/formatter.helper';
-import { defaultDataFormDetail } from './formDetail.data';
+import { defaultDataFormDetail, defaultDataFormDetailEdit } from './formDetail.data';
+import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
 
 const FormDetail = () => {
   const params = useSearchParams();
@@ -26,7 +27,9 @@ const FormDetail = () => {
     setDefaultMentors,
     setDefaultSchools,
     setDefaultData,
+    resetStore,
   } = useFormDetailStore();
+  const [fullImageUrl, setFullImageUrl] = useState<string>('');
 
   const { data: dataProgramDetail, isLoading: isLoadingProgramDetail } =
     useQuery({
@@ -50,10 +53,24 @@ const FormDetail = () => {
       mutationFn: createProgram,
     });
 
-  useEffect(() => {
-    if (dataProgramDetail?.data?.data) {
-      setDefaultData(dataProgramDetail.data.data);
-    }
+    useEffect(() => {
+      if (!programId) {
+        resetStore();
+      }
+    }, [programId]);
+
+    useEffect(() => {
+      if (programId && dataProgramDetail?.data?.data) {
+        setDefaultData(dataProgramDetail.data.data);
+        if (dataProgramDetail.data.data.image) {
+          getImageUrl(dataProgramDetail.data.data.image)
+            .then(setFullImageUrl)
+            .catch(console.error);
+        }
+      } else {
+        setDefaultData(defaultDataFormDetailEdit);
+        setFullImageUrl('');
+      }
     if (dataMentors?.data?.data) {
       setDefaultMentors(
         dataMentors.data.data.map((el: any) => {
@@ -79,6 +96,12 @@ const FormDetail = () => {
     JSON.stringify(dataSchools?.data),
     JSON.stringify(dataProgramDetail?.data),
   ]);
+
+  const handleFileChange = async (fileUrl: string) => {
+    const fullUrl = await getImageUrl(fileUrl);
+    setData((prevData: APIDetailProgramIICP) => ({ ...prevData, image: fileUrl }));
+    setFullImageUrl(fullUrl);
+  };
 
   const handleSubmitFormDetail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -111,7 +134,7 @@ const FormDetail = () => {
       startDate: startDateFormated,
       mentors,
       name: programName,
-      image: 'file1_png',
+      image: filePic,
       type: 'iicp',
       institutionId: school,
     });
@@ -126,6 +149,8 @@ const FormDetail = () => {
       programId={programId || undefined}
       handleSubmitForm={handleSubmitFormDetail}
       isLoadingMentors={isLoadingMentors}
+      handleFileChange={handleFileChange}
+      fullImageUrl={fullImageUrl}
     />
   );
 };

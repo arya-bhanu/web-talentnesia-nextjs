@@ -52,26 +52,26 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
 
   const handleEditContent = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    e.stopPropagation();
     const formData = new FormData(e.currentTarget);
     const time = formData.get('time') as string;
     const title = formData.get('title') as string;
     const type = formData.get('type') as string;
-    const uploadFile = formData.get('upload_file') as File;
-    const convertedTime = time.substring(0, 5);
+    const fileUrl = formData.get('fileUrl') as string;
+    const fileName = formData.get('fileName') as string;
 
     if (props.id) {
       await editContentAsync({
         contentId: props.id,
         payload: {
-          duration: convertedTime,
+          duration: time,
           title,
           type,
-          body: 'test_1',
+          body: fileName,
           isexam: 0,
           chapterId: props.chapterId,
           id: props.id,
           order: props.order,
+          file: fileUrl,
         },
       });
       await queryClient.invalidateQueries({ queryKey: ['chapter'] });

@@ -25,33 +25,15 @@ const IICPView: React.FC<IICPViewProps> = ({
 }) => {
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      columnHelper.accessor('code', {
-        header: ({ column }) => <SortingTable column={column} title="Code" />,
-        cell: (info) => info.getValue(),
+      columnHelper.accessor('no', {
+        header: ({ column }) => <SortingTable column={column} title="No" />,
+        cell: (info) => info.row.index + 1,
       }),
       columnHelper.accessor('name', {
         header: ({ column }) => (
           <SortingTable column={column} title="Bootcamp Name" />
         ),
         cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor('progress', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Progress" />
-        ),
-        cell: (info) => {
-          const progress = info.getValue() || 0;
-          return (
-            <div className="flex items-center">
-              <ProgressBar progress={progress as number} />
-              <p className="w-max">{progress as number}% Selesai</p>
-            </div>
-          );
-        },
-      }),
-      columnHelper.accessor('active', {
-        header: ({ column }) => <SortingTable column={column} title="Status" />,
-        cell: (info) => <BadgeStatus status={info.getValue() as number} />,
       }),
       columnHelper.accessor('startDate', {
         id: 'duration',
@@ -73,6 +55,24 @@ const IICPView: React.FC<IICPViewProps> = ({
             </div>
           );
         },
+      }),
+      columnHelper.accessor('progress', {
+        header: ({ column }) => (
+          <SortingTable column={column} title="Progress" />
+        ),
+        cell: (info) => {
+          const progress = info.getValue() || 0;
+          return (
+            <div className="flex items-center gap-4">
+              <ProgressBar progress={progress as number} />
+              <p className="w-max">{progress as number}% Selesai</p>
+            </div>
+          );
+        },
+      }),
+      columnHelper.accessor('active', {
+        header: ({ column }) => <SortingTable column={column} title="Status" />,
+        cell: (info) => <BadgeStatus status={info.getValue() as number} />,
       }),
       columnHelper.accessor('id', {
         id: 'action',
