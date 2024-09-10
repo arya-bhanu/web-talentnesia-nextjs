@@ -3,7 +3,7 @@ import { DropdownView } from './Dropdown.view';
 import { IDropdown } from './dropdown.type';
 
 const Dropdown = (props: IDropdown) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
