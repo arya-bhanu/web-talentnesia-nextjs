@@ -134,6 +134,7 @@ export const fetchContent = async (id?: string) => {
 export const createContent = async (
   payload: Omit<APIContentChapter, 'id' | 'order'>,
 ) => {
+  console.log('createContent API called with payload:', payload);
   const response = await fetchAxios({
     url: '/v1/content',
     method: 'POST',

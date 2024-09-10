@@ -18,6 +18,7 @@ export interface APIContentChapter {
   id: string;
   isexam: 0 | 1;
   order: number;
+  file?: string;
 }
 
 export interface APIChapterModul {

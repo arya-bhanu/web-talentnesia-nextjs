@@ -1,38 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormContentView from './FormContent.view';
 import { useQuery } from '@tanstack/react-query';
 import { fetchContent } from '../../api/manageModelApi';
+import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
 
-const date = new Date();
-date.setHours(1);
-date.setMinutes(0);
+const FormContent: React.FC<{ contentId?: string }> = ({ contentId }) => {
+  const [time, setTime] = useState(new Date(0, 0, 0, 1, 0));
+  const [fileUrl, setFileUrl] = useState<string>('');
+  const [fileName, setFileName] = useState<string>('');
+  const [fileType, setFileType] = useState<string>('1');
 
-const FormContent = ({ contentId }: { contentId?: string }) => {
-  const [time, setTime] = useState(date);
-  const [file, setFile] = useState<File | null>(null);
   const { data: dataContent } = useQuery({
     queryKey: ['chapter', contentId],
     queryFn: () => fetchContent(contentId),
+    enabled: !!contentId,
   });
 
   useEffect(() => {
     if (dataContent?.data) {
-      const time = dataContent.data.duration as string;
-      const [hour, minute] = time.split(':');
-      const date = new Date();
-      date.setHours(Number(hour));
-      date.setMinutes(Number(minute));
-      setTime(date);
+      const [hour, minute] = (dataContent.data.duration as string).split(':');
+      setTime(new Date(0, 0, 0, parseInt(hour), parseInt(minute)));
+      setFileType(dataContent.data.type);
+      if (dataContent.data.file) {
+        getImageUrl(dataContent.data.file)
+          .then(url => {
+            setFileUrl(url);
+            setFileName(dataContent.data.body || '');
+          })
+          .catch(console.error);
+      }
     }
-  }, [dataContent?.data]);
+  }, [dataContent]);
+
+  const handleFileChange = (newFileUrl: string, newFileName: string) => {
+    setFileUrl(newFileUrl);
+    setFileName(newFileName);
+  };
 
   return (
     <FormContentView
-      file={file}
-      setFile={setFile}
-      setTime={setTime}
       time={time}
-      contentId={contentId}
+      setTime={setTime}
+      fileUrl={fileUrl}
+      fileName={fileName}
+      fileType={fileType}
+      setFileType={setFileType}
+      handleFileChange={handleFileChange}
       populatedData={dataContent?.data}
     />
   );

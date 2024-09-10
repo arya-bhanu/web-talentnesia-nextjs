@@ -63,7 +63,6 @@ export const fetchContent = async (contentId?: string | null) => {
       url: `/v1/program-content/detail/${contentId}`,
       method: 'GET',
     });
-    console.log(response);
     return { data: response };
   }
   return null;
@@ -167,7 +166,6 @@ export const fetchChapter = async (chapterId?: string | null) => {
       url: `/v1/program-chapter/${chapterId}`,
       method: 'GET',
     });
-    console.log(response);
     return {
       data: response.data,
     };
@@ -206,7 +204,6 @@ export const editChapter = async ({
     method: 'PUT',
     formData: { title },
   });
-  console.log(response);
   return { data: response.data };
 };
 
