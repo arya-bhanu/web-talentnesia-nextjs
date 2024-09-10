@@ -4,12 +4,12 @@ import DocumentUpload from '@/../public/icons/document-upload.svg';
 
 interface UploadFileInputProps {
   onChange: (fileUrl: string, fileName: string, fileType: number) => void;
-  initialFileName?: string;
+  initialFileName: string;
   fileType?: number;
 }
 
 export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, initialFileName, fileType }) => {
-  const [fileName, setFileName] = useState<string>(initialFileName || '');
+  const [fileName, setFileName] = useState<string>(initialFileName);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -32,7 +32,6 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
     }
   };
   
-
   return (
     <div className="flex items-center">
       <label htmlFor="upload_file" className="flex items-center cursor-pointer">

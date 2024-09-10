@@ -47,20 +47,19 @@ const FormChapter = () => {
   });
 
   const handleSubmitAddContent = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log('handleSubmitAddContent triggered');
-    try {
-      e.preventDefault();
-      e.stopPropagation();
-      const formData = new FormData(e.currentTarget);
-      const time = formData.get('time') as string;
-      const title = formData.get('title') as string;
-      const type = formData.get('type') as string;
-      const fileUrl = formData.get('fileUrl') as string;
-      const fileName = formData.get('fileName') as string;
-      const convertedTime = time.substring(0, 5);
-      const chapterId = params.get('chapterId');
-      
-      if (chapterId && convertedTime && title && type && fileUrl) {
+    e.preventDefault();
+    e.stopPropagation();
+    const formData = new FormData(e.currentTarget);
+    const time = formData.get('time') as string;
+    const title = formData.get('title') as string;
+    const type = formData.get('type') as string;
+    const fileUrl = formData.get('fileUrl') as string;
+    const fileName = formData.get('fileName') as string;
+    const convertedTime = time.substring(0, 5);
+    const chapterId = params.get('chapterId');
+  
+    if (chapterId && convertedTime && title && type) {
+      try {
         await createContentAsync({
           body: fileName,
           duration: convertedTime,
@@ -77,13 +76,12 @@ const FormChapter = () => {
           action: 'create',
           message: 'Content successfully created',
         });
+      } catch (err) {
+        console.error(err);
+        openModal({ status: 'error', message: JSON.stringify(err) });
       }
-    } catch (err) {
-      console.error(err);
-      openModal({ status: 'error', message: JSON.stringify(err) });
     }
   };
-  
 
   const handleSubmitChapter = async (e: React.FormEvent<HTMLFormElement>) => {
     try {

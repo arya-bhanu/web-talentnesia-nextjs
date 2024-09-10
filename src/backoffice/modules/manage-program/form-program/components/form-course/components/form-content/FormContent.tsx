@@ -1,44 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormContentView from './FormContent.view';
 import { useQuery } from '@tanstack/react-query';
+import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
 import { fetchContent } from '../../api/formCourse.api';
-const date = new Date();
-date.setHours(1);
-date.setMinutes(0);
+import Loading from '@/components/loading/Loading';
 
-const FormContent = ({ contentId }: { contentId?: string }) => {
-  const [time, setTime] = useState(date);
-  const [file, setFile] = useState<File | null>(null);
-  const { data: dataContent } = useQuery({
+const FormContent: React.FC<{ contentId?: string; isEdit?: boolean }> = ({
+  contentId,
+  isEdit,
+}) => {
+  const [time, setTime] = useState(new Date(0, 0, 0, 1, 0));
+  const [fileUrl, setFileUrl] = useState<string>('');
+  const [fileName, setFileName] = useState<string>('');
+  const [fileType, setFileType] = useState<string>('1');
+  const [isDataReady, setIsDataReady] = useState(false);
+
+  const { data: dataContent, isLoading } = useQuery({
     queryKey: ['chapter', contentId],
     queryFn: () => fetchContent(contentId),
+    enabled: !!contentId,
   });
 
   useEffect(() => {
-    if (dataContent?.data?.data) {
-      const time = dataContent.data.data.duration as string;
-      
-      if (time && typeof time === 'string' && time.includes(':')) {
-        const [hour, minute] = time.split(':');
-        const date = new Date();
-        date.setHours(Number(hour));
-        date.setMinutes(Number(minute));
-        setTime(date);
+    if (dataContent?.data.data && !isLoading) {
+      setFileType(dataContent.data.data.type);
+      setFileName(dataContent.data.data.body || '');
+      if (dataContent.data.data.duration) {
+        const [hour, minute] = dataContent.data.data.duration.split(':');
+        setTime(new Date(0, 0, 0, parseInt(hour), parseInt(minute)));
+      }
+      if (dataContent.data.data.file) {
+        getImageUrl(dataContent.data.data.file)
+          .then((url) => {
+            setFileUrl(url);
+            setIsDataReady(true);
+          })
+          .catch(console.error);
       } else {
-        console.error('Invalid time format:', time);
+        setIsDataReady(true);
       }
     }
-  }, [dataContent?.data?.data]);
-  
+  }, [dataContent, isLoading]);
+
+  const handleFileChange = (newFileUrl: string, newFileName: string) => {
+    setFileUrl(newFileUrl);
+    setFileName(newFileName);
+  };
+
+  if (isLoading || !isDataReady) {
+    return <Loading isLoading={true} />;
+  }
 
   return (
     <FormContentView
-      file={file}
-      setFile={setFile}
-      setTime={setTime}
       time={time}
-      contentId={contentId}
-      populatedData={dataContent?.data?.data}
+      setTime={setTime}
+      fileUrl={fileUrl}
+      fileName={fileName}
+      fileType={fileType}
+      setFileType={setFileType}
+      handleFileChange={handleFileChange}
+      populatedData={dataContent?.data.data}
+      isEdit={isEdit}
     />
   );
 };

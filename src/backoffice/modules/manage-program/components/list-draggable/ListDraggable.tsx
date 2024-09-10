@@ -105,6 +105,8 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
     const title = formData.get('title') as string;
     const type = formData.get('type') as string;
     const uploadFile = formData.get('upload_file') as File;
+    const fileUrl = formData.get('fileUrl') as string;
+    const fileName = formData.get('fileName') as string;
     const convertedTime = time.substring(0, 5);
 
     if (props.id) {
@@ -114,7 +116,7 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
           duration: convertedTime,
           title,
           type,
-          body: 'test_1',
+          body: fileName,
           isexam: 0,
           chapterId: props.chapterId,
           id: props.id,

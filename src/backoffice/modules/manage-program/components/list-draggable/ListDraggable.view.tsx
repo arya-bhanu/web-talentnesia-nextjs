@@ -112,14 +112,13 @@ const ListDraggableView: React.FC<
       </Modal>
       <Modal
         title="Edit Content"
-        buttonConfirmTitle="Submit"
         state={{
           openModal: modalEditContent,
           setOpenModal: setModalEditContent,
         }}
         handleSubmit={handleEditContent}
       >
-        <FormContent contentId={contentId} />
+        <FormContent contentId={id} isEdit={true} />
       </Modal>
       <Modal
         title="Mentoring"

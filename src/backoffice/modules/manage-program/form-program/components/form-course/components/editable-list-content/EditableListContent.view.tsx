@@ -60,6 +60,7 @@ const EditableListContentView: React.FC<
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
   const renderMinuteTime = useMemo(() => {
     if (duration) {
       const [hours, minutes] = duration.split(':');
@@ -94,11 +95,7 @@ const EditableListContentView: React.FC<
     }
   }, [type]);
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={clsx('flex items-center justify-between py-3', className)}
-    >
+    <div ref={setNodeRef} style={style} className={clsx('flex items-center justify-between py-3', className)}>
       <AlertModal
         openModal={openModal}
         setIsConfirmed={setIsConfirmed}
@@ -112,7 +109,7 @@ const EditableListContentView: React.FC<
         handleSubmit={handleSubmitEdit}
         title="Update Content"
       >
-        {openModalEdit && <FormContent contentId={injectId} />}
+        {openModalEdit && <FormContent contentId={id} isEdit />}
       </Modal>
       <div className="flex items-center gap-2">
         <button {...listeners} {...attributes} type="button">

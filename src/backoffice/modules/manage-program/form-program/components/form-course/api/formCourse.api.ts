@@ -57,9 +57,7 @@ export const fetchModule = async () => {
 // content
 export const fetchContent = async (contentId?: string | null) => {
   if (contentId) {
-    const response = await fetchAxios<{
-        data: APIContentChapter;
-    }>({
+    const response = await fetchAxios({
       url: `/v1/program-content/detail/${contentId}`,
       method: 'GET',
     });

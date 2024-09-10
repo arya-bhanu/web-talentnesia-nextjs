@@ -24,6 +24,7 @@ const FormContent: React.FC<{ contentId?: string }> = ({ contentId }) => {
       if (dataContent.data.file) {
         getImageUrl(dataContent.data.file)
           .then(url => {
+            console.log('url', url);
             setFileUrl(url);
             setFileName(dataContent.data.body || '');
           })
