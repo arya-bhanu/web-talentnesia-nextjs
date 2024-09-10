@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AddDocumentEditorComponent from './components/Certificatedocs';
 import { AddCertificateViewProps } from './addCertificate.type';
 import { FileInputComponent } from '@/backoffice/components/file-input/FileInput';
 import { InputDropdown } from '@/backoffice/components/input-dropdown';
+import { certificateAPI } from '@/backoffice/modules/master-data/certificate/api/certificateApi';
 
 export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
   formData,
   hasError,
   handleInputChange,
-  handleSave,
+  handleSave: propHandleSave,
 }) => {
   const router = useRouter();
   const [documentId, setDocumentId] = useState<string | undefined>();
@@ -17,6 +18,25 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
   const [isFileUploaded, setIsFileUploaded] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
+  const handleSave = async () => {
+    try {
+      await certificateAPI.add({
+        name: formData.name,
+        file: documentUrl || '',
+      });
+      router.push('/backoffice/master-data/certificate/');
+    } catch (error) {
+      console.error('Failed to add certificate', error);
+    }
+  };
+
+  const fetchData = useCallback(async () => {
+    const certificates = await certificateAPI.fetch();
+  }, []);
+  
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,8 +77,6 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
     } else {
       setUploadError('No file selected');
     }
-
-    handleSave();
   };
 
   return (
@@ -113,9 +131,10 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
           options={['Active', 'Non Active']}
         />
 
-        {hasError && !formData.active && (
+        {hasError && (formData.active === undefined || formData.active === null) && (
           <p className="text-red-500 text-xs mt-1">Status is required.</p>
         )}
+
       </div>
       {isFileUploaded && (
         <div className="py-2">
@@ -132,7 +151,8 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
           Cancel
         </button>
         <button
-          type="submit"
+          type="button"
+          onClick={propHandleSave}
           className="bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 rounded-lg px-5 py-2.5 text-center"
         >
           Save
@@ -140,5 +160,5 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
       </div>
     </form>
   );
-};
-export default AddCertificateView;
+};export default AddCertificateView;
+

@@ -47,8 +47,6 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
               )}
             </div>
 
-            
-
           </div>
         </Modal.Body>
         <Modal.Footer className="flex justify-end space-x-2">

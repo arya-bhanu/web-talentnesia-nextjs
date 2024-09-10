@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DocumentEditor } from "@onlyoffice/document-editor-react";
 import CryptoJS from 'crypto-js';
 
-const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string }> = ({ id, url }) => {
+const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string; mailMergeData?: any }> = ({ id, url, mailMergeData }) => {
   const [config, setConfig] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,6 +56,13 @@ const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string }> = ({ i
           },
         },
       },
+      events: {
+        onDocumentReady: () => {
+          if (mailMergeData) {
+            performMailMerge(mailMergeData);
+          }
+        },
+      },
     };
 
     const secretkey = process.env.NEXT_PUBLIC_ONLYOFFICE_SECRET_KEY || '';
@@ -70,7 +77,13 @@ const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string }> = ({ i
         editorContainer.innerHTML = '';
       }
     };
-  }, [id, url]);
+  }, [id, url, mailMergeData]);
+
+  const performMailMerge = (data: any) => {
+    if (window.DocEditor) {
+      window.DocEditor.executeMethod('MailMerge', data);
+    }
+  };
 
   const base64UrlEncode = (input: string) => {
     return btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');

@@ -21,11 +21,12 @@ const AddCertificate: React.FC = () => {
   const handleInputChange = (field: string, value: string | number) => {
     if (field === 'active') {
       const activeValue = value === 'Active' ? 1 : 0;
-      setFormData((prevData) => ({ ...prevData, [field]: activeValue }));
+      setFormData(prev => ({ ...prev, [field]: activeValue }));
     } else {
-      setFormData((prevData) => ({ ...prevData, [field]: value }));
+      setFormData(prev => ({ ...prev, [field]: value }));
     }
   };
+  
   
   
   const handleSave = async () => {
@@ -34,6 +35,11 @@ const AddCertificate: React.FC = () => {
       console.log('Missing required fields:', formData);
       return;
     }
+    console.log('Saving certificate with data:', {
+      name: formData.name,
+      file: formData.file,
+      active: formData.active
+    });
   };
 
   return (

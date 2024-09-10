@@ -23,7 +23,7 @@ export const certificateAPI = {
     }
   },
 
-  add: async (data: { name: string, file: string }) => {
+  add: async (data: { name: string, file: string, active?:number }) => {
     try {
       const requestData = {
         ...data,
@@ -38,7 +38,7 @@ export const certificateAPI = {
     }
   },  
   
-  update: async (id: string, data: { name: string, file: string }) => {
+  update: async (id: string, data: { name: string, file: string, active?:number }) => {
     try {
       const requestData = {
         ...data,
