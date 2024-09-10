@@ -61,7 +61,6 @@ const Dropdown = <T extends { id: string }>({
 
       try {
         const newItems = await getItems(20, offset); 
-
         if (newItems.length === 0) {
           setAllLoaded(true);
         } else {
@@ -82,7 +81,9 @@ const Dropdown = <T extends { id: string }>({
       }
     },
     [loading, allLoaded, getItems, offset]
-  );  );  const handleDropdownToggle = useCallback(() => {
+  );
+  
+  const handleDropdownToggle = useCallback(() => {
     if (!dropdownOpen) {
       loadMoreItems(); 
     }
