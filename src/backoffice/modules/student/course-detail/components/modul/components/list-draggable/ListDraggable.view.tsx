@@ -8,7 +8,7 @@ import VideoCam from '@/../public/icons/videocam.svg';
 import Pencil from '@/../public/icons/edit-2.svg';
 import BookGray from '@/../public/icons/book3.svg';
 import ClipboardTick from '@/../public/icons/clipboard-tick.svg';
-import Task from '@/../public/icons/task.svg';
+import Task from '@/../public/icons/manage-program/clipboard.svg';
 import { format, isFuture } from 'date-fns';
 
 const ListDraggableView: React.FC<IListDraggable> = ({

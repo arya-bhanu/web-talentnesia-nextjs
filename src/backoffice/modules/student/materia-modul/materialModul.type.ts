@@ -11,4 +11,5 @@ export interface TabItem {
   label: string;
   iconId: number;
   content: string | null;
+  isCompleted: number;
 }

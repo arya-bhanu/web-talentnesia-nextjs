@@ -82,10 +82,15 @@ const MaterialModulView: React.FC = () => {
                             <span>{tab.label}</span>
                           </div>
                           <img
-                            src="/icons/manage-program/clipboard.svg"
-                            className={`w-5 h-5 ${selectedTab === tab.id ? 'filter invert' : ''}`}
-                            alt="Clipboard Icon"
-                          />
+                          src={tab.isCompleted === 1 ? "/icons/manage-program/clipboard-tick.svg" : "/icons/manage-program/clipboard.svg"}
+                          className={`w-5 h-5`}
+                          style={{
+                            filter: selectedTab === tab.id
+                              ? 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)'
+                              : 'none'
+                          }}
+                          alt="Clipboard Icon"
+                        />
                         </li>
                       ))}
                     </ul>

@@ -78,6 +78,7 @@ const useMaterialModul = () => {
               label: content.title,
               iconId: parseInt(content.type),
               content: content.body,
+              isCompleted: content.isCompleted,
             })),
           }));
 
