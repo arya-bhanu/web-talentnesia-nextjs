@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import LabelForm from '@/backoffice/components/label-form';
-import { Select } from 'flowbite-react';
+import { Select, TextInput } from 'flowbite-react';
 
-const DocumentEditor = dynamic(
-  () => import('./components/Certificatedocs'),
-  { ssr: false }
-);
 
 const FormCertificateView = () => {
   const [selectedTemplate, setSelectedTemplate] = useState({ file: "", id: "" });
@@ -38,22 +34,15 @@ const FormCertificateView = () => {
     <form className='pb-5'>
       <div>
         <LabelForm isImportant htmlFor="select_template">
-          Select Template
+          Certificate Number
         </LabelForm>
-        <Select 
-          id="select_template" 
-          name="select_template" 
-          onChange={handleTemplateChange} 
-          value={selectedTemplate.id}
-        >
-          <option value="" disabled>Select a template</option>
-          {templates.map(template => (
-            <option key={template.id} value={template.id}>{template.file}</option>
-          ))}
-        </Select>
-      </div>
-      <div className="mt-4">
-        <DocumentEditor selectedTemplate={selectedTemplate}/>
+        <TextInput
+                id="modul"
+                name="modul"
+                type="number"
+                placeholder="Certificate Number"
+                required
+              />
       </div>
     </form>
   );
