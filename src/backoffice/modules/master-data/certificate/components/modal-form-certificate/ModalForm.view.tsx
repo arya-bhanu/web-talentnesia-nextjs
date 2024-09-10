@@ -1,4 +1,8 @@
+
+'use client';
+
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { Modal } from 'flowbite-react';
 import { ModalFormViewProps } from './modalForm.type';
 import { FileInputComponent } from '@/backoffice/components/file-input/FileInput';
@@ -12,15 +16,23 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
   handleSave,
   onClose,
 }) => {
+  
+
+
   return (
     <Modal show={isOpen} onClose={onClose}>
       <Modal.Header>{title}</Modal.Header>
-      <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSave();
+        }}
+      >
         <Modal.Body>
           <div className="space-y-4">
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900">
-                Certificate name<label className="text-red-500">*</label>
+                Certificate name<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -35,14 +47,9 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
               )}
             </div>
 
-            <FileInputComponent
-              id="certificate-file"
-              label="Upload Certificate File"
-              onFileChange={(file) => handleInputChange('file', file.name)}
-            />
           </div>
         </Modal.Body>
-        <Modal.Footer className='flex justify-end space-x-2'>
+        <Modal.Footer className="flex justify-end space-x-2">
           <button
             type="button"
             className="text-red-600 border border-red-600 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-200 rounded-lg px-5 py-2.5 text-center mr-2"
@@ -61,3 +68,4 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
     </Modal>
   );
 };
+export default ModalFormView;

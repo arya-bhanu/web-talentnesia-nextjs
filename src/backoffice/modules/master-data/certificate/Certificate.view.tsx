@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { ICertificateView } from './certificate.type';
@@ -12,6 +14,7 @@ import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -26,13 +29,18 @@ const CertificateView: React.FC<ICertificateView> = ({
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
-
+  
+  const router = useRouter();
+  
+  const openDocumentEditor = () => {
+      router.push('/backoffice/master-data/certificate/add-certificate/'); 
+    };
   const {
     handleAddCertificate,
     handleEditCertificate,
     handleDeleteCertificate,
   } = useCertificateActions();
-
+  
   const handleEdit = useCallback((id: string, rowData: any) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
@@ -87,7 +95,7 @@ const CertificateView: React.FC<ICertificateView> = ({
           return (
             <div>
               <div className='font-bold text-gray-900'>{formattedDate}</div>
-              <div className='pl-6 text-start'>{formattedTime}</div>
+              <div className=' text-start'>{formattedTime}</div>
             </div>
           );
         },
@@ -110,10 +118,15 @@ const CertificateView: React.FC<ICertificateView> = ({
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
                   <button
-                    onClick={() => handleEdit(id, rowData)}
+                    onClick={openDocumentEditor}
                     className="hover:text-blue-700 hover:underline"
                   >
                     Edit
+                  </button>
+                  <button
+                    className="hover:text-blue-700 hover:underline"
+                  >
+                    Open
                   </button>
                   <button
                     onClick={() => handleDelete(id)}
@@ -135,15 +148,13 @@ const CertificateView: React.FC<ICertificateView> = ({
     [handleEdit, handleDelete]
   );
 
+
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
         <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
+          onClick={openDocumentEditor}
           text="Add Certificate"
         />
       </div>
@@ -176,7 +187,7 @@ const CertificateView: React.FC<ICertificateView> = ({
         }}
       />
     </div>
-  );
-};
+
+  );};
 
 export default CertificateView;

@@ -20,6 +20,7 @@ const AccordionPanelDraggable: React.FC<
   const [openPopover, setOpenPopover] = useState(false);
   const [openModalMentoring, setOpenModalMentoring] = useState(false);
   const [openModalCertificate, setOpenModalCertificate] = useState(false);
+  const [openModalGenerate, setOpenModalGenerate] = useState(false);
   const [openModalContent, setOpenModalContent] = useState(false);
   const queryClient = useQueryClient();
   const params = useSearchParams();
@@ -69,6 +70,13 @@ const AccordionPanelDraggable: React.FC<
       setOpenModalCertificate(false);
     } else {
       setOpenModalCertificate(true);
+    }
+  };
+  const handleOpenModalGenerate = (action: 'open' | 'close') => {
+    if (action === 'close') {
+      setOpenModalGenerate(false);
+    } else {
+      setOpenModalGenerate(true);
     }
   };
 
@@ -132,6 +140,10 @@ const AccordionPanelDraggable: React.FC<
     e.preventDefault();
     e.stopPropagation();
   };
+  const handleSubmitModalGenerate = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   const handleSubmitModalContent = async (
     e: FormEvent<HTMLFormElement>,
@@ -174,6 +186,7 @@ const AccordionPanelDraggable: React.FC<
       handleDeleteChapter={handleDeleteChapter}
       handleOpenModalMentoring={handleOpenModalMentoring}
       handleOpenModalCertificate={handleOpenModalCertificate}
+      handleOpenModalGenerate={handleOpenModalGenerate}
       handleOpenModalContent={handleOpenModalContent}
       open={openPopover}
       setOpen={setOpenPopover}
@@ -181,14 +194,16 @@ const AccordionPanelDraggable: React.FC<
       setOpenModalMentoring={setOpenModalMentoring}
       handleSubmitModalMentoring={handleSubmitModalMentoring}
       handleSubmitModalCertificate={handleSubmitModalCertificate}
+      handleSubmitModalGenerate={handleSubmitModalGenerate}
       handleSubmitModalContent={handleSubmitModalContent}
       openModalContent={openModalContent}
       setOpenModalContent={setOpenModalContent}
       openModalCertificate={openModalCertificate}
+      openModalGenerate={openModalGenerate}
       setOpenModalCertificate={setOpenModalCertificate}
+      setOpenModalGenerate={setOpenModalGenerate}
       {...props}
     />
   );
 };
-
 export default AccordionPanelDraggable;
