@@ -13,9 +13,15 @@ import { Component as SelectYear } from '../components/select-year/selectYear';
 import { Region } from '../mentor/mentorForm.type';
 import Link from 'next/link';
 import { ResponseModal } from '../components/response-modal/responseModal';
-import { APIResponseReligion, IComboReligion } from '../../master-data/religion/religion.type';
+import {
+  APIResponseReligion,
+  IComboReligion,
+} from '../../master-data/religion/religion.type';
 import { APIResponseAcademicLevel } from '../../master-data/academic-level/academicLevel.type';
-import { APIResponseAcademicTitle, IComboAcademicTitle } from '../../master-data/academic-title/academicTitle.type';
+import {
+  APIResponseAcademicTitle,
+  IComboAcademicTitle,
+} from '../../master-data/academic-title/academicTitle.type';
 import Dropdown from '@/backoffice/components/dropdown/Dropdown';
 import {
   provinceAPI,
@@ -29,51 +35,59 @@ type MentorViewProps = ReturnType<typeof useMentorForm>;
 
 export const MentorView: React.FC<MentorViewProps> = ({
   form,
-    handleInputChange,
-    handleEducationChange,
-    addEducation,
-    removeEducation,
-    resetForm,
-    handleFileChange,
-    handleProfilePictureChange,
-    handleEducationFileChange,
-    handleSubmit,
-    showConfirmModal,
-    setShowConfirmModal,
-    showResultModal,
-    setShowResultModal,
-    isSuccess,
-    confirmSubmit,
+  handleInputChange,
+  handleEducationChange,
+  addEducation,
+  removeEducation,
+  resetForm,
+  handleFileChange,
+  handleProfilePictureChange,
+  handleEducationFileChange,
+  handleSubmit,
+  showConfirmModal,
+  setShowConfirmModal,
+  showResultModal,
+  setShowResultModal,
+  isSuccess,
+  confirmSubmit,
 }) => {
   const [religions, setReligions] = useState<APIResponseReligion[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [districts, setDistricts] = useState<District[]>([]);
   const [subDistricts, setSubDistricts] = useState<SubDistrict[]>([]);
-  const [academicLevels, setAcademicLevels] = useState<APIResponseAcademicLevel[]>([]);
-  const [academicTitles, setAcademicTitles] = useState<APIResponseAcademicTitle[]>([]);
+  const [selectedProvinceId, setSelectedProvinceId] = useState<string | null>(
+    null,
+  );
+  const [selectedDistrictId, setSelectedDistrictId] = useState<string | null>(
+    null,
+  );
+  const [academicLevels, setAcademicLevels] = useState<
+    APIResponseAcademicLevel[]
+  >([]);
+  const [academicTitles, setAcademicTitles] = useState<
+    APIResponseAcademicTitle[]
+  >([]);
 
   const styles = {
-    inputField: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins",
+    inputField:
+      'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins',
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [
-          fetchedReligions,
           fetchedProvinces,
           fetchedDistricts,
           fetchedSubDistricts,
-          fetchedAcademicTitles
+          fetchedAcademicTitles,
         ] = await Promise.all([
-          religionAPI.all(),
           provinceAPI.getProvinces(100, 0),
           districtAPI.getDistricts(100, 0),
           subDistrictAPI.getSubDistricts(100, 0),
-          academicTitleAPI.all()
+          academicTitleAPI.all(),
         ]);
 
-        setReligions((fetchedReligions as IComboReligion).data);
         setProvinces(fetchedProvinces);
         setDistricts(fetchedDistricts);
         setSubDistricts(fetchedSubDistricts);
@@ -85,7 +99,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
 
     fetchData();
   }, []);
-
   return (
     <>
       <div className="container mx-auto p-1 max-w-full">
@@ -93,12 +106,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
           <input type="hidden" name="id" value={form.id || ''} />
           <div className=" p-6 rounded-lg shadow-sm bg-white">
             <div className="flex items-center space-x-4">
-            <ProfilePictureInput
-              onChange={handleProfilePictureChange}
-              initialValue={form.profilePicture}
-              idCheck={form.id}
-              id={form.id}  // Add this line
-            />
+              <ProfilePictureInput
+                onChange={handleProfilePictureChange}
+                initialValue={form.profilePicture}
+                idCheck={form.id}
+                id={form.id} // Add this line
+              />
             </div>
           </div>
 
@@ -183,24 +196,24 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 />
               </div>
               <div>
-              <label className="flex mb-1">
-                Date of Birth<div className="text-red-600">*</div>
-              </label>
-              <Datepicker
-                id="dateOfBirth"
-                onChange={(date: Date | null) => {
-                  const customEvent = {
-                    target: {
-                      name: 'dateOfBirth',
-                      value: date ? date.toISOString().split('T')[0] : '',
-                    },
-                  } as React.ChangeEvent<HTMLInputElement>;
-                  handleInputChange(customEvent);
-                }}
-                value={form.dateOfBirth ? new Date(form.dateOfBirth) : null}
-                placeholder="Select Date of Birth"
-              />
-            </div>
+                <label className="flex mb-1">
+                  Date of Birth<div className="text-red-600">*</div>
+                </label>
+                <Datepicker
+                  id="dateOfBirth"
+                  onChange={(date: Date | null) => {
+                    const customEvent = {
+                      target: {
+                        name: 'dateOfBirth',
+                        value: date ? date.toISOString().split('T')[0] : '',
+                      },
+                    } as React.ChangeEvent<HTMLInputElement>;
+                    handleInputChange(customEvent);
+                  }}
+                  value={form.dateOfBirth ? new Date(form.dateOfBirth) : null}
+                  placeholder="Select Date of Birth"
+                />
+              </div>
               <div>
                 <label className="flex mb-1">
                   Religion<div className="text-red-600">*</div>
@@ -225,34 +238,34 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 </select>
               </div>
               <div>
-            <label className="flex mb-1">
-              Gender<div className="text-red-600">*</div>
-            </label>
-            <div className="flex items-center mt-3 space-x-4">
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="1"
-                  onChange={handleInputChange}
-                  checked={form.gender === 1}
-                  className="mr-2 size-4 md:size-6 text-sm md:text-base place-self-center"
-                />
-                Male
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="2"
-                  onChange={handleInputChange}
-                  checked={form.gender === 2}
-                  className="mr-2 size-4 md:size-6 text-sm md:text-base"
-                />
-                Female
-              </label>
-            </div>
-          </div>
+                <label className="flex mb-1">
+                  Gender<div className="text-red-600">*</div>
+                </label>
+                <div className="flex items-center mt-3 space-x-4">
+                  <label className="inline-flex items-center">
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="1"
+                      onChange={handleInputChange}
+                      checked={form.gender === 1}
+                      className="mr-2 size-4 md:size-6 text-sm md:text-base place-self-center"
+                    />
+                    Male
+                  </label>
+                  <label className="inline-flex items-center">
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="2"
+                      onChange={handleInputChange}
+                      checked={form.gender === 2}
+                      className="mr-2 size-4 md:size-6 text-sm md:text-base"
+                    />
+                    Female
+                  </label>
+                </div>
+              </div>
               <div>
                 <label className="flex mb-1">
                   Mariage Status<div className="text-red-600">*</div>
@@ -369,46 +382,72 @@ export const MentorView: React.FC<MentorViewProps> = ({
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="flex mb-1">
-                  Province<div className="text-red-600">*</div>
-                </label>
                 <Dropdown<Province>
-                  onItemSelect={(itemId) =>
+                  onItemSelect={(provinceId) => {
+                    setSelectedProvinceId(provinceId);
                     handleInputChange({
-                      target: { name: 'provinceId', value: itemId },
-                    } as React.ChangeEvent<HTMLSelectElement>)
-                  }
+                      target: { name: 'provinceId', value: provinceId },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                    setDistricts([]);
+                    setSubDistricts([]);
+                    setSelectedDistrictId(null);
+                    handleInputChange({
+                      target: { name: 'districtId', value: '' },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                    handleInputChange({
+                      target: { name: 'subDistrictId', value: '' },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                  }}
                   getItems={provinceAPI.getProvinces}
                   itemToString={(item) => item.name}
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
                   placeholderText="Select Province"
+                  label="Province"
                 />
               </div>
               <div>
-                <Dropdown<District>
-                  onItemSelect={(itemId) => {
-                    form.districtId = itemId
-                  }}
-                  getItems={districtAPI.getDistricts}
-                  itemToString={(item) => item.name}
-                  containerClassName="w-full"
-                  inputClassName="w-full rounded-l-lg"
-                  placeholderText="Select District"
-                  label="District"
-                />
+              <Dropdown<District>
+  key={selectedProvinceId || 'district'}
+  onItemSelect={(districtId) => {
+    setSelectedDistrictId(districtId);
+    handleInputChange({
+      target: { name: 'districtId', value: districtId },
+    } as React.ChangeEvent<HTMLSelectElement>);
+    setSubDistricts([]);
+  }}
+  getItems={(limit, offset) =>
+    selectedProvinceId
+      ? districtAPI.getDistrictsByProvince(selectedProvinceId, limit, offset)
+      : Promise.resolve([])
+  }
+  itemToString={(item) => item.name}
+  containerClassName="w-full"
+  inputClassName="w-full rounded-l-lg"
+  placeholderText="Select District"
+  label="District"
+  disabled={!selectedProvinceId}
+/>
               </div>
               <div>
                 <Dropdown<SubDistrict>
-                  onItemSelect={(itemId) => {
-                    form.subDistrictId = itemId
+                  key={selectedDistrictId || 'subdistrict'}
+                  onItemSelect={(subDistrictId) => {
+                    handleInputChange({
+                      target: { name: 'subDistrictId', value: subDistrictId },
+                    } as React.ChangeEvent<HTMLSelectElement>);
                   }}
-                  getItems={subDistrictAPI.getSubDistricts}
+                  getItems={(limit, offset) =>
+                    selectedDistrictId
+                      ? subDistrictAPI.getSubDistrictsByDistrict(selectedDistrictId, limit, offset)
+                      : Promise.resolve([])
+                  }                  
                   itemToString={(item) => item.name}
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
                   placeholderText="Select Sub District"
                   label="Sub District"
+                  disabled={!selectedDistrictId}
                 />
               </div>
               <div>
@@ -452,8 +491,8 @@ export const MentorView: React.FC<MentorViewProps> = ({
               </div>
             </div>
           </div>
-                    {/* Section D: Education */}
-                    <div className=" p-4 md:p-6 rounded-lg shadow-sm bg-white">
+          {/* Section D: Education */}
+          <div className=" p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg md:text-xl font-semibold">D. Education</h2>
 
@@ -564,23 +603,30 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     />
                   </div>
                   <div>
-                  <label className="flex mb-1">
-                    Year Graduated<div className="text-red-600">*</div>
-                  </label>
-                  <SelectYear
-                  id={`educations.${index}.yearGraduate`}
-                  value={educations.yearGraduate ? parseInt(educations.yearGraduate, 10) : null}
-                  onChange={(year) => {
-                    const event = {
-                      target: {
-                        name: `educations[${index}].yearGraduate`,
-                        value: year.toString(),
-                      },
-                    } as React.ChangeEvent<{ name?: string; value: unknown }>;
-                    handleEducationChange(event, index);
-                  }}
-                />
-                </div>
+                    <label className="flex mb-1">
+                      Year Graduated<div className="text-red-600">*</div>
+                    </label>
+                    <SelectYear
+                      id={`educations.${index}.yearGraduate`}
+                      value={
+                        educations.yearGraduate
+                          ? parseInt(educations.yearGraduate, 10)
+                          : null
+                      }
+                      onChange={(year) => {
+                        const event = {
+                          target: {
+                            name: `educations[${index}].yearGraduate`,
+                            value: year.toString(),
+                          },
+                        } as React.ChangeEvent<{
+                          name?: string;
+                          value: unknown;
+                        }>;
+                        handleEducationChange(event, index);
+                      }}
+                    />
+                  </div>
                   <div>
                     <label className="flex mb-1">
                       Certificate Number<div className="text-red-600">*</div>
@@ -602,7 +648,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     <FileInput
                       id={`educations[${index}].certificate`}
                       label="Upload Certificate"
-                      onChange={(file) => handleEducationFileChange(index, 'certificate')(file)}
+                      onChange={(file) =>
+                        handleEducationFileChange(index, 'certificate')(file)
+                      }
                       initialValue={educations.certificate}
                       initialFilename={educations.certificateOrigin}
                     />
@@ -614,12 +662,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
           {/* Submit Button */}
           <div className="flex justify-end space-x-4">
             <Link href={'/backoffice/manage-user'}>
-            <button
-              type="button"
-              className="cancel-button bg-white border-red-500 border-2 text-red-500 py-2 px-4 rounded font-poppins"
-            >
-              Cancel
-            </button>
+              <button
+                type="button"
+                className="cancel-button bg-white border-red-500 border-2 text-red-500 py-2 px-4 rounded font-poppins"
+              >
+                Cancel
+              </button>
             </Link>
             <button
               type="submit"
@@ -644,8 +692,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
         isOpen={showResultModal}
         onClose={() => setShowResultModal(false)}
         onConfirm={() => setShowResultModal(false)}
-        title={isSuccess ? "Success" : "Error"}
-        message={isSuccess ? "Berhasil Menambahkan Mentor" : "Gagal Menambahkan Mentor"}
+        title={isSuccess ? 'Success' : 'Error'}
+        message={
+          isSuccess ? 'Berhasil Menambahkan Mentor' : 'Gagal Menambahkan Mentor'
+        }
         confirmText="OK!"
       />
     </>
