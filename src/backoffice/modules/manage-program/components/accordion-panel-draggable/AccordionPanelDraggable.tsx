@@ -156,16 +156,19 @@ const AccordionPanelDraggable: React.FC<
       const time = formData.get('time') as string;
       const title = formData.get('title') as string;
       const type = formData.get('type') as string;
-      const uploadFile = formData.get('upload_file') as File;
+      const fileUrl = formData.get('fileUrl') as string;
+      const fileName = formData.get('fileName') as string;
       const convertedTime = time.substring(0, 5);
-      if (chapterId && convertedTime && title && type && uploadFile) {
+      
+      if (chapterId && convertedTime && title && type && fileUrl) {
         await createContentProgramAsync({
-          body: 'sample',
+          body: fileName,
           duration: convertedTime,
           title,
           type,
           chapterId,
           isexam: 0,
+          file: fileUrl
         });
         await queryClient.invalidateQueries({
           queryKey: ['chapters', 'program', params.get('programId')],
@@ -176,6 +179,7 @@ const AccordionPanelDraggable: React.FC<
       console.error(err);
     }
   };
+  
 
   return (
     <AccordionPanelDraggableView

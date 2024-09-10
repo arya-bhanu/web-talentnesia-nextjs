@@ -78,13 +78,15 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     const title = formData.get('title') as string;
     const type = formData.get('type') as string;
     const uploadFile = formData.get('upload_file') as File;
+    const fileUrl = formData.get('fileUrl') as string;
+    const fileName = formData.get('fileName') as string;
     const convertedTime = time.substring(0, 5);
 
     if (props.id) {
       try {
         await editContentAsync({
           id: props.id,
-          data: { duration: convertedTime, title, type, body: 'test_1' },
+          data: { duration: convertedTime, title, type, body: fileName },
         });
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['content'] });

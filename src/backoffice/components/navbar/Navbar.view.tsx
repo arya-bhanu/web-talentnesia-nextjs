@@ -24,6 +24,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   user,
   isMenuOpen,
   toggleMenu,
+  style
 }) => {
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -58,7 +59,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   };
 
   return (
-    <nav className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 pl-12 md:pl-64">
+    <nav className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 pl-12 md:pl-64" style={style} >
       <div className="flex justify-between items-center py-4 px-6">
         <div>
           <TitleNavbar customTitles={globalCustomTitles} />

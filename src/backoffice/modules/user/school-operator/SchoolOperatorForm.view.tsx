@@ -83,14 +83,13 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
         ]);
 
         setReligions((fetchedReligions as IComboReligion).data);
-        const [provinces, setProvinces] = useState<Province[]>([]);
-        const [districts, setDistricts] = useState<District[]>([]);
-        const [subDistricts, setSubDistricts] = useState<SubDistrict[]>([]);
+        setProvinces(fetchedProvinces);
+        setDistricts(fetchedDistricts);
+        setSubDistricts(fetchedSubDistricts);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -105,7 +104,7 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                 onChange={handleProfilePictureChange}
                 initialValue={form.profilePicture}
                 idCheck={form.id}
-                id={form.id} // Add this line
+                id={form.id}
               />
             </div>
           </div>

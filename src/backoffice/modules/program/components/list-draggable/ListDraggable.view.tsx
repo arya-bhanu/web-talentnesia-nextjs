@@ -22,10 +22,14 @@ const ListDraggableView: React.FC<IListDraggable> = ({
   const generateIcon = useMemo(() => {
     switch (type) {
       case '1':
-        return <PlayCircle />;
-      case '2':
         return <Book />;
+      case '2':
+        return <PlayCircle />;
       case '3':
+        return <PlayCircle />;
+      case '4':
+        return <PlayCircle />;
+      case '5':
         return <Edit2 />;
       default:
         return <VideoCam />;
