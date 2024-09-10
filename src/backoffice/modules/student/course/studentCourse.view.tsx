@@ -168,7 +168,8 @@ const StudentCourseView: React.FC = () => {
           </div>
         </>
       ),
-      active: true
+      active: true,
+      type: 'my-course',
     },
     {
       title: "Wishlist Course",
@@ -176,7 +177,8 @@ const StudentCourseView: React.FC = () => {
         <>
           {/* Implement Wishlist Course content here */}
         </>
-      )
+      ),
+      type: 'wishlist-course',
     }
   ];
 

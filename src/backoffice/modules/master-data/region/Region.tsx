@@ -17,18 +17,22 @@ const Region: React.FC = () => {
       title: 'Province',
       content: <Province />,
       active: true,
+      type: 'province',
     },
     {
       title: 'City',
       content: <City />,
+      type: 'city',
     },
     {
       title: 'Sub-District',
       content: <SubDistrict />,
+      type: 'sub-district',
     },
     {
       title: 'Zip Code',
       content: <ZipCode />,
+      type: 'zip-code',
     },
   ];
 

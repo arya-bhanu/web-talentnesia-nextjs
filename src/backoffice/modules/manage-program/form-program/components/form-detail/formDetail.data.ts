@@ -1,6 +1,6 @@
-import { APIDetailProgramIICP } from './formDetail.type';
+import { APIDetailProgram } from './formDetail.type';
 
-export const defaultDataFormDetail: APIDetailProgramIICP = {
+export const defaultDataFormDetail: APIDetailProgram = {
   image: null,
   endDate: '',
   mentors: [{ id: '', name: '' }],
@@ -8,11 +8,11 @@ export const defaultDataFormDetail: APIDetailProgramIICP = {
   startDate: '',
   active: 0,
   institutionId: '',
-  type: 'iicp',
+  type: '',
 };
 
 export const defaultDataFormDetailEdit: Omit<
-  APIDetailProgramIICP,
+  APIDetailProgram,
   'mentors'
 > & { mentors: string[] } = {
   image: null,
@@ -22,5 +22,5 @@ export const defaultDataFormDetailEdit: Omit<
   startDate: '',
   active: 0,
   institutionId: '',
-  type: 'iicp',
+  type: '',
 };

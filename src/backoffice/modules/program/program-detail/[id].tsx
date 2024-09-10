@@ -118,6 +118,7 @@ export default function ProgramDetail({ params }: ProgramDetailProps) {
           <IdModal open={openModal} setOpen={setOpenModal} />
         </div>
       ),
+      type: 'student',
     },
     {
       title: 'Course',
@@ -180,6 +181,7 @@ export default function ProgramDetail({ params }: ProgramDetailProps) {
           </div>
         </div>
       ),
+      type: 'course',
     },
   ];
 
