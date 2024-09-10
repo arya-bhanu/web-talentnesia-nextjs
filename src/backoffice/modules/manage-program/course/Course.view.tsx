@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { IICPViewProps } from './iicp.type';
+import { CourseViewProps } from './course.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
@@ -17,7 +17,7 @@ import { BadgeStatus } from '@/backoffice/components/badge-status';
 
 const columnHelper = createColumnHelper<any>();
 
-const IICPView: React.FC<IICPViewProps> = ({
+const CourseView: React.FC<CourseViewProps> = ({
   data,
   Filter,
   setFilter,
@@ -127,4 +127,4 @@ const IICPView: React.FC<IICPViewProps> = ({
   );
 };
 
-export default IICPView;
+export default CourseView;

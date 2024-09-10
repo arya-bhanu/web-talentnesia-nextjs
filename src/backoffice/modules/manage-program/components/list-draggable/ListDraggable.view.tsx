@@ -164,7 +164,7 @@ const ListDraggableView: React.FC<
           onClick={() => {
             if (isexam) {
               router.push(
-                `/backoffice/manage-program/update-program-IICP/edit-exam/?examId=${id}&chapterId=${chapterId}&programId=${programId}`,
+                `/backoffice/manage-program/update-program/edit-exam/?examId=${id}&chapterId=${chapterId}&programId=${programId}`,
               );
             } else if (type === '6' || ismonitoring) {
               handleEditMentoring();

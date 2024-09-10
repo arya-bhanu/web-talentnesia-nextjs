@@ -20,7 +20,7 @@ export type Schools = {
   name: string;
 };
 
-export interface APIDetailProgramIICP {
+export interface APIDetailProgram {
   id?: string;
   name: string;
   active: 0 | 1 | 2;

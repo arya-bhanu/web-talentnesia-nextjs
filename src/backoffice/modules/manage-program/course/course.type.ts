@@ -1,9 +1,9 @@
 import { APIDetailProgram } from './../form-program/components/form-detail/formDetail.type';
 import { Dispatch, SetStateAction } from 'react';
 
-export interface IICPType {}
+export interface CourseType {}
 
-export interface IICPViewProps {
+export interface CourseViewProps {
   data: APIDetailProgram[];
   Filter: string;
   setFilter: (value: string) => void;
@@ -14,13 +14,13 @@ export interface IICPViewProps {
   ) => void;
 }
 
-export interface IICPProgramItemApiResponse {
+export interface CourseProgramItemApiResponse {
   data: {
     items: APIDetailProgram[];
   }
 }
 
-export interface IICPStateType {
+export interface CourseStateType {
   popoverIndex: number;
   setPopoverIndex: Dispatch<SetStateAction<number>>;
   onDeleteClick: (id: string) => void;

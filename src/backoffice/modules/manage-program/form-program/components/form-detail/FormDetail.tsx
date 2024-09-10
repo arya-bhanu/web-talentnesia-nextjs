@@ -11,10 +11,11 @@ import {
   fetchSchools,
 } from './api/formDetail.api';
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
-import { APIDetailProgramIICP, Schools } from './formDetail.type';
+import { APIDetailProgram, Schools } from './formDetail.type';
 import { convertIntoNumericDate } from '@/helpers/formatter.helper';
 import { defaultDataFormDetail, defaultDataFormDetailEdit } from './formDetail.data';
 import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
+import { useTabStoreManageProgram } from '../../../manageProgramStore';
 
 const FormDetail = () => {
   const params = useSearchParams();
@@ -30,6 +31,7 @@ const FormDetail = () => {
     resetStore,
   } = useFormDetailStore();
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
+  const { activeTab } = useTabStoreManageProgram();
 
   const { data: dataProgramDetail, isLoading: isLoadingProgramDetail } =
     useQuery({
@@ -73,7 +75,7 @@ const FormDetail = () => {
       }
     if (dataMentors?.data?.data) {
       setDefaultMentors(
-        dataMentors.data.data.map((el: any) => {
+        dataMentors.data.data.map((el: Mentor) => {
           return {
             id: el.id,
             name: el.name,
@@ -83,7 +85,7 @@ const FormDetail = () => {
     }
     if (dataSchools?.data?.data) {
       setDefaultSchools(
-        dataSchools.data.data.map((el: any) => {
+        dataSchools.data.data.map((el: Schools) => {
           return {
             id: el.id,
             name: el.name,
@@ -99,7 +101,7 @@ const FormDetail = () => {
 
   const handleFileChange = async (fileUrl: string) => {
     const fullUrl = await getImageUrl(fileUrl);
-    setData((prevData: APIDetailProgramIICP) => ({ ...prevData, image: fileUrl }));
+    setData((prevData: APIDetailProgram) => ({ ...prevData, image: fileUrl }));
     setFullImageUrl(fullUrl);
   };
 
@@ -109,7 +111,7 @@ const FormDetail = () => {
     const formData = new FormData(e.currentTarget);
     const programName = formData.get('program_name') as string;
     const active = Number(formData.get('active') as string) as 0 | 1;
-    const mentors = data.mentors.map((el) => el.id);
+    const mentors = data.mentors.map((el: Mentor) => el.id);
     const filePic = data.image;
     const startDate = formData.get('start_date') as string;
     const endDate = formData.get('end_date') as string;
@@ -135,7 +137,7 @@ const FormDetail = () => {
       mentors,
       name: programName,
       image: filePic,
-      type: 'iicp',
+      type: activeTab,
       institutionId: school,
     });
 

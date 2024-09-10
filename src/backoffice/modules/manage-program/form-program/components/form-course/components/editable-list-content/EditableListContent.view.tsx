@@ -128,7 +128,7 @@ const EditableListContentView: React.FC<
               const chapterId = params.get('chapterId');
               if (isexam) {
                 router.push(
-                  `/backoffice/manage-program/update-program-IICP/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
+                  `/backoffice/manage-program/update-program/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
                 );
               } else {
                 setOpenModalEdit(true);

@@ -112,7 +112,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         updateQuestion([]);
         startTransition(() => {
           router.replace(
-            `/backoffice/manage-program/update-program-IICP/?programId=${programId}&schoolId=${schoolId}`,
+            `/backoffice/manage-program/update-program/?programId=${programId}&schoolId=${schoolId}`,
           );
         });
       }

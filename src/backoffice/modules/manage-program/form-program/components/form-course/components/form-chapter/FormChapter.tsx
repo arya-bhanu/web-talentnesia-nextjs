@@ -106,7 +106,7 @@ const FormChapter = () => {
         if (submitType.type === 'defaultSubmit') {
           // router.back()
           return router.push(
-            `/backoffice/manage-program/update-program-IICP/?programId=${programId}&schoolId=${schoolId}`,
+            `/backoffice/manage-program/update-program/?programId=${programId}&schoolId=${schoolId}`,
           );
         }
 
@@ -124,7 +124,7 @@ const FormChapter = () => {
         if (submitType.type === 'defaultSubmit') {
           // router.back()
           return router.push(
-            `/backoffice/manage-program/update-program-IICP/?programId=${programId}&schoolId=${schoolId}`,
+            `/backoffice/manage-program/update-program/?programId=${programId}&schoolId=${schoolId}`,
           );
         }
 

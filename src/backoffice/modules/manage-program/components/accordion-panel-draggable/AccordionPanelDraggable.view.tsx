@@ -252,7 +252,7 @@ const AccordionPanelDraggableView: React.FC<
                 </li>
                 <li>
                   <Link
-                    href={`/backoffice/manage-program/update-program-IICP/add-exam/?programId=${programId}&chapterId=${id}`}
+                    href={`/backoffice/manage-program/update-program/add-exam/?programId=${programId}&chapterId=${id}`}
                     type="button"
                     className="text-sm flex items-center gap-2 font-lato font-normal"
                   >
@@ -272,7 +272,7 @@ const AccordionPanelDraggableView: React.FC<
                 </li>
                 <li>
                   <Link
-                    href={`/backoffice/manage-program/update-program-IICP/edit-chapter/?programId=${programId}&chapterId=${id}&schoolId=${schoolId}`}
+                    href={`/backoffice/manage-program/update-program/edit-chapter/?programId=${programId}&chapterId=${id}&schoolId=${schoolId}`}
                     className="text-sm font-lato font-normal flex items-center gap-2"
                   >
                     <Edit />
