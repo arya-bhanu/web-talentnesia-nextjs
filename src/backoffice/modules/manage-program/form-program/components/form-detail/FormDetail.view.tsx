@@ -19,7 +19,7 @@ import { DropFile } from './components/drop-file-input/dropFileInput';
 
 const FormDetailView: React.FC<
   IFormDetail & IHandleFormDetail & IStateFormDetail
-> = ({ programId, handleSubmitForm, isLoadingMentors, handleFileChange, fullImageUrl }) => {
+> = ({ programId, handleSubmitForm, isLoadingMentors, handleFileChange, fullImageUrl, programType }) => {
   const [selectedMentors, setSelectedMentors] = useState<Mentor[]>([]);
   const { data, setData, defaultMentors, defaultSchools, defaultData } =
     useFormDetailStore();
@@ -157,6 +157,19 @@ const FormDetailView: React.FC<
           ))}
         </Select>
       </div>
+
+      {/* Price */}
+      {programType === 'course' && (
+        <div className="col-span-2">
+          <LabelForm htmlFor="price">Price</LabelForm>
+          <TextInput
+            id="price"
+            name="price"
+            type="string"
+            placeholder="Enter price"
+          />
+        </div>
+      )}
 
       {/* Buttons */}
       <div className="col-span-2 flex justify-end space-x-4 mt-10">

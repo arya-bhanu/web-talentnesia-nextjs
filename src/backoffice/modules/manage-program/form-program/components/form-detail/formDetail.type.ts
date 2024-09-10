@@ -5,6 +5,7 @@ export interface IFormDetail {
   programId?: string;
   handleFileChange: (fileUrl: string) => Promise<void>;
   fullImageUrl: string;
+  programType?: string;
 }
 
 export interface IHandleFormDetail {

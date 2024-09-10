@@ -153,6 +153,7 @@ const FormDetail = () => {
       isLoadingMentors={isLoadingMentors}
       handleFileChange={handleFileChange}
       fullImageUrl={fullImageUrl}
+      programType={dataProgramDetail?.data?.data?.type}
     />
   );
 };
