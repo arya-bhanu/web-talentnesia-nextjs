@@ -1,15 +1,14 @@
-// import axios from 'axios';
+import axios from 'axios';
 
-// const elearningApi = async () => {
-//   try {
-//     const { data } = await axios.get(
-//       'https://api-talentnesia.skwn.dev/api/elearning',
-//     );
-//     return data.data;
-//   } catch (error) {
-//     console.error('Error fetching e data:', error);
-//     throw error;
-//   }
-// };
+const elearningApi = async () => {
+  try {
+    const { data } = await axios.get(
+      'https://api-talentnesia.skwn.dev/api/elearning/table',
+    );
+    return data.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
-// export default elearningApi;
+export default elearningApi;

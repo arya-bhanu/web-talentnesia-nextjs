@@ -18,7 +18,9 @@ export const Home = () => {
           setSkeleton(false);
       }, 500)})
       .catch((err) => {
-        console.error(err);
+        setTimeout(() => {
+          setSkeleton(false);
+      }, 500);
       });
   }, []);
 

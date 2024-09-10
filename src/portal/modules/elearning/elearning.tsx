@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import ElearningView from "./elearning.view";
 import homeApi from "../home/api/homeApi";
-import courseApi from "../course/api/course";
+
+import elearningApi from "./api/elearningApi";
 
 export const Elearning: React.FC = () => {
     const [data, setData] = useState<any>();
@@ -16,15 +17,17 @@ export const Elearning: React.FC = () => {
         const fetchData = async () => {
             try {
                 const result = await homeApi();
-                const course = await courseApi();
+                const course = await elearningApi();
                 setCourse(course);
                 setData(result);
                 setTimeout(() => {
                     setSkeleton(false);
                 }, 500);
             } catch (err) {
-                console.error(err);
                 setError('Error loading data...');
+                setTimeout(() => {
+                    setSkeleton(false);
+                }, 500);
             }
         };
 

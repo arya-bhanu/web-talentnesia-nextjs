@@ -7,7 +7,6 @@ const courseApi = async () => {
     );
     return data.data;
   } catch (error) {
-    console.error('Error fetching course data:', error);
     throw error;
   }
 };

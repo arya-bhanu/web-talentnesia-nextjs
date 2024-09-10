@@ -19,7 +19,7 @@ const BootcampView: React.FC<BootcampViewProps> = ({ data, courses, isLoading })
         </main>
         <FeatureSection isLoading={isLoading}/>
         <main className="container">
-            <AllClass courses={courseDataArray} filterOptions={filterCategories} isLoading={isLoading} title="Jelajahi Semua Bootcamp"/>
+            <AllClass courses={courses.items} filterOptions={filterCategories} isLoading={isLoading} title="Jelajahi Semua Bootcamp"/>
             <UserStoryCard 
                 className="mt-16 md:mt-20 lg:mt-32"
                 testimonials={data.testimonials || []}

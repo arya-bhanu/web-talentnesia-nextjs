@@ -7,7 +7,6 @@ const iicpApi = async () => {
     );
     return data.data;
   } catch (error) {
-    console.error('Error fetching iicp data:', error);
     throw error;
   }
 };

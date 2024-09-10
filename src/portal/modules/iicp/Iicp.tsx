@@ -15,8 +15,9 @@ export const Iicp = () => {
     }, 500);
     })
     .catch((error) => {
-      console.error(error);
-      
+      setTimeout(() => {
+        setSkeleton(false);
+    }, 500);
     })
   }, []);
   try {

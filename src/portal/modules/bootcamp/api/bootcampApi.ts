@@ -1,11 +1,12 @@
-/*import axios from 'axios';
+import axios from 'axios';
 
 const bootcampApi = async () => {
   try {
     const { data } = await axios.get(
-      'https://api-talentnesia.skwn.dev/api/bootcamp',
+      'https://api-talentnesia.skwn.dev/api/bootcamp/table',
     );
     return data.data;
+
   } catch (error) {
     console.error('Error fetching bootcamp data:', error);
     throw error;
@@ -13,4 +14,3 @@ const bootcampApi = async () => {
 };
 
 export default bootcampApi;
-*/
