@@ -19,6 +19,7 @@ interface DropdownProps<T> {
   disabled?: boolean;
   resetOnChange?: boolean;
 }
+
 const Dropdown = <T extends { id: string }>({
   onItemSelect,
   getItems,
@@ -53,6 +54,7 @@ const Dropdown = <T extends { id: string }>({
       setSearchTerm('');
     }
   }, [resetOnChange]);
+
   const loadMoreItems = useCallback(
     async () => {
       if (loading || allLoaded) return;
@@ -94,7 +96,7 @@ const Dropdown = <T extends { id: string }>({
     const handleScroll = () => {
       if (dropdownRef.current) {
         const { scrollTop, clientHeight, scrollHeight } = dropdownRef.current;
-        if (scrollTop + clientHeight >= scrollHeight - 50 && !loading && !allLoaded) { // Increased sensitivity
+        if (scrollTop + clientHeight >= scrollHeight - 50 && !loading && !allLoaded) {
           loadMoreItems();
         }
       }
@@ -107,7 +109,9 @@ const Dropdown = <T extends { id: string }>({
     }
 
     return () => {
-      dropdownElement?.removeEventListener('scroll', handleScroll);
+      if (dropdownElement) {
+        dropdownElement.removeEventListener('scroll', handleScroll);
+      }
     };
   }, [dropdownOpen, loadMoreItems, loading, allLoaded]);
 
@@ -136,6 +140,7 @@ const Dropdown = <T extends { id: string }>({
   const filteredItems = items.filter((item) =>
     itemToString(item).toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   return (
     <div className={`relative ${containerClassName} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
       <label className={`block mb-2 text-sm font-medium text-gray-900 ${labelClassName}`}>
@@ -163,7 +168,7 @@ const Dropdown = <T extends { id: string }>({
         >
           {error && <div className="p-2 text-red-500 text-sm">{error}</div>}
           <ul className="divide-y divide-gray-200">
-      {filteredItems.map((item, index) => (
+            {filteredItems.map((item, index) => (
               <li
                 key={`${item.id}-${index}`}
                 className={`p-2 hover:bg-gray-200 cursor-pointer ${listItemClassName}`}
@@ -173,7 +178,8 @@ const Dropdown = <T extends { id: string }>({
               </li>
             ))}
           </ul>
-          {loading && (            <div className="p-2 text-center text-gray-500">Loading...</div>
+          {loading && (
+            <div className="p-2 text-center text-gray-500">Loading...</div>
           )}
           {!loading && !allLoaded && (
             <div className="p-2 text-center text-gray-500">Scroll for more...</div>

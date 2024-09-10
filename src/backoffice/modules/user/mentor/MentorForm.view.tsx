@@ -78,19 +78,13 @@ export const MentorView: React.FC<MentorViewProps> = ({
       try {
         const [
           fetchedProvinces,
-          fetchedDistricts,
-          fetchedSubDistricts,
           fetchedAcademicTitles,
         ] = await Promise.all([
           provinceAPI.getProvinces(100, 0),
-          districtAPI.getDistricts(100, 0),
-          subDistrictAPI.getSubDistricts(100, 0),
           academicTitleAPI.all(),
         ]);
 
         setProvinces(fetchedProvinces);
-        setDistricts(fetchedDistricts);
-        setSubDistricts(fetchedSubDistricts);
         setAcademicTitles((fetchedAcademicTitles as IComboAcademicTitle).data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -99,7 +93,23 @@ export const MentorView: React.FC<MentorViewProps> = ({
 
     fetchData();
   }, []);
-  return (
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      if (form.provinceId) {
+        setSelectedProvinceId(form.provinceId);
+        const fetchedDistricts = await districtAPI.getDistrictsByProvince(form.provinceId, 100, 0);
+        setDistricts(fetchedDistricts);
+      }
+      if (form.districtId) {
+        setSelectedDistrictId(form.districtId);
+        const fetchedSubDistricts = await subDistrictAPI.getSubDistrictsByDistrict(form.districtId, 100, 0);
+        setSubDistricts(fetchedSubDistricts);
+      }
+    };
+
+    fetchInitialData();
+  }, [form.provinceId, form.districtId]);  return (
     <>
       <div className="container mx-auto p-1 max-w-full">
         <form className="space-y-8" onSubmit={handleSubmit}>
@@ -407,27 +417,31 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 />
               </div>
               <div>
-              <Dropdown<District>
-  key={selectedProvinceId || 'district'}
-  onItemSelect={(districtId) => {
-    setSelectedDistrictId(districtId);
-    handleInputChange({
-      target: { name: 'districtId', value: districtId },
-    } as React.ChangeEvent<HTMLSelectElement>);
-    setSubDistricts([]);
-  }}
-  getItems={(limit, offset) =>
-    selectedProvinceId
-      ? districtAPI.getDistrictsByProvince(selectedProvinceId, limit, offset)
-      : Promise.resolve([])
-  }
-  itemToString={(item) => item.name}
-  containerClassName="w-full"
-  inputClassName="w-full rounded-l-lg"
-  placeholderText="Select District"
-  label="District"
-  disabled={!selectedProvinceId}
-/>
+                <Dropdown<District>
+                  key={selectedProvinceId || 'district'}
+                  onItemSelect={(districtId) => {
+                    setSelectedDistrictId(districtId);
+                    handleInputChange({
+                      target: { name: 'districtId', value: districtId },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                    setSubDistricts([]);
+                  }}
+                  getItems={(limit, offset) =>
+                    selectedProvinceId
+                      ? districtAPI.getDistrictsByProvince(
+                          selectedProvinceId,
+                          limit,
+                          offset,
+                        )
+                      : Promise.resolve([])
+                  }
+                  itemToString={(item) => item.name}
+                  containerClassName="w-full"
+                  inputClassName="w-full rounded-l-lg"
+                  placeholderText="Select District"
+                  label="District"
+                  disabled={!selectedProvinceId}
+                />
               </div>
               <div>
                 <Dropdown<SubDistrict>
@@ -439,9 +453,13 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   }}
                   getItems={(limit, offset) =>
                     selectedDistrictId
-                      ? subDistrictAPI.getSubDistrictsByDistrict(selectedDistrictId, limit, offset)
+                      ? subDistrictAPI.getSubDistrictsByDistrict(
+                          selectedDistrictId,
+                          limit,
+                          offset,
+                        )
                       : Promise.resolve([])
-                  }                  
+                  }
                   itemToString={(item) => item.name}
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
