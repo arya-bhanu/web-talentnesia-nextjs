@@ -11,15 +11,15 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
   handleSave,
   onClose,
 }) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSave();
+  };
+
   return (
     <Modal show={isOpen} onClose={onClose}>
       <Modal.Header>{title}</Modal.Header>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSave();
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <Modal.Body>
           <div className="space-y-4">
             <div>
