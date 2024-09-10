@@ -19,7 +19,16 @@ import { DropFile } from './components/drop-file-input/dropFileInput';
 
 const FormDetailView: React.FC<
   IFormDetail & IHandleFormDetail & IStateFormDetail
-> = ({ programId, handleSubmitForm, isLoadingMentors, handleFileChange, fullImageUrl, programType }) => {
+> = ({
+  programId,
+  handleSubmitForm,
+  isLoadingMentors,
+  handleFileChange,
+  fullImageUrl,
+  programType,
+  selectedSchool,
+  setSelectedSchool,
+}) => {
   const [selectedMentors, setSelectedMentors] = useState<Mentor[]>([]);
   const { data, setData, defaultMentors, defaultSchools, defaultData } =
     useFormDetailStore();
@@ -100,10 +109,7 @@ const FormDetailView: React.FC<
       {/* Cover Image */}
       <div className="col-span-1">
         <LabelForm htmlFor="cover_image">Cover Image</LabelForm>
-        <DropFile
-          onChange={handleFileChange}
-          initialImage={fullImageUrl}
-        />
+        <DropFile onChange={handleFileChange} initialImage={fullImageUrl} />
       </div>
 
       {/* Date Picker */}
@@ -142,7 +148,13 @@ const FormDetailView: React.FC<
       {/* School */}
       <div className="col-span-2">
         <LabelForm htmlFor="school">School</LabelForm>
-        <Select id="school" name="school" required defaultValue="">
+        <Select 
+          id="school" 
+          name="school" 
+          required 
+          value={selectedSchool}
+          onChange={(e) => setSelectedSchool(e.target.value)}
+        >
           <option value="" disabled className='hidden'>
             Select School
           </option>
@@ -150,7 +162,6 @@ const FormDetailView: React.FC<
             <option
               key={el.id}
               value={el.id}
-              selected={programId ? defaultData.institutionId === el.id : false}
             >
               {el.name}
             </option>

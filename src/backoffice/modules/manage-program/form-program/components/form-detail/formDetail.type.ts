@@ -14,6 +14,8 @@ export interface IHandleFormDetail {
 
 export interface IStateFormDetail {
   isLoadingMentors: boolean;
+  selectedSchool: string;
+  setSelectedSchool: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export type Schools = {
