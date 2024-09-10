@@ -17,7 +17,7 @@ const CourseView: React.FC<CoursesViewProps> = ({ data, isLoading }) => {
       <main className="container">
        <PopularCourses courses={data.items} className='mb-16' isLoading={isLoading}/>
        <BestCourse courses={data.items} isLoading={isLoading}/>
-       <AllClass courses={courseDataArray} filterOptions={filterCategories} isLoading={isLoading} title='Jelajahi Semua Kelas'/>
+       <AllClass courses={data.items} filterOptions={filterCategories} isLoading={isLoading} title='Jelajahi Semua Kelas'/>
       </main>
     </>
   );
