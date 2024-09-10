@@ -18,6 +18,7 @@ export interface APIContentChapter {
   id: string;
   isexam: 0 | 1;
   order: number;
+  file?: string;
 }
 
 export interface APIChapterModul {
@@ -36,6 +37,7 @@ export interface APIExamChapter {
   chapterId: string;
   title: string;
   duration: string;
+  type: number;
   exams: ExamQuestion[];
 }
 

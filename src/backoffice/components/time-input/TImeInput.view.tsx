@@ -18,7 +18,7 @@ const TimeInputView: React.FC<ITimeInput & { className?: string }> = ({
       >
         {label ? label.text : ''}
       </LabelForm>
-      <div className="border border-[#D3D7DD] flex items-center gap-1 px-4 rounded-lg mt-1 flex-1">
+      <div className="border border-[#D3D7DD] flex items-center gap-1 px-4 rounded-lg mt-1 h-[2.65rem]">
         <svg
           width="30"
           height="24"

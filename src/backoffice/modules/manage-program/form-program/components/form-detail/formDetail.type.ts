@@ -3,6 +3,8 @@ import { FormEvent } from 'react';
 
 export interface IFormDetail {
   programId?: string;
+  handleFileChange: (fileUrl: string) => Promise<void>;
+  fullImageUrl: string;
 }
 
 export interface IHandleFormDetail {
