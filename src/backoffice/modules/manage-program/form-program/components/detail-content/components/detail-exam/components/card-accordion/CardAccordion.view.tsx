@@ -19,14 +19,14 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
     <div className="mx-auto bg-white rounded-lg">
       {studentData.map((student) => (
         <div
-          key={student.id}
+          key={student.userId}
           className={`mb-4 border rounded-lg overflow-hidden hover:bg-[#FCFCFC] ${
-            openAccordions.includes(student.id) ? 'bg-[#FCFCFC]' : ''
+            openAccordions.includes(student.userId) ? 'bg-[#FCFCFC]' : ''
           }`}
         >
           <div
             className="cursor-pointer p-4 hover:"
-            onClick={() => toggleAccordion(student.id)}
+            onClick={() => toggleAccordion(student.userId)}
           >
             <div className="grid grid-cols-2 gap-x-8 mb-4">
               <div className="space-y-2">
@@ -71,7 +71,7 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
               </div>
             </div>
           </div>
-          {openAccordions.includes(student.id) && (
+          {openAccordions.includes(student.userId) && (
             <div className="transition-all duration-300 ease-in-out max-h-[1000px] opacity-100 overflow-hidden">
               <div className="border-t overflow-hidden">
                 <table className="w-full">
@@ -109,12 +109,12 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                               <TextInput
                                 type="number"
                                 value={
-                                  scores[`${student.id}-${row.original.id}`] ||
+                                  scores[`${student.userId}-${row.original.id}`] ||
                                   ''
                                 }
                                 onChange={(e) =>
                                   handleScoreChange(
-                                    student.id,
+                                    student.userId,
                                     row.original.id,
                                     Number(e.target.value),
                                   )
@@ -138,7 +138,7 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                 <p className="font-semibold">
                   Total Nilai:{' '}
                   <label className="text-[#12B76A]">
-                    {calculateTotalScore(student.id)}
+                    {calculateTotalScore(student.userId)}
                   </label>
                 </p>
                 <Button
