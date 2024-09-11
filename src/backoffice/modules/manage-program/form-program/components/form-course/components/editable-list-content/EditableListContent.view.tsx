@@ -60,6 +60,7 @@ const EditableListContentView: React.FC<
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
   const renderMinuteTime = useMemo(() => {
     if (duration) {
       const [hours, minutes] = duration.split(':');
@@ -81,20 +82,20 @@ const EditableListContentView: React.FC<
         case '1':
           return <Book />;
         case '2':
-          return <Video />;
+          return <PlayCircle />;
         case '3':
           return <PlayCircle />;
         case '4':
+          return <PlayCircle />;
+        case '5':
           return <Edit2 />;
+        default:
+          return <Video />;
       }
     }
   }, [type]);
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={clsx('flex items-center justify-between py-3', className)}
-    >
+    <div ref={setNodeRef} style={style} className={clsx('flex items-center justify-between py-3', className)}>
       <AlertModal
         openModal={openModal}
         setIsConfirmed={setIsConfirmed}
@@ -108,7 +109,7 @@ const EditableListContentView: React.FC<
         handleSubmit={handleSubmitEdit}
         title="Update Content"
       >
-        {openModalEdit && <FormContent contentId={injectId} />}
+        {openModalEdit && <FormContent contentId={id} isEdit />}
       </Modal>
       <div className="flex items-center gap-2">
         <button {...listeners} {...attributes} type="button">
@@ -127,7 +128,7 @@ const EditableListContentView: React.FC<
               const chapterId = params.get('chapterId');
               if (isexam) {
                 router.push(
-                  `/backoffice/manage-program/update-program-IICP/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
+                  `/backoffice/manage-program/update-program/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
                 );
               } else {
                 setOpenModalEdit(true);

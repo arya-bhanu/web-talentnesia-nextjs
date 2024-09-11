@@ -32,6 +32,7 @@ const ModulView = ({ activeAccordion, setActiveAccordion, certificates, course }
           ))}
         </div>
       ),
+      type: 'modul',
     },
     {
       title: 'Certificate',

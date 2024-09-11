@@ -50,7 +50,7 @@ const Task: React.FC<{ contentId: string; onExamComplete: () => void }> = ({ con
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft(prevTime => {
+      setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
           setTimerExpired(true);
           clearInterval(interval);

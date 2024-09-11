@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export interface User {
   userId: string;
   name: string;
@@ -9,4 +11,5 @@ export interface User {
 export interface NavbarState {
   user: User;
   isMenuOpen: boolean;
+  style?: CSSProperties;
 }

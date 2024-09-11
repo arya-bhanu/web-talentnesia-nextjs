@@ -80,11 +80,15 @@ const EditableListContentView: React.FC<
         case '1':
           return <Book />;
         case '2':
-          return <Video />;
+          return <PlayCircle />;
         case '3':
           return <PlayCircle />;
         case '4':
+          return <PlayCircle />;
+        case '5':
           return <Edit2 />;
+        default:
+          return <Video />;
       }
     }
   }, [type]);

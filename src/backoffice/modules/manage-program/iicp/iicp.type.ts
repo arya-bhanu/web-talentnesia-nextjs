@@ -1,10 +1,10 @@
-import { APIDetailProgramIICP } from './../form-program/components/form-detail/formDetail.type';
+import { APIDetailProgram } from './../form-program/components/form-detail/formDetail.type';
 import { Dispatch, SetStateAction } from 'react';
 
 export interface IICPType {}
 
 export interface IICPViewProps {
-  data: APIDetailProgramIICP[];
+  data: APIDetailProgram[];
   Filter: string;
   setFilter: (value: string) => void;
   handleActionButtonRow: (
@@ -16,7 +16,7 @@ export interface IICPViewProps {
 
 export interface IICPProgramItemApiResponse {
   data: {
-    items: APIDetailProgramIICP[];
+    items: APIDetailProgram[];
   }
 }
 

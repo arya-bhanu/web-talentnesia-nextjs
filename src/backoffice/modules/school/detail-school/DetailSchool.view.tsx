@@ -35,16 +35,19 @@ function DetailSchoolView({
     {
       title: 'Detail School',
       content: <DetailSchoolPage />,
+      type: 'detail-school',
     },
     {
       title: 'Student',
       content: <ListTableStudent />,
+      type: 'student',
     },
     {
       title: 'Program',
       content: (
         <ListProgramCard />
       ),
+      type: 'program',
     },
   ];
 

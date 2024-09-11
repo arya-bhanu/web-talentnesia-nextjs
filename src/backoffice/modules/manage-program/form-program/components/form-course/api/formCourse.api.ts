@@ -57,10 +57,8 @@ export const fetchModule = async () => {
 // content
 export const fetchContent = async (contentId?: string | null) => {
   if (contentId) {
-    const response = await fetchAxios<{
-        data: APIContentChapter;
-    }>({
-      url: `/v1/program-content/${contentId}`,
+    const response = await fetchAxios({
+      url: `/v1/program-content/detail/${contentId}`,
       method: 'GET',
     });
     return { data: response };
@@ -166,7 +164,6 @@ export const fetchChapter = async (chapterId?: string | null) => {
       url: `/v1/program-chapter/${chapterId}`,
       method: 'GET',
     });
-    console.log(response);
     return {
       data: response.data,
     };
@@ -205,7 +202,6 @@ export const editChapter = async ({
     method: 'PUT',
     formData: { title },
   });
-  console.log(response);
   return { data: response.data };
 };
 

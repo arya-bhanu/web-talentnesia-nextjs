@@ -58,8 +58,8 @@ export function DataTableView<T>({
 
   return (
     <>
-      <div className="overflow-x-auto shadow-sm sm:rounded-lg mt-5">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <div className="overflow-x-auto sm:rounded-lg mt-5">
+        <table className="w-full relative z-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
           <thead className="text-md font-bold text-[#323232] bg-[#FFFFFF] border-b">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>

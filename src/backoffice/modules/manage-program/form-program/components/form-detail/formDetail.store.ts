@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { APIDetailProgramIICP } from './formDetail.type';
+import { APIDetailProgram } from './formDetail.type';
 import {
   defaultDataFormDetail,
   defaultDataFormDetailEdit,
@@ -8,16 +8,21 @@ import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.t
 import { Schools } from '@/backoffice/modules/manage-program/form-program/components/form-detail/formDetail.type';
 
 export interface IFormDetailStore {
-  data: APIDetailProgramIICP;
-  defaultData: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] };
+  data: APIDetailProgram;
+  defaultData: Omit<APIDetailProgram, 'mentors'> & { mentors: string[] };
   defaultMentors: Mentor[];
   defaultSchools: Schools[];
   setDefaultSchools: (schools: Schools[]) => void;
   setDefaultMentors: (mentors: Mentor[]) => void;
-  setData: (newData: APIDetailProgramIICP) => void;
-  setDefaultData: (
-    data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] },
+  setData: (
+    newData:
+      | APIDetailProgram
+      | ((prevData: APIDetailProgram) => APIDetailProgram),
   ) => void;
+  setDefaultData: (
+    data: Omit<APIDetailProgram, 'mentors'> & { mentors: string[] },
+  ) => void;
+  resetStore: () => void;
 }
 
 export const useFormDetailStore = create<IFormDetailStore>((set) => ({
@@ -33,6 +38,16 @@ export const useFormDetailStore = create<IFormDetailStore>((set) => ({
     set(() => ({
       defaultMentors: mentors,
     })),
-  setData: (newData) => set(() => ({ data: newData })),
+  resetStore: () =>
+    set(() => ({
+      data: defaultDataFormDetail,
+      defaultData: defaultDataFormDetailEdit,
+      defaultMentors: [],
+      defaultSchools: [],
+    })),
+  setData: (newData) =>
+    set((state) => ({
+      data: typeof newData === 'function' ? newData(state.data) : newData,
+    })),
   setDefaultData: (data) => set({ defaultData: data }),
 }));
