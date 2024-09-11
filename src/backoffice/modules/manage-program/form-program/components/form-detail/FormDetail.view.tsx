@@ -1,4 +1,3 @@
-import { DropFile } from '@/backoffice/components/drop-files-input/dropFilesInput';
 import LabelForm from '@/backoffice/components/label-form';
 import MentorSelector from '@/backoffice/components/mentor-selector/mentorSelector';
 import { Label, Radio, TextInput } from 'flowbite-react';
@@ -16,10 +15,20 @@ import {
 } from './formDetail.type';
 import { useFormDetailStore } from './formDetail.store';
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
+import { DropFile } from './components/drop-file-input/dropFileInput';
 
 const FormDetailView: React.FC<
   IFormDetail & IHandleFormDetail & IStateFormDetail
-> = ({ programId, handleSubmitForm, isLoadingMentors }) => {
+> = ({
+  programId,
+  handleSubmitForm,
+  isLoadingMentors,
+  handleFileChange,
+  fullImageUrl,
+  programType,
+  selectedSchool,
+  setSelectedSchool,
+}) => {
   const [selectedMentors, setSelectedMentors] = useState<Mentor[]>([]);
   const { data, setData, defaultMentors, defaultSchools, defaultData } =
     useFormDetailStore();
@@ -49,8 +58,8 @@ const FormDetailView: React.FC<
         <TextInput
           id="program_name"
           name="program_name"
-          defaultValue={defaultData?.name}
-          key={defaultData?.name}
+          defaultValue={programId ? defaultData?.name : ''}
+          key={programId ? defaultData?.name : 'new'}
           placeholder="Kelas D Tefa SMK"
           required
         />
@@ -65,9 +74,9 @@ const FormDetailView: React.FC<
           <Radio
             id="notStarted"
             defaultChecked={
-              defaultData ? (defaultData.active == 0 ? true : false) : false
+              programId ? (defaultData.active == 0 ? true : false) : true
             }
-            key={defaultData.active + '_0'}
+            key={programId ? defaultData.active + '_0' : 'new_0'}
             name="active"
             value="0"
           />
@@ -100,8 +109,7 @@ const FormDetailView: React.FC<
       {/* Cover Image */}
       <div className="col-span-1">
         <LabelForm htmlFor="cover_image">Cover Image</LabelForm>
-        {DropFile()}{' '}
-        {/* Menggunakan komponen dropFile yang sudah dimodifikasi */}
+        <DropFile onChange={handleFileChange} initialImage={fullImageUrl} />
       </div>
 
       {/* Date Picker */}
@@ -140,44 +148,51 @@ const FormDetailView: React.FC<
       {/* School */}
       <div className="col-span-2">
         <LabelForm htmlFor="school">School</LabelForm>
-        <Select
-          defaultValue={
-            defaultData ? (defaultData.institutionId as string | undefined) : ''
-          }
-          id="school"
-          name="school"
-          required
+        <Select 
+          id="school" 
+          name="school" 
+          required 
+          value={selectedSchool}
+          onChange={(e) => setSelectedSchool(e.target.value)}
         >
-          <option value="" disabled>
+          <option value="" disabled className='hidden'>
             Select School
           </option>
-          {defaultSchools.map((el) => {
-            return (
-              <option
-                selected={
-                  defaultData ? defaultData.institutionId == el.id : false
-                }
-                key={el.id}
-                value={el.id}
-              >
-                {el.name}
-              </option>
-            );
-          })}
+          {defaultSchools.map((el) => (
+            <option
+              key={el.id}
+              value={el.id}
+            >
+              {el.name}
+            </option>
+          ))}
         </Select>
       </div>
 
+      {/* Price */}
+      {programType === 'course' && (
+        <div className="col-span-2">
+          <LabelForm htmlFor="price">Price</LabelForm>
+          <TextInput
+            id="price"
+            name="price"
+            type="string"
+            placeholder="Enter price"
+          />
+        </div>
+      )}
+
       {/* Buttons */}
       <div className="col-span-2 flex justify-end space-x-4 mt-10">
-        <Button
-          type="button"
-          outline
-          className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
-        >
-          <Link className="" href={'/backoffice/manage-program'}>
+        <Link className="" href={'/backoffice/manage-program'}>
+          <Button
+            type="button"
+            outline
+            className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+          >
             Cancel
-          </Link>
-        </Button>
+          </Button>
+        </Link>
         <Button
           type="submit"
           color={'warning'}

@@ -1,14 +1,15 @@
 export interface CourseCardProps {
-    image: string;
-    rating: number;
-    reviews: number;
+    logo: string;
     title: string;
     description: string;
-    price: number;
-    oldPrice: number;
     duration: string;
     level: string;
-    modules: string;
+    totalModul: number;
+    currentPrice: number;
+    originalPrice: number;
+    url: string;
+    rating: number;
+    reviews?: number;
     isLoading?: boolean
   }
   

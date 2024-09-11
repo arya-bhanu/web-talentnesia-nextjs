@@ -74,11 +74,12 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
         setAcademicInstitutions(fetchedAcademicInstitutions);
         setReligions((fetchedReligions as IComboReligion).data);
         setProvinces(fetchedProvinces);
+        setDistricts(fetchedDistricts);
+        setSubDistricts(fetchedSubDistricts);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -118,7 +119,7 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                 onChange={handleProfilePictureChange}
                 initialValue={form.profilePicture}
                 idCheck={form.id}
-                id={form.id} 
+                id={form.id}
               />
             </div>
           </div>

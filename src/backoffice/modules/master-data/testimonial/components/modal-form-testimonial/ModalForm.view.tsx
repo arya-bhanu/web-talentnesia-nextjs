@@ -2,7 +2,10 @@ import React from 'react';
 import { Modal } from 'flowbite-react';
 import { ModalFormViewProps } from './modalForm.type';
 import Dropdown from '@/backoffice/components/dropdown/Dropdown';
-import { userAPI, User } from '@/backoffice/components/dropdown/api/dropdownApi';
+import {
+  userAPI,
+  User,
+} from '@/backoffice/components/dropdown/api/dropdownApi';
 
 export const ModalFormView: React.FC<ModalFormViewProps> = ({
   isOpen,
@@ -110,4 +113,5 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
         </Modal.Body>
       </form>
     </Modal>
-  );};
+  );
+};

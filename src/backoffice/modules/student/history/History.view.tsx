@@ -12,12 +12,14 @@ const HistoryView = ({ activeTab, setActiveTab }: IHistoryView) => {
       content: <div>
         <Attendance />
       </div>,
+      type: 'attendance',
     },
     {
       title: 'Assignment',
       content: <div>
         <Assignment />
       </div>,
+      type: 'assignment',
     },
   ];
 

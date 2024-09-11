@@ -55,7 +55,7 @@ export const HeroSectionView = ({ className, isLoading }: { className?: string, 
             !isLoading &&
             <Image
                 alt="gambar-pahlawan"
-                src="/img/iicp/hero-iicp.png"
+                src="/img/bootcamp/bootcamp.png"
                 width={376}
                 height={305}
                 className="object-contain w-[752px] h-[611px]"

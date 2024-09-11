@@ -164,7 +164,7 @@ const FormChapterView: React.FC<
             outline
             className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
           >
-            <Link className="" href={'/backoffice/manage-modul'}>
+            <Link className="" href={'/backoffice/manage-program'}>
               Cancel
             </Link>
           </Button>

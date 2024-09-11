@@ -15,6 +15,7 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { useExamStore, useQuestionExamStore } from '../add-exam/store';
+import { useRouter } from 'next/navigation';
 
 const FormExamView: React.FC<
   IFormExam & {
@@ -32,6 +33,12 @@ const FormExamView: React.FC<
   const [timeState, setTimeState] = useState<Date>(
     convertStrToTime(dataExam?.duration || '01.00'),
   );
+
+  const router = useRouter();
+
+  const handleBack = () => {
+    router.back();
+  };
 
   useEffect(() => {
     if (timeState) {
@@ -116,13 +123,12 @@ const FormExamView: React.FC<
         </div>
         <div className="flex gap-5 w-fit ml-auto mt-24">
           <Button
+            onClick={handleBack}
             type="button"
             outline
             className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
           >
-            <Link className="" href={'/backoffice/manage-modul'}>
               Cancel
-            </Link>
           </Button>
           <Button
             type="submit"

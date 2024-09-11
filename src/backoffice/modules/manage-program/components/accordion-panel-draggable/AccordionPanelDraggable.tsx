@@ -20,6 +20,7 @@ const AccordionPanelDraggable: React.FC<
   const [openPopover, setOpenPopover] = useState(false);
   const [openModalMentoring, setOpenModalMentoring] = useState(false);
   const [openModalCertificate, setOpenModalCertificate] = useState(false);
+  const [openModalGenerate, setOpenModalGenerate] = useState(false);
   const [openModalContent, setOpenModalContent] = useState(false);
   const queryClient = useQueryClient();
   const params = useSearchParams();
@@ -69,6 +70,13 @@ const AccordionPanelDraggable: React.FC<
       setOpenModalCertificate(false);
     } else {
       setOpenModalCertificate(true);
+    }
+  };
+  const handleOpenModalGenerate = (action: 'open' | 'close') => {
+    if (action === 'close') {
+      setOpenModalGenerate(false);
+    } else {
+      setOpenModalGenerate(true);
     }
   };
 
@@ -132,6 +140,10 @@ const AccordionPanelDraggable: React.FC<
     e.preventDefault();
     e.stopPropagation();
   };
+  const handleSubmitModalGenerate = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   const handleSubmitModalContent = async (
     e: FormEvent<HTMLFormElement>,
@@ -144,16 +156,19 @@ const AccordionPanelDraggable: React.FC<
       const time = formData.get('time') as string;
       const title = formData.get('title') as string;
       const type = formData.get('type') as string;
-      const uploadFile = formData.get('upload_file') as File;
+      const fileUrl = formData.get('fileUrl') as string;
+      const fileName = formData.get('fileName') as string;
       const convertedTime = time.substring(0, 5);
-      if (chapterId && convertedTime && title && type && uploadFile) {
+      
+      if (chapterId && convertedTime && title && type && fileUrl) {
         await createContentProgramAsync({
-          body: 'sample',
+          body: fileName,
           duration: convertedTime,
           title,
           type,
           chapterId,
           isexam: 0,
+          file: fileUrl
         });
         await queryClient.invalidateQueries({
           queryKey: ['chapters', 'program', params.get('programId')],
@@ -164,12 +179,14 @@ const AccordionPanelDraggable: React.FC<
       console.error(err);
     }
   };
+  
 
   return (
     <AccordionPanelDraggableView
       handleDeleteChapter={handleDeleteChapter}
       handleOpenModalMentoring={handleOpenModalMentoring}
       handleOpenModalCertificate={handleOpenModalCertificate}
+      handleOpenModalGenerate={handleOpenModalGenerate}
       handleOpenModalContent={handleOpenModalContent}
       open={openPopover}
       setOpen={setOpenPopover}
@@ -177,14 +194,16 @@ const AccordionPanelDraggable: React.FC<
       setOpenModalMentoring={setOpenModalMentoring}
       handleSubmitModalMentoring={handleSubmitModalMentoring}
       handleSubmitModalCertificate={handleSubmitModalCertificate}
+      handleSubmitModalGenerate={handleSubmitModalGenerate}
       handleSubmitModalContent={handleSubmitModalContent}
       openModalContent={openModalContent}
       setOpenModalContent={setOpenModalContent}
       openModalCertificate={openModalCertificate}
+      openModalGenerate={openModalGenerate}
       setOpenModalCertificate={setOpenModalCertificate}
+      setOpenModalGenerate={setOpenModalGenerate}
       {...props}
     />
   );
 };
-
 export default AccordionPanelDraggable;
