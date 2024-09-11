@@ -400,7 +400,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
               C. Address
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
+            <div>
+            <label className="flex mb-1">
+                  Province<div className="text-red-600">*</div>
+                </label>
                 <Dropdown<Province>
                   onItemSelect={(provinceId) => {
                     setSelectedProvinceId(provinceId);
@@ -427,6 +430,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 />
               </div>
               <div>
+              <label className="flex mb-1">
+                  District<div className="text-red-600">*</div>
+                </label>
                 <Dropdown<District>
                   key={selectedProvinceId || 'district'}
                   onItemSelect={(districtId) => {
@@ -455,6 +461,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 />
               </div>
               <div>
+              <label className="flex mb-1">
+                  Sub District<div className="text-red-600">*</div>
+                </label>
                 <Dropdown<SubDistrict>
                   key={selectedDistrictId || 'subdistrict'}
                   onItemSelect={(subDistrictId) => {
@@ -475,7 +484,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
                   placeholderText="Select Sub District"
-                  label="Sub District"
                   disabled={!selectedDistrictId}
                   initialValue={form.subDistrictId ? subDistricts.find(sd => sd.id === form.subDistrictId)?.name : ''}
                 />

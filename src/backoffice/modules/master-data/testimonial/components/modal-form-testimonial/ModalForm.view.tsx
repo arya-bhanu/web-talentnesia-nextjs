@@ -74,6 +74,7 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
                 labelClassName="text-sm font-medium text-gray-900"
                 inputClassName="w-full rounded-l-lg"
                 dropdownClassName="w-full"
+                initialValue={formData.userId}
               />
             </div>
             <div>
@@ -109,5 +110,4 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
         </Modal.Body>
       </form>
     </Modal>
-  );
-};
+  );};

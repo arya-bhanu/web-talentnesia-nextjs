@@ -62,7 +62,7 @@ const Dropdown = <T extends { id: string }>({
       setSearchTerm(initialValue);
     }
   }, [initialValue]);
-  
+
   useEffect(() => {
     if (initialValue) {
       const fetchInitialItem = async () => {
