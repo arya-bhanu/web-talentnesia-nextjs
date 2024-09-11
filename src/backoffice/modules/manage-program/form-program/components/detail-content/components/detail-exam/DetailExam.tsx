@@ -37,7 +37,7 @@ export const DetailExam: React.FC<{ content: { data: ExamListProps } }> = ({
             href="/backoffice/manage-program/update-program/detail-program-iicp/input-score"
             className="mr-4"
           >
-            <DynamicButton text="Insert Score" />
+            <DynamicButton text="Input Score" />
           </Link>
         </div>
         <div className="mt-8 flex flex-col gap-14">
