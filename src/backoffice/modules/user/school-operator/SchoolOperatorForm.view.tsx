@@ -71,11 +71,9 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
           provinceAPI.getProvinces(100, 0),
         ]);
 
+        setProvinces(fetchedProvinces);
         setAcademicInstitutions(fetchedAcademicInstitutions);
         setReligions((fetchedReligions as IComboReligion).data);
-        setProvinces(fetchedProvinces);
-        setDistricts(fetchedDistricts);
-        setSubDistricts(fetchedSubDistricts);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
