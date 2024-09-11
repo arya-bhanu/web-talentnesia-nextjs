@@ -3,7 +3,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Image from 'next/image';
 
-
 interface SelectYearProps {
   id: string;
   onChange: (year: number) => void;
@@ -11,10 +10,8 @@ interface SelectYearProps {
   placeholder?: string;
 }
 
-
 export const Component: React.FC<SelectYearProps> = ({ id, onChange, value, placeholder = 'Select year' }) => {
   const [selectedYear, setSelectedYear] = useState<Date | null>(value ? new Date(value, 0) : null);
-
 
   const handleYearChange = (date: Date | null) => {
     setSelectedYear(date);
@@ -22,7 +19,6 @@ export const Component: React.FC<SelectYearProps> = ({ id, onChange, value, plac
       onChange(date.getFullYear());
     }
   };
-
 
   const CalendarIcon = () => (
   <Image
@@ -32,7 +28,6 @@ export const Component: React.FC<SelectYearProps> = ({ id, onChange, value, plac
     alt="Calendar"
   />
 );
-
 
   return (
     <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 pl-4 flex">

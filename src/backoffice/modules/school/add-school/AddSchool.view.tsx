@@ -39,14 +39,17 @@ function AddSchoolView({
           <AddSchool />
         </div>
       ),
+      type: 'detail',
     },
     {
       title: 'Student',
       content: <TabsListStudent />,
+      type: 'student',
     },
     {
       title: 'Program',
       content: <TabsProgram />,
+      type: 'program',
     },
   ];
 

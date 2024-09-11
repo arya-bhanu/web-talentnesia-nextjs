@@ -1,7 +1,11 @@
 import React from 'react';
 import { Modal } from 'flowbite-react';
 import { ModalFormViewProps } from './modalForm.type';
-import Dropdown from '@/backoffice/components/Dropdown/Dropdown';
+import Dropdown from '@/backoffice/components/dropdown/Dropdown';
+import {
+  userAPI,
+  User,
+} from '@/backoffice/components/dropdown/api/dropdownApi';
 
 export const ModalFormView: React.FC<ModalFormViewProps> = ({
   isOpen,
@@ -63,13 +67,18 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
                 className="block w-full p-2 border border-gray-300 rounded-lg"
               />
             </div>
-
             <div>
-              <Dropdown
-                onUserSelect={(userId) => handleInputChange('userId', userId)}
+              <Dropdown<User>
+                onItemSelect={(userId) => handleInputChange('userId', userId)}
+                getItems={userAPI.getUsers}
+                itemToString={(user) => `${user.name} - ${user.email}`}
+                label="Select User"
+                placeholderText="Choose a user..."
+                labelClassName="text-sm font-medium text-gray-900"
+                inputClassName="w-full rounded-l-lg"
+                dropdownClassName="w-full"
               />
             </div>
-
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900">
                 Active

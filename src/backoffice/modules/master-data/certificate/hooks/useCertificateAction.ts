@@ -4,9 +4,7 @@ import { certificateAPI } from '../api/certificateApi';
 export const useCertificateActions = () => {
   const handleAddCertificate = useCallback(async (name: string, file: string) => {
     try {
-      console.log('Adding certificate:', { name, file });
       const result = await certificateAPI.add({ name, file });
-      console.log('Add certificate result:', result);
       return result;
     } catch (error) {
       console.error('Failed to add certificate', error);

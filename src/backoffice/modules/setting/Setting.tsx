@@ -50,7 +50,7 @@ export const Setting = () => {
         setUserData(decodedToken as UserData);
         try {
           const data = await getUserProfile(
-            decodedToken.userId || 'fngdme2va5ndvivq',
+            decodedToken.userId || '',
           );
           if (data.profilePicture) {
             try {

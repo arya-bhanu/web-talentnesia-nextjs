@@ -95,10 +95,14 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     '/backoffice/report/',
     '/backoffice/program/',
   ].includes(pathname);
+  const containerStyle = {
+    maxWidth: '80%',
+    marginLeft: '9%',
+  };
 
   return (
     <div className="bg-[#FAFAFA]">
-      {user && <Navbar user={user} />}
+      {user && <Navbar user={user} style={isDashboard ? {...containerStyle} :undefined }/>}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}

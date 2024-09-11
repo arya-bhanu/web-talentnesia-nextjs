@@ -1,5 +1,5 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
-import { APIDetailProgramIICP, Schools } from '../formDetail.type';
+import { APIDetailProgram, Schools } from '../formDetail.type';
 import { fetchAxios } from '@/lib/fetchAxios';
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
 
@@ -22,11 +22,11 @@ export const fetchSchools = async () => {
 };
 
 export const createProgram = async (
-  data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] },
+  data: Omit<APIDetailProgram, 'mentors'> & { mentors: string[] },
 ) => {
   try {
     const response = await fetchAxios<{
-      data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] };
+      data: Omit<APIDetailProgram, 'mentors'> & { mentors: string[] };
     }>({
       url: '/v1/manage-program',
       method: 'POST',
@@ -42,7 +42,7 @@ export const createProgram = async (
 export const fetchDetailProgram = async (programId?: string | null) => {
   try {
     if (programId) {
-      const response = await fetchAxios<{ data: Omit<APIDetailProgramIICP, 'mentors'> & { mentors: string[] } }>({
+      const response = await fetchAxios<{ data: Omit<APIDetailProgram, 'mentors'> & { mentors: string[] } }>({
         url: `/v1/manage-program/detail/${programId}`,
         method: 'GET',
       });

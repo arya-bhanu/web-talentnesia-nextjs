@@ -11,6 +11,7 @@ import {
 } from '../../api/formCourse.api';
 import useCreateQueryParams from '@/hooks/useCreateQueryParams';
 import { ISubmitType } from './formChapter.type';
+import { useStatusModalStore } from '@/lib/store';
 
 const FormChapter = () => {
   const params = useSearchParams();
@@ -18,6 +19,7 @@ const FormChapter = () => {
   const pathname = usePathname();
   const queryClient = useQueryClient();
   const filteredPathname = pathname.replace(/\/(add|edit)-chapter/, '');
+  const { openModal } = useStatusModalStore();
 
   const createQuery = useCreateQueryParams();
   const [actionSubChapter, setActionSubChapter] = useState<'exam' | 'content'>(
@@ -44,9 +46,8 @@ const FormChapter = () => {
     queryFn: () => fetchChapter(params.get('chapterId')),
   });
 
-  const handleSubmitAddContent = async (
-    e: React.FormEvent<HTMLFormElement>,
-  ) => {
+  const handleSubmitAddContent = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('handleSubmitAddContent triggered');
     try {
       e.preventDefault();
       e.stopPropagation();
@@ -54,23 +55,32 @@ const FormChapter = () => {
       const time = formData.get('time') as string;
       const title = formData.get('title') as string;
       const type = formData.get('type') as string;
-      const uploadFile = formData.get('upload_file') as File;
+      const fileUrl = formData.get('fileUrl') as string;
+      const fileName = formData.get('fileName') as string;
       const convertedTime = time.substring(0, 5);
       const chapterId = params.get('chapterId');
-      if (chapterId && convertedTime && title && type && uploadFile) {
+      
+      if (chapterId && convertedTime && title && type && fileUrl) {
         await createContentAsync({
-          body: 'sample',
+          body: fileName,
           duration: convertedTime,
           title,
           type,
           chapterId,
           isexam: 0,
+          file: fileUrl
         });
         setOpenModalAddContent(false);
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
+        openModal({
+          status: 'success',
+          action: 'create',
+          message: 'Content successfully created',
+        });
       }
     } catch (err) {
       console.error(err);
+      openModal({ status: 'error', message: JSON.stringify(err) });
     }
   };
 
@@ -96,7 +106,7 @@ const FormChapter = () => {
         if (submitType.type === 'defaultSubmit') {
           // router.back()
           return router.push(
-            `/backoffice/manage-program/update-program-IICP/?programId=${programId}&schoolId=${schoolId}`,
+            `/backoffice/manage-program/update-program/?programId=${programId}&schoolId=${schoolId}`,
           );
         }
 
@@ -114,13 +124,13 @@ const FormChapter = () => {
         if (submitType.type === 'defaultSubmit') {
           // router.back()
           return router.push(
-            `/backoffice/manage-program/update-program-IICP/?programId=${programId}&schoolId=${schoolId}`,
+            `/backoffice/manage-program/update-program/?programId=${programId}&schoolId=${schoolId}`,
           );
         }
 
         if (actionSubChapter === 'exam') {
           router.push(
-            pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
+            filteredPathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
           );
         } else {
           setOpenModalAddContent(true);

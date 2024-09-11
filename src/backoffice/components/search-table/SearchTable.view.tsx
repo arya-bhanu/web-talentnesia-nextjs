@@ -17,7 +17,7 @@ export const SearchTableView: React.FC<SearchTableProps> = ({ value, onChange })
         id="simple-search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="bg-[#FFFFFF] border border-gray-300 font-lato text-[#667085] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+        className="bg-[#FFFFFF] border border-gray-300 font-lato text-[#667085] text-sm rounded-lg block w-full ps-10 p-2.5"
         placeholder="Search ..."
         required
       />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ModalFormProps } from './modalForm.type';
 import { ModalFormView } from './ModalForm.view';
+import AlertAddModal from 'src/backoffice/components/alert-add-modal/AlertAddModal';
 
 const ModalForm: React.FC<ModalFormProps> = ({
   isOpen,
@@ -12,6 +13,12 @@ const ModalForm: React.FC<ModalFormProps> = ({
 }) => {
   const [formData, setFormData] = useState({ name: '' });
   const [hasError, setHasError] = useState(false);
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [showFormModal, setShowFormModal] = useState(isOpen);
+
+  useEffect(() => {
+    setShowFormModal(isOpen);
+  }, [isOpen]);
 
   useEffect(() => {
     if (initialData) {
@@ -29,32 +36,52 @@ const ModalForm: React.FC<ModalFormProps> = ({
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!formData.name) {
       setHasError(true);
       return;
     }
+    setShowAlertModal(true);
+    setShowFormModal(false);
+  };
 
-    try {
-      await onSave(id, formData);
-      setFormData({ name: '' });
-      onClose();
-    } catch (error) {
-      console.error('Failed to save data');
+  const handleAlertConfirm = async (confirmed: boolean) => {
+    if (confirmed) {
+      try {
+        await onSave(id, formData);
+        setFormData({ name: '' });
+        onClose();
+      } catch (error) {
+        console.error('Failed to save data');
+      }
+    } else {
+      setShowFormModal(true);
     }
+    setShowAlertModal(false);
   };
 
   return (
-    <ModalFormView
-      isOpen={isOpen}
-      title={title}
-      formData={formData}
-      hasError={hasError}
-      handleInputChange={handleInputChange}
-      handleSave={handleSave}
-      onClose={onClose}
-    />
+    <>
+      <ModalFormView
+        isOpen={showFormModal}
+        title={title}
+        formData={formData}
+        hasError={hasError}
+        handleInputChange={handleInputChange}
+        handleSave={handleSave}
+        onClose={onClose}
+      />
+      <AlertAddModal
+        openModal={showAlertModal}
+        setOpenModal={setShowAlertModal}
+        setIsConfirmed={(confirmed: boolean | ((prevState: boolean) => boolean)) => {
+          if (typeof confirmed === 'boolean') {
+            handleAlertConfirm(confirmed);
+          }
+        }}
+      />
+    </>
   );
-};
 
+};
 export default ModalForm;

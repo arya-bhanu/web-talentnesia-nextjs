@@ -7,22 +7,41 @@ interface FileInputProps {
   label: string;
   onFileChange?: (file: File) => void;
   onReset?: (resetFunction: () => void) => void;
+  allowedTypes?: string[];
 }
 
-export function FileInputComponent({ id, label, onFileChange, onReset }: FileInputProps) {
+export function FileInputComponent({
+  id,
+  label,
+  onFileChange,
+  onReset,
+  allowedTypes
+}: FileInputProps) {
   const [fileName, setFileName] = useState('Select File');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (onReset) {
-      onReset(() => setFileName('Select File'));
+      onReset(() => {
+        setFileName('Select File');
+        setErrorMessage(null); 
+      });
     }
   }, [onReset]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
+
+      if (allowedTypes && !allowedTypes.includes(file.type)) {
+        setErrorMessage(`Invalid file type! Only docx files are allowed.`);
+        setFileName('');  
+        return;
+      }
+
       setFileName(file.name);
-      onFileChange?.(file);  // Pass the actual File object here
+      setErrorMessage(null); 
+      onFileChange?.(file);
     }
   };
 
@@ -50,6 +69,9 @@ export function FileInputComponent({ id, label, onFileChange, onReset }: FileInp
           </div>
         </div>
       </Label>
+      {errorMessage && (
+        <p className="text-red-500 text-xs mt-1">{errorMessage}</p>
+      )}
     </div>
   );
 }

@@ -205,7 +205,8 @@ const StudentCourseView: React.FC = () => {
           </div>
         </>
       ),
-      active: true
+      active: true,
+      type: 'my-course',
     }
   ];
 

@@ -15,7 +15,7 @@ const JWT_SECRET = 'your_secret_key_here';
 const TOKEN_NAME = 'talentnesia_token';
 
 export const generateToken = (payload: SessionData): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
 };
 
 export const verifyToken = (token: string): SessionData | null => {
