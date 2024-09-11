@@ -15,9 +15,12 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
   handleScoreChange,
   calculateTotalScore,
 }) => {
+  const students = Array.isArray(studentData) ? studentData : [];
+  console.log(studentData);
+  console.log('students', students);
   return (
     <div className="mx-auto bg-white rounded-lg">
-      {studentData.map((student) => (
+      {students.map((student) => (
         <div
           key={student.userId}
           className={`mb-4 border rounded-lg overflow-hidden hover:bg-[#FCFCFC] ${
@@ -36,7 +39,7 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                   </span>
                   <span className="mr-2">:</span>
                   <span className="color-[#323232] font-medium">
-                    {student.nama}
+                    {student.name}
                   </span>
                 </p>
                 <p className="flex">
@@ -45,21 +48,21 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                   </span>
                   <span className="mr-2">:</span>
                   <span className="color-[#323232] font-medium">
-                    {student.batasAkhir}
+                    {/* End Date */}{"-"}
                   </span>
                 </p>
               </div>
               <div className="space-y-2">
                 <p className="flex">
                   <span className="font-semibold text-[#858D9D] w-28">
-                    Tgl Dikerjakan
+                  Tgl Dikerjakan
                   </span>
                   <span className="mr-2">:</span>
                   <span className="color-[#323232] font-medium">
-                    {student.tglDikerjakan}
+                    {/* Date Started */}{"-"}
                   </span>
                 </p>
-                <p className="flex">
+                {/* <p className="flex">
                   <span className="font-semibold text-[#858D9D] w-28">
                     Tipe
                   </span>
@@ -67,19 +70,18 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                   <span className="color-[#323232] font-medium">
                     {student.tipe}
                   </span>
-                </p>
+                </p> */}
               </div>
             </div>
           </div>
           {openAccordions.includes(student.userId) && (
             <div className="transition-all duration-300 ease-in-out max-h-[1000px] opacity-100 overflow-hidden">
               <div className="border-t overflow-hidden">
-                <table className="w-full">
+              <table className="w-full">
                   <colgroup>
-                    <col style={{ width: '50%' }} />
-                    <col style={{ width: '37%' }} />
-                    <col style={{ width: '5%' }} />
-                    <col style={{ width: '8%' }} />
+                    <col style={{ width: '45%' }} />
+                    <col style={{ width: '45%' }} />
+                    <col style={{ width: '10%' }} />
                   </colgroup>
                   <thead>
                     {tableInstance.getHeaderGroups().map((headerGroup) => (
@@ -101,36 +103,36 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                     ))}
                   </thead>
                   <tbody>
-                    {tableInstance.getRowModel().rows.map((row) => (
-                      <tr key={row.id}>
-                        {row.getVisibleCells().map((cell) => (
-                          <td key={cell.id} className="p-2 border-t">
-                            {cell.column.id === 'nilai' ? (
-                              <TextInput
-                                type="number"
-                                value={
-                                  scores[`${student.userId}-${row.original.id}`] ||
-                                  ''
-                                }
-                                onChange={(e) =>
-                                  handleScoreChange(
-                                    student.userId,
-                                    row.original.id,
-                                    Number(e.target.value),
-                                  )
-                                }
-                                className="w-14 text-center"
-                              />
-                            ) : (
-                              flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext(),
-                              )
-                            )}
+                    {student.questions
+                      .sort((a, b) => a.order - b.order)
+                      .map((question) => (
+                        <tr key={question.id}>
+                          <td className="p-2 border-t">
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: question.title,
+                              }}
+                            />
                           </td>
-                        ))}
-                      </tr>
-                    ))}
+                          <td className="p-2 border-t">Jawaban siswa</td>
+                          <td className="p-2 border-t">
+                            <TextInput
+                              type="number"
+                              value={
+                                scores[`${student.userId}-${question.id}`] || ''
+                              }
+                              onChange={(e) =>
+                                handleScoreChange(
+                                  student.userId,
+                                  question.id,
+                                  Number(e.target.value),
+                                )
+                              }
+                              className="w-14 text-center"
+                            />
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>

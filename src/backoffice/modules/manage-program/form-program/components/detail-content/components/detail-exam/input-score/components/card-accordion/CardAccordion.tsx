@@ -1,28 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
+  createColumnHelper,
 } from '@tanstack/react-table';
-import { createColumnHelper } from '@tanstack/react-table';
-import { studentData, questionData } from '../../input-score/inputScore.data';
-import { SoalType } from './cardAccordion.type';
+import { QuestionType, StudentType } from './cardAccordion.type';
 import CardAccordionView from './CardAccordion.view';
 
-const columnHelper = createColumnHelper<SoalType>();
+const columnHelper = createColumnHelper<QuestionType>();
 
-const CardAccordion: React.FC = () => {
-  const [openAccordions, setOpenAccordions] = useState<number[]>([]);
+interface CardAccordionProps {
+  scoreData: StudentType[] | undefined;
+}
+
+const CardAccordion: React.FC<CardAccordionProps> = ({ scoreData }) => {
+  const [openAccordions, setOpenAccordions] = useState<string[]>([]);
   const [scores, setScores] = useState<{ [key: string]: number }>({});
 
-  const toggleAccordion = (id: number) => {
+  const toggleAccordion = (id: string) => {
     setOpenAccordions((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
   const handleScoreChange = (
-    studentId: number,
-    questionId: number,
+    studentId: string,
+    questionId: string,
     value: number,
   ) => {
     setScores((prev) => ({
@@ -31,45 +34,46 @@ const CardAccordion: React.FC = () => {
     }));
   };
 
-  const calculateTotalScore = (studentId: number) => {
-    return questionData.reduce((sum, question) => {
+  const calculateTotalScore = (studentId: string) => {
+    const student = scoreData?.find((s) => s.userId === studentId);
+    return student?.questions.reduce((sum, question) => {
       const score = scores[`${studentId}-${question.id}`] || 0;
       return sum + score;
-    }, 0);
+    }, 0) || 0;
   };
 
-  const columns = [
-    columnHelper.accessor('pertanyaan', {
+  const columns = useMemo(() => [
+    columnHelper.accessor('title', {
       header: 'Soal',
-      cell: (info) => info.getValue(),
+      cell: (info) => <div dangerouslySetInnerHTML={{ __html: info.getValue() }} />,
     }),
-    columnHelper.accessor('jawaban', {
+    columnHelper.accessor('id', {
       header: 'Jawaban',
-      cell: (info) => info.getValue(),
+      cell: () => 'Jawaban siswa',
     }),
-    columnHelper.accessor('nilai', {
+    columnHelper.accessor('id', {
       header: 'Nilai',
-      cell: ({ row }) => {
+      cell: ({ row, getValue }) => {
         const studentId = row.original.id;
-        const questionId = row.original.id;
+        const questionId = getValue();
         return scores[`${studentId}-${questionId}`] || '';
       },
     }),
-    columnHelper.accessor('totalNilai', {
-      header: 'Total Nilai',
-      cell: (info) => info.getValue(),
-    }),
-  ];
+  ], [scores]);
 
   const tableInstance = useReactTable({
-    data: questionData,
+    data: scoreData?.[0]?.questions || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
+  if (!scoreData) {
+    return null;
+  }
+
   return (
     <CardAccordionView
-      studentData={studentData}
+      studentData={scoreData}
       openAccordions={openAccordions}
       scores={scores}
       tableInstance={tableInstance}

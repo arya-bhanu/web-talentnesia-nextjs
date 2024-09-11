@@ -5,11 +5,12 @@ import { ExamListProps } from './detailExam.type';
 import TimeReadOnly from './components/time-read-only/TimeReadOnly';
 import Link from 'next/link';
 import DynamicButton from './components/dynamic-button/DynamicButton';
+import { useSearchParams } from 'next/navigation';
 
 export const DetailExam: React.FC<{ content: { data: ExamListProps } }> = ({
   content,
 }) => {
-  console.log('exam', content.data);
+  const contentId = useSearchParams().get('contentId');
 
   return (
     <div className="font-lato">
@@ -34,7 +35,7 @@ export const DetailExam: React.FC<{ content: { data: ExamListProps } }> = ({
         <div className="flex items-center justify-between">
           <h2 className="font-poppins font-semibold text-sm">Questions</h2>
           <Link
-            href="/backoffice/manage-program/update-program/detail-program-iicp/input-score"
+            href={`/backoffice/manage-program/update-program/detail-program/input-score?contentId=${contentId}`}
             className="mr-4"
           >
             <DynamicButton text="Input Score" />

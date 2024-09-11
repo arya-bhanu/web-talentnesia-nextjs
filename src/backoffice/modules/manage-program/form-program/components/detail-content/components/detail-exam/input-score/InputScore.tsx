@@ -6,23 +6,36 @@ import DynamicButton from '../components/dynamic-button/DynamicButton';
 import FilterMenu from '@/backoffice/modules/student/history/components/filter/FilterMenu';
 import SearchBar from '@/portal/components/search-bar';
 import { SearchTable } from '@/backoffice/components/search-table';
-import CardAccordion from '../components/card-accordion/CardAccordion';
+import CardAccordion from './components/card-accordion/CardAccordion';
+import { useSearchParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { fetchScore } from './api/inputScore.api';
+import { StudentType } from './components/card-accordion/cardAccordion.type';
 
 export const InputScore: React.FC<{ content?: { data: ExamListProps } }> = ({
   content,
 }) => {
-  console.log('exam', content?.data.exams);
+  const contentId = useSearchParams().get('contentId');
+  const { data: scoreData } = useQuery({
+    queryKey: ['score', contentId],
+    queryFn: () => fetchScore(contentId),
+    enabled: !!contentId,
+    select: (data) => data?.data as StudentType[] | undefined,
+  });
+  
+
   return (
     <div className="p-4 space-y-6">
       <div className="flex justify-between items-center">
-        <label htmlFor="title" className='text-xl font-semibold'>Input Score</label>
+        <label htmlFor="title" className="text-xl font-semibold">
+          Input Score
+        </label>
         <div className="space-x-4 flex flex-col-3 items-center">
           <SearchTable onChange={() => {}} value={''} />
           <FilterMenu onFilterChange={() => {}} />
-            <DynamicButton text="Lihat Nilai" className='w-[50%]'/>
         </div>
       </div>
-        <CardAccordion />
+      <CardAccordion scoreData={scoreData}/>
     </div>
   );
 };

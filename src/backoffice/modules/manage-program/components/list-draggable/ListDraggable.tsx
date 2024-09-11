@@ -181,7 +181,7 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
 
   const handleDetailButton = () => {
     router.push(
-      `${pathname}/detail-program-iicp/?contentId=${props.id}&programId=${programId}`,
+      `${pathname}/detail-program/?contentId=${props.id}&programId=${programId}`,
     );
   };
 
