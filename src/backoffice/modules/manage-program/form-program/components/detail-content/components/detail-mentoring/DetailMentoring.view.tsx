@@ -3,18 +3,7 @@ import Image from 'next/image';
 import { DataTable } from '@/backoffice/components/data-table';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
 import Loading from '@/components/loading';
-import { APIContentChapterProps } from '../../detailContent.type';
-import { ColumnDef } from '@tanstack/react-table';
-
-interface DetailMentoringViewProps {
-  content: { data: APIContentChapterProps };
-  studentsJoined: any;
-  isLoading: boolean;
-  filter: string;
-  setFilter: (value: string) => void;
-  columns: ColumnDef<any>[];
-  handleInputPresence: () => void;
-}
+import { DetailMentoringViewProps } from './detailMentoring.type';
 
 const DetailMentoringView: React.FC<DetailMentoringViewProps> = ({
   content,
