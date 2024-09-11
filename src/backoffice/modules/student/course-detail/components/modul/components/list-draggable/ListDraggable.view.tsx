@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { IListDraggable } from './listDraggableType.type';
 import PlayCircle from '@/../public/icons/play-circle.svg';
@@ -7,53 +8,58 @@ import VideoCam from '@/../public/icons/videocam.svg';
 import Pencil from '@/../public/icons/edit-2.svg';
 import BookGray from '@/../public/icons/book3.svg';
 import ClipboardTick from '@/../public/icons/clipboard-tick.svg';
-import Task from '@/../public/icons/task.svg';
+import Task from '@/../public/icons/manage-program/clipboard.svg';
+import { format, isFuture } from 'date-fns';
 
 const ListDraggableView: React.FC<IListDraggable> = ({
   type,
   title,
   className,
-  status,
-  date,
   completed,
+  date,
+  courseId,
+  chapterId,
+  contentId,
 }) => {
+  const router = useRouter();
+
+  const formattedDate = useMemo(() => {
+    if (!date) return '';
+    const dateObj = new Date(date);
+    const formattedString = format(dateObj, "dd MMMM yyyy 'Pukul' HH:mm");
+    return isFuture(dateObj) ? `Akses Mulai ${formattedString}` : formattedString;
+  }, [date]); 
+
   const generateIcon = useMemo(() => {
     switch (type) {
       case '1':
-        return <PlayCircle />;
-      case '2':
         return <Book />;
+      case '2':
+        return <PlayCircle />;
       case '3':
-        return <VideoCam />;
+        return <PlayCircle />;
       case '4':
-        return <Pencil />;
+        return <PlayCircle />;
       case '5':
-        return <BookGray />;
+        return <Pencil />;
+      case '6':
+        return <VideoCam />;
       default:
         return <VideoCam />;
     }
   }, [type]);
 
-  const displayText = useMemo(() => {
-    if (completed) {
-      return (
-        <>
-          <span className="font-semibold text-gray-800 text-sm font-lato">18 Maret 2024 Pukul 23:00</span>
-          <ClipboardTick />
-        </>
-      );
-    } else {
-      return (
-        <>
-          <span className="font-semibold text-gray-400 text-sm font-lato">Akses Mulai 23 Maret 2024 Pukul 23:59</span>
-          <Task />
-        </>
-      );
-    }
-  }, [completed]);
+  const statusIcon = completed ? <ClipboardTick /> : <Task />;
+
+  const handleClick = () => {
+    router.push(`/student/course/course-detail/material-modul/?courseId=${courseId}&chapterId=${chapterId}&contentId=${contentId}`);
+  };
 
   return (
-    <div className={clsx('flex items-center justify-between', className)}>
+    <div 
+      className={clsx('flex items-center justify-between cursor-pointer', className)}
+      onClick={handleClick}
+    >
       <div className="flex items-center gap-2">
         {generateIcon}
         <div>
@@ -63,7 +69,8 @@ const ListDraggableView: React.FC<IListDraggable> = ({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        {displayText}
+        <span className="font-semibold text-gray-400 text-sm font-lato">{formattedDate}</span>
+        {statusIcon}
       </div>
     </div>
   );
