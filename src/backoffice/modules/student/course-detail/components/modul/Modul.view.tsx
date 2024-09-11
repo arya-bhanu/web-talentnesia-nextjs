@@ -27,7 +27,7 @@ const ModulView = ({ activeAccordion, setActiveAccordion, certificates, course }
               index={index}
               activeAccordion={activeAccordion}
               setActiveAccordion={setActiveAccordion}
-              courseId={course.id} // Add this line
+              courseId={course.id}
             />
           ))}
         </div>
@@ -37,8 +37,10 @@ const ModulView = ({ activeAccordion, setActiveAccordion, certificates, course }
     {
       title: 'Certificate',
       content: <Certificate certificates={certificates} />,
+      type: 'certificate', // Add this line
     },
   ];
+  
 
   return (
     <Card>
