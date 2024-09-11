@@ -18,6 +18,7 @@ interface DropdownProps<T> {
   label?: string;
   disabled?: boolean;
   resetOnChange?: boolean;
+  initialValue?: string;
 }
 
 const Dropdown = <T extends { id: string }>({
@@ -34,6 +35,7 @@ const Dropdown = <T extends { id: string }>({
   label = '',
   disabled = false,
   resetOnChange = false,
+  initialValue,
 }: DropdownProps<T>) => {
   const [items, setItems] = useState<T[]>(initialItems);
   const [offset, setOffset] = useState(initialItems.length);
@@ -55,6 +57,26 @@ const Dropdown = <T extends { id: string }>({
     }
   }, [resetOnChange]);
 
+  useEffect(() => {
+    if (initialValue) {
+      setSearchTerm(initialValue);
+    }
+  }, [initialValue]);
+  
+  useEffect(() => {
+    if (initialValue) {
+      const fetchInitialItem = async () => {
+        const initialItems = await getItems(1, 0);
+        const item = initialItems.find(item => item.id === initialValue);
+        if (item) {
+          setSelectedItemId(item.id);
+          setSearchTerm(itemToString(item));
+        }
+      };
+      fetchInitialItem();
+    }
+  }, [initialValue, getItems, itemToString]);  
+
   const loadMoreItems = useCallback(
     async () => {
       if (loading || allLoaded) return;
@@ -62,7 +84,7 @@ const Dropdown = <T extends { id: string }>({
       setLoading(true);
 
       try {
-        const newItems = await getItems(20, offset); 
+        const newItems = await getItems(10, offset); 
         if (newItems.length === 0) {
           setAllLoaded(true);
         } else {

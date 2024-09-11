@@ -45,7 +45,6 @@ export const dropdownAPI = {
       } else {
         items = [];
       }
-
       const uniqueItems = Array.from(new Set(items.map(item => item.id)))
         .map(id => items.find(item => item.id === id)) as T[];
       return uniqueItems;

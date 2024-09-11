@@ -79,13 +79,16 @@ export const MentorView: React.FC<MentorViewProps> = ({
         const [
           fetchedProvinces,
           fetchedAcademicTitles,
+          fetchedReligions
         ] = await Promise.all([
           provinceAPI.getProvinces(100, 0),
           academicTitleAPI.all(),
+          religionAPI.all()
         ]);
 
         setProvinces(fetchedProvinces);
         setAcademicTitles((fetchedAcademicTitles as IComboAcademicTitle).data);
+        setReligions((fetchedReligions as IComboReligion).data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -93,23 +96,33 @@ export const MentorView: React.FC<MentorViewProps> = ({
 
     fetchData();
   }, []);
-
   useEffect(() => {
-    const fetchInitialData = async () => {
-      if (form.provinceId) {
-        setSelectedProvinceId(form.provinceId);
-        const fetchedDistricts = await districtAPI.getDistrictsByProvince(form.provinceId, 100, 0);
-        setDistricts(fetchedDistricts);
-      }
-      if (form.districtId) {
-        setSelectedDistrictId(form.districtId);
-        const fetchedSubDistricts = await subDistrictAPI.getSubDistrictsByDistrict(form.districtId, 100, 0);
-        setSubDistricts(fetchedSubDistricts);
-      }
-    };
+  const fetchInitialData = async () => {
+    if (form.provinceId) {
+      setSelectedProvinceId(form.provinceId);
+      const fetchedDistricts = await districtAPI.getDistrictsByProvince(
+        form.provinceId,
+        100,
+        0,
+      );
+      setDistricts(fetchedDistricts);
+    }
+    if (form.districtId) {
+      setSelectedDistrictId(form.districtId);
+      const fetchedSubDistricts = await subDistrictAPI.getSubDistrictsByDistrict(
+        form.districtId,
+        100,
+        0,
+      );
+      setSubDistricts(fetchedSubDistricts);
+    }
+  };
 
-    fetchInitialData();
-  }, [form.provinceId, form.districtId]);  return (
+  fetchInitialData();
+}, [form.provinceId, form.districtId]);
+
+  
+  return (
     <>
       <div className="container mx-auto p-1 max-w-full">
         <form className="space-y-8" onSubmit={handleSubmit}>
@@ -120,11 +133,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 onChange={handleProfilePictureChange}
                 initialValue={form.profilePicture}
                 idCheck={form.id}
-                id={form.id} // Add this line
+                id={form.id}
               />
             </div>
           </div>
-
           {/* Section A: Information Detail */}
           <div className=" p-4 md:p-6 rounded-lg shadow-sm bg-white">
             <h2 className="md:text-xl font-semibold mb-4">
@@ -237,14 +249,11 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion: any, index: number) => {
-                    console.log(religion);
-                    return (
-                      <option key={index} value={religion.id}>
-                        {religion.name}
-                      </option>
-                    );
-                  })}
+                  {religions.map((religion: APIResponseReligion) => (
+                    <option key={religion.id} value={religion.id}>
+                      {religion.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -414,6 +423,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   inputClassName="w-full rounded-l-lg"
                   placeholderText="Select Province"
                   label="Province"
+                  initialValue={form.provinceId ? provinces.find(p => p.id === form.provinceId)?.name : ''}
                 />
               </div>
               <div>
@@ -441,6 +451,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   placeholderText="Select District"
                   label="District"
                   disabled={!selectedProvinceId}
+                  initialValue={form.districtId ? districts.find(d => d.id === form.districtId)?.name : ''}
                 />
               </div>
               <div>
@@ -466,6 +477,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   placeholderText="Select Sub District"
                   label="Sub District"
                   disabled={!selectedDistrictId}
+                  initialValue={form.subDistrictId ? subDistricts.find(sd => sd.id === form.subDistrictId)?.name : ''}
                 />
               </div>
               <div>
