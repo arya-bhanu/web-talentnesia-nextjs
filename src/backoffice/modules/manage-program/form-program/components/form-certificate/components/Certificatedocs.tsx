@@ -1,29 +1,34 @@
 'use client';
 
 import React, { useRef, forwardRef, useImperativeHandle } from 'react';
-import { DocumentEditor } from "@onlyoffice/document-editor-react";
+import { DocumentEditor } from '@onlyoffice/document-editor-react';
 import CryptoJS from 'crypto-js';
-const DocumentEditorComponent = forwardRef<any, { selectedTemplate: { file: string; id: string } }>(({ selectedTemplate }, ref) => {
+
+const DocumentEditorComponent = forwardRef<
+  any,
+  { selectedTemplate: { file: string; id: string } }
+>(({ selectedTemplate }, ref) => {
   const editorRef = useRef<any>(null);
 
-  const baseUrl = "https://api-talentnesia.skwn.dev/";
+  const baseUrl = 'https://api-talentnesia.skwn.dev/';
   const doc = `api/v1/certificate/show_template/${selectedTemplate.file}`;
   const date = Date.now();
   const key = `${date}-${selectedTemplate.id}`;
-  const cb = "https://api-talentnesia.skwn.dev/api/v1/certificate/save_template";
+  const cb =
+    'https://api-talentnesia.skwn.dev/api/v1/certificate/save_template';
   const options = {
-    width: "100%",
-    height: "550px",
-    type: "desktop",
-    documentType: "word",
+    width: '100%',
+    height: '550px',
+    type: 'desktop',
+    documentType: 'word',
     document: {
-      title: "Talentnesia",
+      title: 'Talentnesia',
       url: `${baseUrl}${doc}`,
-      fileType: "docx",
+      fileType: 'docx',
       key: key,
       info: {
-        owner: "TEO",
-        uploaded: "1724058508252",
+        owner: 'TEO',
+        uploaded: '1724058508252',
       },
       permissions: {
         download: true,
@@ -32,34 +37,40 @@ const DocumentEditorComponent = forwardRef<any, { selectedTemplate: { file: stri
       },
     },
     editorConfig: {
-      mode: "edit",
-      lang: "en",
+      mode: 'edit',
+      lang: 'en',
       user: {
-        id: "ae2933ff986fa41e316b87a368d5caf8",
-        name: "Administrator",
+        id: 'ae2933ff986fa41e316b87a368d5caf8',
+        name: 'Administrator',
       },
       callbackUrl: cb,
       customization: {
         about: true,
         feedback: true,
         goback: {
-          url: "",
+          url: '',
         },
       },
     },
   };
 
   const base64UrlEncode = (input: string) => {
-    return btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return btoa(input)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
   };
 
   const generateJWT = (options: object, secretkey: string) => {
-    const header = { alg: "HS256", typ: "JWT" };
+    const header = { alg: 'HS256', typ: 'JWT' };
 
     const encodedHeader = base64UrlEncode(JSON.stringify(header));
     const encodedPayload = base64UrlEncode(JSON.stringify(options));
 
-    const signature = CryptoJS.HmacSHA256(`${encodedHeader}.${encodedPayload}`, secretkey)
+    const signature = CryptoJS.HmacSHA256(
+      `${encodedHeader}.${encodedPayload}`,
+      secretkey,
+    )
       .toString(CryptoJS.enc.Base64)
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
@@ -71,10 +82,13 @@ const DocumentEditorComponent = forwardRef<any, { selectedTemplate: { file: stri
   const token = generateJWT(options, secretkey);
 
   const onDocumentReady = () => {
-    console.log("Document is loaded");
+    console.log('Document is loaded');
   };
 
-  const onLoadComponentError = (errorCode: number, errorDescription: string) => {
+  const onLoadComponentError = (
+    errorCode: number,
+    errorDescription: string,
+  ) => {
     console.error(`Error ${errorCode}: ${errorDescription}`);
   };
 
@@ -90,5 +104,8 @@ const DocumentEditorComponent = forwardRef<any, { selectedTemplate: { file: stri
     />
   );
 });
+
+// Tambahkan displayName di sini
+DocumentEditorComponent.displayName = 'DocumentEditorComponent';
 
 export default DocumentEditorComponent;
