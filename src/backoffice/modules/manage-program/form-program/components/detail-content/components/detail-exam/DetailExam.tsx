@@ -34,7 +34,7 @@ export const DetailExam: React.FC<{ content: { data: ExamListProps } }> = ({
         <div className="flex items-center justify-between">
           <h2 className="font-poppins font-semibold text-sm">Questions</h2>
           <Link
-            href="/backoffice/manage-program/update-program-IICP/detail-program-iicp/input-score"
+            href="/backoffice/manage-program/update-program/detail-program-iicp/input-score"
             className="mr-4"
           >
             <DynamicButton text="Insert Score" />

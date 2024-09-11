@@ -32,12 +32,14 @@ const ModulView = ({ activeAccordion, setActiveAccordion }: IModulView) => {
           ))}
         </div>
       ),
+      type: 'modul',
     },
     {
       title: 'Certificate',
       content: <div>
         <Certificate />
       </div>,
+      type: 'certificate',
     },
   ];
 

@@ -5,6 +5,7 @@ export interface IFormDetail {
   programId?: string;
   handleFileChange: (fileUrl: string) => Promise<void>;
   fullImageUrl: string;
+  programType?: string;
 }
 
 export interface IHandleFormDetail {
@@ -13,6 +14,8 @@ export interface IHandleFormDetail {
 
 export interface IStateFormDetail {
   isLoadingMentors: boolean;
+  selectedSchool: string;
+  setSelectedSchool: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export type Schools = {
@@ -20,7 +23,7 @@ export type Schools = {
   name: string;
 };
 
-export interface APIDetailProgramIICP {
+export interface APIDetailProgram {
   id?: string;
   name: string;
   active: 0 | 1 | 2;

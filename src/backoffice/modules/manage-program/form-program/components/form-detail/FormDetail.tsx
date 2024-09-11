@@ -11,10 +11,12 @@ import {
   fetchSchools,
 } from './api/formDetail.api';
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
-import { APIDetailProgramIICP, Schools } from './formDetail.type';
+import { APIDetailProgram, Schools } from './formDetail.type';
 import { convertIntoNumericDate } from '@/helpers/formatter.helper';
 import { defaultDataFormDetail, defaultDataFormDetailEdit } from './formDetail.data';
 import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
+import { useTabStoreManageProgram } from '../../../manageProgramStore';
+import Loading from '@/components/loading';
 
 const FormDetail = () => {
   const params = useSearchParams();
@@ -30,6 +32,9 @@ const FormDetail = () => {
     resetStore,
   } = useFormDetailStore();
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
+  const { activeTab } = useTabStoreManageProgram();
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedSchool, setSelectedSchool] = useState<string>('');
 
   const { data: dataProgramDetail, isLoading: isLoadingProgramDetail } =
     useQuery({
@@ -54,6 +59,13 @@ const FormDetail = () => {
     });
 
     useEffect(() => {
+      const isDataLoaded = !isLoadingProgramDetail && !isLoadingMentors && !isLoadingSchools;
+      if (isDataLoaded) {
+        setIsLoading(false);
+      }
+    }, [isLoadingProgramDetail, isLoadingMentors, isLoadingSchools]);
+
+    useEffect(() => {
       if (!programId) {
         resetStore();
       }
@@ -62,6 +74,7 @@ const FormDetail = () => {
     useEffect(() => {
       if (programId && dataProgramDetail?.data?.data) {
         setDefaultData(dataProgramDetail.data.data);
+        setSelectedSchool(dataProgramDetail.data.data.institutionId || '');
         if (dataProgramDetail.data.data.image) {
           getImageUrl(dataProgramDetail.data.data.image)
             .then(setFullImageUrl)
@@ -70,10 +83,11 @@ const FormDetail = () => {
       } else {
         setDefaultData(defaultDataFormDetailEdit);
         setFullImageUrl('');
+        setSelectedSchool('');
       }
     if (dataMentors?.data?.data) {
       setDefaultMentors(
-        dataMentors.data.data.map((el: any) => {
+        dataMentors.data.data.map((el: Mentor) => {
           return {
             id: el.id,
             name: el.name,
@@ -83,7 +97,7 @@ const FormDetail = () => {
     }
     if (dataSchools?.data?.data) {
       setDefaultSchools(
-        dataSchools.data.data.map((el: any) => {
+        dataSchools.data.data.map((el: Schools) => {
           return {
             id: el.id,
             name: el.name,
@@ -99,7 +113,7 @@ const FormDetail = () => {
 
   const handleFileChange = async (fileUrl: string) => {
     const fullUrl = await getImageUrl(fileUrl);
-    setData((prevData: APIDetailProgramIICP) => ({ ...prevData, image: fileUrl }));
+    setData((prevData: APIDetailProgram) => ({ ...prevData, image: fileUrl }));
     setFullImageUrl(fullUrl);
   };
 
@@ -109,7 +123,7 @@ const FormDetail = () => {
     const formData = new FormData(e.currentTarget);
     const programName = formData.get('program_name') as string;
     const active = Number(formData.get('active') as string) as 0 | 1;
-    const mentors = data.mentors.map((el) => el.id);
+    const mentors = data.mentors.map((el: Mentor) => el.id);
     const filePic = data.image;
     const startDate = formData.get('start_date') as string;
     const endDate = formData.get('end_date') as string;
@@ -135,7 +149,7 @@ const FormDetail = () => {
       mentors,
       name: programName,
       image: filePic,
-      type: 'iicp',
+      type: activeTab,
       institutionId: school,
     });
 
@@ -145,13 +159,18 @@ const FormDetail = () => {
     router.push('/backoffice/manage-program');
   };
   return (
-    <FormDetailView
-      programId={programId || undefined}
-      handleSubmitForm={handleSubmitFormDetail}
-      isLoadingMentors={isLoadingMentors}
-      handleFileChange={handleFileChange}
-      fullImageUrl={fullImageUrl}
-    />
+    <Loading isLoading={isLoading}>
+      <FormDetailView
+        programId={programId || undefined}
+        handleSubmitForm={handleSubmitFormDetail}
+        isLoadingMentors={isLoadingMentors}
+        handleFileChange={handleFileChange}
+        fullImageUrl={fullImageUrl}
+        programType={dataProgramDetail?.data?.data?.type}
+        selectedSchool={selectedSchool}
+        setSelectedSchool={setSelectedSchool}
+      />
+    </Loading>
   );
 };
 
