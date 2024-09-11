@@ -3,20 +3,11 @@ import React, { useState, useEffect } from 'react';
 import Loading from '@/components/loading';
 import { APIContentChapterProps } from '../../detailContent.type';
 
-const DetailImage: React.FC<{ content: { data: APIContentChapterProps }}> = ({ content }) => {
-  const [isLoading, setIsLoading] = useState(true);
-
-
+const DetailImage: React.FC<{
+  content: { data: APIContentChapterProps };
+  isLoading: boolean;
+}> = ({ content, isLoading }) => {
   const isImage = /\.(png|jpg|jpeg|gif)$/.test(content.data.body || '');
-
-  console.log('Image', content.data);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   if (!isImage) {
     return <div>Unsupported file type</div>;
@@ -33,8 +24,6 @@ const DetailImage: React.FC<{ content: { data: APIContentChapterProps }}> = ({ c
             width={800}
             height={600}
             objectFit="contain"
-            onLoad={() => setIsLoading(false)}
-            onError={() => setIsLoading(false)}
           />
         </div>
       </div>

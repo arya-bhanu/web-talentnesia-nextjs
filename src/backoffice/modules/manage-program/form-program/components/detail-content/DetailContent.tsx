@@ -9,42 +9,40 @@ import DetailImage from './components/detail-image/DetailImage';
 import DetailLink from './components/detail-link/DetailLink';
 import { DetailExam } from './components/detail-exam/DetailExam';
 import DetailMentoring from './components/detail-mentoring/DetailMentoring';
+import Loading from '@/components/loading';
+
+const contentComponents = {
+  '1': DetailDocument,
+  '2': DetailVideo,
+  '3': DetailImage,
+  '4': DetailLink,
+  '5': DetailExam,
+  '6': DetailMentoring,
+};
 
 export const DetailContent: React.FC = () => {
-  const searchParams = useSearchParams();
-  const contentId = searchParams.get('contentId');
+  const contentId = useSearchParams().get('contentId');
 
   const { data: contentData, isLoading } = useQuery({
     queryKey: ['content', contentId],
     queryFn: () => fetchContent(contentId),
+    enabled: !!contentId,
   });
 
-  // console.log('contentData: ', contentData);
-  
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  
-  if (!contentData) {
-    return <div>Content not found</div>;
+  if (!contentId) {
+    return <div>Content ID not provided</div>;
   }
 
-  const { type } = contentData.data.data;
-
-  switch (type) {
-    case '1':
-      return <DetailDocument content={contentData.data} />;
-    case '2':
-      return <DetailVideo content={contentData.data} />;
-    case '3':
-      return <DetailImage content={contentData.data} />;
-    case '4':
-      return <DetailLink content={contentData.data} />;
-    case '5':
-      return <DetailExam content={contentData.data} />;
-    case '6':
-      return <DetailMentoring content={contentData.data} />;
-    default:
-      return <div>Unsupported content type</div>;
-  }
+  return (
+    <Loading isLoading={isLoading}>
+      {contentData ? (
+        (() => {
+          const Component = contentComponents[contentData.data.data.type as keyof typeof contentComponents];
+          return Component ? <Component content={contentData.data} isLoading={isLoading} /> : <div>Unsupported content type</div>;
+        })()
+      ) : (
+        <div>Content not found</div>
+      )}
+    </Loading>
+  );
 };
