@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Province from './province';
-import City from './city';
+import District from './district';
 import SubDistrict from './sub-disctrict';
 import ZipCode from './zip-code';
 import dynamic from 'next/dynamic';
@@ -20,9 +20,8 @@ const Region: React.FC = () => {
       type: 'province',
     },
     {
-      title: 'City',
-      content: <City />,
-      type: 'city',
+      title: 'District',
+      content: <District />,
     },
     {
       title: 'Sub-District',

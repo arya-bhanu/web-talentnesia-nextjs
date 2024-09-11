@@ -4,67 +4,92 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useSchoolOperatorForm } from './SchoolOperatorForm';
-import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
-import { districtAPI } from '../../master-data/region/city/api/cityApi';
-import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
 import { SchoolAPI } from '../../school/api/schoolApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
 import { Component as Datepicker } from '../components/datepicker/Datepicker';
-import { Component as FileInput } from '../components/file-input/FileInput';
 import { ProfilePictureInput } from '../components/profile-picture-input/ProfilePictureInput';
-import { Component as SelectYear } from '../components/select-year/selectYear';
 import { Region } from '../school-operator/schoolOperatorForm.type';
 import Link from 'next/link';
 import { ResponseModal } from '../components/response-modal/responseModal';
-
+import {
+  APIResponseReligion,
+  IComboReligion,
+} from '../../master-data/religion/religion.type';
+import { APIResponseSchool } from '../../school/school.type';
+import Dropdown from '@/backoffice/components/dropdown/Dropdown';
+import {
+  provinceAPI,
+  Province,
+  District,
+  districtAPI,
+  SubDistrict,
+  subDistrictAPI,
+} from '@/backoffice/components/dropdown/api/dropdownApi';
 type SchoolOperatorViewProps = ReturnType<typeof useSchoolOperatorForm>;
 
 export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
   form,
-    handleInputChange,
-    resetForm,
-    handleFileChange,
-    handleProfilePictureChange,
-    handleSubmit,
-    showConfirmModal,
-    setShowConfirmModal,
-    showResultModal,
-    setShowResultModal,
-    isSuccess,
-    confirmSubmit,
+  handleInputChange,
+  resetForm,
+  handleFileChange,
+  handleProfilePictureChange,
+  handleSubmit,
+  showConfirmModal,
+  setShowConfirmModal,
+  showResultModal,
+  setShowResultModal,
+  isSuccess,
+  confirmSubmit,
 }) => {
-  const [provinces, setProvinces] = useState<Region[]>([]);
-  const [districts, setDistricts] = useState<Region[]>([]);
-  const [subDistricts, setSubDistricts] = useState<Region[]>([]);
-  const [academicInstitutions, setAcademicInstitutions] = useState<Region[]>([]);
-  const [religions, setReligions] = useState<Region[]>([]);
+  const [religions, setReligions] = useState<APIResponseReligion[]>([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [districts, setDistricts] = useState<District[]>([]);
+  const [subDistricts, setSubDistricts] = useState<SubDistrict[]>([]);
+  const [academicInstitutions, setAcademicInstitutions] = useState<
+    APIResponseSchool[]
+  >([]);
 
   const styles = {
-    inputField: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins",
+    inputField:
+      'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins',
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedProvinces = await provinceAPI.all();
-        setProvinces(fetchedProvinces);
-
-        const fetchedDistricts = await districtAPI.all();
-        setDistricts(fetchedDistricts);
-
-        const fetchedSubDistricts = await subDistrictAPI.all();
-        setSubDistricts(fetchedSubDistricts);
-
         const fetchedAcademicInstitutions = await SchoolAPI.all();
         setAcademicInstitutions(fetchedAcademicInstitutions);
-
-        const fetchedReligions = await religionAPI.all();
-        setReligions(fetchedReligions);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [
+          fetchedReligions,
+          fetchedProvinces,
+          fetchedDistricts,
+          fetchedSubDistricts,
+        ] = await Promise.all([
+          religionAPI.all(),
+          provinceAPI.getProvinces(100, 0),
+          districtAPI.getDistricts(100, 0),
+          subDistrictAPI.getSubDistricts(100, 0),
+        ]);
+
+        setReligions((fetchedReligions as IComboReligion).data);
+        setProvinces(fetchedProvinces);
+        setDistricts(fetchedDistricts);
+        setSubDistricts(fetchedSubDistricts);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     fetchData();
   }, []);
 
@@ -75,12 +100,12 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
           <input type="hidden" name="id" value={form.id || ''} />
           <div className="border p-6 rounded-lg shadow-sm bg-white">
             <div className="flex items-center space-x-4">
-            <ProfilePictureInput
-              onChange={handleProfilePictureChange}
-              initialValue={form.profilePicture}
-              idCheck={form.id}
-              id={form.id}  // Add this line
-            />
+              <ProfilePictureInput
+                onChange={handleProfilePictureChange}
+                initialValue={form.profilePicture}
+                idCheck={form.id}
+                id={form.id}
+              />
             </div>
           </div>
 
@@ -133,24 +158,24 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                 />
               </div>
               <div>
-              <label className="flex mb-1">
-                Date of Birth<div className="text-red-600">*</div>
-              </label>
-              <Datepicker
-                id="dateOfBirth"
-                onChange={(date: Date | null) => {
-                  const customEvent = {
-                    target: {
-                      name: 'dateOfBirth',
-                      value: date ? date.toISOString().split('T')[0] : '',
-                    },
-                  } as React.ChangeEvent<HTMLInputElement>;
-                  handleInputChange(customEvent);
-                }}
-                value={form.dateOfBirth ? new Date(form.dateOfBirth) : null}
-                placeholder="Select Date of Birth"
-              />
-            </div>
+                <label className="flex mb-1">
+                  Date of Birth<div className="text-red-600">*</div>
+                </label>
+                <Datepicker
+                  id="dateOfBirth"
+                  onChange={(date: Date | null) => {
+                    const customEvent = {
+                      target: {
+                        name: 'dateOfBirth',
+                        value: date ? date.toISOString().split('T')[0] : '',
+                      },
+                    } as React.ChangeEvent<HTMLInputElement>;
+                    handleInputChange(customEvent);
+                  }}
+                  value={form.dateOfBirth ? new Date(form.dateOfBirth) : null}
+                  placeholder="Select Date of Birth"
+                />
+              </div>
               <div>
                 <label className="flex mb-1">
                   Religion<div className="text-red-600">*</div>
@@ -164,42 +189,45 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion, index) => (
-                    <option key={index} value={religion.id}>
-                      {religion.name}
-                    </option>
-                  ))}
+                  {religions.map((religion: any, index: number) => {
+                    console.log(religion);
+                    return (
+                      <option key={index} value={religion.id}>
+                        {religion.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
-            <label className="flex mb-1">
-              Gender<div className="text-red-600">*</div>
-            </label>
-            <div className="flex items-center mt-3 space-x-4">
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="1"
-                  onChange={handleInputChange}
-                  checked={form.gender === 1}
-                  className="mr-2 size-4 md:size-6 text-sm md:text-base place-self-center"
-                />
-                Male
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="2"
-                  onChange={handleInputChange}
-                  checked={form.gender === 2}
-                  className="mr-2 size-4 md:size-6 text-sm md:text-base"
-                />
-                Female
-              </label>
-            </div>
-          </div>
+                <label className="flex mb-1">
+                  Gender<div className="text-red-600">*</div>
+                </label>
+                <div className="flex items-center mt-3 space-x-4">
+                  <label className="inline-flex items-center">
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="1"
+                      onChange={handleInputChange}
+                      checked={form.gender === 1}
+                      className="mr-2 size-4 md:size-6 text-sm md:text-base place-self-center"
+                    />
+                    Male
+                  </label>
+                  <label className="inline-flex items-center">
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="2"
+                      onChange={handleInputChange}
+                      checked={form.gender === 2}
+                      className="mr-2 size-4 md:size-6 text-sm md:text-base"
+                    />
+                    Female
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -250,61 +278,44 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                 <label className="flex mb-1">
                   Province<div className="text-red-600">*</div>
                 </label>
-                <select
-                name="provinceId"
-                value={form.provinceId || ''}
-                onChange={handleInputChange}
-                className={styles.inputField}
-              >
-                <option className="hidden" value="" disabled>
-                  Select Province
-                </option>
-                {provinces?.map((province, index) => (
-                  <option key={index} value={province.id}>
-                    {province.name}
-                  </option>
-                ))}
-              </select>
+                <Dropdown<Province>
+                  onItemSelect={(itemId) =>
+                    handleInputChange({
+                      target: { name: 'provinceId', value: itemId },
+                    } as React.ChangeEvent<HTMLSelectElement>)
+                  }
+                  getItems={provinceAPI.getProvinces}
+                  itemToString={(item) => item.name}
+                  containerClassName="w-full"
+                  inputClassName="w-full rounded-l-lg"
+                  placeholderText="Select Province"
+                />
               </div>
               <div>
-                <label className="flex mb-1">
-                  City/District<div className="text-red-600">*</div>
-                </label>
-                <select
-                  name="districtId"
-                  value={form.districtId || ''}
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                >
-                  <option className="hidden" value="" disabled>
-                    Select City/District
-                  </option>
-                  {districts?.map((district, index) => (
-                    <option key={index} value={district.id}>
-                      {district.name}
-                    </option>
-                  ))}
-                </select>
+                <Dropdown<District>
+                  onItemSelect={(itemId) => {
+                    form.districtId = itemId;
+                  }}
+                  getItems={districtAPI.getDistricts}
+                  itemToString={(item) => item.name}
+                  containerClassName="w-full"
+                  inputClassName="w-full rounded-l-lg"
+                  placeholderText="Select District"
+                  label="District"
+                />
               </div>
               <div>
-                <label className="flex mb-1">
-                  Sub District<div className="text-red-600">*</div>
-                </label>
-                <select
-                  name="subDistrictId"
-                  value={form.subDistrictId || ''}
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                >
-                  <option className="hidden" value="" disabled>
-                    Select Sub District
-                  </option>
-                  {subDistricts?.map((subDistrict, index) => (
-                    <option key={index} value={subDistrict.id}>
-                      {subDistrict.name}
-                    </option>
-                  ))}
-                </select>
+                <Dropdown<SubDistrict>
+                  onItemSelect={(itemId) => {
+                    form.subDistrictId = itemId;
+                  }}
+                  getItems={subDistrictAPI.getSubDistricts}
+                  itemToString={(item) => item.name}
+                  containerClassName="w-full"
+                  inputClassName="w-full rounded-l-lg"
+                  placeholderText="Select Sub District"
+                  label="Sub District"
+                />
               </div>
               <div>
                 <label className="flex mb-1">
@@ -335,45 +346,42 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
             </div>
           </div>
 
-
           {/* Section D. School */}
           <div className="border p-4 md:p-6 rounded-lg shadow-sm bg-white">
-            <h2 className="text-lg md:text-xl font-semibold mb-4">
-              D. School
-            </h2>
+            <h2 className="text-lg md:text-xl font-semibold mb-4">D. School</h2>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-                  <div>
-                    <label className="flex mb-1">
-                      School of origin<div className="text-red-600">*</div>
-                    </label>
-                    <select
-                      name="educationInstitutionId"
-                      value={form.educationInstitutionId || ''}
-                      onChange={handleInputChange}
-                      className={styles.inputField}
-                    >
-                      <option className="hidden" value="" disabled>
-                        Select Academic Institution
-                      </option>
-                      {academicInstitutions?.map((education, index) => (
-                        <option key={index} value={education.id}>
-                          {education.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+              <div>
+                <label className="flex mb-1">
+                  School of origin<div className="text-red-600">*</div>
+                </label>
+                <select
+                  name="educationInstitutionId"
+                  value={form.educationInstitutionId || ''}
+                  onChange={handleInputChange}
+                  className={styles.inputField}
+                >
+                  <option className="hidden" value="" disabled>
+                    Select Academic Institution
+                  </option>
+                  {academicInstitutions.map((institution) => (
+                    <option key={institution.id} value={institution.id}>
+                      {institution.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
           {/* Submit Button */}
           <div className="flex justify-end space-x-4">
             <Link href={'/backoffice/manage-user'}>
-            <button
-              type="button"
-              className="cancel-button bg-white border-red-500 border-2 text-red-500 py-2 px-4 rounded font-poppins"
-            >
-              Cancel
-            </button>
+              <button
+                type="button"
+                className="cancel-button bg-white border-red-500 border-2 text-red-500 py-2 px-4 rounded font-poppins"
+              >
+                Cancel
+              </button>
             </Link>
             <button
               type="submit"
@@ -398,8 +406,12 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
         isOpen={showResultModal}
         onClose={() => setShowResultModal(false)}
         onConfirm={() => setShowResultModal(false)}
-        title={isSuccess ? "Success" : "Error"}
-        message={isSuccess ? "Berhasil Menambahkan SchoolOperator" : "Gagal Menambahkan SchoolOperator"}
+        title={isSuccess ? 'Success' : 'Error'}
+        message={
+          isSuccess
+            ? 'Berhasil Menambahkan SchoolOperator'
+            : 'Gagal Menambahkan SchoolOperator'
+        }
         confirmText="OK!"
       />
     </>

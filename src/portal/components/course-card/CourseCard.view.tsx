@@ -4,18 +4,19 @@ import { CourseCardProps } from './courseCard.type';
 import SkeletonLoader from '../skeleton-animation';
 
 const CourseCardView: React.FC<CourseCardProps> = ({
-  image,
+  logo,
   rating,
-  price,
-  oldPrice,
+  currentPrice,
+  originalPrice,
   title,
   description,
   duration,
   level,
-  modules,
+  totalModul,
   isLoading
 }) => {
   const formatRupiah = (angka: number) => {
+    if (angka == null) return 'Rp 0'; 
     const reverse = angka.toString().split('').reverse().join('');
     const ribuan = reverse.match(/\d{1,3}/g);
     const formatted = ribuan?.join('.').split('').reverse().join('');
@@ -74,7 +75,7 @@ const CourseCardView: React.FC<CourseCardProps> = ({
             {
               !isLoading &&
               <img
-                src={image}
+                src={logo}
                 alt="course image"
                 className="rounded-xl object-cover max-h-[300px] w-full"
               />
@@ -104,7 +105,7 @@ const CourseCardView: React.FC<CourseCardProps> = ({
                     <>
                     <p>{duration}</p>
                     <p>{level}</p>
-                    <p>{modules}</p>
+                    <p>{totalModul}</p>
                     </>
                   }
                   
@@ -117,7 +118,7 @@ const CourseCardView: React.FC<CourseCardProps> = ({
                     !isLoading &&
                     <>
                     <p className="text-gray-600 font-bold text-xs ml-1">
-                      {rating.toFixed(1)}
+                    {(Number(rating) || 0).toFixed(1)}
                     </p>
                     <div className="flex items-center">{renderStar(rating)}</div>
                     </>
@@ -129,10 +130,10 @@ const CourseCardView: React.FC<CourseCardProps> = ({
                   {
                     !isLoading &&
                     <>
-                    {formatRupiah(price)}
-                    {oldPrice && (
+                    {formatRupiah(currentPrice)}
+                    {originalPrice && (
                       <span className="text-gray-500 line-through text-sm ml-2">
-                        {formatRupiah(oldPrice)}
+                        {formatRupiah(originalPrice)}
                       </span>
                     )}
                     </>

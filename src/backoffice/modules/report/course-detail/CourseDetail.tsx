@@ -1,140 +1,114 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react';
-import CoursesProgress from '@/backoffice/modules/program/components/courses-progres/CoursesProgress';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchDetailProgram } from '../api/reportApi';
+import { useParams, useSearchParams } from 'next/navigation';
+import { APIReportProgramDetail } from '../report.type';
+import CoursesProgress from '../../program/components/courses-progres/CoursesProgress';
+import Loading from '@/components/loading';
+import {
+  convertDateIntoIDDate,
+  convertTimeToMinutes,
+  YMDIntoDate,
+} from '@/helpers/formatter.helper';
 import AccordionPanelDraggable from '../components/accordion-panel-draggable';
-import { TableProgramData } from '../components/table-program/tableProgram.data';
+import { CustomTitles } from '@/backoffice/components/title-navbar/titleNavbar.type';
+import { registerCustomizations } from '@/backoffice/components/global-customization/globalCustomizations';
 
-interface ReportDetailProps {
-  params: {
-    id: string;
-  };
-}
+interface ReportDetailProps {}
 
-const ReportDetail: React.FC<ReportDetailProps> = ({ params }) => {
-  const { id } = params;
+const ReportDetail: React.FC<ReportDetailProps> = () => {
   const [activeAccordion, setActiveAccordion] = useState<number>(0);
-  
-  const programData = TableProgramData.find(program => program.id === id);
+  const [programDataState, setProgramDataState] =
+    useState<null | APIReportProgramDetail>(null);
+  const pathname = useSearchParams();
+  const id = pathname.get('id');
 
-  if (!programData) {
-    return <div>Program not found</div>;
-  }
+  const { data: programData, isLoading: isLoadingProgramData } = useQuery({
+    queryKey: ['detail', 'program', id],
+    queryFn: () => fetchDetailProgram(id),
+    enabled: id !== null,
+  });
+
+  useEffect(() => {
+    if (programData?.data) {
+      setProgramDataState(programData?.data);
+    }
+  }, [JSON.stringify(programData?.data)]);
+
+  useEffect(() => {
+    if (programDataState && programDataState.id) {
+      const customTitlesDetail: { [key: string]: string } = {};
+      const customBreadCrumbsDetail: { [key: string]: string } = {};
+
+      customTitlesDetail[programDataState.id] = programDataState.name;
+      customBreadCrumbsDetail[programDataState.id] = programDataState.name;
+
+      console.log(customTitlesDetail);
+      console.log(customBreadCrumbsDetail);
+
+      registerCustomizations(
+        'courseDetail',
+        customTitlesDetail,
+        customBreadCrumbsDetail,
+      );
+    }
+  }, [programDataState]);
 
   return (
-    <div className="p-4 bg-[#FFFFFF] rounded-xl">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="font-poppins font-semibold text-[25px]">
-          Course Detail
-        </h1>
-      </div>
-      
-      <CoursesProgress
-        progress={programData.progress}
-        className="flex-1 mb-6"
-        startDate="22 Maret 3024"
-        endDate="10 September 3024"
-        completedSessions={Math.round(programData.progress * 5)}
-        totalSessions={500}
-      />
+    <Loading isLoading={isLoadingProgramData}>
+      <div className="p-4 bg-[#FFFFFF] rounded-xl">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="font-poppins font-semibold text-[25px]">
+            Course Detail
+          </h1>
+        </div>
 
-      <AccordionPanelDraggable
-        key={1}
-        activeAccordion={activeAccordion}
-        setActiveAccordion={setActiveAccordion}
-        title={`UX Design Principles`}
-        index={1}
-        totalCurriculum={6}
-        status='Delivered'
-        contents={[
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'UX Introduction',
-            type: '1',
-          },
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'Jacob\'s Law',
-            type: '1',
-          },
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'Concistency for your design',
-            type: '1',
-          },
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'Hick\'s Law ',
-            type: '2',
-          },
-          {
-            date: new Date(),
-            durationMinute: 30, 
-            title: 'Exam Hick\'s Law ',
-            type: '3',
-          },
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'Mentoring 1',
-            type: '4',
-          },
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'The magic number is 4',
-            completed: true,
-            type: '2',
-          },
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'Ethical Design',
-            completed: true,
-            type: '2',
-          },
-        ]}
-        totalMinuteDuration={58}
-      />
-      <AccordionPanelDraggable
-        key={2}
-        activeAccordion={activeAccordion}
-        setActiveAccordion={setActiveAccordion}
-        title={`UI Design Principles`}
-        index={2}
-        totalCurriculum={6}
-        contents={[
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'UX Introduction',
-            type: '1',
-          },
-        ]}
-        totalMinuteDuration={45}
-      />
-      <AccordionPanelDraggable
-        key={3}
-        activeAccordion={activeAccordion}
-        setActiveAccordion={setActiveAccordion}
-        title={`Pixel Perfect`}
-        index={3}
-        totalCurriculum={6}
-        contents={[
-          {
-            date: new Date(),
-            durationMinute: 30,
-            title: 'UX Introduction',
-            type: '1',
-          },
-        ]}
-        totalMinuteDuration={40}
-      />
-    </div>
+        {programDataState && (
+          <>
+            <CoursesProgress
+              progress={programDataState.progress}
+              className="flex-1 mb-6"
+              startDate={convertDateIntoIDDate(
+                YMDIntoDate(programDataState.startDate),
+              )}
+              endDate={convertDateIntoIDDate(
+                YMDIntoDate(programDataState.endDate),
+              )}
+              completedSessions={Math.round(programDataState.progress * 5)}
+              totalSessions={500}
+            />
+            {programDataState.chapters.map((el, index) => {
+              return (
+                <AccordionPanelDraggable
+                  key={el.id}
+                  contents={el.contents.map((el) => {
+                    return {
+                      date: new Date(),
+                      durationMinute: convertTimeToMinutes(el.duration),
+                      title: el.title,
+                      type: el.type,
+                      chapterId: el.chapterId,
+                      id: el.id,
+                      order: el.order,
+                      isexam: Boolean(el.isexam),
+                    };
+                  })}
+                  activeAccordion={activeAccordion}
+                  index={index}
+                  setActiveAccordion={setActiveAccordion}
+                  title={el.title}
+                  totalCurriculum={10}
+                  totalMinuteDuration={Number(el.duration) || 0}
+                  status="Delivered"
+                />
+              );
+            })}
+          </>
+        )}
+      </div>
+    </Loading>
   );
 };
 

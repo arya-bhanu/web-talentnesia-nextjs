@@ -12,45 +12,35 @@ import UserStoryCard from '@/portal/components/user-story-card';
 import { Contact } from './components/contact-section';
 import { useIicpData } from './hooks/useIicp';
 import SkeletonLoader from '@/portal/components/skeleton-animation';
+import { IicpViewProps } from './iicp.type';
 
-export const IicpView: React.FC = () => {
-  const { data, isLoading, error } = useIicpData();
-
+const IicpView: React.FC<IicpViewProps> = ({ data, isLoading }) => {
+  //const { data, isLoading, error } = useIicpData();
   
-  const [skeletonAnimation, setTime] = React.useState(true);
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error loading data</div>;
 
-  React.useEffect(() => {
-    
-    
-    const timer = setTimeout(() => {
-      setTime(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading data</div>;
-
-  const { partners, testimonials } = data;
+  //const { partners, testimonials } = data;
 
   return (
     <>
-      <HeroSection isLoading={skeletonAnimation} />
+      <HeroSection isLoading={isLoading} />
       <main className="container">
-        <PartnersSection className="py-10 md:py-20" partners={data.partners} isLoading={skeletonAnimation} />
-        <Benefits className="py-10 md:py-20" isLoading={skeletonAnimation}/>
+        <PartnersSection className="py-10 md:py-20" partners={data?.partners ?? []} isLoading={isLoading} />
+        <Benefits className="py-10 md:py-20" isLoading={isLoading}/>
         <Divider className="py-5" />
-        <Features className="py-10 md:py-20" isLoading={skeletonAnimation} />
-        <Program className="py-10 md:py-10" isLoading={skeletonAnimation}/>
-        <PartnersCarousel className="py-5 md:py-10" partners={data.partners} isLoading={skeletonAnimation} />
+        <Features className="py-10 md:py-20" isLoading={isLoading} />
+        <Program className="py-10 md:py-10" isLoading={isLoading}/>
+        <PartnersCarousel className="py-5 md:py-10" partners={data?.partners ?? []} isLoading={isLoading} />
         <UserStoryCard
           className="mt-16 md:mt-20 lg:mt-32"
-          testimonials={data.testimonials || []}
-          isLoading={skeletonAnimation}
+          testimonials={data?.testimonials ?? []}
+          isLoading={isLoading}
         />
         <Divider className="py-10 md:mt-20" />
-        <Contact className="py-10 md:py-15" isLoading={skeletonAnimation}/>
+        <Contact className="py-10 md:py-15" isLoading={isLoading}/>
       </main>
     </>
   );
 };
+export default IicpView;

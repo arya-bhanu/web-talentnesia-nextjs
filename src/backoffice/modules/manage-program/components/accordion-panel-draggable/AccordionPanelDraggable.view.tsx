@@ -27,6 +27,7 @@ import PopoverAction from '@/backoffice/components/popover-action/PopoverAction'
 import Modal from '@/backoffice/components/modal';
 import FormMentoring from '../../form-program/components/form-mentoring';
 import FormCertificate from '../../form-program/components/form-certificate';
+import FormGenerate from '../../form-program/components/form-generateCertificate';
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -48,9 +49,11 @@ const AccordionPanelDraggableView: React.FC<
       index: number;
       handleOpenModalMentoring: (action: 'open' | 'close') => void;
       handleOpenModalCertificate: (action: 'open' | 'close') => void;
+      handleOpenModalGenerate: (action: 'open' | 'close') => void;
       handleOpenModalContent: (action: 'open' | 'close') => void;
       handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
       handleSubmitModalCertificate: (e: FormEvent<HTMLFormElement>) => void;
+      handleSubmitModalGenerate: (e: FormEvent<HTMLFormElement>) => void;
       handleSubmitModalContent: (
         e: FormEvent<HTMLFormElement>,
         chapterId: string,
@@ -60,6 +63,8 @@ const AccordionPanelDraggableView: React.FC<
       setOpenModalContent: Dispatch<SetStateAction<boolean>>;
       openModalCertificate: boolean;
       setOpenModalCertificate: Dispatch<SetStateAction<boolean>>;
+      openModalGenerate: boolean;
+      setOpenModalGenerate: Dispatch<SetStateAction<boolean>>;
       openModalMentoring: boolean;
       setOpenModalMentoring: Dispatch<SetStateAction<boolean>>;
     }
@@ -78,10 +83,14 @@ const AccordionPanelDraggableView: React.FC<
   handleSubmitModalMentoring,
   setOpenModalMentoring,
   handleOpenModalCertificate,
+  handleOpenModalGenerate,
   handleSubmitModalCertificate,
+  handleSubmitModalGenerate,
   handleSubmitModalContent,
   openModalCertificate,
   setOpenModalCertificate,
+  openModalGenerate,
+  setOpenModalGenerate,
   handleOpenModalContent,
   openModalContent,
   setOpenModalContent,
@@ -185,6 +194,17 @@ const AccordionPanelDraggableView: React.FC<
         <FormCertificate />
       </Modal>
       <Modal
+        title="Generate Certificate"
+        handleSubmit={handleSubmitModalGenerate}
+        state={{
+          openModal: openModalGenerate,
+          setOpenModal: setOpenModalGenerate,
+        }}
+        buttonConfirmTitle="Save"
+      >
+        <FormGenerate />
+      </Modal>
+      <Modal
         title="Add content"
         buttonConfirmTitle="Submit"
         handleSubmit={(e) => handleSubmitModalContent(e, id)}
@@ -268,6 +288,16 @@ const AccordionPanelDraggableView: React.FC<
                   >
                     <ClarityCertificate />
                     Certificate
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenModalGenerate('open')}
+                    className="text-sm font-lato font-normal flex items-center gap-2"
+                  >
+                    <ClarityCertificate />
+                    Generate Certificate
                   </button>
                 </li>
                 <li>

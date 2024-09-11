@@ -4,9 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useMentorForm } from './MentorForm';
-import { provinceAPI } from '../../master-data/region/province/api/provinceApi';
-import { districtAPI } from '../../master-data/region/city/api/cityApi';
-import { subDistrictAPI } from '../../master-data/region/sub-disctrict/api/subDistrictApi';
 import { academicTitleAPI } from '../../master-data/academic-title/api/academicTitleApi';
 import { religionAPI } from '../../master-data/religion/api/religionApi';
 import { Component as Datepicker } from '../components/datepicker/Datepicker';
@@ -16,7 +13,18 @@ import { Component as SelectYear } from '../components/select-year/selectYear';
 import { Region } from '../mentor/mentorForm.type';
 import Link from 'next/link';
 import { ResponseModal } from '../components/response-modal/responseModal';
-
+import { APIResponseReligion, IComboReligion } from '../../master-data/religion/religion.type';
+import { APIResponseAcademicLevel } from '../../master-data/academic-level/academicLevel.type';
+import { APIResponseAcademicTitle, IComboAcademicTitle } from '../../master-data/academic-title/academicTitle.type';
+import Dropdown from '@/backoffice/components/dropdown/Dropdown';
+import {
+  provinceAPI,
+  Province,
+  District,
+  districtAPI,
+  SubDistrict,
+  subDistrictAPI,
+} from '@/backoffice/components/dropdown/api/dropdownApi';
 type MentorViewProps = ReturnType<typeof useMentorForm>;
 
 export const MentorView: React.FC<MentorViewProps> = ({
@@ -37,11 +45,12 @@ export const MentorView: React.FC<MentorViewProps> = ({
     isSuccess,
     confirmSubmit,
 }) => {
-  const [provinces, setProvinces] = useState<Region[]>([]);
-  const [districts, setDistricts] = useState<Region[]>([]);
-  const [subDistricts, setSubDistricts] = useState<Region[]>([]);
-  const [academicTitles, setAcademicTitles] = useState<Region[]>([]);
-  const [religions, setReligions] = useState<Region[]>([]);
+  const [religions, setReligions] = useState<APIResponseReligion[]>([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [districts, setDistricts] = useState<District[]>([]);
+  const [subDistricts, setSubDistricts] = useState<SubDistrict[]>([]);
+  const [academicLevels, setAcademicLevels] = useState<APIResponseAcademicLevel[]>([]);
+  const [academicTitles, setAcademicTitles] = useState<APIResponseAcademicTitle[]>([]);
 
   const styles = {
     inputField: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white font-poppins",
@@ -50,20 +59,25 @@ export const MentorView: React.FC<MentorViewProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedProvinces = await provinceAPI.all();
+        const [
+          fetchedReligions,
+          fetchedProvinces,
+          fetchedDistricts,
+          fetchedSubDistricts,
+          fetchedAcademicTitles
+        ] = await Promise.all([
+          religionAPI.all(),
+          provinceAPI.getProvinces(100, 0),
+          districtAPI.getDistricts(100, 0),
+          subDistrictAPI.getSubDistricts(100, 0),
+          academicTitleAPI.all()
+        ]);
+
+        setReligions((fetchedReligions as IComboReligion).data);
         setProvinces(fetchedProvinces);
-
-        const fetchedDistricts = await districtAPI.all();
         setDistricts(fetchedDistricts);
-
-        const fetchedSubDistricts = await subDistrictAPI.all();
         setSubDistricts(fetchedSubDistricts);
-
-        const fetchedAcademicTitles = await academicTitleAPI.all();
-        setAcademicTitles(fetchedAcademicTitles);
-
-        const fetchedReligions = await religionAPI.all();
-        setReligions(fetchedReligions);
+        setAcademicTitles((fetchedAcademicTitles as IComboAcademicTitle).data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -200,11 +214,14 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion, index) => (
-                    <option key={index} value={religion.id}>
-                      {religion.name}
-                    </option>
-                  ))}
+                  {religions.map((religion: any, index: number) => {
+                    console.log(religion);
+                    return (
+                      <option key={index} value={religion.id}>
+                        {religion.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
@@ -355,61 +372,44 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <label className="flex mb-1">
                   Province<div className="text-red-600">*</div>
                 </label>
-                <select
-                name="provinceId"
-                value={form.provinceId || ''}
-                onChange={handleInputChange}
-                className={styles.inputField}
-              >
-                <option className="hidden" value="" disabled>
-                  Select Province
-                </option>
-                {provinces?.map((province, index) => (
-                  <option key={index} value={province.id}>
-                    {province.name}
-                  </option>
-                ))}
-              </select>
+                <Dropdown<Province>
+                  onItemSelect={(itemId) =>
+                    handleInputChange({
+                      target: { name: 'provinceId', value: itemId },
+                    } as React.ChangeEvent<HTMLSelectElement>)
+                  }
+                  getItems={provinceAPI.getProvinces}
+                  itemToString={(item) => item.name}
+                  containerClassName="w-full"
+                  inputClassName="w-full rounded-l-lg"
+                  placeholderText="Select Province"
+                />
               </div>
               <div>
-                <label className="flex mb-1">
-                  City/District<div className="text-red-600">*</div>
-                </label>
-                <select
-                  name="districtId"
-                  value={form.districtId || ''}
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                >
-                  <option className="hidden" value="" disabled>
-                    Select City/District
-                  </option>
-                  {districts?.map((district, index) => (
-                    <option key={index} value={district.id}>
-                      {district.name}
-                    </option>
-                  ))}
-                </select>
+                <Dropdown<District>
+                  onItemSelect={(itemId) => {
+                    form.districtId = itemId
+                  }}
+                  getItems={districtAPI.getDistricts}
+                  itemToString={(item) => item.name}
+                  containerClassName="w-full"
+                  inputClassName="w-full rounded-l-lg"
+                  placeholderText="Select District"
+                  label="District"
+                />
               </div>
               <div>
-                <label className="flex mb-1">
-                  Sub District<div className="text-red-600">*</div>
-                </label>
-                <select
-                  name="subDistrictId"
-                  value={form.subDistrictId || ''}
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                >
-                  <option className="hidden" value="" disabled>
-                    Select Sub District
-                  </option>
-                  {subDistricts?.map((subDistrict, index) => (
-                    <option key={index} value={subDistrict.id}>
-                      {subDistrict.name}
-                    </option>
-                  ))}
-                </select>
+                <Dropdown<SubDistrict>
+                  onItemSelect={(itemId) => {
+                    form.subDistrictId = itemId
+                  }}
+                  getItems={subDistrictAPI.getSubDistricts}
+                  itemToString={(item) => item.name}
+                  containerClassName="w-full"
+                  inputClassName="w-full rounded-l-lg"
+                  placeholderText="Select Sub District"
+                  label="Sub District"
+                />
               </div>
               <div>
                 <label className="flex mb-1">
@@ -518,19 +518,22 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       Academic Title<div className="text-red-600">*</div>
                     </label>
                     <select
-                    id={`educations[${index}].titleId`}
-                    name={`educations[${index}].titleId`}
-                    value={educations.titleId || ''}
-                    onChange={(e) => handleEducationChange(e, index)}
-                    className={styles.inputField}
+                      id={`educations[${index}].titleId`}
+                      name={`educations[${index}].titleId`}
+                      value={educations.titleId || ''}
+                      onChange={(e) => handleEducationChange(e, index)}
+                      className={styles.inputField}
                     >
-                    <option value="">Select Title</option>
-                    {academicTitles.map((title) => (
-                      <option key={title.id} value={title.id}>
-                        {title.name}
-                      </option>
-                    ))}
-                  </select>
+                      <option value="">Select Title</option>
+                      {academicTitles.map((title: any, index: number) => {
+                        console.log(title);
+                        return (
+                          <option key={index} value={title.id}>
+                            {title.name}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                   <div>
                     <label className="flex mb-1">

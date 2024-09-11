@@ -42,7 +42,6 @@ const UserView: React.FC<IUserView> = ({
   const searchParams = useSearchParams();
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
 
-
   useEffect(() => {
     const success = searchParams.get('success');
     const action = searchParams.get('action');
@@ -85,19 +84,14 @@ const UserView: React.FC<IUserView> = ({
       }
       setData(fetchedData);
       
-      // Load profile pictures
       const pictures: Record<string, string> = {};
       for (const user of fetchedData) {
         if (user.photoProfile) {
-          try {
-            const thumbPath = user.photoProfile.replace('/origins/', '/thumbs/');
-            const blob = await userAPI.getFile(thumbPath);
-            if (blob) {
-              pictures[user.id] = URL.createObjectURL(blob);
-            }
-          } catch (error) {
-            console.error('Error loading profile picture:', error);
-          }
+          const thumbPath = user.photoProfile.replace('/origins/', '/thumbs/');
+          const imageUrl = `${process.env.API_SERVER_URL}/v1/file/${thumbPath}`;
+          pictures[user.id] = imageUrl;
+        } else {
+          pictures[user.id] = '/img/manage-user/profile-template.svg';
         }
       }
       setProfilePictures(pictures);
@@ -132,7 +126,12 @@ const UserView: React.FC<IUserView> = ({
       {
         id: 'no',
         header: 'No',
-        cell: (info) => info.row.index + 1,
+        cell: (info) => {
+          const sortedIndex = filteredData
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .findIndex((user) => user.id === info.row.original.id);
+          return sortedIndex + 1;
+        },
       },
       {
         accessorKey: 'name',
@@ -149,6 +148,9 @@ const UserView: React.FC<IUserView> = ({
                 height={40}
                 alt="Profile"
                 className="rounded-full mr-2 object-cover w-[40px] h-[40px]"
+                onError={(e) => {
+                  e.currentTarget.src = '/img/manage-user/profile-template.svg';
+                }}
               />
               <span>{info.getValue() as string}</span>
             </div>
@@ -184,8 +186,7 @@ const UserView: React.FC<IUserView> = ({
                         router.push(`/backoffice/manage-user/edit-student?id=${rowData.id}`);
                       } else if (activeTab === 'School Operator') {
                         router.push(`/backoffice/manage-user/edit-school-operator?id=${rowData.id}`);
-                      }
-                       else {
+                      } else {
                         handleActionButtonRow(id, 'edit', rowData);
                       }
                     }}
@@ -210,8 +211,14 @@ const UserView: React.FC<IUserView> = ({
         },
       },
     ],
-    [handleActionButtonRow, profilePictures]
+    [handleActionButtonRow, profilePictures, activeTab, router]
   );
+
+  const filteredData = useMemo(() => {
+    return data.filter((user) =>
+      user.name.toLowerCase().includes(Filter.toLowerCase())
+    );
+  }, [data, Filter]);
 
   const renderTabContent = (tabName: string) => (
     <div>
@@ -260,10 +267,10 @@ const UserView: React.FC<IUserView> = ({
       )}
       </div>
       <DataTable
-        data={data}
+        data={filteredData}
         columns={columns}
-        sorting={[{ id: 'name', desc: false }]}
         filter={{ Filter, setFilter }}
+        sorting={[{ id: 'name', desc: false }]}
       />
       </div>
     )}
@@ -301,14 +308,10 @@ const UserView: React.FC<IUserView> = ({
     <div className="p-4">
       <TabFlex tabs={tabs} onTabChange={handleTabChange} />
       <ImportModal
-      isOpen={isImportModalOpen}
-      onClose={() => setIsImportModalOpen(false)}
-      onSubmit={(file) => {
-        // Handle file submission here
-        console.log('File submitted:', file);
-        setIsImportModalOpen(false);
-      }}
-    />
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onSuccessfulImport={fetchData}
+      />
     </div>
   );
 };

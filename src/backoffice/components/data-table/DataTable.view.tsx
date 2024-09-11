@@ -9,8 +9,8 @@ import {
   SortingState,
   getSortedRowModel,
 } from '@tanstack/react-table';
-import IconLeft from '../../../../public/icons/btn-left.svg';
-import IconRight from '../../../../public/icons/btn-right.svg';
+import IconLeft from '@/../public/icons/btn-left.svg';
+import IconRight from '@/../public/icons/btn-right.svg';
 import { DataTableProps } from './DataTable.type';
 
 export function DataTableView<T>({

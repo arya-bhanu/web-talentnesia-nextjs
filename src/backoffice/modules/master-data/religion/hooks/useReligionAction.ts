@@ -4,7 +4,7 @@ import { religionAPI } from '../api/religionApi';
 export const useReligionActions = () => {
   const handleAddReligion = useCallback(async (name: string) => {
     try {
-       religionAPI.add({name});
+       religionAPI.add(name);
     } catch (error) {
       console.error('Failed to  religion');
     }

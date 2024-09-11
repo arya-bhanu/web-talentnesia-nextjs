@@ -6,7 +6,6 @@ import { deleteModule, fetchModules } from './api/manageModelApi';
 import { useStatusModalStore } from '@/lib/store';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
-import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import Popover from '@/backoffice/components/popover';
 
 const columnHelper = createColumnHelper<any>();

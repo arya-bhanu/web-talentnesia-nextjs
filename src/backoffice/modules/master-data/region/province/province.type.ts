@@ -2,10 +2,23 @@ export interface APIResponseProvince {
   id: string;
   code: string;
   name: string;
-  description?: string;
-  active: number;
-  createdAt: Date;
-  updatedAt: Date;
+  active?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IComboProvince {
+  data: APIResponseProvince[];
+}
+
+export interface ProvinceResponse {
+  data: {
+    items: APIResponseProvince[];
+  };
+}
+
+export interface SingleProvinceResponse {
+  data: APIResponseProvince;
 }
 
 export interface IProvinceView {
@@ -19,6 +32,5 @@ export interface IProvinceView {
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   fetchData: () => Promise<void>;
+  role: number;
 }
-
-
