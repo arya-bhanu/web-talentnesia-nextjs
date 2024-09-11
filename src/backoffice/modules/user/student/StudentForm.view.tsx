@@ -329,7 +329,6 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
                   placeholderText="Select Province"
-                  label="Province"
                   initialValue={form.provinceId ? provinces.find(p => p.id === form.provinceId)?.name : ''}
                 />
               </div>
@@ -359,7 +358,6 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
                   placeholderText="Select District"
-                  label="District"
                   disabled={!selectedProvinceId}
                   initialValue={form.districtId ? districts.find(d => d.id === form.districtId)?.name : ''}
                 />
