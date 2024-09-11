@@ -108,9 +108,6 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
     [handleEdit, handleDelete],
   );
 
-
-  
-
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
