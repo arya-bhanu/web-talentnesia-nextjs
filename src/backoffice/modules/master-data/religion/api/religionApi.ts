@@ -37,13 +37,13 @@ export const religionAPI = {
   },
 
   update: async (id: string, name: string) => {
-    const requestData = { name, active: 1 };
-    return fetchAxios<SingleReligionResponse>({
-      url: `/v1/religion/${id}`,
-      method: 'PUT',
-      formData: requestData,
-    });
-  },
+  const requestData = { name, active: 1 };
+  return fetchAxios<SingleReligionResponse>({
+    url: `/v1/religion/${id}`,
+    method: 'PUT',
+    formData: requestData,
+  });
+},
 
   delete: async (id: string) => {
     return fetchAxios<{ success: boolean }>({
