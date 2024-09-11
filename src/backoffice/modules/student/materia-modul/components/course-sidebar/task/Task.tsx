@@ -115,7 +115,7 @@ const Task: React.FC<{ contentId: string; onExamComplete: () => void }> = ({ con
   const handleFileChange = async (file: File | null) => {
     if (file && selectedExam) {
       try {
-        const response = await fileHelper.uploadExamFile(file, 'exam');
+        const response = await fileHelper.uploadFile(file, 'exam');
         if (response && response.path) {
           let filePath = typeof response.path === 'string' 
             ? response.path 
@@ -146,6 +146,7 @@ const Task: React.FC<{ contentId: string; onExamComplete: () => void }> = ({ con
       }
     }
   };
+  
 
   const handleSubmitClick = () => {
     setOpenModal(true);
