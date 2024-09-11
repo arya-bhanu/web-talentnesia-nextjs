@@ -11,14 +11,17 @@ const CmsView = () => {
       title: 'Blog',
       content: <Blog />,
       active: true,
+      type: 'blog',
     },
     {
       title: 'Campaign',
       content: <Campaign />,
+      type: 'campaign',
     },
     {
       title: 'Pre-Release',
       content: <></>,
+      type: 'pre-release',
     },
   ];
   return (
