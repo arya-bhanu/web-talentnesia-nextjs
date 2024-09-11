@@ -94,6 +94,8 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const customPageStyle = [
     '/backoffice/report/',
     '/backoffice/program/',
+    '/backoffice/manage-program/',
+    '/backoffice/manage-program/update-program/',
   ].includes(pathname);
   const containerStyle = {
     maxWidth: '80%',
