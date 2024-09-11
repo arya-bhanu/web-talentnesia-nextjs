@@ -42,7 +42,7 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/cms.svg',
     title: 'CMS',
-    path: '#',
+    path: '/backoffice/cms',
   },
   {
     icon: '/icons/sidebar/faq.svg',

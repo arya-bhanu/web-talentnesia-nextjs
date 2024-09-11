@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import CampaignView from './Campaign.view';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
