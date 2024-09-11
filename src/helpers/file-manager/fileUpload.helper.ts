@@ -33,4 +33,23 @@ export const fileHelper = {
       return null;
     }
   },
+
+  uploadExamFile: async (file: File, path: string): Promise<any> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('path', path);
+
+    try {
+      const response = await fetchAxios<{ success: boolean; path: { origins: string }; fileOrigin: string }>({
+        url: '/v1/file',
+        method: 'POST',
+        formData: formData,
+      });
+
+      return response;
+    } catch (error) {
+      console.error('Failed to upload exam file:', error);
+      throw error;
+    }
+  },
 };

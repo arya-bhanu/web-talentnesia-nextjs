@@ -25,4 +25,33 @@ export const StudentCourseAPI = {
     };
     return fetchAxios<APIResponseCourseDetail>(config);
   },
+
+  fetchDetailContent: async (contentId: string): Promise<any> => {
+    const config: UseFetchProps = {
+      url: `/v1/student-course/detail-module/${contentId}`,
+      method: 'GET',
+    };
+    return fetchAxios<any>(config);
+  },
+
+  startExam: async (contentId: string): Promise<any> => {
+    const config: UseFetchProps = {
+      url: `/v1/student-course/start-exam`,
+      method: 'POST',
+      formData: { contentId },
+    };
+    return fetchAxios<any>(config);
+  },
+
+  submitExam: async (contentId: string, answers: Array<{ questionId: string; optionId: string | null; valueText: string }>) => {
+    const config: UseFetchProps = {
+      url: '/v1/student-course/save-exam',
+      method: 'POST',
+      formData: {
+        contentId,
+        answers
+      }
+    };
+    return fetchAxios(config);
+  },
 };

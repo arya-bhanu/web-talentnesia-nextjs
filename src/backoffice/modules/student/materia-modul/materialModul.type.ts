@@ -13,3 +13,11 @@ export interface TabItem {
   content: string | null;
   isCompleted: number;
 }
+
+export interface MaterialModulProps {
+  selectedTab: string;
+  selectedContent: JSX.Element | null;
+  isContentLoading: boolean;
+  handleNextContent: () => void;
+  handlePreviousContent: () => void;
+}

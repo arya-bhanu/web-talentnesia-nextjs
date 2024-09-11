@@ -15,6 +15,8 @@ const MaterialModulView: React.FC = () => {
     selectedContent,
     handleNextContent,
     handlePreviousContent,
+    isExamCompleted,
+    isExamContent,
   } = useMaterialModul();
 
   return (
@@ -119,10 +121,22 @@ const MaterialModulView: React.FC = () => {
           )}
           <div className="flex-1">
             {selectedContent}
+            {!isExamContent || (isExamContent && isExamCompleted) ? (
             <div className="flex justify-between px-8 py-4">
-              <button onClick={handlePreviousContent} className="px-8 py-2 rounded-full border border-[#FFC862] text-gray-700">Previous</button>
-              <button onClick={handleNextContent} className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">Tandai & Lanjut</button>
+              <button onClick={handlePreviousContent} className="px-8 py-2 rounded-full border border-[#FFC862] text-gray-700">
+                Previous
+              </button>
+              {selectedTab && sections.flatMap(s => s.tabs).find(t => t.id === selectedTab)?.isCompleted === 1 ? (
+                <button onClick={handleNextContent} className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">
+                  Next
+                </button>
+              ) : (
+                <button onClick={handleNextContent} className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">
+                  Tandai & Lanjut
+                </button>
+              )}
             </div>
+          ) : null}
           </div>
         </div>
       </div>
