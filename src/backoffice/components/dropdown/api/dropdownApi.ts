@@ -28,9 +28,8 @@ export type SubDistrict = {
   name: string;
 };
 
-
 export const dropdownAPI = {
-  getData: async <T>(endpoint: string, limit: number, offset: number): Promise<T[]> => {
+  getData: async <T extends { id: string }>(endpoint: string, limit: number, offset: number): Promise<T[]> => {
     try {
       const response = await fetchAxios({
         url: endpoint,
@@ -38,19 +37,22 @@ export const dropdownAPI = {
         params: { limit, offset },
       });
 
+      let items: T[];
       if (response.data && Array.isArray(response.data.items)) {
-        return response.data.items;
+        items = response.data.items;
       } else if (Array.isArray(response.data)) {
-        return response.data;
+        items = response.data;
       } else {
-        return [];
+        items = [];
       }
+      const uniqueItems = Array.from(new Set(items.map(item => item.id)))
+        .map(id => items.find(item => item.id === id)) as T[];
+      return uniqueItems;
     } catch (error) {
       return [];
     }
   },
 };
-
 export const userAPI = {
   getUsers: (limit: number, offset: number) => 
     dropdownAPI.getData<User>('/v1/user-list/', limit, offset),
@@ -65,10 +67,13 @@ export const provinceAPI = {
 export const districtAPI = {
   getDistricts: (limit: number, offset: number) => 
     dropdownAPI.getData<District>('/v1/district/all', limit, offset),
+  getDistrictsByProvince: (provinceId: string, limit: number, offset: number) =>
+    dropdownAPI.getData<District>(`/v1/district/province/${provinceId}`, limit, offset),
 };
 
 export const subDistrictAPI = {
   getSubDistricts: (limit: number, offset: number) =>
     dropdownAPI.getData<SubDistrict>('/v1/subdistrict/all', limit, offset),
+  getSubDistrictsByDistrict: (districtId: string, limit: number, offset: number) =>
+    dropdownAPI.getData<SubDistrict>(`/v1/subdistrict/district/${districtId}`, limit, offset),
 };
-

@@ -104,10 +104,9 @@ const FormManageModulView: React.FC<
             type="button"
             outline
             className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+            onClick={() => window.location.href = '/backoffice/manage-modul'}
           >
-            <Link className="" href={'/backoffice/manage-modul'}>
-              Cancel
-            </Link>
+            Cancel
           </Button>
           <Button
             onClick={() => {

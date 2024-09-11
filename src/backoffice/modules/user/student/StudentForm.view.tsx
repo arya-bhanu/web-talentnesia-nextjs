@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
@@ -54,6 +52,12 @@ export const StudentView: React.FC<StudentViewProps> = ({
   const [academicLevels, setAcademicLevels] = useState<
     APIResponseAcademicLevel[]
   >([]);
+  const [selectedProvinceId, setSelectedProvinceId] = useState<string | null>(
+    null,
+  );
+  const [selectedDistrictId, setSelectedDistrictId] = useState<string | null>(
+    null,
+  );
 
   const styles = {
     inputField:
@@ -66,21 +70,15 @@ export const StudentView: React.FC<StudentViewProps> = ({
         const [
           fetchedReligions,
           fetchedProvinces,
-          fetchedDistricts,
-          fetchedSubDistricts,
           fetchedAcademicLevels,
         ] = await Promise.all([
           religionAPI.all(),
           provinceAPI.getProvinces(100, 0),
-          districtAPI.getDistricts(100, 0),
-          subDistrictAPI.getSubDistricts(100, 0),
           academicLevelAPI.all(),
         ]);
 
         setReligions((fetchedReligions as IComboReligion).data);
         setProvinces(fetchedProvinces);
-        setDistricts(fetchedDistricts);
-        setSubDistricts(fetchedSubDistricts);
         setAcademicLevels((fetchedAcademicLevels as IComboAcademicLevel).data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -89,6 +87,31 @@ export const StudentView: React.FC<StudentViewProps> = ({
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      if (form.provinceId) {
+        setSelectedProvinceId(form.provinceId);
+        const fetchedDistricts = await districtAPI.getDistrictsByProvince(
+          form.provinceId,
+          100,
+          0,
+        );
+        setDistricts(fetchedDistricts);
+      }
+      if (form.districtId) {
+        setSelectedDistrictId(form.districtId);
+        const fetchedSubDistricts = await subDistrictAPI.getSubDistrictsByDistrict(
+          form.districtId,
+          100,
+          0,
+        );
+        setSubDistricts(fetchedSubDistricts);
+      }
+    };
+
+    fetchInitialData();
+  }, [form.provinceId, form.districtId]);
   return (
     <>
       <div className="container mx-auto p-1 max-w-full">
@@ -281,51 +304,90 @@ export const StudentView: React.FC<StudentViewProps> = ({
               C. Address
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="flex mb-1">
+            <div>
+            <label className="flex mb-1">
                   Province<div className="text-red-600">*</div>
                 </label>
                 <Dropdown<Province>
-                  onItemSelect={(itemId) =>
+                  onItemSelect={(provinceId) => {
+                    setSelectedProvinceId(provinceId);
                     handleInputChange({
-                      target: { name: 'provinceId', value: itemId },
-                    })
-                  }
+                      target: { name: 'provinceId', value: provinceId },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                    setDistricts([]);
+                    setSubDistricts([]);
+                    setSelectedDistrictId(null);
+                    handleInputChange({
+                      target: { name: 'districtId', value: '' },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                    handleInputChange({
+                      target: { name: 'subDistrictId', value: '' },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                  }}
                   getItems={provinceAPI.getProvinces}
                   itemToString={(item) => item.name}
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
                   placeholderText="Select Province"
+                  initialValue={form.provinceId ? provinces.find(p => p.id === form.provinceId)?.name : ''}
                 />
               </div>
               <div>
-              <Dropdown<District>
-                  onItemSelect={(itemId) =>
+              <label className="flex mb-1">
+                  District<div className="text-red-600">*</div>
+                </label>
+                <Dropdown<District>
+                  key={selectedProvinceId || 'district'}
+                  onItemSelect={(districtId) => {
+                    setSelectedDistrictId(districtId);
                     handleInputChange({
-                      target: { name: 'districtId', value: itemId },
-                    })
+                      target: { name: 'districtId', value: districtId },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                    setSubDistricts([]);
+                  }}
+                  getItems={(limit, offset) =>
+                    selectedProvinceId
+                      ? districtAPI.getDistrictsByProvince(
+                          selectedProvinceId,
+                          limit,
+                          offset,
+                        )
+                      : Promise.resolve([])
                   }
-                  getItems={districtAPI.getDistricts}
                   itemToString={(item) => item.name}
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
-                  placeholderText="Select Sub District"
-                  label="Sub District"
+                  placeholderText="Select District"
+                  disabled={!selectedProvinceId}
+                  initialValue={form.districtId ? districts.find(d => d.id === form.districtId)?.name : ''}
                 />
               </div>
               <div>
+              <label className="flex mb-1">
+                  Sub District<div className="text-red-600">*</div>
+                </label>
                 <Dropdown<SubDistrict>
-                  onItemSelect={(itemId) =>
+                  key={selectedDistrictId || 'subdistrict'}
+                  onItemSelect={(subDistrictId) => {
                     handleInputChange({
-                      target: { name: 'subDistrictId', value: itemId },
-                    })
+                      target: { name: 'subDistrictId', value: subDistrictId },
+                    } as React.ChangeEvent<HTMLSelectElement>);
+                  }}
+                  getItems={(limit, offset) =>
+                    selectedDistrictId
+                      ? subDistrictAPI.getSubDistrictsByDistrict(
+                          selectedDistrictId,
+                          limit,
+                          offset,
+                        )
+                      : Promise.resolve([])
                   }
-                  getItems={subDistrictAPI.getSubDistricts}
                   itemToString={(item) => item.name}
                   containerClassName="w-full"
                   inputClassName="w-full rounded-l-lg"
                   placeholderText="Select Sub District"
-                  label="Sub District"
+                  disabled={!selectedDistrictId}
+                  initialValue={form.subDistrictId ? subDistricts.find(sd => sd.id === form.subDistrictId)?.name : ''}
                 />
               </div>
               <div>
