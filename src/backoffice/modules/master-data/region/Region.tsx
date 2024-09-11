@@ -22,6 +22,7 @@ const Region: React.FC = () => {
     {
       title: 'District',
       content: <District />,
+      type: 'district',
     },
     {
       title: 'Sub-District',
