@@ -17,6 +17,8 @@ import { defaultDataFormDetail, defaultDataFormDetailEdit } from './formDetail.d
 import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
 import { useTabStoreManageProgram } from '../../../manageProgramStore';
 import Loading from '@/components/loading';
+import { useStatusModalStore } from '@/lib/store';
+import AlertModal from '@/backoffice/components/alert-modal';
 
 const FormDetail = () => {
   const params = useSearchParams();
@@ -35,6 +37,10 @@ const FormDetail = () => {
   const { activeTab } = useTabStoreManageProgram();
   const [isLoading, setIsLoading] = useState(true);
   const [selectedSchool, setSelectedSchool] = useState<string>('');
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [formEvent, setFormEvent] = useState<FormEvent<HTMLFormElement> | null>(null);
+  const { openModal: openModalToast } = useStatusModalStore();
 
   const { data: dataProgramDetail, isLoading: isLoadingProgramDetail } =
     useQuery({
@@ -117,10 +123,27 @@ const FormDetail = () => {
     setFullImageUrl(fullUrl);
   };
 
-  const handleSubmitFormDetail = async (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (isConfirmed && formEvent) {
+      handleSubmitFormDetail(formEvent);
+      setIsConfirmed(false);
+      setFormEvent(null);
+    }
+  }, [isConfirmed, formEvent]);
+
+  const handleSubmitClick = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const formData = new FormData(e.currentTarget);
+    await setFormEvent(e);
+    setOpenAlertModal(true);
+  };
+
+  const handleSubmitFormDetail = async (e: FormEvent<HTMLFormElement>) => {
+    if (!(e.target instanceof HTMLFormElement)) {
+      console.error('Invalid form event');
+      return;
+    }
+    const formData = new FormData(e.target);
     const programName = formData.get('program_name') as string;
     const active = Number(formData.get('active') as string) as 0 | 1;
     const mentors = data.mentors.map((el: Mentor) => el.id);
@@ -142,33 +165,55 @@ const FormDetail = () => {
     );
     console.log(filePic);
 
-    const response = await createProgramAsync({
-      active,
-      endDate: endDateFormated,
-      startDate: startDateFormated,
-      mentors,
-      name: programName,
-      image: filePic,
-      type: activeTab,
-      institutionId: school,
-    });
+    try {
+      const response = await createProgramAsync({
+        active,
+        endDate: endDateFormated,
+        startDate: startDateFormated,
+        mentors,
+        name: programName,
+        image: filePic,
+        type: activeTab,
+        institutionId: school,
+      });
 
-    console.log(response);
-    setData(defaultDataFormDetail);
-    await queryClient.invalidateQueries({ queryKey: ['programs'] });
-    router.push('/backoffice/manage-program');
+      console.log(response);
+      setData(defaultDataFormDetail);
+      await queryClient.invalidateQueries({ queryKey: ['programs'] });
+      router.push('/backoffice/manage-program');
+
+      openModalToast({
+        status: 'success',
+        action: 'create',
+        message: 'Program created successfully',
+      });
+    } catch (error) {
+      console.error('Error creating program:', error);
+      openModalToast({
+        status: 'error',
+        action: 'create',
+        message: 'Failed to create program. Please try again.',
+      });
+    }
   };
+
   return (
     <Loading isLoading={isLoading}>
       <FormDetailView
         programId={programId || undefined}
-        handleSubmitForm={handleSubmitFormDetail}
+        handleSubmitForm={handleSubmitClick}
         isLoadingMentors={isLoadingMentors}
         handleFileChange={handleFileChange}
         fullImageUrl={fullImageUrl}
         programType={dataProgramDetail?.data?.data?.type}
         selectedSchool={selectedSchool}
         setSelectedSchool={setSelectedSchool}
+      />
+      <AlertModal
+        openModal={openAlertModal}
+        setOpenModal={setOpenAlertModal}
+        setIsConfirmed={setIsConfirmed}
+        messageText="Are you sure you want to submit this program?"
       />
     </Loading>
   );
