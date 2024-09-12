@@ -13,6 +13,8 @@ import {
 } from '../../form-program/components/form-mentoring/api/formMentoring.api';
 import { useFormMentoringStore } from '../../form-program/components/form-mentoring/formMentoring.store';
 import { convertDateToStr, convertHHmmTime } from '@/helpers/formatter.helper';
+import { useStatusModalStore } from '@/lib/store';
+import AlertModal from '@/backoffice/components/alert-modal';
 
 const AccordionPanelDraggable: React.FC<
   IAccordionPanelDraggable & { index: number }
@@ -24,7 +26,11 @@ const AccordionPanelDraggable: React.FC<
   const [openModalContent, setOpenModalContent] = useState(false);
   const queryClient = useQueryClient();
   const params = useSearchParams();
-
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [currentAction, setCurrentAction] = useState<'mentoring' | 'certificate' | 'generate' | 'content' | null>(null);
+  
+  const { openModal: openModalToast } = useStatusModalStore();
   const { idDefaultMentoring } = useFormMentoringStore();
 
   const { mutateAsync: deleteChapterAsync } = useMutation({
@@ -88,26 +94,48 @@ const AccordionPanelDraggable: React.FC<
         queryKey: ['chapters', 'program', programId],
       });
       setOpenPopover(false);
+      openModalToast({
+        status: 'success',
+        action: 'delete',
+        message: 'Chapter deleted successfully',
+      });
     } catch (err) {
       console.error(err);
+      openModalToast({
+        status: 'error',
+        action: 'delete',
+        message: 'Failed to delete chapter',
+      });
     }
   };
 
   const handleSubmitModalMentoring = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const formData = new FormData(e.currentTarget);
-    const title = formData.get('mentoring_name') as string;
-    const mentorId = formData.get('mentor') as string;
-    const startTime = timeStart;
-    const endTime = timeEnd;
-    const dateData = date;
-    const location = null;
-    const link = formData.get('url') as string;
-    idDefaultMentoring
-      ? await editMentoringAsync({
-          mentoringId: idDefaultMentoring,
-          payload: {
+    try {
+      e.preventDefault();
+      e.stopPropagation();
+      const formData = new FormData(e.currentTarget);
+      const title = formData.get('mentoring_name') as string;
+      const mentorId = formData.get('mentor') as string;
+      const startTime = timeStart;
+      const endTime = timeEnd;
+      const dateData = date;
+      const location = null;
+      const link = formData.get('url') as string;
+      idDefaultMentoring
+        ? await editMentoringAsync({
+            mentoringId: idDefaultMentoring,
+            payload: {
+              link,
+              location,
+              title,
+              chapterId: props.id,
+              mentorId,
+              endTime: convertHHmmTime(endTime),
+              startTime: convertHHmmTime(startTime),
+              date: convertDateToStr(new Date(dateData)),
+            },
+          })
+        : await createMentorAsync({
             link,
             location,
             title,
@@ -116,30 +144,33 @@ const AccordionPanelDraggable: React.FC<
             endTime: convertHHmmTime(endTime),
             startTime: convertHHmmTime(startTime),
             date: convertDateToStr(new Date(dateData)),
-          },
-        })
-      : await createMentorAsync({
-          link,
-          location,
-          title,
-          chapterId: props.id,
-          mentorId,
-          endTime: convertHHmmTime(endTime),
-          startTime: convertHHmmTime(startTime),
-          date: convertDateToStr(new Date(dateData)),
-        });
+          });
 
-    queryClient.invalidateQueries({
-      queryKey: ['mentoring', 'list', props.id],
-    });
+      queryClient.invalidateQueries({
+        queryKey: ['mentoring', 'list', props.id],
+      });
 
-    clear();
+      clear();
+      openModalToast({
+        status: 'success',
+        action: idDefaultMentoring ? 'update' : 'create',
+        message: `Mentoring ${idDefaultMentoring ? 'updated' : 'created'} successfully`,
+      });
+    } catch (error) {
+      console.error('Error submitting mentoring:', error);
+      openModalToast({
+        status: 'error',
+        action: idDefaultMentoring ? 'update' : 'create',
+        message: `Failed to ${idDefaultMentoring ? 'update' : 'create'} mentoring`,
+      });
+    }
   };
 
   const handleSubmitModalCertificate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
   };
+
   const handleSubmitModalGenerate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -159,7 +190,7 @@ const AccordionPanelDraggable: React.FC<
       const fileUrl = formData.get('fileUrl') as string;
       const fileName = formData.get('fileName') as string;
       const convertedTime = time.substring(0, 5);
-      
+
       if (chapterId && convertedTime && title && type && fileUrl) {
         await createContentProgramAsync({
           body: fileName,
@@ -168,42 +199,53 @@ const AccordionPanelDraggable: React.FC<
           type,
           chapterId,
           isexam: 0,
-          file: fileUrl
+          file: fileUrl,
         });
         await queryClient.invalidateQueries({
           queryKey: ['chapters', 'program', params.get('programId')],
         });
         setOpenModalContent(false);
+        openModalToast({
+          status: 'success',
+          action: 'create',
+          message: 'Content added successfully',
+        });
       }
     } catch (err) {
       console.error(err);
+      openModalToast({
+        status: 'error',
+        action: 'create',
+        message: 'Failed to add content',
+      });
     }
   };
-  
 
   return (
-    <AccordionPanelDraggableView
-      handleDeleteChapter={handleDeleteChapter}
-      handleOpenModalMentoring={handleOpenModalMentoring}
-      handleOpenModalCertificate={handleOpenModalCertificate}
-      handleOpenModalGenerate={handleOpenModalGenerate}
-      handleOpenModalContent={handleOpenModalContent}
-      open={openPopover}
-      setOpen={setOpenPopover}
-      openModalMentoring={openModalMentoring}
-      setOpenModalMentoring={setOpenModalMentoring}
-      handleSubmitModalMentoring={handleSubmitModalMentoring}
-      handleSubmitModalCertificate={handleSubmitModalCertificate}
-      handleSubmitModalGenerate={handleSubmitModalGenerate}
-      handleSubmitModalContent={handleSubmitModalContent}
-      openModalContent={openModalContent}
-      setOpenModalContent={setOpenModalContent}
-      openModalCertificate={openModalCertificate}
-      openModalGenerate={openModalGenerate}
-      setOpenModalCertificate={setOpenModalCertificate}
-      setOpenModalGenerate={setOpenModalGenerate}
-      {...props}
-    />
+    <>
+      <AccordionPanelDraggableView
+        handleDeleteChapter={handleDeleteChapter}
+        handleOpenModalMentoring={handleOpenModalMentoring}
+        handleOpenModalCertificate={handleOpenModalCertificate}
+        handleOpenModalGenerate={handleOpenModalGenerate}
+        handleOpenModalContent={handleOpenModalContent}
+        open={openPopover}
+        setOpen={setOpenPopover}
+        openModalMentoring={openModalMentoring}
+        setOpenModalMentoring={setOpenModalMentoring}
+        handleSubmitModalMentoring={handleSubmitModalMentoring}
+        handleSubmitModalCertificate={handleSubmitModalCertificate}
+        handleSubmitModalGenerate={handleSubmitModalGenerate}
+        handleSubmitModalContent={handleSubmitModalContent}
+        openModalContent={openModalContent}
+        setOpenModalContent={setOpenModalContent}
+        openModalCertificate={openModalCertificate}
+        openModalGenerate={openModalGenerate}
+        setOpenModalCertificate={setOpenModalCertificate}
+        setOpenModalGenerate={setOpenModalGenerate}
+        {...props}
+      />
+    </>
   );
 };
 export default AccordionPanelDraggable;

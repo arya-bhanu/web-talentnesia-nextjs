@@ -90,7 +90,6 @@ const FormCourse = () => {
       });
       setActiveModule(selectModule as string);
       setOpenModalModul(false);
-
       openModalToast({
         status: 'success',
         action: 'create',
