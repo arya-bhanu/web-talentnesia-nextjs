@@ -9,8 +9,16 @@ import { useSearchParams } from 'next/navigation';
 import { ResponseModal } from '../components/response-modal/responseModal';
 import { useRouter } from 'next/navigation';
 import { fileHelper } from '@/helpers/file-manager/fileUpload.helper';
+import AlertModal from '@/backoffice/components/alert-modal/AlertModal';
+import { useStatusModalStore } from '@/lib/store';
+import ToasterProvider from '@/utils/ToasterProvider';
 
 export const useSchoolOperatorForm = (id: string | null = null) => {
+
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const { openModal } = useStatusModalStore();
+
   const [form, setForm] = useState<SchoolOperatorFormData>({
     id: id || '',
     role: 2,
@@ -71,12 +79,24 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
 
   const handleFileChange = (fieldName: string) => async (file: File | null) => {
     try {
-      const response = file ? await fileHelper.uploadFile(file, 'users') : null;
-      setForm(prevForm => ({
-        ...prevForm,
-        [fieldName]: response || '',
-        [`${fieldName}Origin`]: file ? file.name : '',
-      }));
+      if (file) {
+        const response = await fileHelper.uploadFile(file, 'users');
+        if (response && response.path && response.path.origins) {
+          setForm(prevForm => ({
+            ...prevForm,
+            [fieldName]: response.path.origins,
+            [`${fieldName}Origin`]: file.name,
+          }));
+        } else {
+          throw new Error('File upload response is not in the expected format');
+        }
+      } else {
+        setForm(prevForm => ({
+          ...prevForm,
+          [fieldName]: '',
+          [`${fieldName}Origin`]: '',
+        }));
+      }
     } catch (error) {
       console.error(`Error uploading ${fieldName}:`, error);
     }
@@ -84,12 +104,24 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
 
   const handleProfilePictureChange = async (file: File | null, originalFilename: string | null) => {
     try {
-      const response = file ? await fileHelper.uploadFile(file, 'users') : null;
-      setForm(prevForm => ({
-        ...prevForm,
-        profilePicture: response || '',
-        profilePictureOrigin: originalFilename,
-      }));
+      if (file) {
+        const response = await fileHelper.uploadFile(file, 'users');
+        if (response && response.path && response.path.origins) {
+          setForm(prevForm => ({
+            ...prevForm,
+            profilePicture: response.path.origins,
+            profilePictureOrigin: originalFilename || file.name,
+          }));
+        } else {
+          throw new Error('File upload response is not in the expected format');
+        }
+      } else {
+        setForm(prevForm => ({
+          ...prevForm,
+          profilePicture: '',
+          profilePictureOrigin: '',
+        }));
+      }
     } catch (error) {
       console.error('Failed to upload profile picture:', error);
     }
@@ -102,11 +134,35 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setShowConfirmModal(true);
+    
+    const requiredFields = [
+      'name', 'nik', 'placeOfBirth', 'dateOfBirth', 'religionId', 'gender','phone', 'email',
+      'provinceId', 'districtId', 'subDistrictId', 'zipCode', 'addressDomicile', 'educationInstitutionId'
+    ];
+  
+    const missingFields = requiredFields.filter(field => !form[field as keyof SchoolOperatorFormData]);
+    
+    if (missingFields.length > 0) {
+      openModal({
+        status: 'error',
+        message: `Please fill in the following required fields: ${missingFields.join(', ')}`,
+      });
+      return;
+    }
+  
+    setShowAlertModal(true);
   };
+  
+  
+  useEffect(() => {
+    if (isConfirmed) {
+      confirmSubmit();
+      setIsConfirmed(false);
+    }
+  }, [isConfirmed]);
 
   const confirmSubmit = async () => {
-    setShowConfirmModal(false);
+    setShowAlertModal(false);
     try {
       let response;
       if (form.id) {
@@ -114,12 +170,23 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
       } else {
         response = await userAPI.add(form);
       }
-      if (response) {
-        router.push('/backoffice/manage-user?success=true&action=' + (form.id ? 'edit' : 'add') + '&userType=School Operator');
+      if (response && response.success) {
+        openModal({
+          status: 'success',
+          action: form.id ? 'update' : 'create',
+          message: `Successfully ${form.id ? 'updated' : 'added'} school operator`,
+        });
+        router.push('/backoffice/manage-user?userType=School Operator');
+      } else {
+        throw new Error(response?.message || 'API response indicates failure');
       }
     } catch (error) {
-      console.error(form.id ? 'Error updating School Operator:' : 'Error adding School Operator:', error);
-      router.push('/backoffice/manage-user?success=false&userType=School Operator');
+      console.log('error');
+      console.error(form.id ? 'Error updating school operator:' : 'Error adding school operator:', error);
+      openModal({
+        status: 'error',
+        message: error instanceof Error ? error.message : 'An unexpected error occurred',
+      });
     }
   };
 
@@ -163,6 +230,10 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
     setShowResultModal,
     isSuccess,
     confirmSubmit,
+    showAlertModal,
+    setShowAlertModal,
+    setIsConfirmed,
+    openModal,
   };
 };
 
@@ -171,5 +242,9 @@ export const SchoolOperator: React.FC = () => {
   const id = searchParams.get('id');
   const schoolOperatorFormProps = useSchoolOperatorForm(id);
 
-  return <SchoolOperatorView {...schoolOperatorFormProps} />;
+  return (
+    <ToasterProvider>
+      <SchoolOperatorView {...schoolOperatorFormProps} />
+    </ToasterProvider>
+  );
 };

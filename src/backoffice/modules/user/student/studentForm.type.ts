@@ -9,7 +9,7 @@ export interface StudentFormData {
   name: string;
   nik: string;
   photoKtp: string;
-  photoKtpOrigin: string | null;
+  photoKtpOrigin?: string | null;
   placeOfBirth: string;
   dateOfBirth: string;
   religionId: string | null;
