@@ -6,6 +6,8 @@ const DetailVideo: React.FC<{
   content: { data: APIContentChapterProps };
   isLoading: boolean;
 }> = ({ content, isLoading }) => {
+  const [videoNotFound, setVideoNotFound] = useState(false);
+
   const getYoutubeId = (youtubeUrl: string) => {
     const regExp =
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -15,8 +17,28 @@ const DetailVideo: React.FC<{
 
   const contentVideo = getYoutubeId(content.data.body || '');
 
-  if (!contentVideo) {
-    return <div>Invalid YouTube URL</div>;
+  useEffect(() => {
+    if (contentVideo && content.data.body !== undefined) {
+      fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${contentVideo}&format=json`)
+        .then(response => {
+          if (!response.ok) {
+            setVideoNotFound(true);
+          }
+        })
+        .catch(() => {
+          setVideoNotFound(true);
+        });
+    } else {
+      setVideoNotFound(true);
+    }
+  }, [content.data.body, contentVideo]);
+
+  if (!contentVideo || videoNotFound) {
+    return (
+      <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
+        <p className="text-lg text-gray-600">YouTube video not found or invalid URL</p>
+      </div>
+    );
   }
 
   return (

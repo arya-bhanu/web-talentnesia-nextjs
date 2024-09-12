@@ -52,7 +52,6 @@ const FormContentView: React.FC<
             value={fileType}
             onChange={(e) => setFileType(e.target.value)}
             required
-            disabled={!isEdit}
           >
             <option value="1">Document</option>
             <option value="2">Video</option>
@@ -72,13 +71,21 @@ const FormContentView: React.FC<
             className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg"
           >
             {isEdit ? (
+              fileName || populatedData?.body ? (
+                <UploadFileInput
+                  onChange={handleFileChange}
+                  initialFileName={fileName || populatedData?.body || ''}
+                  fileType={parseInt(fileType)}
+                />
+              ) : (
+                <div>{fileName || 'No file uploaded'}</div>
+              )
+            ) : (
               <UploadFileInput
                 onChange={handleFileChange}
-                initialFileName={fileName || populatedData?.body || ''}
+                initialFileName={fileName || ''}
                 fileType={parseInt(fileType)}
               />
-            ) : (
-              <div>{fileName || 'No file uploaded'}</div>
             )}
           </Label>
         </div>
