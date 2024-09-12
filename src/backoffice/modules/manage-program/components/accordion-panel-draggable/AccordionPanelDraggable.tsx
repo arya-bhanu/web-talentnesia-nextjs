@@ -28,8 +28,12 @@ const AccordionPanelDraggable: React.FC<
   const queryClient = useQueryClient();
   const params = useSearchParams();
   const [openAlertModalMentoring, setOpenAlertModalMentoring] = useState(false);
+  const [openAlertModalContent, setOpenAlertModalContent] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [tempFormData, setTempFormData] = useState<FormData | null>(null);
+  const [tempMonitoringData, settempMonitoringData] = useState<FormData | null>(null);
+  const [tempContentFormData, setTempContentFormData] = useState<{ formData: FormData, chapterId: string } | null>(null);
+  const [alertMessageMonitoring, setAlertMessageMonitoring] = useState('');
+  const [alertMessageContent, setAlertMessageContent] = useState('');
 
   const { openModal: openModalToast } = useStatusModalStore();
   const { idDefaultMentoring } = useFormMentoringStore();
@@ -111,9 +115,9 @@ const AccordionPanelDraggable: React.FC<
   };
 
   useEffect(() => {
-    if (isConfirmed && tempFormData) {
-      handleConfirmedMentoring(tempFormData);
-      setTempFormData(null);
+    if (isConfirmed && tempMonitoringData) {
+      handleConfirmedMentoring(tempMonitoringData);
+      settempMonitoringData(null);
       setIsConfirmed(false);
     }
   }, [isConfirmed]);
@@ -122,7 +126,10 @@ const AccordionPanelDraggable: React.FC<
     e.preventDefault();
     e.stopPropagation();
     const formData = new FormData(e.currentTarget);
-    setTempFormData(formData);
+    settempMonitoringData(formData);
+    setAlertMessageMonitoring(idDefaultMentoring 
+      ? 'Are you sure you want to update this mentoring session?'
+      : 'Are you sure you want to add this new mentoring session?');
     setOpenAlertModalMentoring(true);
   };
   
@@ -165,6 +172,7 @@ const AccordionPanelDraggable: React.FC<
         });
 
         clear();
+        setIsConfirmed(false);
         openModalToast({
           status: 'success',
           action: idDefaultMentoring ? 'update' : 'create',
@@ -190,21 +198,32 @@ const AccordionPanelDraggable: React.FC<
     e.stopPropagation();
   };
 
-  const handleSubmitModalContent = async (
-    e: FormEvent<HTMLFormElement>,
-    chapterId: string,
-  ) => {
+  useEffect(() => {
+    if (isConfirmed && tempContentFormData) {
+      handleConfirmedContent(tempContentFormData.formData, tempContentFormData.chapterId);
+      setTempContentFormData(null);
+      setIsConfirmed(false);
+    }
+  }, [isConfirmed]);
+  
+  const handleSubmitModalContent = (e: FormEvent<HTMLFormElement>, chapterId: string) => {
     e.preventDefault();
     e.stopPropagation();
+    const formData = new FormData(e.currentTarget);
+    setTempContentFormData({ formData, chapterId });
+    setAlertMessageContent('Are you sure you want to add this new content?');
+    setOpenAlertModalContent(true);
+  };
+  
+  const handleConfirmedContent = async (formData: FormData, chapterId: string) => {
     try {
-      const formData = new FormData(e.currentTarget);
       const time = formData.get('time') as string;
       const title = formData.get('title') as string;
       const type = formData.get('type') as string;
       const fileUrl = formData.get('fileUrl') as string;
       const fileName = formData.get('fileName') as string;
       const convertedTime = time.substring(0, 5);
-
+  
       if (chapterId && convertedTime && title && type && fileUrl) {
         await createContentProgramAsync({
           body: fileName,
@@ -263,6 +282,13 @@ const AccordionPanelDraggable: React.FC<
         openModal={openAlertModalMentoring}
         setOpenModal={setOpenAlertModalMentoring}
         setIsConfirmed={setIsConfirmed}
+        messageText={alertMessageMonitoring}
+      />
+      <AlertModal
+        openModal={openAlertModalContent}
+        setOpenModal={setOpenAlertModalContent}
+        setIsConfirmed={setIsConfirmed}
+        messageText={alertMessageContent}
       />
     </>
   );
