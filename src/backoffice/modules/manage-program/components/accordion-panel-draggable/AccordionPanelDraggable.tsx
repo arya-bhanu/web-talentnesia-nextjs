@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import AccordionPanelDraggableView from './AccordionPanelDraggable.view';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,6 +15,7 @@ import { useFormMentoringStore } from '../../form-program/components/form-mentor
 import { convertDateToStr, convertHHmmTime } from '@/helpers/formatter.helper';
 import { useStatusModalStore } from '@/lib/store';
 import AlertModal from '@/backoffice/components/alert-modal';
+import { set } from 'date-fns';
 
 const AccordionPanelDraggable: React.FC<
   IAccordionPanelDraggable & { index: number }
@@ -26,10 +27,10 @@ const AccordionPanelDraggable: React.FC<
   const [openModalContent, setOpenModalContent] = useState(false);
   const queryClient = useQueryClient();
   const params = useSearchParams();
-  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [openAlertModalMentoring, setOpenAlertModalMentoring] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [currentAction, setCurrentAction] = useState<'mentoring' | 'certificate' | 'generate' | 'content' | null>(null);
-  
+  const [tempFormData, setTempFormData] = useState<FormData | null>(null);
+
   const { openModal: openModalToast } = useStatusModalStore();
   const { idDefaultMentoring } = useFormMentoringStore();
 
@@ -109,11 +110,24 @@ const AccordionPanelDraggable: React.FC<
     }
   };
 
-  const handleSubmitModalMentoring = async (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (isConfirmed && tempFormData) {
+      handleConfirmedMentoring(tempFormData);
+      setTempFormData(null);
+      setIsConfirmed(false);
+    }
+  }, [isConfirmed]);
+  
+  const handleSubmitModalMentoring = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const formData = new FormData(e.currentTarget);
+    setTempFormData(formData);
+    setOpenAlertModalMentoring(true);
+  };
+  
+  const handleConfirmedMentoring = async (formData: FormData) => {
     try {
-      e.preventDefault();
-      e.stopPropagation();
-      const formData = new FormData(e.currentTarget);
       const title = formData.get('mentoring_name') as string;
       const mentorId = formData.get('mentor') as string;
       const startTime = timeStart;
@@ -121,10 +135,21 @@ const AccordionPanelDraggable: React.FC<
       const dateData = date;
       const location = null;
       const link = formData.get('url') as string;
-      idDefaultMentoring
-        ? await editMentoringAsync({
-            mentoringId: idDefaultMentoring,
-            payload: {
+        idDefaultMentoring
+          ? await editMentoringAsync({
+              mentoringId: idDefaultMentoring,
+              payload: {
+                link,
+                location,
+                title,
+                chapterId: props.id,
+                mentorId,
+                endTime: convertHHmmTime(endTime),
+                startTime: convertHHmmTime(startTime),
+                date: convertDateToStr(new Date(dateData)),
+              },
+            })
+          : await createMentorAsync({
               link,
               location,
               title,
@@ -133,29 +158,18 @@ const AccordionPanelDraggable: React.FC<
               endTime: convertHHmmTime(endTime),
               startTime: convertHHmmTime(startTime),
               date: convertDateToStr(new Date(dateData)),
-            },
-          })
-        : await createMentorAsync({
-            link,
-            location,
-            title,
-            chapterId: props.id,
-            mentorId,
-            endTime: convertHHmmTime(endTime),
-            startTime: convertHHmmTime(startTime),
-            date: convertDateToStr(new Date(dateData)),
-          });
+            });
 
-      queryClient.invalidateQueries({
-        queryKey: ['mentoring', 'list', props.id],
-      });
+        queryClient.invalidateQueries({
+          queryKey: ['mentoring', 'list', props.id],
+        });
 
-      clear();
-      openModalToast({
-        status: 'success',
-        action: idDefaultMentoring ? 'update' : 'create',
-        message: `Mentoring ${idDefaultMentoring ? 'updated' : 'created'} successfully`,
-      });
+        clear();
+        openModalToast({
+          status: 'success',
+          action: idDefaultMentoring ? 'update' : 'create',
+          message: `Mentoring ${idDefaultMentoring ? 'updated' : 'created'} successfully`,
+        });
     } catch (error) {
       console.error('Error submitting mentoring:', error);
       openModalToast({
@@ -244,6 +258,11 @@ const AccordionPanelDraggable: React.FC<
         setOpenModalCertificate={setOpenModalCertificate}
         setOpenModalGenerate={setOpenModalGenerate}
         {...props}
+      />
+      <AlertModal
+        openModal={openAlertModalMentoring}
+        setOpenModal={setOpenAlertModalMentoring}
+        setIsConfirmed={setIsConfirmed}
       />
     </>
   );
