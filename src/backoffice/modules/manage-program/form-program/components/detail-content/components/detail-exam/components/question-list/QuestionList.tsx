@@ -1,5 +1,5 @@
 import { QuestionListProps } from '../../detailExam.type';
-import '../../input-score/components/card-accordion/CardAccordion.style.css';
+import '../../input-score/components/card-accordion/cardAccordion.style.css';
 
 const QuestionList: React.FC<QuestionListProps> = ({
   id,
