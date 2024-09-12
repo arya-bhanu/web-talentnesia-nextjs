@@ -1,4 +1,5 @@
 import { QuestionListProps } from '../../detailExam.type';
+import '../../input-score/components/card-accordion/CardAccordion.style.css';
 
 const QuestionList: React.FC<QuestionListProps> = ({
   id,
@@ -16,7 +17,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
       <div className="flex-[2]">
         <div className="flex flex-col gap-1">
           <div
-            className="w-full border-0 border-b-2 p-2 pt-0"
+            className="question-content w-full border-0 border-b-2 p-2 pt-0"
             dangerouslySetInnerHTML={{ __html: content?.data.title || '' }}
           />
 

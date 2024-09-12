@@ -35,7 +35,7 @@ export const InputScore: React.FC<{ content?: { data: ExamListProps } }> = ({
           <FilterMenu onFilterChange={() => {}} />
         </div>
       </div>
-      <CardAccordion scoreData={scoreData}/>
+      <CardAccordion scoreData={scoreData} contentId={contentId as string} />
     </div>
   );
 };

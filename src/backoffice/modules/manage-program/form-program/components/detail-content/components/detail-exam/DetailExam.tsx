@@ -17,7 +17,7 @@ export const DetailExam: React.FC<{ content: { data: ExamListProps } }> = ({
       <div className="grid grid-cols-2 gap-5">
         <div>
           <div className="items-center">
-            <label className="text-xl break-words overflow-wrap">
+            <label className="text-xl break-words overflow-wrap font-semibold items-center">
               {content.data.title}
             </label>
           </div>

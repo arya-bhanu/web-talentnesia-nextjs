@@ -6,16 +6,19 @@ import {
 } from '@tanstack/react-table';
 import { QuestionType, StudentType } from './cardAccordion.type';
 import CardAccordionView from './CardAccordion.view';
+import { useScoreStore } from '../../inputScore.store';
+import { inputScore } from '../../api/inputScore.api';
 
 const columnHelper = createColumnHelper<QuestionType>();
 
 interface CardAccordionProps {
   scoreData: StudentType[] | undefined;
+  contentId: string;
 }
 
-const CardAccordion: React.FC<CardAccordionProps> = ({ scoreData }) => {
+const CardAccordion: React.FC<CardAccordionProps> = ({ scoreData, contentId }) => {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
-  const [scores, setScores] = useState<{ [key: string]: number }>({});
+  const { setScores, getScores } = useScoreStore()
 
   const toggleAccordion = (id: string) => {
     setOpenAccordions((prev) =>
@@ -26,20 +29,48 @@ const CardAccordion: React.FC<CardAccordionProps> = ({ scoreData }) => {
   const handleScoreChange = (
     studentId: string,
     questionId: string,
-    value: number,
+    value: string,
   ) => {
-    setScores((prev) => ({
-      ...prev,
-      [`${studentId}-${questionId}`]: value,
+    const numericValue = Math.min(Math.max(0, parseInt(value) || 0), 100);
+    const currentScores = getScores(studentId);
+    const updatedScores = currentScores.map(score => 
+      score.questionId === questionId 
+        ? { ...score, score: numericValue } 
+        : score
+    );
+    if (!updatedScores.some(score => score.questionId === questionId)) {
+      updatedScores.push({
+        questionId,
+        answerId: null,
+        score: numericValue
+      });
+    }
+    setScores(studentId, updatedScores);
+  };
+  
+  const handleSubmit = async (studentId: string, contentId: string) => {
+    const scores = getScores(studentId).map(score => ({
+      questionId: score.questionId,
+      answerId: score.answerId || "-",
+      score: score.score
     }));
+  
+    try {
+      await inputScore({
+        contentId,
+        userId: studentId,
+        scores
+      });
+      // Handle success (e.g., show success message, clear scores, etc.)
+    } catch (error) {
+      // Handle error
+      console.error('Error submitting scores:', error);
+    }
   };
 
   const calculateTotalScore = (studentId: string) => {
-    const student = scoreData?.find((s) => s.userId === studentId);
-    return student?.questions.reduce((sum, question) => {
-      const score = scores[`${studentId}-${question.id}`] || 0;
-      return sum + score;
-    }, 0) || 0;
+    const scores = getScores(studentId);
+    return scores.reduce((sum, score) => sum + score.score, 0);
   };
 
   const columns = useMemo(() => [
@@ -47,19 +78,18 @@ const CardAccordion: React.FC<CardAccordionProps> = ({ scoreData }) => {
       header: 'Soal',
       cell: (info) => <div dangerouslySetInnerHTML={{ __html: info.getValue() }} />,
     }),
-    columnHelper.accessor('id', {
+    columnHelper.accessor('answer', {
       header: 'Jawaban',
-      cell: () => 'Jawaban siswa',
+      cell: (info) => info.getValue() || '-',
     }),
     columnHelper.accessor('id', {
       header: 'Nilai',
-      cell: ({ row, getValue }) => {
-        const studentId = row.original.id;
-        const questionId = getValue();
-        return scores[`${studentId}-${questionId}`] || '';
+      cell: ({ row }) => {
+        const score = getScores(row.original.id).find(s => s.questionId === row.original.id);
+        return score ? score.score : '';
       },
     }),
-  ], [scores]);
+  ], [getScores]);
 
   const tableInstance = useReactTable({
     data: scoreData?.[0]?.questions || [],
@@ -75,11 +105,13 @@ const CardAccordion: React.FC<CardAccordionProps> = ({ scoreData }) => {
     <CardAccordionView
       studentData={scoreData}
       openAccordions={openAccordions}
-      scores={scores}
+      getScores={getScores}
       tableInstance={tableInstance}
       toggleAccordion={toggleAccordion}
       handleScoreChange={handleScoreChange}
       calculateTotalScore={calculateTotalScore}
+      handleSubmit={handleSubmit}
+      contentId={contentId}
     />
   );
 };

@@ -9,3 +9,53 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   appearance: textfield;
 }
+
+.question-content a {
+  text-decoration: underline;
+  color: #374151;
+  transition: color 0.3s;
+  position: relative;
+  display: inline-block;
+}
+
+.question-content a:hover {
+  color: #3b82f6;
+}
+
+.question-content a::after {
+  content: attr(href);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 100%;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  background-color: #1f2937;
+  color: white;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.question-content a:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.question-content ul, .question-content ol {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+.question-content ul {
+  list-style-type: disc;
+}
+
+.question-content ol {
+  list-style-type: decimal;
+}
+
+

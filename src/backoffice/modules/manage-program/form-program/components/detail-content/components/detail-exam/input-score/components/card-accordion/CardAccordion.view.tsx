@@ -9,15 +9,15 @@ import './cardAccordion.style.css';
 const CardAccordionView: React.FC<CardAccordionViewProps> = ({
   studentData,
   openAccordions,
-  scores,
+  getScores,
   tableInstance,
   toggleAccordion,
   handleScoreChange,
   calculateTotalScore,
+  handleSubmit,
+  contentId,
 }) => {
   const students = Array.isArray(studentData) ? studentData : [];
-  console.log(studentData);
-  console.log('students', students);
   return (
     <div className="mx-auto bg-white rounded-lg">
       {students.map((student) => (
@@ -47,37 +47,24 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                     Batas Akhir
                   </span>
                   <span className="mr-2">:</span>
-                  <span className="color-[#323232] font-medium">
-                    {/* End Date */}{"-"}
-                  </span>
+                  <span className="color-[#323232] font-medium">{'-'}</span>
                 </p>
               </div>
               <div className="space-y-2">
                 <p className="flex">
                   <span className="font-semibold text-[#858D9D] w-28">
-                  Tgl Dikerjakan
+                    Tgl Dikerjakan
                   </span>
                   <span className="mr-2">:</span>
-                  <span className="color-[#323232] font-medium">
-                    {/* Date Started */}{"-"}
-                  </span>
+                  <span className="color-[#323232] font-medium">{'-'}</span>
                 </p>
-                {/* <p className="flex">
-                  <span className="font-semibold text-[#858D9D] w-28">
-                    Tipe
-                  </span>
-                  <span className="mr-2">:</span>
-                  <span className="color-[#323232] font-medium">
-                    {student.tipe}
-                  </span>
-                </p> */}
               </div>
             </div>
           </div>
           {openAccordions.includes(student.userId) && (
             <div className="transition-all duration-300 ease-in-out max-h-[1000px] opacity-100 overflow-hidden">
               <div className="border-t overflow-hidden">
-              <table className="w-full">
+                <table className="w-full">
                   <colgroup>
                     <col style={{ width: '45%' }} />
                     <col style={{ width: '45%' }} />
@@ -105,29 +92,48 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                   <tbody>
                     {student.questions
                       .sort((a, b) => a.order - b.order)
-                      .map((question) => (
+                      .map((question, index) => (
                         <tr key={question.id}>
-                          <td className="p-2 border-t">
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: question.title,
-                              }}
-                            />
+                          <td className="p-4 border-t">
+                            <div className="flex">
+                              <span className="font-semibold mr-4 flex-shrink-0 self-center">
+                                {index + 1}.
+                              </span>
+                              <div className="flex-grow">
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: question.title,
+                                  }}
+                                  className="question-content"
+                                />
+                              </div>
+                            </div>
                           </td>
-                          <td className="p-2 border-t">Jawaban siswa</td>
+                          <td className="p-2 border-t">
+                            {question.answer || '-'}
+                          </td>
                           <td className="p-2 border-t">
                             <TextInput
                               type="number"
                               value={
-                                scores[`${student.userId}-${question.id}`] || ''
+                                getScores(student.userId).find(
+                                  (score) => score.questionId === question.id,
+                                )?.score || ''
                               }
-                              onChange={(e) =>
+                              onChange={(e) => {
+                                const value = e.target.value.slice(0, 3);
                                 handleScoreChange(
                                   student.userId,
                                   question.id,
-                                  Number(e.target.value),
-                                )
-                              }
+                                  value,
+                                );
+                              }}
+                              onInput={(e) => {
+                                const target = e.target as HTMLInputElement;
+                                target.value = target.value.slice(0, 3);
+                              }}
+                              min="0"
+                              max="100"
                               className="w-14 text-center"
                             />
                           </td>
@@ -144,9 +150,10 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                   </label>
                 </p>
                 <Button
-                  type="submit"
+                  type="button"
                   color={'warning'}
                   className="bg-[#FFC862] text-black"
+                  onClick={() => handleSubmit(student.userId, contentId)}
                 >
                   Submit
                 </Button>

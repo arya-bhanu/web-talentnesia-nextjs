@@ -9,6 +9,7 @@ export type QuestionType = {
   order: number;
   active: number;
   createdBy: string | null;
+  answer: string | null;
 };
 
 export type StudentType = {
@@ -22,12 +23,20 @@ export type StudentType = {
   questions: QuestionType[];
 };
 
+export type ScoreType = {
+  questionId: string;
+  answerId: string | null;
+  score: number;
+};
+
 export interface CardAccordionViewProps {
   studentData: StudentType[];
   openAccordions: string[];
-  scores: { [key: string]: number };
+  getScores: (userId: string) => ScoreType[];
   tableInstance: Table<QuestionType>;
   toggleAccordion: (id: string) => void;
-  handleScoreChange: (studentId: string, questionId: string, value: number) => void;
+  handleScoreChange: (studentId: string, questionId: string, value: string) => void;
   calculateTotalScore: (studentId: string) => number;
+  handleSubmit: (studentId: string, contentId: string) => Promise<void>;
+  contentId: string;
 }
