@@ -110,16 +110,21 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                             </div>
                           </td>
                           <td className="p-2 border-t">
-                            {question.answer || '-'}
+                            {question.answers?.text || '-'}
                           </td>
                           <td className="p-2 border-t">
                             <TextInput
                               type="number"
-                              value={
-                                getScores(student.userId).find(
-                                  (score) => score.questionId === question.id,
-                                )?.score || ''
-                              }
+                              value={(() => {
+                                const score =
+                                  getScores(student.userId).find(
+                                    (score) => score.questionId === question.id,
+                                  )?.score ??
+                                  parseFloat(question.answers?.score || '');
+                                return score === null
+                                  ? ''
+                                  : Math.floor(score).toString();
+                              })()}
                               onChange={(e) => {
                                 const value = e.target.value.slice(0, 3);
                                 handleScoreChange(

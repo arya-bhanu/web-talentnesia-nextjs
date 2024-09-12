@@ -31,56 +31,65 @@ const CardAccordion: React.FC<CardAccordionProps> = ({ scoreData, contentId }) =
     questionId: string,
     value: string,
   ) => {
-    const numericValue = Math.min(Math.max(0, parseInt(value) || 0), 100);
+    const numericValue = value === '' ? 0 : Math.min(Math.max(0, parseInt(value)), 100);
     const currentScores = getScores(studentId);
     const updatedScores = currentScores.map(score => 
-      score.questionId === questionId 
-        ? { ...score, score: numericValue } 
-        : score
+      score.questionId === questionId ? { ...score, score: numericValue } : score
     );
     if (!updatedScores.some(score => score.questionId === questionId)) {
+      const question = scoreData?.find(student => student.userId === studentId)?.questions.find(q => q.id === questionId);
       updatedScores.push({
         questionId,
-        answerId: null,
-        score: numericValue
+        answerId: question?.answers?.id || "-",
+        score: numericValue ?? ''
       });
     }
     setScores(studentId, updatedScores);
   };
   
   const handleSubmit = async (studentId: string, contentId: string) => {
-    const scores = getScores(studentId).map(score => ({
-      questionId: score.questionId,
-      answerId: score.answerId || "-",
-      score: score.score
-    }));
-  
+    const scores = getScores(studentId)
     try {
       await inputScore({
         contentId,
         userId: studentId,
         scores
-      });
+      })
       // Handle success (e.g., show success message, clear scores, etc.)
     } catch (error) {
       // Handle error
-      console.error('Error submitting scores:', error);
+      console.error('Error submitting scores:', error)
     }
-  };
+  }
 
   const calculateTotalScore = (studentId: string) => {
-    const scores = getScores(studentId);
-    return scores.reduce((sum, score) => sum + score.score, 0);
+    const storedScores = getScores(studentId);
+    const student = scoreData?.find(s => s.userId === studentId);
+    let total = 0;
+  
+    if (student) {
+      student.questions.forEach(question => {
+        const storedScore = storedScores.find(s => s.questionId === question.id);
+        if (storedScore) {
+          total += storedScore.score;
+        } else if (question.answers?.score) {
+          total += parseFloat(question.answers.score);
+        }
+      });
+    }
+  
+    return total;
   };
+  
 
   const columns = useMemo(() => [
     columnHelper.accessor('title', {
       header: 'Soal',
       cell: (info) => <div dangerouslySetInnerHTML={{ __html: info.getValue() }} />,
     }),
-    columnHelper.accessor('answer', {
+    columnHelper.accessor('answers', {
       header: 'Jawaban',
-      cell: (info) => info.getValue() || '-',
+      cell: (info) => info.getValue()?.text || '-',
     }),
     columnHelper.accessor('id', {
       header: 'Nilai',

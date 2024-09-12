@@ -97,6 +97,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     '/backoffice/manage-program/',
     '/backoffice/manage-program/update-program/',
     '/backoffice/dashboard/',
+    '/backoffice/manage-program/add-program/',
   ].includes(pathname);
   const containerStyle = {
     // maxWidth: '80%',

@@ -1,6 +1,17 @@
 import { Table } from '@tanstack/react-table';
 
-export type QuestionType = {
+export type AnswerType = {
+  id: string;
+  responseId: string;
+  questionId: string;
+  text: string;
+  value: number;
+  isanswered: boolean | null;
+  score: string;
+  optionId: string;
+};
+
+export interface QuestionType {
   id: string;
   chapterId: string;
   contentId: string;
@@ -9,10 +20,10 @@ export type QuestionType = {
   order: number;
   active: number;
   createdBy: string | null;
-  answer: string | null;
+  answers: AnswerType | null;
 };
 
-export type StudentType = {
+export interface StudentType {
   userId: string;
   name: string;
   email: string;
@@ -23,7 +34,7 @@ export type StudentType = {
   questions: QuestionType[];
 };
 
-export type ScoreType = {
+export interface ScoreType {
   questionId: string;
   answerId: string | null;
   score: number;
