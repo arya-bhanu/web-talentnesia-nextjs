@@ -13,16 +13,15 @@ const FormContent: React.FC<{ contentId?: string; isEdit?: boolean }> = ({
   const [fileUrl, setFileUrl] = useState<string>('');
   const [fileName, setFileName] = useState<string>('');
   const [fileType, setFileType] = useState<string>('1');
-  const [isDataReady, setIsDataReady] = useState(false);
 
   const { data: dataContent, isLoading } = useQuery({
     queryKey: ['chapter', contentId],
     queryFn: () => fetchContent(contentId),
-    enabled: !!contentId,
+    enabled: !!contentId && isEdit,
   });
 
   useEffect(() => {
-    if (dataContent?.data.data && !isLoading) {
+    if (isEdit && dataContent?.data.data) {
       setFileType(dataContent.data.data.type);
       setFileName(dataContent.data.data.body || '');
       if (dataContent.data.data.duration) {
@@ -31,23 +30,18 @@ const FormContent: React.FC<{ contentId?: string; isEdit?: boolean }> = ({
       }
       if (dataContent.data.data.file) {
         getImageUrl(dataContent.data.data.file)
-          .then((url) => {
-            setFileUrl(url);
-            setIsDataReady(true);
-          })
+          .then(setFileUrl)
           .catch(console.error);
-      } else {
-        setIsDataReady(true);
       }
     }
-  }, [dataContent, isLoading]);
+  }, [dataContent, isEdit]);
 
   const handleFileChange = (newFileUrl: string, newFileName: string) => {
     setFileUrl(newFileUrl);
     setFileName(newFileName);
   };
 
-  if (isLoading || !isDataReady) {
+  if (isEdit && isLoading) {
     return <Loading isLoading={true} />;
   }
 

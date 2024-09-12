@@ -7,10 +7,12 @@ import {
 
 export const academicLevelAPI = {
   fetch: async () => {
-    return fetchAxios<AcademicLevelResponse>({
+    const response = await fetchAxios<AcademicLevelResponse>({
       url: `/v1/education-level`,
       method: 'GET',
     });
+    console.log('data academic level', response.data);
+    return response;
   },
 
   all: () => {

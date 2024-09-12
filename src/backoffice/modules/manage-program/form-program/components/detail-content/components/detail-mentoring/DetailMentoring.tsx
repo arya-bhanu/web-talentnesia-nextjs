@@ -32,11 +32,6 @@ const DetailMentoring: React.FC<{
     queryFn: () => fetchStudentsJoined(programId),
   });
 
-  // console.log('Mentoring', content.data);
-  // console.log('attendances', attendances);
-  // console.log('studentsJoined', studentsJoined);
-  // console.log('Content ID:', studentsJoined?.data?.data?.items);
-
   const handleJoinNow = () => {
     if (meetLink) {
       window.open(meetLink, '_blank');
