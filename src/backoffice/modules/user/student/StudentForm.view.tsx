@@ -29,6 +29,8 @@ import {
   SubDistrict,
   subDistrictAPI,
 } from '@/backoffice/components/dropdown/api/dropdownApi';
+import AlertModal from '@/backoffice/components/alert-modal';
+
 type StudentViewProps = ReturnType<typeof useStudentForm>;
 
 export const StudentView: React.FC<StudentViewProps> = ({
@@ -44,6 +46,10 @@ export const StudentView: React.FC<StudentViewProps> = ({
   setShowResultModal,
   isSuccess,
   confirmSubmit,
+  showAlertModal,
+  setShowAlertModal,
+  setIsConfirmed,
+  openModal,
 }) => {
   const [religions, setReligions] = useState<APIResponseReligion[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
@@ -220,7 +226,6 @@ export const StudentView: React.FC<StudentViewProps> = ({
                     Select Religion
                   </option>
                   {religions.map((religion: any, index: number) => {
-                    console.log(religion);
                     return (
                       <option key={index} value={religion.id}>
                         {religion.name}
@@ -466,7 +471,6 @@ export const StudentView: React.FC<StudentViewProps> = ({
                     Select Academic Level
                   </option>
                   {academicLevels.map((education: any, index: number) => {
-                    console.log(education);
                     return (
                       <option key={index} value={education.id}>
                         {education.name}
@@ -535,14 +539,11 @@ export const StudentView: React.FC<StudentViewProps> = ({
         </form>
       </div>
 
-      <ResponseModal
-        isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-        onConfirm={confirmSubmit}
-        title="Information"
-        message={`Are you sure want to ${form.id ? 'Edit' : 'Add'} it?`}
-        confirmText="OK!"
-        showCancel
+      <AlertModal
+        openModal={showAlertModal}
+        setOpenModal={setShowAlertModal}
+        setIsConfirmed={setIsConfirmed}
+        messageText={`Are you sure you want to ${form.id ? 'edit' : 'add'} this School Operator?`}
       />
       <ResponseModal
         isOpen={showResultModal}
