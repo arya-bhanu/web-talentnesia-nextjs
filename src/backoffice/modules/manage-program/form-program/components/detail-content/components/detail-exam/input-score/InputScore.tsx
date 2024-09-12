@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { ExamListProps } from '../detailExam.type';
-import DynamicButton from '../components/dynamic-button/DynamicButton';
 import FilterMenu from '@/backoffice/modules/student/history/components/filter/FilterMenu';
-import SearchBar from '@/portal/components/search-bar';
 import { SearchTable } from '@/backoffice/components/search-table';
 import CardAccordion from './components/card-accordion/CardAccordion';
 import { useSearchParams } from 'next/navigation';
