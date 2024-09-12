@@ -107,7 +107,7 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
             label="Upload Certificate File"
             onFileChange={(file) => {
               handleInputChange('file', file.name);
-              setIsFileUploaded(false);
+              setIsFileUploaded(true);
             }}
             allowedTypes={['application/vnd.openxmlformats-officedocument.wordprocessingml.document']}
           />
@@ -136,11 +136,9 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
         )}
 
       </div>
-      {isFileUploaded && (
         <div className="py-2">
           <AddDocumentEditorComponent id={documentId} url={documentUrl} />
         </div>
-      )}
 
       <div className="flex justify-end pt-4">
         <button

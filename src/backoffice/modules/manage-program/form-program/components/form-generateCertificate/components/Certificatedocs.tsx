@@ -11,9 +11,9 @@ const DocumentEditorComponent = forwardRef<
   const editorRef = useRef<any>(null);
 
   const baseUrl = 'https://api-talentnesia.skwn.dev/';
-  const doc = `api/v1/certificate/show_template/${selectedTemplate.file}`;
+  const doc = `api/v1/certificate/show_template/id`;
   const date = Date.now();
-  const key = `${date}-${selectedTemplate.id}`;
+  const key = `${date}-id`;
   const cb =
     'https://api-talentnesia.skwn.dev/api/v1/certificate/save_template';
   const options = {
@@ -95,7 +95,6 @@ const DocumentEditorComponent = forwardRef<
   const documentServerUrl = process.env.NEXT_PUBLIC_ONLYOFFICE_SERVER_URL || '';
   return (
     <DocumentEditor
-      // ref={editorRef}
       id="docxEditor"
       documentServerUrl={documentServerUrl}
       config={{ ...options, token }}
@@ -105,7 +104,5 @@ const DocumentEditorComponent = forwardRef<
   );
 });
 
-// Tambahkan displayName di sini
-DocumentEditorComponent.displayName = 'DocumentEditorComponent';
 
 export default DocumentEditorComponent;

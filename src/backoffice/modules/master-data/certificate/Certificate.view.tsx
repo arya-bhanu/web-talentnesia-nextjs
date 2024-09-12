@@ -15,13 +15,14 @@ import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import Legenda from '../../../components/Legenda/Legenda';
 
 const columnHelper = createColumnHelper<any>();
 
 const CertificateView: React.FC<ICertificateView> = ({
   data,
   Filter,
-  setFilter,  
+  setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
@@ -29,18 +30,18 @@ const CertificateView: React.FC<ICertificateView> = ({
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
-  
+
   const router = useRouter();
-  
+
   const openDocumentEditor = () => {
-      router.push('/backoffice/master-data/certificate/add-certificate/'); 
-    };
+    router.push('/backoffice/master-data/certificate/add-certificate/');
+  };
   const {
     handleAddCertificate,
     handleEditCertificate,
     handleDeleteCertificate,
   } = useCertificateActions();
-  
+
   const handleEdit = useCallback((id: string, rowData: any) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
@@ -68,7 +69,7 @@ const CertificateView: React.FC<ICertificateView> = ({
     },
     [handleEditCertificate, handleAddCertificate, fetchData]
   );
-   
+
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('name', {
@@ -99,12 +100,12 @@ const CertificateView: React.FC<ICertificateView> = ({
             </div>
           );
         },
-      }),      
+      }),
       columnHelper.accessor('active', {
         header: ({ column }) => (
           <SortingTable column={column} title="Status" />
         ),
-        cell: (info) => <BadgeStatus status={info.getValue() as number} type={1}/>,
+        cell: (info) => <BadgeStatus status={info.getValue() as number} type={1} />,
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -112,7 +113,7 @@ const CertificateView: React.FC<ICertificateView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-  
+
           return (
             <Popover
               content={
@@ -168,8 +169,8 @@ const CertificateView: React.FC<ICertificateView> = ({
         isOpen={isPopupOpen}
         onClose={() => {
           setIsPopupOpen(false);
-          setSelectedId(null); 
-          setSelectedRowData(null); 
+          setSelectedId(null);
+          setSelectedRowData(null);
         }}
         onSave={handleAddOrEditCertificate}
         initialData={selectedRowData}
@@ -188,6 +189,7 @@ const CertificateView: React.FC<ICertificateView> = ({
       />
     </div>
 
-  );};
+  );
+};
 
 export default CertificateView;
