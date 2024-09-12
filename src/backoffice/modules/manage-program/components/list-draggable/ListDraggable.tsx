@@ -13,8 +13,14 @@ import { useSearchParams } from 'next/navigation';
 import { useFormScheduleStore } from '../../form-program/components/form-schedule/formSchedule.store';
 import { usePathname, useRouter } from 'next/navigation';
 import { useFormMentoringStore } from '../../form-program/components/form-mentoring/formMentoring.store';
-import { convertDateToStr, convertHHmmTime, convertTimeHHmmssToDate } from '@/helpers/formatter.helper';
+import {
+  convertDateToStr,
+  convertHHmmTime,
+  convertTimeHHmmssToDate,
+} from '@/helpers/formatter.helper';
 import { editMentoring } from '../../form-program/components/form-mentoring/api/formMentoring.api';
+import AlertModal from '@/backoffice/components/alert-modal';
+import { useStatusModalStore } from '@/lib/store';
 
 const ListDraggable: React.FC<IListDraggable> = (props) => {
   const params = useSearchParams();
@@ -25,6 +31,7 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
   const [isConfrmDel, setConfrmDel] = useState(false);
   const queryClient = useQueryClient();
   const programId = params.get('programId');
+
   const { content } = useFormScheduleStore();
   const {
     setDefaultMentoring,
@@ -33,9 +40,23 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
     setDate,
     setIdDefaultMentoring,
   } = useFormMentoringStore();
-  const { timeStart, date, timeEnd, idDefaultMentoring } = useFormMentoringStore();
+  const { timeStart, date, timeEnd, idDefaultMentoring } =
+    useFormMentoringStore();
+  const { openModal: openModalToast } = useStatusModalStore();
+
   const pathname = usePathname();
   const router = useRouter();
+
+  const [tempContentFormData, setTempContentFormData] =
+    useState<FormData | null>(null);
+  const [tempMentoringFormData, setTempMentoringFormData] =
+    useState<FormData | null>(null);
+  const [openAlertModalContent, setOpenAlertModalContent] = useState(false);
+  const [openAlertModalMentoring, setOpenAlertModalMentoring] = useState(false);
+  const [alertMessageContent, setAlertMessageContent] = useState('');
+  const [alertMessageMentoring, setAlertMessageMentoring] = useState('');
+  const [isConfirmedContent, setIsConfirmedContent] = useState(false);
+  const [isConfirmedMentoring, setIsConfirmedMentoring] = useState(false);
 
   const { mutateAsync: updateScheduleAasync } = useMutation({
     mutationKey: ['schedule'],
@@ -68,6 +89,26 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
     }
   }, [isConfrmDel]);
 
+  useEffect(() => {
+    if (isConfirmedContent && tempContentFormData) {
+      handleConfirmedEditContent(tempContentFormData);
+      setTempContentFormData(null);
+      setIsConfirmedContent(false);
+    }
+  }, [isConfirmedContent]);
+
+  useEffect(() => {
+    if (isConfirmedMentoring) {
+      if (tempMentoringFormData) {
+        handleConfirmedSubmitMentoring(tempMentoringFormData);
+      } else {
+        setModalEditMentoring(true);
+      }
+      setTempMentoringFormData(null);
+      setIsConfirmedMentoring(false);
+    }
+  }, [isConfirmedMentoring]);
+
   const handleSubmitSchedule = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -97,37 +138,57 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
       console.error(err);
     }
   };
-  const handleEditContent = async (e: FormEvent<HTMLFormElement>) => {
+
+  const handleEditContent = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
     const formData = new FormData(e.currentTarget);
-    const time = formData.get('time') as string;
-    const title = formData.get('title') as string;
-    const type = formData.get('type') as string;
-    const uploadFile = formData.get('upload_file') as File;
-    const fileUrl = formData.get('fileUrl') as string;
-    const fileName = formData.get('fileName') as string;
-    const convertedTime = time.substring(0, 5);
+    setTempContentFormData(formData);
+    setAlertMessageContent('Are you sure you want to edit this content?');
+    setOpenAlertModalContent(true);
+  };
 
-    if (props.id) {
-      await editContentAsync({
-        contentId: props.id,
-        payload: {
-          duration: convertedTime,
-          title,
-          type,
-          body: fileName,
-          isexam: 0,
-          chapterId: props.chapterId,
-          id: props.id,
-          order: props.order,
-        },
-      });
-      await queryClient.invalidateQueries({
-        queryKey: ['chapters', 'program', programId],
-      });
+  const handleConfirmedEditContent = async (formData: FormData) => {
+    try {
+      const time = formData.get('time') as string;
+      const title = formData.get('title') as string;
+      const type = formData.get('type') as string;
+      const uploadFile = formData.get('upload_file') as File;
+      const fileUrl = formData.get('fileUrl') as string;
+      const fileName = formData.get('fileName') as string;
+      const convertedTime = time.substring(0, 5);
 
-      setModalEditContent(false);
+      if (props.id) {
+        await editContentAsync({
+          contentId: props.id,
+          payload: {
+            duration: convertedTime,
+            title,
+            type,
+            body: fileName,
+            isexam: 0,
+            chapterId: props.chapterId,
+            id: props.id,
+            order: props.order,
+          },
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ['chapters', 'program', programId],
+        });
+
+        setModalEditContent(false);
+        openModalToast({
+          status: 'success',
+          action: 'update',
+          message: 'Content updated successfully',
+        });
+      }
+    } catch (error) {
+      openModalToast({
+        status: 'error',
+        action: 'update',
+        message: 'Failed to update content',
+      });
     }
   };
 
@@ -141,12 +202,12 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
       link: props.link || '',
       location: null,
     });
-  
+
     setTimeStart(convertTimeHHmmssToDate(props.startTime || ''));
     setTimeEnd(convertTimeHHmmssToDate(props.endTime || ''));
     setDate(new Date(props.date).toString());
     setIdDefaultMentoring(props.id);
-  
+
     setModalEditMentoring(true);
   };
 
@@ -154,29 +215,46 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
     e.preventDefault();
     e.stopPropagation();
     const formData = new FormData(e.currentTarget);
-    const title = formData.get('mentoring_name') as string;
-    const mentorId = formData.get('mentor') as string;
-    const link = formData.get('url') as string;
+    setTempMentoringFormData(formData);
+    setAlertMessageMentoring('Are you sure you want to save these changes?');
+    setOpenAlertModalMentoring(true);
+  };
 
-    await editMentoringAsync({
-      mentoringId: idDefaultMentoring || '',
-      payload: {
-        link,
-        location: null,
-        title,
-        chapterId: props.chapterId,
-        mentorId,
-        endTime: convertHHmmTime(timeEnd),
-        startTime: convertHHmmTime(timeStart),
-        date: convertDateToStr(new Date(date)),
-      },
-    });
+  const handleConfirmedSubmitMentoring = async (formData: FormData) => {
+    try {
+      const title = formData.get('mentoring_name') as string;
+      const mentorId = formData.get('mentor') as string;
+      const link = formData.get('url') as string;
 
-    queryClient.invalidateQueries({
-      queryKey: ['mentoring', 'list', props.chapterId],
-    });
+      await editMentoringAsync({
+        mentoringId: idDefaultMentoring || '',
+        payload: {
+          link,
+          location: null,
+          title,
+          chapterId: props.chapterId,
+          mentorId,
+          endTime: convertHHmmTime(timeEnd),
+          startTime: convertHHmmTime(timeStart),
+          date: convertDateToStr(new Date(date)),
+        },
+      });
 
-    setModalEditMentoring(true);
+      queryClient.invalidateQueries({
+        queryKey: ['mentoring', 'list', props.chapterId],
+      });
+      openModalToast({
+        status: 'success',
+        action: 'update',
+        message: 'Mentoring updated successfully',
+      });
+    } catch (error) {
+      openModalToast({
+        status: 'error',
+        action: 'update',
+        message: 'Failed to update mentoring',
+      });
+    }
   };
 
   const handleDetailButton = () => {
@@ -186,25 +264,39 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
   };
 
   return (
-    <ListDraggableView
-      modalSchedule={modalSchedule}
-      setModalSchedule={setModalSchedule}
-      modalEditContent={modalEditContent}
-      modalEditMentoring={modalEditMentoring}
-      setModalEditContent={setModalEditContent}
-      setModalEditMentoring={setModalEditMentoring}
-      handleSubmitSchedule={handleSubmitSchedule}
-      handleEditContent={handleEditContent}
-      handleEditMentoring={handleEditMentoring}
-      contentId={props.id}
-      confirmDel={isConfrmDel}
-      setConfirmDel={setConfrmDel}
-      modalDelContent={modalDelContent}
-      setModalDelContent={setModalDelContent}
-      handleDetailButton={handleDetailButton}
-      handleSubmitModalMentoring={handleSubmitModalMentoring}
-      {...props}
-    />
+    <>
+      <ListDraggableView
+        modalSchedule={modalSchedule}
+        setModalSchedule={setModalSchedule}
+        modalEditContent={modalEditContent}
+        modalEditMentoring={modalEditMentoring}
+        setModalEditContent={setModalEditContent}
+        setModalEditMentoring={setModalEditMentoring}
+        handleSubmitSchedule={handleSubmitSchedule}
+        handleEditContent={handleEditContent}
+        handleEditMentoring={handleEditMentoring}
+        contentId={props.id}
+        confirmDel={isConfrmDel}
+        setConfirmDel={setConfrmDel}
+        modalDelContent={modalDelContent}
+        setModalDelContent={setModalDelContent}
+        handleDetailButton={handleDetailButton}
+        handleSubmitModalMentoring={handleSubmitModalMentoring}
+        {...props}
+      />
+      <AlertModal
+        openModal={openAlertModalContent}
+        setOpenModal={setOpenAlertModalContent}
+        setIsConfirmed={setIsConfirmedContent}
+        messageText={alertMessageContent}
+      />
+      <AlertModal
+        openModal={openAlertModalMentoring}
+        setOpenModal={setOpenAlertModalMentoring}
+        setIsConfirmed={setIsConfirmedMentoring}
+        messageText={alertMessageMentoring}
+      />
+    </>
   );
 };
 
