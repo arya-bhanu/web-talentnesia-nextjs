@@ -92,10 +92,10 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
           console.log('updating exam...');
           await updateExamAsync({ data: dataExam, id: examId });
           console.log('reordering exam...');
-          await reorderExamsAynsc({
-            examId,
-            questions: question.map((el) => el.id),
-          });
+          // await reorderExamsAynsc({
+          //   examId,
+          //   questions: question.map((el) => el.id),
+          // });
           openModal({
             status: 'success',
             action: 'update',
