@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IAssignmentChart } from './assignmentChart.type';
 import Task from '@/../public/icons/task.svg';
 
@@ -6,8 +6,31 @@ const AssignmentChartView: React.FC<IAssignmentChart> = ({
   onTimePercentage,
   latePercentage,
 }) => {
-  const onTimeDegrees = onTimePercentage * 3.6;
-  const lateDegrees = latePercentage * 3.6;
+  const [animatedOnTime, setAnimatedOnTime] = useState(0);
+  const [animatedLate, setAnimatedLate] = useState(0);
+
+  useEffect(() => {
+    const animationDuration = 200;
+    const steps = 80;
+    const interval = animationDuration / steps;
+
+    let currentStep = 0;
+
+    const timer = setInterval(() => {
+      currentStep++;
+      setAnimatedOnTime((prev) => Math.min(onTimePercentage * (currentStep / steps), onTimePercentage));
+      setAnimatedLate((prev) => Math.min(latePercentage * (currentStep / steps), latePercentage));
+
+      if (currentStep >= steps) {
+        clearInterval(timer);
+      }
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [onTimePercentage, latePercentage]);
+
+  const onTimeDegrees = animatedOnTime * 3.6;
+  const lateDegrees = animatedLate * 3.6;
 
   return (
     <div className="flex items-center justify-center space-x-4">
@@ -49,11 +72,11 @@ const AssignmentChartView: React.FC<IAssignmentChart> = ({
       <div className="flex flex-col justify-center">
         <div className="flex items-center mb-2">
           <span className="w-3 h-3 bg-[#F04438] rounded-full mr-2"></span>
-          <p className="font-lato font-normal text-sm">On Time ({onTimePercentage}%)</p>
+          <p className="font-lato font-normal text-sm">On Time ({animatedOnTime.toFixed(0)}%)</p>
         </div>
         <div className="flex items-center">
           <span className="w-3 h-3 bg-gray-300 rounded-full mr-2"></span>
-          <p className="font-lato font-normal text-sm">Late ({latePercentage}%)</p>
+          <p className="font-lato font-normal text-sm">Late ({animatedLate.toFixed(0)}%)</p>
         </div>
       </div>
     </div>

@@ -108,14 +108,10 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
     [handleEdit, handleDelete],
   );
 
-
-  
-
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        {/* <Can action="academic-level.create"> */}
         <AddButton
           onClick={() => {
             setSelectedId(null);
@@ -124,7 +120,6 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
           }}
           text="Add Academic Level"
         />
-        {/* </Can> */}
       </div>
       <DataTable
         data={data}

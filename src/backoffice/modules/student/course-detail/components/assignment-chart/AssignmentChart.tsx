@@ -1,9 +1,13 @@
 import React from 'react';
 import AssignmentChartView from './AssignmentChart.view';
-import { chartData } from './assignmentChart.data';
+import { AssignmentData } from './assignmentChart.type';
 
-const AssignmentChart: React.FC = () => {
-  return <AssignmentChartView {...chartData} />;
+interface AssignmentChartProps {
+  data: AssignmentData;
+}
+
+const AssignmentChart: React.FC<AssignmentChartProps> = ({ data }) => {
+  return <AssignmentChartView {...data} />;
 };
 
 export default AssignmentChart;

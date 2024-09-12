@@ -82,7 +82,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     setIsDashboard(isDashboardPath);
   }, [pathname]);
 
-  if (isLoading) {
+  if (isLoading) { 
     return <Loading isLoading={isLoading} />;
   }
 
@@ -94,15 +94,24 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const customPageStyle = [
     '/backoffice/report/',
     '/backoffice/program/',
+    '/backoffice/manage-program/',
+    '/backoffice/manage-program/update-program/',
+    '/backoffice/dashboard/',
+    '/backoffice/manage-program/add-program/',
   ].includes(pathname);
   const containerStyle = {
-    maxWidth: '80%',
-    marginLeft: '9%',
+    // maxWidth: '80%',
+    // marginLeft: '9%',
   };
 
   return (
     <div className="bg-[#FAFAFA]">
-      {user && <Navbar user={user} style={isDashboard ? {...containerStyle} :undefined }/>}
+      {user && (
+        <Navbar
+          user={user}
+          style={isDashboard ? { ...containerStyle } : undefined}
+        />
+      )}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -115,10 +124,8 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
           style={
             isDashboard
               ? {
-                  marginLeft: '-50px',
-                  padding: '0',
-                  backgroundColor: 'transparent',
-                  marginTop: '-1px',
+                marginTop: '1rem',
+                marginRight: '50px'
                 }
               : { marginRight: '50px' }
           }

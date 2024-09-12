@@ -4,19 +4,23 @@ import clsx from 'clsx';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import ListDraggable from '../list-draggable';
 
-const AccordionPanelDraggableView: React.FC<
-  IAccordionPanelDraggable & {
-    index: number;
-  }
-> = ({
+const AccordionPanelDraggableView: React.FC<IAccordionPanelDraggable> = ({
+  id: chapterId,
   title,
   index,
-  totalCurriculum,
-  totalMinuteDuration,
+  contents,
   activeAccordion,
   setActiveAccordion,
-  contents,
+  courseId,
 }) => {
+  const totalMinuteDuration = contents.reduce((acc, content) => {
+    if (content.duration) {
+      const [minutes] = content.duration.split(':').map(Number);
+      return acc + (isNaN(minutes) ? 0 : minutes);
+    }
+    return acc;
+  }, 0);
+
   return (
     <div className={clsx('p-4', index === activeAccordion ? '' : '')}>
       <div className="flex items-center gap-4">
@@ -37,7 +41,7 @@ const AccordionPanelDraggableView: React.FC<
               <h2 className="font-lato text-sm font-bold">{title}</h2>
               <div className="flex items-center gap-2 font-lato text-sm text-gray-800 font-bold">
                 <p>{totalMinuteDuration} min</p>
-                <p>{totalCurriculum} curriculum</p>
+                <p>{contents.length} curriculum</p>
               </div>
             </div>
           </div>
@@ -58,15 +62,16 @@ const AccordionPanelDraggableView: React.FC<
         )}
       >
         <div className="my-4 border-t border-gray-300"></div>
-        {contents.map((el) => (
+        {contents.map((content) => (
           <ListDraggable 
-            key={el.id} 
-            title={el.title} 
-            type={el.type} 
-            status={el.status}
-            date={el.date} 
-            completed={el.completed} 
-            className="your-class-name-here" // Sesuaikan atau hapus jika tidak perlu
+            key={content.id} 
+            title={content.title} 
+            type={content.type} 
+            completed={content.isCompleted === 1}
+            date={content.date}
+            courseId={courseId}
+            chapterId={chapterId}
+            contentId={content.id}
           />
         ))}
       </div>

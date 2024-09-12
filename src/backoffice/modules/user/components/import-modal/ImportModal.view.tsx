@@ -73,7 +73,7 @@ export const ImportModalView: React.FC<ImportModalViewProps> = ({
           Cancel
         </button>
         <button
-          onClick={() => window.open('/path/to/template.xlsx', '_blank')}
+          onClick={() => window.open(`${process.env.BASE_URL_API}/files/Student.xlsx`, '_blank')}
           className="px-4 py-2 text-sm font-medium bg-transparent border-[#FFC862] text-[#323232] border rounded-lg hover:bg-red-50"
         >
           <div className='flex text-center text-base'>

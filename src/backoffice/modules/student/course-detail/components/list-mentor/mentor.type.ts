@@ -1,4 +1,8 @@
 export interface Mentor {
-    name: string;
-    photo: string;
-}
+    programId: string;
+    mentorId: string;
+    mentorName: string;
+    mentorEmail: string;
+    mentorPhone: string;
+    mentorPhoto: string;
+  }

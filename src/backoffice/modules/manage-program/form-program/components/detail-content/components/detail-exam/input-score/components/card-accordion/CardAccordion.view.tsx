@@ -9,15 +9,18 @@ import './cardAccordion.style.css';
 const CardAccordionView: React.FC<CardAccordionViewProps> = ({
   studentData,
   openAccordions,
-  scores,
+  getScores,
   tableInstance,
   toggleAccordion,
   handleScoreChange,
   calculateTotalScore,
+  handleSubmit,
+  contentId,
 }) => {
+  const students = Array.isArray(studentData) ? studentData : [];
   return (
     <div className="mx-auto bg-white rounded-lg">
-      {studentData.map((student) => (
+      {students.map((student) => (
         <div
           key={student.userId}
           className={`mb-4 border rounded-lg overflow-hidden hover:bg-[#FCFCFC] ${
@@ -36,7 +39,7 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                   </span>
                   <span className="mr-2">:</span>
                   <span className="color-[#323232] font-medium">
-                    {student.nama}
+                    {student.name}
                   </span>
                 </p>
                 <p className="flex">
@@ -44,9 +47,7 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                     Batas Akhir
                   </span>
                   <span className="mr-2">:</span>
-                  <span className="color-[#323232] font-medium">
-                    {student.batasAkhir}
-                  </span>
+                  <span className="color-[#323232] font-medium">{'-'}</span>
                 </p>
               </div>
               <div className="space-y-2">
@@ -55,18 +56,7 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                     Tgl Dikerjakan
                   </span>
                   <span className="mr-2">:</span>
-                  <span className="color-[#323232] font-medium">
-                    {student.tglDikerjakan}
-                  </span>
-                </p>
-                <p className="flex">
-                  <span className="font-semibold text-[#858D9D] w-28">
-                    Tipe
-                  </span>
-                  <span className="mr-2">:</span>
-                  <span className="color-[#323232] font-medium">
-                    {student.tipe}
-                  </span>
+                  <span className="color-[#323232] font-medium">{'-'}</span>
                 </p>
               </div>
             </div>
@@ -76,10 +66,9 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
               <div className="border-t overflow-hidden">
                 <table className="w-full">
                   <colgroup>
-                    <col style={{ width: '50%' }} />
-                    <col style={{ width: '37%' }} />
-                    <col style={{ width: '5%' }} />
-                    <col style={{ width: '8%' }} />
+                    <col style={{ width: '45%' }} />
+                    <col style={{ width: '45%' }} />
+                    <col style={{ width: '10%' }} />
                   </colgroup>
                   <thead>
                     {tableInstance.getHeaderGroups().map((headerGroup) => (
@@ -101,36 +90,60 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                     ))}
                   </thead>
                   <tbody>
-                    {tableInstance.getRowModel().rows.map((row) => (
-                      <tr key={row.id}>
-                        {row.getVisibleCells().map((cell) => (
-                          <td key={cell.id} className="p-2 border-t">
-                            {cell.column.id === 'nilai' ? (
-                              <TextInput
-                                type="number"
-                                value={
-                                  scores[`${student.userId}-${row.original.id}`] ||
-                                  ''
-                                }
-                                onChange={(e) =>
-                                  handleScoreChange(
-                                    student.userId,
-                                    row.original.id,
-                                    Number(e.target.value),
-                                  )
-                                }
-                                className="w-14 text-center"
-                              />
-                            ) : (
-                              flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext(),
-                              )
-                            )}
+                    {student.questions
+                      .sort((a, b) => a.order - b.order)
+                      .map((question, index) => (
+                        <tr key={question.id}>
+                          <td className="p-4 border-t">
+                            <div className="flex">
+                              <span className="font-semibold mr-4 flex-shrink-0 self-center">
+                                {index + 1}.
+                              </span>
+                              <div className="flex-grow">
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: question.title,
+                                  }}
+                                  className="question-content"
+                                />
+                              </div>
+                            </div>
                           </td>
-                        ))}
-                      </tr>
-                    ))}
+                          <td className="p-2 border-t">
+                            {question.answers?.text || '-'}
+                          </td>
+                          <td className="p-2 border-t">
+                            <TextInput
+                              type="number"
+                              value={(() => {
+                                const score =
+                                  getScores(student.userId).find(
+                                    (score) => score.questionId === question.id,
+                                  )?.score ??
+                                  parseFloat(question.answers?.score || '');
+                                return score === null
+                                  ? ''
+                                  : Math.floor(score).toString();
+                              })()}
+                              onChange={(e) => {
+                                const value = e.target.value.slice(0, 3);
+                                handleScoreChange(
+                                  student.userId,
+                                  question.id,
+                                  value,
+                                );
+                              }}
+                              onInput={(e) => {
+                                const target = e.target as HTMLInputElement;
+                                target.value = target.value.slice(0, 3);
+                              }}
+                              min="0"
+                              max="100"
+                              className="w-14 text-center"
+                            />
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -142,9 +155,10 @@ const CardAccordionView: React.FC<CardAccordionViewProps> = ({
                   </label>
                 </p>
                 <Button
-                  type="submit"
+                  type="button"
                   color={'warning'}
                   className="bg-[#FFC862] text-black"
+                  onClick={() => handleSubmit(student.userId, contentId)}
                 >
                   Submit
                 </Button>

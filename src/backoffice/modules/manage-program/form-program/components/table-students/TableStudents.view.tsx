@@ -1,49 +1,76 @@
-import { Table } from 'flowbite-react';
-import React from 'react';
-import { ITableStudents } from './tableStudents.type';
-import clsx from 'clsx';
-import RedTrash from '@/../public/icons/red-trash.svg';
+import React, { useMemo, useState } from 'react';
+import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
+import { DataTable } from '@/backoffice/components/data-table';
 import { useTableStudentStore } from './tableStudents.store';
+import { IAPIStudentProgram } from './tableStudents.type';
+import RedTrash from '@/../public/icons/red-trash.svg';
+import Search from '@/../public/icons/iconamoon_search-bold.svg';
+import Add from '@/../public/icons/add.svg';
+import { SearchTable } from '@/backoffice/components/search-table';
 
-const TableStudentsView: React.FC<ITableStudents> = ({ className }) => {
+interface TableStudentsViewProps {
+  setOpenModalBrowser: (open: boolean) => void;
+  className?: string;
+}
+
+const columnHelper = createColumnHelper<IAPIStudentProgram>();
+
+const TableStudentsView: React.FC<TableStudentsViewProps> = ({
+  setOpenModalBrowser,
+  className,
+}) => {
   const { dataStudentsJoined } = useTableStudentStore();
+  const [filter, setFilter] = useState('');
+
+  const columns = useMemo<ColumnDef<IAPIStudentProgram, any>[]>(
+    () => [
+      columnHelper.display({
+        id: 'no',
+        header: 'No',
+        cell: (info) => info.row.index + 1,
+      }),
+      columnHelper.accessor('name', {
+        header: 'Name',
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor('email', {
+        header: 'Email',
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor('nis', {
+        header: 'NIS',
+        cell: (info) => info.getValue() ?? '-',
+      }),
+      columnHelper.display({
+        id: 'action',
+        header: 'Action',
+        cell: () => (
+          <button>
+            <RedTrash />
+          </button>
+        ),
+      }),
+    ],
+    [],
+  );
+
   return (
-    <div className={clsx('overflow-x-auto', className)}>
-      {!dataStudentsJoined || dataStudentsJoined.length === 0 ? (
-        <p>Data Empty ...</p>
-      ) : (
-        <Table hoverable>
-          <Table.Head>
-            <Table.HeadCell>No</Table.HeadCell>
-            <Table.HeadCell>Name</Table.HeadCell>
-            <Table.HeadCell>Email</Table.HeadCell>
-            <Table.HeadCell>NIS</Table.HeadCell>
-            <Table.HeadCell>Action</Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {dataStudentsJoined.map((el, index) => {
-              return (
-                <Table.Row
-                  key={el.userId}
-                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {index + 1}
-                  </Table.Cell>
-                  <Table.Cell>{el.name}</Table.Cell>
-                  <Table.Cell>{el.email}</Table.Cell>
-                  <Table.Cell>{el.nis}</Table.Cell>
-                  <Table.Cell>
-                    <button>
-                      <RedTrash />
-                    </button>
-                  </Table.Cell>
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        </Table>
-      )}
+    <div className={className}>
+      <div className="flex justify-between">
+        <SearchTable value={filter} onChange={setFilter} />
+        <button
+          onClick={() => setOpenModalBrowser(true)}
+          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+        >
+          <Add />
+          <span className="text-black"> Browse All</span>
+        </button>
+      </div>
+      <DataTable
+        data={dataStudentsJoined ?? []}
+        columns={columns}
+        filter={{ Filter: filter, setFilter: setFilter }}
+      />
     </div>
   );
 };
