@@ -105,7 +105,6 @@ const DocumentEditorComponent = forwardRef<
   );
 });
 
-// Tambahkan displayName di sini
-DocumentEditorComponent.displayName = 'DocumentEditorComponent';
+
 
 export default DocumentEditorComponent;
