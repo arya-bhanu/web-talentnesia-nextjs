@@ -100,7 +100,7 @@ const FormManageModulView: React.FC<
             Cancel
           </Button>
           <Button
-            onClick={(e) => {
+            onClick={(e: FormEvent<HTMLButtonElement>) => {
               e.preventDefault();
               setSubmitType({ type: 'nextSubmit' });
               const formElement = e.currentTarget.closest('form');
