@@ -13,6 +13,7 @@ export interface APIResponseCourseDetail {
       joinGroup: JoinGroup;
       attendance: Attendance;
       assignment: Assignment;
+      calendar: Calendar[];
     };
   }
 
@@ -95,4 +96,14 @@ export interface APIResponseCourseDetail {
     image: string;
     isDownload: number;
     active: number;
+  }
+
+  export interface Calendar {
+    id: string;
+    title: string;
+    startdate: string;
+    enddate: string;
+    location: string | null;
+    link: string | null;
+    description: string;
   }

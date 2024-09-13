@@ -1,11 +1,11 @@
 import React from 'react';
-import { scheduleData } from './calendar.data';
+import { Calendar as CalendarType } from '../../courseDetail.type';
 
 import MentoringIcon from '@/../public/icons/mentoring.svg';
 import QuizIcon from '@/../public/icons/quiz.svg';
 
 interface CalendarViewProps {
-  date: string; 
+  date: string;
   hours: string[];
   selectedHour: string | null;
   onPrevDay: () => void;
@@ -13,6 +13,7 @@ interface CalendarViewProps {
   onHourClick: (hour: string) => void;
   onToggleHours: () => void;
   showAllHours: boolean;
+  calendarData: CalendarType[];
 }
 
 const iconMap: { [key: string]: React.ReactNode } = {
@@ -28,12 +29,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   onNextDay,
   onToggleHours,
   showAllHours,
+  calendarData,
 }) => {
   const [day, month] = date.split(' ');
   const monthIndex = new Date(Date.parse(month + " 1, 2021")).getMonth() + 1; 
   const dayNumber = parseInt(day, 10);
 
-  const filteredScheduleData = scheduleData.filter(item => item.month === monthIndex && item.day === dayNumber);
+  const filteredCalendarData = calendarData.filter(item => {
+    const itemDate = new Date(item.startdate);
+    return itemDate.getDate() === dayNumber && itemDate.getMonth() + 1 === monthIndex;
+  });
 
   const displayedHours = showAllHours
     ? hours
@@ -96,7 +101,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           <div className="flex flex-col md:flex-row pt-4">
             <div className="flex flex-col w-full">
               {displayedHours.map((hour) => {
-                const scheduleItem = filteredScheduleData.find((item) => item.time === hour);
+                const calendarItem = filteredCalendarData.find((item) => {
+                  const itemDate = new Date(item.startdate);
+                  return itemDate.getHours() === parseInt(hour.split(':')[0]);
+                });
                 return (
                   <div key={hour} className="relative flex items-center mb-4">
                     <span
@@ -111,18 +119,17 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                     <div className="flex-1">
                       <div
                         className={`border-t border-gray-300 ${
-                          scheduleItem ? 'hidden' : ''
+                          calendarItem ? 'hidden' : ''
                         }`}
                         style={{ marginLeft: '2rem' }}
                       />
                     </div>
-                    {scheduleItem && (
+                    {calendarItem && (
                       <div
                         className="absolute left-20 bg-green-100 bg-opacity-60 py-1 px-2 text-sm text-gray-800 rounded-lg"
                         style={{ width: 'calc(100% - 4rem)' }}
                       >
-                        {iconMap[scheduleItem.icon]}
-                        {scheduleItem.event}
+                        {calendarItem.title}
                       </div>
                     )}
                   </div>
