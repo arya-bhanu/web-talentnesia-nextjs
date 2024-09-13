@@ -10,11 +10,11 @@ export const useReligionActions = () => {
     }
   }, []);
 
-  const handleEditReligion = useCallback(async (id: string, data: any) => {
+  const handleEditReligion = useCallback(async (id: string, data: { name: string }) => {
     try {
-       religionAPI.update(id, data);
+      await religionAPI.update(id, data.name); 
     } catch (error) {
-      console.error('Failed to  religion');
+      console.error('Failed to update religion');
     }
   }, []);
 

@@ -1,50 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import React, { useState } from 'react';
+
+import { TextInput } from 'flowbite-react';
 import LabelForm from '@/backoffice/components/label-form';
-import { Select, TextInput } from 'flowbite-react';
+import Legenda from './components/Legenda/Legenda';
+import { DocumentEditor } from '@onlyoffice/document-editor-react';
+import DocumentEditorComponent from './components/Certificatedocs';
 
-
-const FormCertificateView = () => {
-  const [selectedTemplate, setSelectedTemplate] = useState({ file: "", id: "" });
-  const [templates, setTemplates] = useState<Array<{ id: string; name: string; file: string }>>([]);
-
-  useEffect(() => {
-    fetchTemplates();
-  }, []);
-
-  const fetchTemplates = async () => {
-    try {
-      const response = await fetch('https://api-talentnesia.skwn.dev/api/v1/certificate');
-      const data = await response.json();
-      setTemplates(data.data.items);
-    } catch (error) {
-      console.error('Error fetching templates:', error);
-    }
+interface FormCertificateViewProps {
+  generateCertificate: (certificateNumber: string) => Promise<void>;
+  certificateData: any;
+}
+const FormCertificateView: React.FC<FormCertificateViewProps> = ({ generateCertificate, certificateData }) => {
+  const [certificateNumber, setCertificateNumber] = useState('');
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCertificateNumber(e.target.value);
+    generateCertificate(e.target.value);
   };
 
-  const handleTemplateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedId = event.target.value;
-    const template = templates.find(t => t.id === selectedId);
-    if (template) {
-      setSelectedTemplate(template);
-    }
-  }; 
-
   return (
-    <form className='pb-5'>
-      <div>
-        <LabelForm isImportant htmlFor="select_template">
-          Certificate Number
-        </LabelForm>
-        <TextInput
-                id="modul"
-                name="modul"
-                type="number"
-                placeholder="Certificate Number"
-                required
-              />
+    <div className='flex'>
+      <div className='w-3/4 pr-4'>
+        <form className='pb-5'>
+          <div>
+            <LabelForm isImportant htmlFor="certificate_number">
+              Certificate Number
+            </LabelForm>
+            <TextInput
+              id="certificate_number"
+              name="certificate_number"
+              type="text"
+              placeholder="Certificate Number"
+              value={certificateNumber}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          {certificateData && (
+            <div className="mt-4">
+              <h3>Generated Certificate Data:</h3>
+              <pre>{JSON.stringify(certificateData, null, 2)}</pre>
+            </div>
+          )}
+        </form>
+        <div>
+          <DocumentEditorComponent selectedTemplate={{ file: '', id: '' }} />
+        </div>
       </div>
-    </form>
+      <div className="w-1/4 border-l border-gray-300 overflow-y-auto">
+        <Legenda />
+      </div>
+    </div>
   );
 };
+
 export default FormCertificateView;

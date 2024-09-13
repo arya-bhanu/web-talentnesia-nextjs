@@ -31,6 +31,8 @@ import {
   SubDistrict,
   subDistrictAPI,
 } from '@/backoffice/components/dropdown/api/dropdownApi';
+import AlertModal from '@/backoffice/components/alert-modal';
+import ToasterProvider from '@/utils/ToasterProvider';
 type MentorViewProps = ReturnType<typeof useMentorForm>;
 
 export const MentorView: React.FC<MentorViewProps> = ({
@@ -50,6 +52,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
   setShowResultModal,
   isSuccess,
   confirmSubmit,
+  showAlertModal,
+  setShowAlertModal,
+  setIsConfirmed,
+  openModal,
 }) => {
   const [religions, setReligions] = useState<APIResponseReligion[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
@@ -245,6 +251,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   onChange={handleInputChange}
                   value={form.religionId || ''}
                   className={styles.inputField}
+                  required
                 >
                   <option className="hidden" value="" disabled>
                     Select Religion
@@ -267,6 +274,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       name="gender"
                       value="1"
                       onChange={handleInputChange}
+                      required
                       checked={form.gender === 1}
                       className="mr-2 size-4 md:size-6 text-sm md:text-base place-self-center"
                     />
@@ -292,6 +300,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <select
                   name="mariageStatus"
                   onChange={handleInputChange}
+                  required
                   value={form.mariageStatus || ''}
                   className={styles.inputField}
                 >
@@ -308,7 +317,7 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <input
                   type="number"
                   name="numberOfChildren"
-                  value={form.numberOfChildren}
+                  value={form.numberOfChildren ?? ''}
                   placeholder="Input Number of Child"
                   onChange={handleInputChange}
                   className={styles.inputField}
@@ -714,15 +723,11 @@ export const MentorView: React.FC<MentorViewProps> = ({
           </div>
         </form>
       </div>
-
-      <ResponseModal
-        isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-        onConfirm={confirmSubmit}
-        title="Information"
-        message={`Are you sure want to ${form.id ? 'Edit' : 'Add'} it?`}
-        confirmText="OK!"
-        showCancel
+      <AlertModal
+        openModal={showAlertModal}
+        setOpenModal={setShowAlertModal}
+        setIsConfirmed={setIsConfirmed}
+        messageText={`Are you sure you want to ${form.id ? 'edit' : 'add'} this mentor?`}
       />
       <ResponseModal
         isOpen={showResultModal}

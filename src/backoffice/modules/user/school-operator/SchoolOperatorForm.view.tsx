@@ -22,6 +22,7 @@ import {
   SubDistrict,
   subDistrictAPI,
 } from '@/backoffice/components/dropdown/api/dropdownApi';
+import AlertModal from '@/backoffice/components/alert-modal';
 
 type SchoolOperatorViewProps = ReturnType<typeof useSchoolOperatorForm>;
 
@@ -38,6 +39,10 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
   setShowResultModal,
   isSuccess,
   confirmSubmit,
+  showAlertModal,
+  setShowAlertModal,
+  setIsConfirmed,
+  openModal,
 }) => {
   const [religions, setReligions] = useState<APIResponseReligion[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
@@ -447,14 +452,11 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
         </form>
       </div>
 
-      <ResponseModal
-        isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-        onConfirm={confirmSubmit}
-        title="Information"
-        message={`Are you sure want to ${form.id ? 'Edit' : 'Add'} it?`}
-        confirmText="OK!"
-        showCancel
+      <AlertModal
+        openModal={showAlertModal}
+        setOpenModal={setShowAlertModal}
+        setIsConfirmed={setIsConfirmed}
+        messageText={`Are you sure you want to ${form.id ? 'edit' : 'add'} this School Operator?`}
       />
       <ResponseModal
         isOpen={showResultModal}
