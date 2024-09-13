@@ -12,18 +12,23 @@ import AlertModal from '@/backoffice/components/alert-modal';
 import { useStatusModalStore } from '@/lib/store';
 import { useFormMentoringStore } from '../../../form-mentoring/formMentoring.store';
 import { editMentoring } from '../../../form-mentoring/api/formMentoring.api';
-import { convertDateToStr, convertHHmmTime, convertTimeHHmmssToDate } from '@/helpers/formatter.helper';
+import {
+  convertDateToStr,
+  convertHHmmTime,
+  convertTimeHHmmssToDate,
+} from '@/helpers/formatter.helper';
 
 const EditableListContent: React.FC<IEditableListContent> = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [isConfirmDel, setIsConfirmDel] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
-  const [openAlertModalEdit, setOpenAlertModalEdit] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
-  const [tempFormData, setTempFormData] = useState<FormData | null>(null);
-  const [alertMessageEdit, setAlertMessageEdit] = useState('');
+  const [openAlertModalEditContent, setOpenAlertModalEditContent] = useState(false);
+  const [isConfirmedContent, setIsConfirmedContent] = useState(false);
+  const [tempFormDataContent, setTempFormDataContent] = useState<FormData | null>(null);
+  const [alertMessageEditContent, setAlertMessageEditContent] = useState('');
   const [modalEditMentoring, setModalEditMentoring] = useState(false);
-  const [tempMentoringFormData, setTempMentoringFormData] = useState<FormData | null>(null);
+  const [tempMentoringFormData, setTempMentoringFormData] =
+    useState<FormData | null>(null);
   const [openAlertModalMentoring, setOpenAlertModalMentoring] = useState(false);
   const [alertMessageMentoring, setAlertMessageMentoring] = useState('');
   const [isConfirmedMentoring, setIsConfirmedMentoring] = useState(false);
@@ -83,17 +88,16 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
   };
 
   useEffect(() => {
-    if (isConfirmed) {
-      if (tempFormData) {
-        handleConfirmedEditContent(tempFormData);
+    if (isConfirmedContent) {
+      if (tempFormDataContent) {
+        handleConfirmedEditContent(tempFormDataContent);
       }
-      setTempFormData(null);
-      setIsConfirmed(false);
+      setTempFormDataContent(null);
+      setIsConfirmedContent(false);
       setIsConfirmDel(false);
     }
-  }, [isConfirmed]);
+  }, [isConfirmedContent]);
 
-  
   useEffect(() => {
     if (isConfirmedMentoring && tempMentoringFormData) {
       handleConfirmedEditMentoring(tempMentoringFormData);
@@ -102,13 +106,13 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     }
   }, [isConfirmedMentoring]);
 
-
   const handleEditContent = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     const formData = new FormData(e.currentTarget);
-    setTempFormData(formData);
-    setAlertMessageEdit('Are you sure you want to edit this content?');
-    setOpenAlertModalEdit(true);
+    setTempFormDataContent(formData);
+    setAlertMessageEditContent('Are you sure you want to edit this content?');
+    setOpenAlertModalEditContent(true);
   };
 
   const handleConfirmedEditContent = async (formData: FormData) => {
@@ -146,7 +150,7 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
       mentorId: props.mentorId || '',
       startTime: props.startTime || '',
       endTime: props.endTime || '',
-      date: props.date ? props.date.toString() : '',
+      date: props.datem ? props.datem.toISOString() : '',
       link: props.link || '',
       location: null,
     });
@@ -170,7 +174,6 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
 
   const handleConfirmedEditMentoring = async (formData: FormData) => {
     try {
-      console.log(formData);
       const title = formData.get('mentoring_name') as string;
       const mentorId = formData.get('mentor') as string;
       const link = formData.get('url') as string;
@@ -206,7 +209,6 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     }
   };
 
-
   return (
     <>
       <EditableListContentView
@@ -224,10 +226,16 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
         handleSubmitModalMentoring={handleSubmitModalMentoring}
       />
       <AlertModal
-        openModal={openAlertModalEdit}
-        setOpenModal={setOpenAlertModalEdit}
-        setIsConfirmed={setIsConfirmed}
-        messageText={alertMessageEdit}
+        openModal={openAlertModalEditContent}
+        setOpenModal={setOpenAlertModalEditContent}
+        setIsConfirmed={setIsConfirmedContent}
+        messageText={alertMessageEditContent}
+      />
+      <AlertModal
+        openModal={openAlertModalMentoring}
+        setOpenModal={setOpenAlertModalMentoring}
+        setIsConfirmed={setIsConfirmedMentoring}
+        messageText={alertMessageMentoring}
       />
     </>
   );
