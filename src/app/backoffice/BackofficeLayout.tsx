@@ -124,10 +124,9 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
           style={
             isDashboard
               ? {
-                marginTop: '1rem',
-                marginRight: '50px'
+                marginTop: '3rem',
                 }
-              : { marginRight: '50px' }
+              : { }
           }
         >
           {children}
