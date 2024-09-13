@@ -16,9 +16,9 @@ interface CalendarViewProps {
   calendarData: CalendarType[];
 }
 
-const iconMap: { [key: string]: React.ReactNode } = {
-  mentoring: <MentoringIcon className="inline mr-2" />,
-  quiz: <QuizIcon className="inline mr-2" />,
+const iconMap: { [key: number]: React.ReactNode } = {
+  1: <MentoringIcon className="inline mr-2" />,
+  2: <QuizIcon className="inline mr-2" />,
 };
 
 const CalendarView: React.FC<CalendarViewProps> = ({
@@ -129,6 +129,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                         className="absolute left-20 bg-green-100 bg-opacity-60 py-1 px-2 text-sm text-gray-800 rounded-lg"
                         style={{ width: 'calc(100% - 4rem)' }}
                       >
+                        {iconMap[calendarItem.type]}
                         {calendarItem.title}
                       </div>
                     )}

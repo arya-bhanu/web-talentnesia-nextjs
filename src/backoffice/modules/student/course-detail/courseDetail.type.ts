@@ -106,4 +106,6 @@ export interface APIResponseCourseDetail {
     location: string | null;
     link: string | null;
     description: string;
+    type: number;
   }
+  
