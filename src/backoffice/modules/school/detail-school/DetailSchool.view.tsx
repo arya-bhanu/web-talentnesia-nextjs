@@ -1,13 +1,14 @@
 'use client';
 
-import { TabFlex } from '@/backoffice/components/tabs/tabs';
+import { TabFlex, TabItem } from '@/backoffice/components/tabs/tabs';
 import { IDetailSchoolView, SchoolData } from './detailSchool.type';
-import { Dispatch, FormEvent, SetStateAction } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
 import ModalAddProgram from '@/backoffice/components/modal-add-program/ModalAddProgram';
 import DetailSchoolPage from './components/detail-school-page';
 import ListTableStudent from './components/list-table-student';
-import { TabsProgram } from '../components/tabs-program/TabsProgram';
 import ListProgramCard from './components/list-program-card';
+
+type TabTypes = 'detailSchool' | 'student' | 'program';
 
 interface DetailSchoolViewProps extends IDetailSchoolView {
   activeAccordion: number;
@@ -31,25 +32,32 @@ function DetailSchoolView({
   schoolData,
   fullImageUrl,
 }: DetailSchoolViewProps) {
-  const tabs = [
+  const [activeTab, setActiveTab] = useState<TabTypes>('detailSchool');
+
+  const tabs: TabItem<TabTypes>[] = [
     {
       title: 'Detail School',
       content: <DetailSchoolPage />,
-      type: 'detail-school',
+      type: 'detailSchool',
+      active: activeTab === 'detailSchool',
     },
     {
       title: 'Student',
       content: <ListTableStudent />,
       type: 'student',
+      active: activeTab === 'student',
     },
     {
       title: 'Program',
-      content: (
-        <ListProgramCard />
-      ),
+      content: <ListProgramCard />,
       type: 'program',
+      active: activeTab === 'program',
     },
   ];
+
+  const handleTabChange = (tabType: TabTypes) => {
+    setActiveTab(tabType);
+  };
 
   return (
     <>
@@ -62,7 +70,10 @@ function DetailSchoolView({
         title="Select Program"
         rows={rows}
       />
-      <TabFlex tabs={tabs} />
+      <TabFlex tabs={tabs} onTabChange={handleTabChange} />
+      <div className="mt-4">
+        {tabs.find(tab => tab.type === activeTab)?.content}
+      </div>
     </>
   );
 }

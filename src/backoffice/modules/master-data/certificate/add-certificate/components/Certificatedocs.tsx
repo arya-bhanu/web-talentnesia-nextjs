@@ -7,18 +7,11 @@ const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string; mailMerg
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!url || !id) {
-      setError('Missing document ID or URL');
-      return;
-    }
-
     const baseUrl = "https://api-talentnesia.skwn.dev/";
     const date = Date.now();
-    const doc = url;
-    const key = `${date}-${id}`;
-    console.log(doc);
+    const doc = url 
+    const key = `${date}-${id}`; 
     const cb = "https://api-talentnesia.skwn.dev/api/v1/certificate/save_template";
-
 
     const options = {
       width: "100%",
@@ -95,19 +88,19 @@ const AddDocumentEditorComponent: React.FC<{ id?: string; url?: string; mailMerg
     const encodedHeader = base64UrlEncode(JSON.stringify(header));
     const encodedPayload = base64UrlEncode(JSON.stringify(options));
     const signature = CryptoJS.HmacSHA256(`${encodedHeader}.${encodedPayload}`, secretkey)
-    .toString(CryptoJS.enc.Base64)
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
-    
+      .toString(CryptoJS.enc.Base64)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
     return `${encodedHeader}.${encodedPayload}.${signature}`;
   };
-  
+
   if (error) {
     return <div className="text-red-500">{error}</div>;
   }
   const documentServerUrl = process.env.NEXT_PUBLIC_ONLYOFFICE_SERVER_URL || '';
-  
+
   return (
     <>
       {config && (

@@ -42,6 +42,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { reorderContent } from '../../form-program/components/form-course/api/formCourse.api';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import ModalGenerate from '../../form-program/components/form-generateCertificate/components/modal';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -193,7 +194,7 @@ const AccordionPanelDraggableView: React.FC<
       >
         <FormCertificate />
       </Modal>
-      <Modal
+      <ModalGenerate
         title="Generate Certificate"
         handleSubmit={handleSubmitModalGenerate}
         state={{
@@ -203,7 +204,7 @@ const AccordionPanelDraggableView: React.FC<
         buttonConfirmTitle="Save"
       >
         <FormGenerate />
-      </Modal>
+      </ModalGenerate>
       <Modal
         title="Add content"
         buttonConfirmTitle="Submit"
