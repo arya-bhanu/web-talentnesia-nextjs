@@ -57,6 +57,10 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
   const [alertMessageMentoring, setAlertMessageMentoring] = useState('');
   const [isConfirmedContent, setIsConfirmedContent] = useState(false);
   const [isConfirmedMentoring, setIsConfirmedMentoring] = useState(false);
+  const [openAlertModalSchedule, setOpenAlertModalSchedule] = useState(false);
+  const [isConfirmedSchedule, setIsConfirmedSchedule] = useState(false);
+  const [tempScheduleFormData, setTempScheduleFormData] =
+    useState<FormData | null>(null);
 
   const { mutateAsync: updateScheduleAasync } = useMutation({
     mutationKey: ['schedule'],
@@ -109,22 +113,49 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
     }
   }, [isConfirmedMentoring]);
 
-  const handleSubmitSchedule = async (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (isConfirmedSchedule && tempScheduleFormData) {
+      handleConfirmedSubmitSchedule(tempScheduleFormData);
+      setTempScheduleFormData(null);
+      setIsConfirmedSchedule(false);
+    }
+  }, [isConfirmedSchedule]);
+
+  const handleSubmitSchedule = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (content && content.date) {
-      const response = await updateScheduleAasync({
-        contentId: props.id,
-        payload: {
-          date: content.date,
-          duration: content.duration,
-        },
+    const formData = new FormData(e.currentTarget);
+    setTempScheduleFormData(formData);
+    setOpenAlertModalSchedule(true);
+  };
+
+  const handleConfirmedSubmitSchedule = async (formData: FormData) => {
+    try {
+      if (content && content.date) {
+        const response = await updateScheduleAasync({
+          contentId: props.id,
+          payload: {
+            date: content.date,
+            duration: content.duration,
+          },
+        });
+        console.log(response);
+        await queryClient.invalidateQueries({
+          queryKey: ['chapters', 'program', programId],
+        });
+        setModalSchedule(false);
+        openModalToast({
+          status: 'success',
+          action: 'update',
+          message: 'Schedule updated successfully',
+        });
+      }
+    } catch (error) {
+      openModalToast({
+        status: 'error',
+        action: 'update',
+        message: 'Failed to update schedule',
       });
-      console.log(response);
-      await queryClient.invalidateQueries({
-        queryKey: ['chapters', 'program', programId],
-      });
-      setModalSchedule(false);
     }
   };
 
@@ -295,6 +326,12 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
         setOpenModal={setOpenAlertModalMentoring}
         setIsConfirmed={setIsConfirmedMentoring}
         messageText={alertMessageMentoring}
+      />
+      <AlertModal
+        openModal={openAlertModalSchedule}
+        setOpenModal={setOpenAlertModalSchedule}
+        setIsConfirmed={setIsConfirmedSchedule}
+        messageText="Are you sure you want to update this schedule?"
       />
     </>
   );

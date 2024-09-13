@@ -105,6 +105,6 @@ const DocumentEditorComponent = forwardRef<
   );
 });
 
-
+DocumentEditorComponent.displayName = 'DocumentEditorComponent';
 
 export default DocumentEditorComponent;

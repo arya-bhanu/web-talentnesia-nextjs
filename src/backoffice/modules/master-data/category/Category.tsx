@@ -48,7 +48,7 @@ const Category = () => {
 
   return (
     <CategoryView
-      data={data}
+      data={data || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
