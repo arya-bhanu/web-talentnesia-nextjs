@@ -8,11 +8,38 @@ import {
   editContent,
   deleteExam,
 } from '../../api/formCourse.api';
+import AlertModal from '@/backoffice/components/alert-modal';
+import { useStatusModalStore } from '@/lib/store';
+import { useFormMentoringStore } from '../../../form-mentoring/formMentoring.store';
+import { editMentoring } from '../../../form-mentoring/api/formMentoring.api';
+import { convertDateToStr, convertHHmmTime, convertTimeHHmmssToDate } from '@/helpers/formatter.helper';
 
 const EditableListContent: React.FC<IEditableListContent> = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [isConfirmDel, setIsConfirmDel] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [openAlertModalEdit, setOpenAlertModalEdit] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [tempFormData, setTempFormData] = useState<FormData | null>(null);
+  const [alertMessageEdit, setAlertMessageEdit] = useState('');
+  const [modalEditMentoring, setModalEditMentoring] = useState(false);
+  const [tempMentoringFormData, setTempMentoringFormData] = useState<FormData | null>(null);
+  const [openAlertModalMentoring, setOpenAlertModalMentoring] = useState(false);
+  const [alertMessageMentoring, setAlertMessageMentoring] = useState('');
+  const [isConfirmedMentoring, setIsConfirmedMentoring] = useState(false);
+  const { openModal: openModalToast } = useStatusModalStore();
+  const {
+    setDefaultMentoring,
+    setTimeStart,
+    setTimeEnd,
+    setDate,
+    setIdDefaultMentoring,
+    timeStart,
+    date,
+    timeEnd,
+    idDefaultMentoring,
+    clear,
+  } = useFormMentoringStore();
 
   const queryClient = useQueryClient();
 
@@ -29,6 +56,11 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
   const { mutateAsync: editContentAsync } = useMutation({
     mutationFn: editContent,
     mutationKey: ['content'],
+  });
+
+  const { mutateAsync: editMentoringAsync } = useMutation({
+    mutationKey: ['update', 'mentor'],
+    mutationFn: editMentoring,
   });
 
   useEffect(() => {
@@ -50,9 +82,36 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     }
   };
 
-  const handleEditContent = async (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (isConfirmed) {
+      if (tempFormData) {
+        handleConfirmedEditContent(tempFormData);
+      }
+      setTempFormData(null);
+      setIsConfirmed(false);
+      setIsConfirmDel(false);
+    }
+  }, [isConfirmed]);
+
+  
+  useEffect(() => {
+    if (isConfirmedMentoring && tempMentoringFormData) {
+      handleConfirmedEditMentoring(tempMentoringFormData);
+      setTempMentoringFormData(null);
+      setIsConfirmedMentoring(false);
+    }
+  }, [isConfirmedMentoring]);
+
+
+  const handleEditContent = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    setTempFormData(formData);
+    setAlertMessageEdit('Are you sure you want to edit this content?');
+    setOpenAlertModalEdit(true);
+  };
+
+  const handleConfirmedEditContent = async (formData: FormData) => {
     const time = formData.get('time') as string;
     const title = formData.get('title') as string;
     const type = formData.get('type') as string;
@@ -81,17 +140,96 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     }
   };
 
+  const handleEditMentoring = () => {
+    setDefaultMentoring({
+      title: props.title,
+      mentorId: props.mentorId || '',
+      startTime: props.startTime || '',
+      endTime: props.endTime || '',
+      date: props.date ? props.date.toString() : '',
+      link: props.link || '',
+      location: null,
+    });
+
+    setTimeStart(convertTimeHHmmssToDate(props.startTime || ''));
+    setTimeEnd(convertTimeHHmmssToDate(props.endTime || ''));
+    setDate(props.date?.toString() ?? '');
+    setIdDefaultMentoring(props.id);
+
+    setModalEditMentoring(true);
+  };
+
+  const handleSubmitModalMentoring = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const formData = new FormData(e.currentTarget);
+    setTempMentoringFormData(formData);
+    setAlertMessageMentoring('Are you sure you want to save these changes?');
+    setOpenAlertModalMentoring(true);
+  };
+
+  const handleConfirmedEditMentoring = async (formData: FormData) => {
+    try {
+      console.log(formData);
+      const title = formData.get('mentoring_name') as string;
+      const mentorId = formData.get('mentor') as string;
+      const link = formData.get('url') as string;
+
+      await editMentoringAsync({
+        mentoringId: idDefaultMentoring || '',
+        payload: {
+          link,
+          location: null,
+          title,
+          chapterId: props.chapterId,
+          mentorId,
+          endTime: convertHHmmTime(timeEnd),
+          startTime: convertHHmmTime(timeStart),
+          date: convertDateToStr(new Date(date)),
+        },
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['mentoring', 'list', props.chapterId],
+      });
+      openModalToast({
+        status: 'success',
+        action: 'update',
+        message: 'Mentoring updated successfully',
+      });
+    } catch (error) {
+      openModalToast({
+        status: 'error',
+        action: 'update',
+        message: 'Failed to update mentoring',
+      });
+    }
+  };
+
+
   return (
-    <EditableListContentView
-      handleSubmitEdit={handleEditContent}
-      openModalEdit={openModalEdit}
-      setOpenModalEdit={setOpenModalEdit}
-      {...props}
-      isConfirmed={isConfirmDel}
-      openModal={openModal}
-      setIsConfirmed={setIsConfirmDel}
-      setOpenModal={setOpenModal}
-    />
+    <>
+      <EditableListContentView
+        handleSubmitEdit={handleEditContent}
+        openModalEdit={openModalEdit}
+        setOpenModalEdit={setOpenModalEdit}
+        {...props}
+        isConfirmed={isConfirmDel}
+        openModal={openModal}
+        setIsConfirmed={setIsConfirmDel}
+        setOpenModal={setOpenModal}
+        modalEditMentoring={modalEditMentoring}
+        setModalEditMentoring={setModalEditMentoring}
+        handleEditMentoring={handleEditMentoring}
+        handleSubmitModalMentoring={handleSubmitModalMentoring}
+      />
+      <AlertModal
+        openModal={openAlertModalEdit}
+        setOpenModal={setOpenAlertModalEdit}
+        setIsConfirmed={setIsConfirmed}
+        messageText={alertMessageEdit}
+      />
+    </>
   );
 };
 

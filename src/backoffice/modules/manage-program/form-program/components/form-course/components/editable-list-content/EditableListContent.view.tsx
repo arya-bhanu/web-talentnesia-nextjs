@@ -1,6 +1,7 @@
 'use client';
 import React, {
   Dispatch,
+  FormEvent,
   SetStateAction,
   useEffect,
   useMemo,
@@ -26,6 +27,7 @@ import { useRouter } from 'next/navigation';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import FormMentoring from '../../../form-mentoring';
 
 const EditableListContentView: React.FC<
   IEditableListContent & { className?: string } & {
@@ -33,6 +35,10 @@ const EditableListContentView: React.FC<
     setOpenModal: Dispatch<SetStateAction<boolean>>;
     isConfirmed: boolean;
     setIsConfirmed: Dispatch<SetStateAction<boolean>>;
+    handleEditMentoring: () => void;
+    handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
+    modalEditMentoring: boolean;
+    setModalEditMentoring: Dispatch<SetStateAction<boolean>>;
   } & IEditOpenModalState &
     IEditHandler
 > = ({
@@ -46,8 +52,13 @@ const EditableListContentView: React.FC<
   openModalEdit,
   setOpenModalEdit,
   handleSubmitEdit,
+  handleEditMentoring,
+  modalEditMentoring,
+  setModalEditMentoring,
+  handleSubmitModalMentoring,
   id,
   isexam,
+  chapterId
 }) => {
   const params = useSearchParams();
   const pathname = usePathname();
@@ -95,7 +106,11 @@ const EditableListContentView: React.FC<
     }
   }, [type]);
   return (
-    <div ref={setNodeRef} style={style} className={clsx('flex items-center justify-between py-3', className)}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={clsx('flex items-center justify-between py-3', className)}
+    >
       <AlertModal
         openModal={openModal}
         setIsConfirmed={setIsConfirmed}
@@ -111,6 +126,18 @@ const EditableListContentView: React.FC<
       >
         {openModalEdit && <FormContent contentId={id} isEdit />}
       </Modal>
+      <Modal
+        title="Mentoring"
+        buttonConfirmTitle="Submit"
+        state={{
+          openModal: modalEditMentoring,
+          setOpenModal: setModalEditMentoring,
+        }}
+        handleSubmit={handleSubmitModalMentoring}
+      >
+        <FormMentoring chapterId={chapterId} isModalOpen={modalEditMentoring} />
+      </Modal>
+
       <div className="flex items-center gap-2">
         <button {...listeners} {...attributes} type="button">
           <DragIndicator />
@@ -130,6 +157,8 @@ const EditableListContentView: React.FC<
                 router.push(
                   `/backoffice/manage-program/update-program/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
                 );
+              } else if (type === '6') {
+                handleEditMentoring?.();
               } else {
                 setOpenModalEdit(true);
               }
