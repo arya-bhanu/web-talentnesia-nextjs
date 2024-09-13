@@ -22,7 +22,7 @@ const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
   const programId = params.get('programId');
   const schoolId = params.get('schoolId');
   return (
-    <form>
+    <form onSubmit={handleSubmitSelectedModul}>
       <Modal
         title="Select Modul"
         state={{
@@ -80,7 +80,7 @@ const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
       </div>
       <ContainerChapter className="mt-10 max-h-[60vh] overflow-y-auto" />
       <div className="flex justify-end space-x-4 mt-10">
-        <Button
+        {/* <Button
           type="button"
           outline
           className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
@@ -95,7 +95,7 @@ const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
           className="bg-[#FFC862] text-black"
         >
           Submit
-        </Button>
+        </Button> */}
       </div>
     </form>
   );

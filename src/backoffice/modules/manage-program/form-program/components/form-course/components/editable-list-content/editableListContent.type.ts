@@ -1,7 +1,13 @@
 import { APIContentChapter } from '@/backoffice/modules/manage-modul/manageModul.type';
 import { Dispatch, FormEvent, SetStateAction } from 'react';
 
-export type IEditableListContent = APIContentChapter;
+export interface IEditableListContent extends APIContentChapter {
+  mentorId?: string;
+  startTime?: string;
+  endTime?: string;
+  link?: string;
+  ismonitoring?: boolean;
+}
 
 export interface IEditOpenModalState {
   openModalEdit: boolean;
@@ -11,3 +17,5 @@ export interface IEditOpenModalState {
 export interface IEditHandler {
   handleSubmitEdit: (e: FormEvent<HTMLFormElement>) => void;
 }
+
+
