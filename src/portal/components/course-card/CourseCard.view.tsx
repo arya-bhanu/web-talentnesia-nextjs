@@ -74,7 +74,7 @@ const CourseCardView: React.FC<CourseCardProps> = ({
             <SkeletonLoader visible={isLoading ? isLoading : false} height={150} variant='image' borderRadius={12}/>
             {
               !isLoading &&
-              <img
+              <Image
                 src={logo}
                 alt="course image"
                 className="rounded-xl object-cover max-h-[300px] w-full"

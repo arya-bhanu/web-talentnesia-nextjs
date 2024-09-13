@@ -25,7 +25,7 @@ const convertUserToMentorFormData = (user: User): MentorFormData => {
     religionId: null,
     gender: 0,
     mariageStatus: '',
-    numberOfChildren: '',
+    numberOfChildren: null,
     contract: '',
     contractOrigin: '',
     phone: user.phone,

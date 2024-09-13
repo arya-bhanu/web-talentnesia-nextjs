@@ -7,7 +7,7 @@ export interface IEditableListContent extends APIContentChapter {
   endTime?: string;
   link?: string;
   ismonitoring?: boolean;
-  datem: Date;
+  datem?: Date;
 }
 
 export interface IEditOpenModalState {

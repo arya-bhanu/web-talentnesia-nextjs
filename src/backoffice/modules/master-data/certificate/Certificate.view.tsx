@@ -15,7 +15,6 @@ import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
-import Legenda from '../../../components/Legenda/Legenda';
 
 const columnHelper = createColumnHelper<any>();
 
