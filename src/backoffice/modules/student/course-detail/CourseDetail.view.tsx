@@ -31,7 +31,7 @@ const CourseDetailView: React.FC<CourseDetailViewProps> = ({ courseId, courseDet
     return <div>No course data available</div>;
   }
 
-  const { course, mentors, joinGroup, attendance, assignment, certificates } = courseDetailData.data;
+  const { course, mentors, joinGroup, attendance, assignment, certificates, calendar } = courseDetailData.data;
 
   return (
     <div className="p-4">
@@ -46,7 +46,7 @@ const CourseDetailView: React.FC<CourseDetailViewProps> = ({ courseId, courseDet
       </div>
       <div className="mt-10 flex flex-col md:flex-row gap-6">
         <div className="flex-1">
-          <Calendar />
+        <Calendar calendarData={calendar} />
         </div>
         <div className="flex-1">
           <HistoriExam />
