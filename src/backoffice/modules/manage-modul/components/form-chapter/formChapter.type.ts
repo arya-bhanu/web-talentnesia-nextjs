@@ -2,7 +2,7 @@ import { Dispatch, FormEvent, SetStateAction } from 'react';
 import { APIChapterModul, APIContentChapter } from '../../manageModul.type';
 
 export interface IFormChapter {
-  handleSubmitAddContent: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  handleSubmitAddContent: (e: FormEvent<HTMLFormElement>) => void;
   handleSubmitCreateChapter: (e: FormEvent<HTMLFormElement>) => void;
   stateFormAddContent: {
     openModal: boolean;
