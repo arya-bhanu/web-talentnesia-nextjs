@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-const CustomToolbar = () => {
-  // Warna default kuning
-  const defaultColor = '#ECFDB1';
+interface CustomToolbarProps {
+  onColorChange: (color: string) => void;
+}
 
+const CustomToolbar: React.FC<CustomToolbarProps> = ({ onColorChange }) => {
+  const defaultColor = '#ECFDB1';
   const [showColorPicker, setShowColorPicker] = useState(false);
   const colors = ['#ECFDB1', '#C2E7F1', '#CAF6BE', '#F6BECA'];
   const [selectedColor, setSelectedColor] = useState(defaultColor);
@@ -12,6 +14,7 @@ const CustomToolbar = () => {
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
     setShowColorPicker(false);
+    onColorChange(color);
   };
 
   return (
@@ -33,7 +36,7 @@ const CustomToolbar = () => {
             display: 'flex',
             alignItems: 'center',
             position: 'relative',
-            marginLeft: '8px', // memberi jarak antara tombol link dan color picker
+            marginLeft: '8px',
           }}
         >
           <button
