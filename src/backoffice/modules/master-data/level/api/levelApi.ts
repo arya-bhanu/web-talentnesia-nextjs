@@ -1,61 +1,48 @@
-import axios from 'axios';
-
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+import { fetchAxios } from '@/lib/fetchAxios';
+import { APIResponseLevel } from '../level.type';
 
 export const levelAPI = {
   fetch: async () => {
-    try {
-      const response = await axios.get(`${API_URL}/levels`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch level');
-      return [];
-    }
+    return fetchAxios<{ data: { items: APIResponseLevel[] } }>({
+      url: `/v1/levels`,
+      method: 'GET',
+    }).then((response) => response.data.items);
   },
 
   getById: async (id: string) => {
-    try {
-      const response = await axios.get(`${API_URL}/levels/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch level details');
-      return;
-    }
+    return fetchAxios<{ data: APIResponseLevel }>({
+      url: `/v1/levels/${id}`,
+      method: 'GET',
+    }).then((response) => response.data);
   },
 
-  add: async (data: { name: string; code: string; status?: number }) => {
-    try {
-      const response = await axios.post(`${API_URL}/levels`, data);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to add levels', error);
-      throw error; 
-    }
+  generateCode: () => {
+    const randomString = Math.random().toString(36).substring(2, 5).toUpperCase();
+    const timestamp = new Date().getTime().toString().slice(-4);
+    return `LVL-${randomString}${timestamp}`;
   },
-  
-  
 
-  update: async (id: string, data: { name: string; code: string; status?: number }) => {
-    try {
-      const response = await axios.put(`${API_URL}/levels/${id}`, data);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to update levels', error);
-      return;
-    }
+  add: async (data: { name: string; code: string; active: number }) => {
+    return fetchAxios<{ data: APIResponseLevel; message: string }>({
+      url: `/v1/levels`,
+      method: 'POST',
+      formData: data,
+    });
   },
+  
+  update: async (id: string, data: { name: string; code: string; active: number }) => {
+    return fetchAxios<{ data: APIResponseLevel }>({
+      url: `/v1/levels/${id}`,
+      method: 'PUT',
+      formData: data,
+    }).then((response) => response.data);
+  },
+  
 
   delete: async (id: string) => {
-    try {
-      if (typeof id !== 'string' || !id) {
-        throw new Error('Invalid ID format');
-      }
-
-      const response = await axios.delete(`${API_URL}/levels/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to delete level');
-      return;
-    }
+    return fetchAxios<{ success: boolean }>({
+      url: `/v1/levels/${id}`,
+      method: 'DELETE',
+    }).then((response) => response.success);
   }
 };

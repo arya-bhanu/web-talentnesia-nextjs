@@ -15,7 +15,12 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
   return (
     <Modal show={isOpen} onClose={onClose}>
       <Modal.Header>{title}</Modal.Header>
-      <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSave();
+        }}
+      >
         <Modal.Body>
           <div className="space-y-4">
             <div>
@@ -26,9 +31,11 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
                 type="text"
                 placeholder="Input code"
                 value={formData.code || ''}
-                onChange={(e) => handleInputChange('code', e.target.value)}
-                required
+                onChange={(e) =>
+                  handleInputChange('code', e.target.value.slice(0, 15))
+                }
                 className={`block w-full p-2 border ${hasError && !formData.code ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
+                maxLength={15}
               />
               {hasError && !formData.code && (
                 <p className="text-red-500 text-xs mt-1">Code is required.</p>
@@ -40,7 +47,7 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
               </label>
               <input
                 type="text"
-                placeholder="Input category name"
+                placeholder="Input level name"
                 value={formData.level || ''}
                 onChange={(e) => handleInputChange('level', e.target.value)}
                 required
@@ -61,16 +68,17 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
                 onChange={(value) => handleInputChange('status', value)}
                 options={['Active', 'Non Active']}
               />
-
               {hasError && !formData.status && (
-                <><p className="text-red-500 text-xs mt-1">
-                  Status is required.
-                </p><p className="text-red-500 text-xs mt-1">level name is required.</p></>
+                <>
+                  <p className="text-red-500 text-xs mt-1">
+                    Status is required.
+                  </p>
+                </>
               )}
             </div>
           </div>
         </Modal.Body>
-        <Modal.Footer className='flex justify-end space-x-2'>
+        <Modal.Footer className="flex justify-end space-x-2">
           <button
             type="button"
             className="text-red-600 border border-red-600 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-200 rounded-lg px-5 py-2.5 text-center mr-2"

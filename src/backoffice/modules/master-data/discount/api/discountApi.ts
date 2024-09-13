@@ -1,70 +1,55 @@
-import axios from 'axios';
-
-const API_URL = 'https://api-talentnesia.skwn.dev/api/v1';
+import { fetchAxios } from '@/lib/fetchAxios';
+import { APIResponseDiscount } from '../discount.type';
 
 export const discountAPI = {
   fetch: async () => {
-    try {
-      const response = await axios.get(`${API_URL}/discount`);
-      return response.data.data.items;
-    } catch (error) {
-      console.error('Failed to fetch discount');
-      return [];
-    }
+    return fetchAxios<{ data: { items: APIResponseDiscount[] } }>({
+      url: `/v1/discount`,
+      method: 'GET',
+    }).then((response) => response.data.items);
   },
 
   getById: async (id: string) => {
-    try {
-      const response = await axios.get(`${API_URL}/discount/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch discount details');
-      return;
-    }
+    return fetchAxios<{ data: APIResponseDiscount }>({
+      url: `/v1/discount/${id}`,
+      method: 'GET',
+    }).then((response) => response.data);
   },
 
-  add: async (data: { code: string; name: string; persentage: number; startDate: string; endDate: string; active: number; }) => {
-    try {
-      const requestData = {
-        ...data,
-        createdBy: "fngdme2va5ndvivq"
-      };
-      console.log('Request data:', requestData);
-      const response = await axios.post(`${API_URL}/discount`, requestData);
-      console.log('Response:', response.data);
-      return response.data;
-    } catch (error: unknown) {
-      console.error('Failed to add discount', error);
-      throw error;
-    }
-  },  
-  update: async (id: string, data: { code: string; name: string; persentage: number; startDate: string; endDate: string; active: number; }) => {
-    try {
-      const requestData = {
-        ...data,
-        createdBy: "fngdme2va5ndvivq"
-      };
-      console.log('Request data:', requestData);
-      const response = await axios.put(`${API_URL}/discount/${id}`, requestData);
-      console.log('Response:', response.data);
-      return response.data;
-    } catch (error: unknown) {
-      console.error('Failed to update discount', error);
-      throw error;
-    }
-  },  
+  add: async (data: {
+    code: string;
+    name: string;
+    persentage: number;
+    startDate: string;
+    endDate: string;
+    active: number;
+  }) => {
+    return fetchAxios<{ data: APIResponseDiscount }>({
+      url: `/v1/discount`,
+      method: 'POST',
+      formData: data,
+    }).then((response) => response.data);
+  },
+
+  update: async (id: string, data: {
+    code: string;
+    name: string;
+    persentage: number;
+    startDate: string;
+    endDate: string;
+    active: number;
+  }) => {
+    return fetchAxios<{ data: APIResponseDiscount }>({
+      url: `/v1/discount/${id}`,
+      method: 'PUT',
+      formData: data,
+    }).then((response) => response.data);
+  },
 
   delete: async (id: string) => {
-    try {
-      if (typeof id !== 'string' || !id) {
-        throw new Error('Invalid ID format');
-      }
-
-      const response = await axios.delete(`${API_URL}/discount/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Failed to delete discount');
-      return;
-    }
+    return fetchAxios<{ success: boolean }>({
+      url: `/v1/discount/${id}`,
+      method: 'DELETE',
+    }).then((response) => response.success);
   }
 };

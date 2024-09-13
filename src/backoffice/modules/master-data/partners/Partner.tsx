@@ -47,7 +47,7 @@ const Partner = () => {
 
   return (
     <PartnersView
-      data={data}
+      data={data || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
