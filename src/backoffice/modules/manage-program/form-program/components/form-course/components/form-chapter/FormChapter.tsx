@@ -84,6 +84,7 @@ const FormChapter = () => {
 
   const handleSubmitAddContent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsAddingContent(true);
     setOpenAlertModalChapter(false);
     setIsConfirmedChapter(false);
@@ -139,7 +140,10 @@ const FormChapter = () => {
     const chapterId = params.get('chapterId');
 
     if (programId && chapterId) {
-      await handleConfirmedSubmitChapter(formData);
+      // await handleConfirmedSubmitChapter(formData);
+      setTempChapterFormData(formData);
+      setAlertMessageChapter('Are you sure you want to update this chapter?');
+      setOpenAlertModalChapter(true);
     } else {
       setTempChapterFormData(formData);
       setAlertMessageChapter('Are you sure you want to update this chapter?');
