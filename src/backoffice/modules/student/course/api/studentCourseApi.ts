@@ -10,6 +10,7 @@ export const StudentCourseAPI = {
     };
     return fetchAxios<APIResponseCourse>(config);
   },
+
   fetchDetail: async (courseId: string): Promise<APIResponseCourseDetail> => {
     const config: UseFetchProps = {
       url: `/v1/student-course/${courseId}`,
