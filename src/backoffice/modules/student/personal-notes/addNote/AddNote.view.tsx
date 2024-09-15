@@ -4,10 +4,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
 import 'react-quill/dist/quill.snow.css';
-import CustomToolbar from '../components/custom-quill/CustomQuill';
 import styles from './AddNoteView.module.css';
 import LabelForm from '@/backoffice/components/label-form';
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false, loading: () => <p>Loading...</p> });
 import { personalNoteAPI } from '../api/personalNotesApi';
 import { decodeToken } from '@/lib/tokenDecoder';
 
@@ -24,9 +23,16 @@ const AddNoteView: React.FC = () => {
   const [courses, setCourses] = useState<Array<{ id: string; name: string }>>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [CustomToolbar, setCustomToolbar] = useState<React.ComponentType<any> | null>(null);
 
   const decodedToken = decodeToken();
   const userId = decodedToken?.userId;
+
+  useEffect(() => {
+    import('../components/custom-quill/CustomQuill').then((module) => {
+      setCustomToolbar(() => module.default);
+    });
+  }, []);
 
   const fetchCourses = useCallback(async (page: number) => {
     const response = await personalNoteAPI.getStudentCourses(page);
@@ -150,7 +156,7 @@ const AddNoteView: React.FC = () => {
         <label htmlFor="detailNotes" className="block text-sm font-medium text-gray-700">
           Detail Notes
         </label>
-        <CustomToolbar onColorChange={setSelectedColor} />
+        {CustomToolbar && <CustomToolbar onColorChange={setSelectedColor} />}
         <ReactQuill
           value={detailNotes}
           onChange={setDetailNotes}
