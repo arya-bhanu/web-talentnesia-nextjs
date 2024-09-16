@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { MuiColorInput } from 'mui-color-input';
+import { Sketch } from '@uiw/react-color';
 
 interface CustomToolbarProps {
   onColorChange: (color: string) => void;
@@ -32,15 +32,7 @@ const CustomToolbar: React.FC<CustomToolbarProps> = ({ onColorChange }) => {
   };
 
   const handleCustomColorChange = (color: string) => {
-    if (color.startsWith('rgb')) {
-      const rgb = color.match(/\d+/g);
-      if (rgb && rgb.length === 3) {
-        const hexColor = rgbToHex(parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2]));
-        setCustomColor(hexColor);
-      }
-    } else {
-      setCustomColor(color.toUpperCase());
-    }
+    setCustomColor(color);
   };
 
   const handleAddCustomColor = () => {
@@ -138,32 +130,27 @@ const CustomToolbar: React.FC<CustomToolbarProps> = ({ onColorChange }) => {
                 onClick={() => setShowCustomColorPicker(true)}
               />
               {showCustomColorPicker && (
-  <div className="absolute z-20 mt-6 p-2 bg-white shadow-lg rounded-md">
-    <MuiColorInput
-      value={customColor}
-      onChange={handleCustomColorChange}
-      placeholder="Choose custom color"
-      format="hex"
-    />
-    <div className="flex justify-between mt-2">
-      <button 
-        onClick={handleAddCustomColor}
-        className="px-2 py-1 bg-blue-500 text-black rounded whitespace-nowrap"
-      >
-        Add Color
-      </button>
-      <button 
-        onClick={() => setShowCustomColorPicker(false)}
-        className=" py-1 mr-9 bg-gray-300 text-red-500 rounded whitespace-nowrap"
-      >
-        Cancel
-      </button>
-    </div>
-  </div>
-)}
-
-
-
+                <div className="absolute z-20 mt-6 p-2 bg-white shadow-lg rounded-md">
+                  <Sketch
+                    color={customColor}
+                    onChange={(color) => handleCustomColorChange(color.hex)}
+                  />
+                  <div className="flex justify-between mt-2">
+                    <button 
+                      onClick={handleAddCustomColor}
+                      className="px-2 py-1 bg-blue-500 text-black rounded whitespace-nowrap"
+                    >
+                      Add Color
+                    </button>
+                    <button 
+                      onClick={() => setShowCustomColorPicker(false)}
+                      className="py-1 mr-9 bg-gray-300 text-red-500 rounded whitespace-nowrap"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </span>
