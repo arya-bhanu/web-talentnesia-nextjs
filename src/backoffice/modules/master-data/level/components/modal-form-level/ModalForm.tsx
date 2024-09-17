@@ -34,9 +34,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
           status: 1,
         });
       }
-    } 
-
-    else {
+    } else {
       setFormData({
         level: '',
         code: '',
@@ -52,37 +50,33 @@ const ModalForm: React.FC<ModalFormProps> = ({
   };
 
   const handleSave = async () => {
-    if (!formData.level || !formData.code || formData.status === undefined) {
+    if (!formData.level || !formData.code) {
       setHasError(true);
       return;
     }
-
     try {
       const data = {
         name: formData.level,
         code: formData.code,
-        active: formData.status,
+        active: formData.status === 1 ? 1 : 0,
       };
-      
+    
       if (id) {
         await levelAPI.update(id, data);
       } else {
         await levelAPI.add(data);
       }
-      
-
+  
       handleClose(); 
       if (onSave) {
         await onSave(id, data);
       }
-      await onSave(id, formData);
       onClose();
     } catch (error) {
       console.error('Failed to save data', error);
-      alert('An error occurred while saving the data. Please try again.');
     }
   };
-
+  
   const handleClose = () => {
     setFormData({
       level: '',

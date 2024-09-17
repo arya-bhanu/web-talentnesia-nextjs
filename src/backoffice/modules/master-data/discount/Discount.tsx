@@ -47,7 +47,7 @@ const Discount = () => {
 
   return (
     <DiscountView
-      data={data}
+      data={data || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}

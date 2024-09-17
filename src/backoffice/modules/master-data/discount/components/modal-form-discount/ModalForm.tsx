@@ -67,7 +67,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
   };
 
   const handleSave = async () => {
-    if (!formData.name || !formData.code || formData.persentage === undefined || !formData.startDate || !formData.endDate || formData.active === undefined) {
+    if (!formData.code || !formData.name || formData.persentage === undefined || !formData.startDate || !formData.endDate || formData.active === undefined) {
       setHasError(true);
       return;
     }
