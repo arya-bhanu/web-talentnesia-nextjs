@@ -201,7 +201,7 @@ const Dropdown = <T extends { id: string }>({
             ))}
           </ul>
           {loading && (
-            <div className="p-2 text-center text-gray-500">Loading..</div>
+            <div className="p-2 text-center text-gray-500">Loading...</div>
           )}
           {!loading && !allLoaded && (
             <div className="p-2 text-center text-gray-500">Scroll for more...</div>
