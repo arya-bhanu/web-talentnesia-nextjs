@@ -8,6 +8,7 @@ import Book from '@/../public/icons/manage-program/book.svg';
 import Edit2 from '@/../public/icons/edit-2.svg';
 import VideoCam from '@/../public/icons/videocam.svg';
 import Calendar from '@/../public/icons/manage-program/calendar.svg';
+import Detail from '@/../public/icons/manage-program/detail.svg';
 import EditBtn from '@/../public/icons/manage-program/Edit-btn.svg';
 import TrashBtn from '@/../public/icons/manage-program/trash-btn.svg';
 import { formatDateIndonesian } from '@/helpers/formatter.helper';
@@ -18,19 +19,26 @@ import AlertModal from '@/backoffice/components/alert-delete-modal';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { set } from 'date-fns';
+import FormMentoring from '../../form-program/components/form-mentoring';
 
 const ListDraggableView: React.FC<
   IListDraggable &
     IListDraggableState & {
       handleSubmitSchedule: (e: FormEvent<HTMLFormElement>) => void;
+      handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
       handleEditContent: (e: FormEvent<HTMLFormElement>) => void;
+      handleEditMentoring: () => void;
       contentId: string;
       modalEditContent: boolean;
+      modalEditMentoring: boolean;
       setModalEditContent: Dispatch<SetStateAction<boolean>>;
+      setModalEditMentoring: Dispatch<SetStateAction<boolean>>;
       modalDelContent: boolean;
       setModalDelContent: Dispatch<SetStateAction<boolean>>;
       confirmDel: boolean;
       setConfirmDel: Dispatch<SetStateAction<boolean>>;
+      handleDetailButton: () => void;
     }
 > = ({
   type,
@@ -41,17 +49,23 @@ const ListDraggableView: React.FC<
   modalSchedule,
   setModalSchedule,
   handleSubmitSchedule,
+  handleSubmitModalMentoring,
   contentId,
   modalEditContent,
+  handleEditMentoring,
+  modalEditMentoring,
   setModalEditContent,
+  setModalEditMentoring,
   handleEditContent,
   setModalDelContent,
   modalDelContent,
   confirmDel,
   setConfirmDel,
   isexam,
+  ismonitoring,
   id,
   chapterId,
+  handleDetailButton,
 }) => {
   const router = useRouter();
   const params = useSearchParams();
@@ -66,10 +80,14 @@ const ListDraggableView: React.FC<
   const generateIcon = useMemo(() => {
     switch (type) {
       case '1':
-        return <PlayCircle />;
-      case '2':
         return <Book />;
+      case '2':
+        return <PlayCircle />;
       case '3':
+        return <PlayCircle />;
+      case '4':
+        return <PlayCircle />;
+      case '5':
         return <Edit2 />;
       default:
         return <VideoCam />;
@@ -94,15 +112,26 @@ const ListDraggableView: React.FC<
       </Modal>
       <Modal
         title="Edit Content"
-        buttonConfirmTitle="Submit"
         state={{
           openModal: modalEditContent,
           setOpenModal: setModalEditContent,
         }}
         handleSubmit={handleEditContent}
       >
-        <FormContent contentId={contentId} />
+        <FormContent contentId={id} isEdit={true} />
       </Modal>
+      <Modal
+        title="Mentoring"
+        buttonConfirmTitle="Submit"
+        state={{
+          openModal: modalEditMentoring,
+          setOpenModal: setModalEditMentoring,
+        }}
+        handleSubmit={handleSubmitModalMentoring}
+      >
+        <FormMentoring chapterId={chapterId} isModalOpen={modalEditMentoring} />
+      </Modal>
+
       <AlertModal
         openModal={modalDelContent}
         setIsConfirmed={setConfirmDel}
@@ -128,12 +157,17 @@ const ListDraggableView: React.FC<
         <button type="button" onClick={() => setModalSchedule(true)}>
           <Calendar />
         </button>
+        <button type="button" onClick={handleDetailButton}>
+          <Detail />
+        </button>
         <button
           onClick={() => {
             if (isexam) {
               router.push(
-                `/backoffice/manage-program/update-program-IICP/edit-exam/?examId=${id}&chapterId=${chapterId}&programId=${programId}`,
+                `/backoffice/manage-program/update-program/edit-exam/?examId=${id}&chapterId=${chapterId}&programId=${programId}`,
               );
+            } else if (type === '6' || ismonitoring) {
+              handleEditMentoring();
             } else {
               setModalEditContent(true);
             }

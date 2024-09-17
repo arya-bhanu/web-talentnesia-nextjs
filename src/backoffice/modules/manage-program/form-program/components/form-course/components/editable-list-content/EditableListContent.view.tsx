@@ -1,6 +1,7 @@
 'use client';
 import React, {
   Dispatch,
+  FormEvent,
   SetStateAction,
   useEffect,
   useMemo,
@@ -26,6 +27,7 @@ import { useRouter } from 'next/navigation';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import FormMentoring from '../../../form-mentoring';
 
 const EditableListContentView: React.FC<
   IEditableListContent & { className?: string } & {
@@ -33,6 +35,10 @@ const EditableListContentView: React.FC<
     setOpenModal: Dispatch<SetStateAction<boolean>>;
     isConfirmed: boolean;
     setIsConfirmed: Dispatch<SetStateAction<boolean>>;
+    handleEditMentoring: () => void;
+    handleSubmitModalMentoring: (e: FormEvent<HTMLFormElement>) => void;
+    modalEditMentoring: boolean;
+    setModalEditMentoring: Dispatch<SetStateAction<boolean>>;
   } & IEditOpenModalState &
     IEditHandler
 > = ({
@@ -46,8 +52,13 @@ const EditableListContentView: React.FC<
   openModalEdit,
   setOpenModalEdit,
   handleSubmitEdit,
+  handleEditMentoring,
+  modalEditMentoring,
+  setModalEditMentoring,
+  handleSubmitModalMentoring,
   id,
   isexam,
+  chapterId
 }) => {
   const params = useSearchParams();
   const pathname = usePathname();
@@ -60,6 +71,7 @@ const EditableListContentView: React.FC<
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
   const renderMinuteTime = useMemo(() => {
     if (duration) {
       const [hours, minutes] = duration.split(':');
@@ -81,11 +93,15 @@ const EditableListContentView: React.FC<
         case '1':
           return <Book />;
         case '2':
-          return <Video />;
+          return <PlayCircle />;
         case '3':
           return <PlayCircle />;
         case '4':
+          return <PlayCircle />;
+        case '5':
           return <Edit2 />;
+        default:
+          return <Video />;
       }
     }
   }, [type]);
@@ -108,8 +124,20 @@ const EditableListContentView: React.FC<
         handleSubmit={handleSubmitEdit}
         title="Update Content"
       >
-        {openModalEdit && <FormContent contentId={injectId} />}
+        {openModalEdit && <FormContent contentId={id} isEdit />}
       </Modal>
+      <Modal
+        title="Mentoring"
+        buttonConfirmTitle="Submit"
+        state={{
+          openModal: modalEditMentoring,
+          setOpenModal: setModalEditMentoring,
+        }}
+        handleSubmit={handleSubmitModalMentoring}
+      >
+        <FormMentoring chapterId={chapterId} isModalOpen={modalEditMentoring} />
+      </Modal>
+
       <div className="flex items-center gap-2">
         <button {...listeners} {...attributes} type="button">
           <DragIndicator />
@@ -127,8 +155,10 @@ const EditableListContentView: React.FC<
               const chapterId = params.get('chapterId');
               if (isexam) {
                 router.push(
-                  `/backoffice/manage-program/update-program-IICP/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
+                  `/backoffice/manage-program/update-program/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
                 );
+              } else if (type === '6') {
+                handleEditMentoring?.();
               } else {
                 setOpenModalEdit(true);
               }

@@ -1,5 +1,5 @@
 'use client';
-import React, { FormEvent, useEffect, useTransition } from 'react';
+import React, { FormEvent, useEffect, useState, useTransition } from 'react';
 import FormExamView from './FormExam.view';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -16,6 +16,7 @@ import {
 } from '../../api/manageModelApi';
 import { defaultExamData, defaultQuestionRadio } from './formExam.data';
 import { useStatusModalStore } from '@/lib/store';
+import AlertModal from '@/backoffice/components/alert-modal';
 
 const FormExam: React.FC<{ className?: string }> = ({ className }) => {
   const params = useSearchParams();
@@ -33,6 +34,10 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
     queryFn: () => getExam(examId),
   });
 
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [tempFormData, setTempFormData] = useState<FormData | null>(null);
+
   useEffect(() => {
     if (!isPending) {
       updateQuestion([defaultQuestionRadio]);
@@ -48,6 +53,7 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         id: dataExam.id,
         order: dataExam.order,
         title: dataExam.title,
+        type: 5,
       });
       updateQuestion(dataExam.exams);
     }
@@ -68,10 +74,22 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
     mutationKey: ['exam'],
   });
 
+  useEffect(() => {
+    if (isConfirmed && tempFormData) {
+      handleConfirmedSubmitExam(tempFormData);
+      setTempFormData(null);
+      setIsConfirmed(false);
+    }
+  }, [isConfirmed]);
+
   const handleSubmitExam = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    e.stopPropagation();
     const formData = new FormData(e.currentTarget);
+    setTempFormData(formData);
+    setOpenAlertModal(true);
+  };
+
+  const handleConfirmedSubmitExam = async (formData: FormData) => {
     const examName = formData.get('exam_name');
     const chapterId = params.get('chapterId');
     const modulId = params.get('modulId');
@@ -84,16 +102,17 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
           duration: dataExamStore?.duration || '01.00',
           exams: question,
           title: examName,
+          type: 5,
         } as APIExamChapter;
 
         if (examId) {
           console.log('updating exam...');
           await updateExamAsync({ data: dataExam, id: examId });
           console.log('reordering exam...');
-          await reorderExamsAynsc({
-            examId,
-            questions: question.map((el) => el.id),
-          });
+          // await reorderExamsAynsc({
+          //   examId,
+          //   questions: question.map((el) => el.id),
+          // });
           openModal({
             status: 'success',
             action: 'update',
@@ -121,11 +140,24 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
       }
     } catch (err) {
       console.error(err);
+      openModal({
+        status: 'error',
+        action: examId ? 'update' : 'create',
+        message: `Failed to ${examId ? 'update' : 'create'} exam`,
+      });
     }
   };
 
   return (
-    <FormExamView handleSubmitExam={handleSubmitExam} className={className} />
+    <>
+      <FormExamView handleSubmitExam={handleSubmitExam} className={className} />
+      <AlertModal
+        openModal={openAlertModal}
+        setOpenModal={setOpenAlertModal}
+        setIsConfirmed={setIsConfirmed}
+        messageText={`Are you sure you want to ${params.get('examId') ? 'update' : 'create'} this exam?`}
+      />
+    </>
   );
 };
 

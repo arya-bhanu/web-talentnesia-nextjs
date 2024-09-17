@@ -1,6 +1,10 @@
 import React from 'react';
 
-const PdfReader: React.FC<{ url: string }> = ({ url }) => {
+const PdfReader: React.FC<{ url: string | null }> = ({ url }) => {
+  if (!url) {
+    return <div className="bg-[#323232] rounded-lg px-8 py-52 text-white mb-8 flex flex-col items-center flex-grow">No PDF URL provided</div>;
+  }
+
   const googleDocsUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
 
   return (
@@ -12,11 +16,6 @@ const PdfReader: React.FC<{ url: string }> = ({ url }) => {
           frameBorder="0"
           allowFullScreen
         ></iframe>
-      </div>
-      
-      <div className="flex justify-between px-8 py-4">
-        <button className="px-8 py-2 rounded-full border border-[#FFC862] text-gray-700">Previous</button>
-        <button className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">Next</button>
       </div>
     </div>
   );

@@ -36,5 +36,4 @@ export interface IAcademicLevelView {
   isPopupOpen: boolean;
   setIsPopupOpen: (isOpen: boolean) => void;
   fetchData: () => Promise<void>;
-  role: number;
 }

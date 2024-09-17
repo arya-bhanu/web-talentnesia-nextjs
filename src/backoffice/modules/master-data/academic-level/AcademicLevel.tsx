@@ -5,29 +5,24 @@ import AcademicLevelView from './AcademicLevel.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { academicLevelAPI } from './api/academicLevelApi';
 import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
-import { decodeToken } from '@/lib/tokenDecoder';
 
 const AcademicLevel = () => {
   const queryClient = useQueryClient();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [Filter, setFilter] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [userRole, setUserRole] = useState<number>(NaN);
 
-  const { handleAddAcademicLevel, handleEditAcademicLevel, handleDeleteAcademicLevel } = useAcademicLevelActions();
-
-  useEffect(() => {
-    const decodedToken = decodeToken();
-    if (decodedToken) {
-      setUserRole(decodedToken.role);
-    }
-  }, []);
+  const {
+    handleAddAcademicLevel,
+    handleEditAcademicLevel,
+    handleDeleteAcademicLevel,
+  } = useAcademicLevelActions();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['academicLevel'],
     queryFn: async () => {
       const response = await academicLevelAPI.fetch();
-      return response.data.items;
+      return response.data;
     },
   });
 
@@ -35,29 +30,34 @@ const AcademicLevel = () => {
     await queryClient.invalidateQueries({ queryKey: ['academicLevel'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
-    if (action === "delete") {
-      await handleDeleteAcademicLevel(id);
-      fetchData();
-    } else if (action === "edit" && rowData) {
-      await handleEditAcademicLevel(id, rowData);
-      fetchData();
-    }
-  }, [fetchData, handleDeleteAcademicLevel, handleEditAcademicLevel]);
+  const handleActionButtonRow = useCallback(
+    async (id: string, action: 'delete' | 'edit', rowData?: any) => {
+      if (action === 'delete') {
+        await handleDeleteAcademicLevel(id);
+        fetchData();
+      } else if (action === 'edit' && rowData) {
+        await handleEditAcademicLevel(id, rowData);
+        fetchData();
+      }
+    },
+    [fetchData, handleDeleteAcademicLevel, handleEditAcademicLevel],
+  );
 
-  const handleAdd = useCallback(async (name: string) => {
-    await handleAddAcademicLevel(name);
-    fetchData();
-    setIsPopupOpen(false);
-  }, [fetchData, handleAddAcademicLevel]);
+  const handleAdd = useCallback(
+    async (name: string) => {
+      await handleAddAcademicLevel(name);
+      fetchData();
+      setIsPopupOpen(false);
+    },
+    [fetchData, handleAddAcademicLevel],
+  );
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <AcademicLevelView
-      role={userRole}
-      data={data || []}
+      data={data?.items || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}

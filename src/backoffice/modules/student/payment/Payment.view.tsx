@@ -78,17 +78,20 @@ const PaymentView: React.FC<PaymentViewProps> = ({ payments }) => {
           </div>
         </>
       ),
-      active: activeTab === 'All'
+      active: activeTab === 'All',
+      type: "all",
     },
     {
       title: "Active",
       content: null,
-      active: activeTab === 'Active'
+      active: activeTab === 'Active',
+      type: "active",
     },
     {
       title: "Complete",
       content: null,
-      active: activeTab === 'Complete'
+      active: activeTab === 'Complete',
+      type: 'complete',
     }
   ];
 

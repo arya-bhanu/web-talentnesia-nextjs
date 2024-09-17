@@ -1,31 +1,106 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import 'react-quill/dist/quill.snow.css';
-import CustomToolbar from '../components/custom-quill/CustomQuill';
 import styles from './AddNoteView.module.css';
 import LabelForm from '@/backoffice/components/label-form';
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import { courseData } from '../../course/studentCourse.data';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false, loading: () => <p>Loading...</p> });
+import { personalNoteAPI } from '../api/personalNotesApi';
+import { decodeToken } from '@/lib/tokenDecoder';
 
 const AddNoteView: React.FC = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const noteId = searchParams.get('id');
+  const [isEditMode, setIsEditMode] = useState(!!noteId);
   const [noteTitle, setNoteTitle] = useState('');
   const [course, setCourse] = useState('');
   const [detailNotes, setDetailNotes] = useState('');
   const [isNavigating, setIsNavigating] = useState(false);
-  const router = useRouter();
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [courses, setCourses] = useState<Array<{ id: string; name: string }>>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [CustomToolbar, setCustomToolbar] = useState<React.ComponentType<any> | null>(null);
 
-  const courseOptions = courseData.map((course) => (
-    <option key={course.title} value={course.title}>
-      {course.title}
-    </option>
-  ));
+  const decodedToken = decodeToken();
+  const userId = decodedToken?.userId;
 
-  const handleSave = () => {
-    // Function to handle saving the note
-    // This is where you'd handle the form submission, e.g., saving the note to localStorage or sending it to a backend.
+  useEffect(() => {
+    import('../components/custom-quill/CustomQuill').then((module) => {
+      setCustomToolbar(() => module.default);
+    });
+  }, []);
+
+  const fetchCourses = useCallback(async (page: number) => {
+    const response = await personalNoteAPI.getStudentCourses(page);
+    if (response && response.success) {
+      const newCourses = response.data.items.map((item: any) => ({ id: item.id, name: item.name }));
+      setCourses(prevCourses => page === 1 ? newCourses : [...prevCourses, ...newCourses]);
+      setHasMore(response.data.meta.currentPage < response.data.meta.lastPage);
+      setCurrentPage(response.data.meta.currentPage);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCourses(1);
+    if (isEditMode && noteId) {
+      fetchNoteData(noteId);
+    }
+  }, [fetchCourses, isEditMode, noteId]);
+
+  const fetchNoteData = async (id: string) => {
+    const response = await personalNoteAPI.getById(id);
+    if (response && response.success) {
+      const note = response.data;
+      setNoteTitle(note.title);
+      setCourse(note.programId);
+      setDetailNotes(note.body);
+      setSelectedColor(note.color);
+    }
+  };
+
+  const handleLoadMoreCourses = () => {
+    if (hasMore) {
+      fetchCourses(currentPage + 1);
+    }
+  };
+
+  const getRandomColor = () => {
+    const colors = ['#ECFDB1', '#C2E7F1', '#CAF6BE', '#F6BECA'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
+  const handleSave = async () => {
+    const noteData = {
+      title: noteTitle,
+      body: detailNotes,
+      programId: course,
+      color: selectedColor || getRandomColor(),
+      userId: userId,
+    };
+
+    try {
+      let response;
+      if (isEditMode && noteId) {
+        response = await personalNoteAPI.update(noteId, noteData);
+      } else {
+        response = await personalNoteAPI.add(noteData);
+      }
+
+      if (response && response.success) {
+        setIsNavigating(true);
+        setTimeout(() => {
+          router.push('/student/personal-notes');
+        }, 300);
+      } else {
+        console.error('Failed to save note');
+      }
+    } catch (error) {
+      console.error('Error saving note:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -37,6 +112,7 @@ const AddNoteView: React.FC = () => {
 
   return (
     <div className={`p-6 mx-auto bg-white rounded-md transition-opacity duration-300 ${isNavigating ? 'opacity-0' : 'opacity-100'}`}>
+      <h2 className="text-2xl font-bold mb-4">{isEditMode ? 'Edit Note' : 'Add New Note'}</h2>
       <div className="flex space-x-4 mb-4">
         <div className="flex-1">
           <LabelForm isImportant htmlFor="notes_title">
@@ -62,15 +138,25 @@ const AddNoteView: React.FC = () => {
             onChange={(e) => setCourse(e.target.value)}
             required
           >
-            {courseOptions}
+            <option value="">Select a course</option>
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.name}
+              </option>
+            ))}
           </select>
+          {hasMore && (
+            <button onClick={handleLoadMoreCourses} className="mt-2 text-sm text-blue-500">
+              Load more courses
+            </button>
+          )}
         </div>
       </div>
       <div className="mb-4">
         <label htmlFor="detailNotes" className="block text-sm font-medium text-gray-700">
           Detail Notes
         </label>
-        <CustomToolbar />
+        {CustomToolbar && <CustomToolbar onColorChange={setSelectedColor} />}
         <ReactQuill
           value={detailNotes}
           onChange={setDetailNotes}

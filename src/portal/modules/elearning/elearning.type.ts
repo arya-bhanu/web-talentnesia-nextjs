@@ -1,9 +1,11 @@
 export interface CoursesData {
-    courses: any[] ;
+    
     testimonials: any[];
   }
   
   export interface ElearningViewProps {
     data: CoursesData;
+    courses: {items: any[]};
+    isLoading?: boolean
   }
   

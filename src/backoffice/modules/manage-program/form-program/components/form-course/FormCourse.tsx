@@ -9,14 +9,19 @@ import {
 } from './api/formCourse.api';
 import { useFormCourseStore } from './formCourse.store';
 import { useSearchParams } from 'next/navigation';
+import { useStatusModalStore } from '@/lib/store';
+import AlertModal from '@/backoffice/components/alert-modal';
 
 const FormCourse = () => {
   const [openModalModul, setOpenModalModul] = useState(false);
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [formEvent, setFormEvent] = useState<FormEvent<HTMLFormElement> | null>(null);
   const params = useSearchParams();
   const programId = params.get('programId');
   const queryClient = useQueryClient();
-  const { setModules, setData, activeModule, setActiveModule } =
-    useFormCourseStore();
+  const { setModules, setData, activeModule, setActiveModule } = useFormCourseStore();
+  const { openModal: openModalToast } = useStatusModalStore();
 
   const { data: programChapters, isLoading: isLoadingProgramChapters } =
     useQuery({
@@ -49,28 +54,71 @@ const FormCourse = () => {
     }
   }, [JSON.stringify(modules?.data?.data)]);
 
-  const handleSubmitSelectedModul = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const selectModule = formData.get('modul') as string;
-    await addChapterDefault({
-      modulId: selectModule,
-      programId,
-    });
+  useEffect(() => {
+    if (isConfirmed && formEvent) {
+      handleSubmitSelectedModul(formEvent);
+      setIsConfirmed(false);
+      setFormEvent(null);
+    }
+  }, [isConfirmed, formEvent]);
 
-    await queryClient.invalidateQueries({
-      queryKey: ['chapters', 'program', programId],
-    });
-    setActiveModule(selectModule as string);
-    setOpenModalModul(false);
+  const handleSubmitClick = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormEvent(e);
+    setOpenAlertModal(true);
+    if (isConfirmed) {
+    await handleSubmitSelectedModul(e);
+    }
+  };
+
+  const handleSubmitSelectedModul = async (e: FormEvent<HTMLFormElement>) => {
+    if (!(e.target instanceof HTMLFormElement)) {
+      console.error('Invalid form event');
+      return;
+    }
+    const formData = new FormData(e.target);
+    const selectModule = formData.get('modul') as string;
+    
+    try {
+      await addChapterDefault({
+        modulId: selectModule,
+        programId,
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ['chapters', 'program', programId],
+      });
+      setActiveModule(selectModule as string);
+      setOpenModalModul(false);
+      openModalToast({
+        status: 'success',
+        action: 'create',
+        message: 'Module added successfully',
+      });
+    } catch (error) {
+      console.error('Error adding module:', error);
+      openModalToast({
+        status: 'error',
+        action: 'create',
+        message: 'Failed to add module. Please try again.',
+      });
+    }
   };
 
   return (
-    <FormCourseView
-      handleSubmitSelectedModul={handleSubmitSelectedModul}
-      setOpenModalModul={setOpenModalModul}
-      openModalModul={openModalModul}
-    />
+    <>
+      <FormCourseView
+        handleSubmitSelectedModul={handleSubmitClick}
+        setOpenModalModul={setOpenModalModul}
+        openModalModul={openModalModul}
+      />
+      <AlertModal
+        openModal={openAlertModal}
+        setOpenModal={setOpenAlertModal}
+        setIsConfirmed={setIsConfirmed}
+        messageText="Are you sure you want to add this module?"
+      />
+    </>
   );
 };
 

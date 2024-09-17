@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchDetailProgram } from '../api/reportApi';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { APIReportProgramDetail } from '../report.type';
 import CoursesProgress from '../../program/components/courses-progres/CoursesProgress';
 import Loading from '@/components/loading';
@@ -22,8 +22,8 @@ const ReportDetail: React.FC<ReportDetailProps> = () => {
   const [activeAccordion, setActiveAccordion] = useState<number>(0);
   const [programDataState, setProgramDataState] =
     useState<null | APIReportProgramDetail>(null);
-  const params = useParams<{ id: string }>();
-  const id = params.id;
+  const pathname = useSearchParams();
+  const id = pathname.get('id');
 
   const { data: programData, isLoading: isLoadingProgramData } = useQuery({
     queryKey: ['detail', 'program', id],

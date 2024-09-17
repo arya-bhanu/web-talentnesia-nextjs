@@ -3,8 +3,13 @@
 import React, { useState } from 'react';
 import CalendarView from './Calendar.view';
 import { format, addDays, subDays } from 'date-fns';
+import { Calendar as CalendarType } from '../../courseDetail.type';
 
-const Calendar: React.FC = () => {
+interface CalendarProps {
+  calendarData: CalendarType[];
+}
+
+const Calendar: React.FC<CalendarProps> = ({ calendarData }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedHour, setSelectedHour] = useState<string | null>(null);
     const [showAllHours, setShowAllHours] = useState(false);
@@ -30,9 +35,9 @@ const Calendar: React.FC = () => {
             onHourClick={(hour) => setSelectedHour(hour)}
             onToggleHours={() => setShowAllHours(!showAllHours)}
             showAllHours={showAllHours}
+            calendarData={calendarData}
         />
     );
 };
 
 export default Calendar;
-

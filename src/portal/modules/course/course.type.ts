@@ -1,8 +1,9 @@
 export interface CoursesData {
-    courses: any[] ;
+    items: any[] ;
   }
   
   export interface CoursesViewProps {
     data: CoursesData;
+    isLoading?: boolean;
   }
   

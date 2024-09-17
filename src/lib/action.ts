@@ -35,7 +35,8 @@ export const login = async (data: { email: string; password: string }) => {
     const redirectMap: Record<number, string> = {
       1: '/backoffice/dashboard',
       2: '/operator/dashboard',
-      3: '/mentor/dashboard'
+      3: '/mentor/dashboard',
+      4: '/student/dashboard'
     };
   
     return { redirectTo: redirectMap[sessionData.role] || '/' };

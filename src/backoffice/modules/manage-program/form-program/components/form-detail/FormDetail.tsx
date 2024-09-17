@@ -1,5 +1,5 @@
 'use client';
-import React, { FormEvent, useEffect } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import FormDetailView from './FormDetail.view';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useFormDetailStore } from './formDetail.store';
@@ -11,9 +11,14 @@ import {
   fetchSchools,
 } from './api/formDetail.api';
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
-import { Schools } from './formDetail.type';
+import { APIDetailProgram, Schools } from './formDetail.type';
 import { convertIntoNumericDate } from '@/helpers/formatter.helper';
-import { defaultDataFormDetail } from './formDetail.data';
+import { defaultDataFormDetail, defaultDataFormDetailEdit } from './formDetail.data';
+import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
+import { useTabStoreManageProgram } from '../../../manageProgramStore';
+import Loading from '@/components/loading';
+import { useStatusModalStore } from '@/lib/store';
+import AlertModal from '@/backoffice/components/alert-modal';
 
 const FormDetail = () => {
   const params = useSearchParams();
@@ -26,7 +31,16 @@ const FormDetail = () => {
     setDefaultMentors,
     setDefaultSchools,
     setDefaultData,
+    resetStore,
   } = useFormDetailStore();
+  const [fullImageUrl, setFullImageUrl] = useState<string>('');
+  const { activeTab } = useTabStoreManageProgram();
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedSchool, setSelectedSchool] = useState<string>('');
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [formEvent, setFormEvent] = useState<FormEvent<HTMLFormElement> | null>(null);
+  const { openModal: openModalToast } = useStatusModalStore();
 
   const { data: dataProgramDetail, isLoading: isLoadingProgramDetail } =
     useQuery({
@@ -50,13 +64,36 @@ const FormDetail = () => {
       mutationFn: createProgram,
     });
 
-  useEffect(() => {
-    if (dataProgramDetail?.data?.data) {
-      setDefaultData(dataProgramDetail.data.data);
-    }
+    useEffect(() => {
+      const isDataLoaded = !isLoadingProgramDetail && !isLoadingMentors && !isLoadingSchools;
+      if (isDataLoaded) {
+        setIsLoading(false);
+      }
+    }, [isLoadingProgramDetail, isLoadingMentors, isLoadingSchools]);
+
+    useEffect(() => {
+      if (!programId) {
+        resetStore();
+      }
+    }, [programId]);
+
+    useEffect(() => {
+      if (programId && dataProgramDetail?.data?.data) {
+        setDefaultData(dataProgramDetail.data.data);
+        setSelectedSchool(dataProgramDetail.data.data.institutionId || '');
+        if (dataProgramDetail.data.data.image) {
+          getImageUrl(dataProgramDetail.data.data.image)
+            .then(setFullImageUrl)
+            .catch(console.error);
+        }
+      } else {
+        setDefaultData(defaultDataFormDetailEdit);
+        setFullImageUrl('');
+        setSelectedSchool('');
+      }
     if (dataMentors?.data?.data) {
       setDefaultMentors(
-        dataMentors.data.data.map((el: any) => {
+        dataMentors.data.data.map((el: Mentor) => {
           return {
             id: el.id,
             name: el.name,
@@ -66,7 +103,7 @@ const FormDetail = () => {
     }
     if (dataSchools?.data?.data) {
       setDefaultSchools(
-        dataSchools.data.data.map((el: any) => {
+        dataSchools.data.data.map((el: Schools) => {
           return {
             id: el.id,
             name: el.name,
@@ -80,13 +117,36 @@ const FormDetail = () => {
     JSON.stringify(dataProgramDetail?.data),
   ]);
 
-  const handleSubmitFormDetail = async (e: FormEvent<HTMLFormElement>) => {
+  const handleFileChange = async (fileUrl: string) => {
+    const fullUrl = await getImageUrl(fileUrl);
+    setData((prevData: APIDetailProgram) => ({ ...prevData, image: fileUrl }));
+    setFullImageUrl(fullUrl);
+  };
+
+  useEffect(() => {
+    if (isConfirmed && formEvent) {
+      handleSubmitFormDetail(formEvent);
+      setIsConfirmed(false);
+      setFormEvent(null);
+    }
+  }, [isConfirmed, formEvent]);
+
+  const handleSubmitClick = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const formData = new FormData(e.currentTarget);
+    await setFormEvent(e);
+    setOpenAlertModal(true);
+  };
+
+  const handleSubmitFormDetail = async (e: FormEvent<HTMLFormElement>) => {
+    if (!(e.target instanceof HTMLFormElement)) {
+      console.error('Invalid form event');
+      return;
+    }
+    const formData = new FormData(e.target);
     const programName = formData.get('program_name') as string;
     const active = Number(formData.get('active') as string) as 0 | 1;
-    const mentors = data.mentors.map((el) => el.id);
+    const mentors = data.mentors.map((el: Mentor) => el.id);
     const filePic = data.image;
     const startDate = formData.get('start_date') as string;
     const endDate = formData.get('end_date') as string;
@@ -105,28 +165,57 @@ const FormDetail = () => {
     );
     console.log(filePic);
 
-    const response = await createProgramAsync({
-      active,
-      endDate: endDateFormated,
-      startDate: startDateFormated,
-      mentors,
-      name: programName,
-      image: 'file1_png',
-      type: 'iicp',
-      institutionId: school,
-    });
+    try {
+      const response = await createProgramAsync({
+        active,
+        endDate: endDateFormated,
+        startDate: startDateFormated,
+        mentors,
+        name: programName,
+        image: filePic,
+        type: activeTab,
+        institutionId: school,
+      });
 
-    console.log(response);
-    setData(defaultDataFormDetail);
-    await queryClient.invalidateQueries({ queryKey: ['programs'] });
-    router.push('/backoffice/manage-program');
+      console.log(response);
+      setData(defaultDataFormDetail);
+      await queryClient.invalidateQueries({ queryKey: ['programs'] });
+      router.push('/backoffice/manage-program');
+
+      openModalToast({
+        status: 'success',
+        action: 'create',
+        message: 'Program created successfully',
+      });
+    } catch (error) {
+      console.error('Error creating program:', error);
+      openModalToast({
+        status: 'error',
+        action: 'create',
+        message: 'Failed to create program. Please try again.',
+      });
+    }
   };
+
   return (
-    <FormDetailView
-      programId={programId || undefined}
-      handleSubmitForm={handleSubmitFormDetail}
-      isLoadingMentors={isLoadingMentors}
-    />
+    <Loading isLoading={isLoading}>
+      <FormDetailView
+        programId={programId || undefined}
+        handleSubmitForm={handleSubmitClick}
+        isLoadingMentors={isLoadingMentors}
+        handleFileChange={handleFileChange}
+        fullImageUrl={fullImageUrl}
+        programType={dataProgramDetail?.data?.data?.type}
+        selectedSchool={selectedSchool}
+        setSelectedSchool={setSelectedSchool}
+      />
+      <AlertModal
+        openModal={openAlertModal}
+        setOpenModal={setOpenAlertModal}
+        setIsConfirmed={setIsConfirmed}
+        messageText="Are you sure you want to submit this program?"
+      />
+    </Loading>
   );
 };
 

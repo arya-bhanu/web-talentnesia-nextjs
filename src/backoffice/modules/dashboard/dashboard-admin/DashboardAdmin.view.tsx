@@ -26,7 +26,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
   if (error) return <Custom500 />;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="">
       <div className="grid grid-cols-3 gap-5 mb-6 h-32">
         <div className="bg-[#FFE2E6] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
           <div className="absolute top-4 left-4 flex items-center justify-center bg-[#F04438] rounded-full w-12 h-12 ml-2.5">

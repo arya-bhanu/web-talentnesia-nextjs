@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Badge, Button, Progress } from 'flowbite-react';
+import Link from 'next/link';
 
 interface StudentCourseCardProps {
+  id: string;
   title: string;
   status: 'On Going' | 'Complete';
   startDate: string;
@@ -11,6 +13,7 @@ interface StudentCourseCardProps {
 }
 
 const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
+    id,
     title,
     status,
     startDate,
@@ -34,7 +37,7 @@ const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
                 ? 'bg-green-100 text-[#10A760]'
                 : 'bg-gray-100 text-gray-800'
             }`}
-            style={{ 
+            style={{
                 borderRadius: '9999px',
                 boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
             }}
@@ -58,19 +61,20 @@ const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
             <span className="mr-2">{progress}%</span>
             <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div
-                className="bg-blue-600 h-2.5 rounded-full transition-all duration-1000 ease-out"
+                className="bg-[#219EBC] h-2.5 rounded-full transition-all duration-1000 ease-out"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
           </div>
         </div>
         <div className="flex items-center">
-            
+        <Link href={`/student/course/course-detail?courseId=${id}`}>
         <button
-        className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-transparent font-medium rounded-[20px] text-sm px-5 py-2.5 me-2 mb-2"
-      >
-        <span className="text-[#344054]">See Detail</span>
-      </button>
+          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-transparent font-medium rounded-[20px] text-sm px-5 py-2.5 me-2 mb-2"
+        >
+          <span className="text-[#344054]">See Detail</span>
+        </button>
+      </Link>
         </div>
       </div>
     );

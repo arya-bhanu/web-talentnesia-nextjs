@@ -7,6 +7,7 @@ export const defaultExamData = {
   id: '',
   order: -1,
   title: '',
+  type: 5,
 };
 
 export const defaultOptionRadio = [

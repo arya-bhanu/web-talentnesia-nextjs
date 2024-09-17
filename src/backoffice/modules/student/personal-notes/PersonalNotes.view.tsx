@@ -1,34 +1,41 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import PersonalNotesCard from '../personal-notes/components/personal-notes-card/PersonalNotesCard';
-import { PersonalNotesViewProps, PersonalNoteProps } from './personalNotes.type';
+import PersonalNotesCard from './components/personal-notes-card/PersonalNotesCard';
+import { PersonalNoteProps, ApiResponse } from './personalNotes.type';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
 import Add from '@/../public/icons/add.svg';
+import { personalNoteAPI } from './api/personalNotesApi';
 
-const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ notes: initialNotes = [] }) => {
+export interface PersonalNotesViewProps {
+  initialNotes: PersonalNoteProps[];
+}
+
+const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ initialNotes }) => {
   const [notes, setNotes] = useState<PersonalNoteProps[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [columns, setColumns] = useState(3);
   const [isClient, setIsClient] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const router = useRouter();
+
+  const fetchNotes = useCallback(async (page: number) => {
+    const response = await personalNoteAPI.get(page);
+    if (response && response.success) {
+      const newNotes = response.data.items;
+      setNotes(prevNotes => page === 1 ? newNotes : [...prevNotes, ...newNotes]);
+      setHasMore(response.data.meta.currentPage < response.data.meta.lastPage);
+      setCurrentPage(response.data.meta.currentPage);
+    }
+  }, []);
 
   useEffect(() => {
     setIsClient(true);
-    const savedNotes = localStorage.getItem('personalNotesOrder');
-    if (savedNotes) {
-      const parsedNotes = JSON.parse(savedNotes);
-      const mergedNotes = initialNotes.map(note => {
-        const savedNote = parsedNotes.find((n: PersonalNoteProps) => n.id === note.id);
-        return savedNote || note;
-      });
-      setNotes(mergedNotes);
-    } else {
-      setNotes(initialNotes);
-    }
+    fetchNotes(1);
 
     const handleResize = () => {
       if (window.innerWidth < 640) setColumns(1);
@@ -39,12 +46,18 @@ const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ notes: initialNot
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [initialNotes]);
+  }, [fetchNotes]);
 
-  const filteredNotes = notes.filter(note =>
+  const handleLoadMore = () => {
+    if (hasMore) {
+      fetchNotes(currentPage + 1);
+    }
+  };
+
+  const filteredNotes = notes ? notes.filter(note =>
     note.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    note.content.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    note.body.toLowerCase().includes(searchTerm.toLowerCase())
+  ) : [];
 
   const getColumnNotes = (col: number) => {
     return filteredNotes.filter((_, index) => index % columns === col);
@@ -53,7 +66,7 @@ const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ notes: initialNot
   const handleAddNewNote = () => {
     setIsNavigating(true);
     setTimeout(() => {
-      router.push('/backoffice/personal-notes/add-new-notes');
+      router.push('/student/personal-notes/add-new-notes');
     }, 300);
   };
 
@@ -65,7 +78,10 @@ const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ notes: initialNot
     items.splice(result.destination.index, 0, reorderedItem);
 
     setNotes(items);
-    localStorage.setItem('personalNotesOrder', JSON.stringify(items));
+  };
+
+  const handleDeleteNote = (id: string) => {
+    setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
   };
 
   if (!isClient) {
@@ -115,7 +131,7 @@ const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ notes: initialNot
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <PersonalNotesCard {...note} />
+                          <PersonalNotesCard {...note} onDelete={handleDeleteNote} />
                         </div>
                       )}
                     </Draggable>
@@ -127,6 +143,11 @@ const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ notes: initialNot
           ))}
         </div>
       </DragDropContext>
+      {hasMore && (
+        <button onClick={handleLoadMore} className="mt-4 w-full text-center">
+          Load More
+        </button>
+      )}
     </div>
   );
 };

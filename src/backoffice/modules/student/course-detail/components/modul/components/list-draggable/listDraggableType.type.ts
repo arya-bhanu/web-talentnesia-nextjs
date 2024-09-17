@@ -1,8 +1,10 @@
 export interface IListDraggable {
   title: string;
   type: string;
-  status?: string;
-  date?: Date;
-  completed?: boolean;
+  completed: boolean;
+  date: string | null;
   className?: string;
+  courseId: string;
+  chapterId: string;
+  contentId: string;
 }

@@ -20,3 +20,13 @@ export interface IFormChapter {
 export interface ISubmitType {
   type: 'nextSubmit' | 'defaultSubmit';
 }
+
+export interface IContentSubmitData {
+  body: string;
+  duration: string;
+  title: string;
+  type: number;
+  chapterId: string;
+  isexam: number;
+  file: string;
+}

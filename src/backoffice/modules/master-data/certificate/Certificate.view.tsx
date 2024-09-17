@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import { ICertificateView } from './certificate.type';
@@ -12,13 +14,14 @@ import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 const columnHelper = createColumnHelper<any>();
 
 const CertificateView: React.FC<ICertificateView> = ({
   data,
   Filter,
-  setFilter,  
+  setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
@@ -27,6 +30,11 @@ const CertificateView: React.FC<ICertificateView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
+  const router = useRouter();
+
+  const openDocumentEditor = () => {
+    router.push('/backoffice/master-data/certificate/add-certificate/');
+  };
   const {
     handleAddCertificate,
     handleEditCertificate,
@@ -60,7 +68,7 @@ const CertificateView: React.FC<ICertificateView> = ({
     },
     [handleEditCertificate, handleAddCertificate, fetchData]
   );
-   
+
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('name', {
@@ -87,16 +95,16 @@ const CertificateView: React.FC<ICertificateView> = ({
           return (
             <div>
               <div className='font-bold text-gray-900'>{formattedDate}</div>
-              <div className='pl-6 text-start'>{formattedTime}</div>
+              <div className=' text-start'>{formattedTime}</div>
             </div>
           );
         },
-      }),      
+      }),
       columnHelper.accessor('active', {
         header: ({ column }) => (
           <SortingTable column={column} title="Status" />
         ),
-        cell: (info) => <BadgeStatus status={info.getValue() as number} type={1}/>,
+        cell: (info) => <BadgeStatus status={info.getValue() as number} type={1} />,
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -104,16 +112,21 @@ const CertificateView: React.FC<ICertificateView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-  
+
           return (
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
                   <button
-                    onClick={() => handleEdit(id, rowData)}
+                    onClick={openDocumentEditor}
                     className="hover:text-blue-700 hover:underline"
                   >
                     Edit
+                  </button>
+                  <button
+                    className="hover:text-blue-700 hover:underline"
+                  >
+                    Open
                   </button>
                   <button
                     onClick={() => handleDelete(id)}
@@ -135,15 +148,13 @@ const CertificateView: React.FC<ICertificateView> = ({
     [handleEdit, handleDelete]
   );
 
+
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
         <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
+          onClick={openDocumentEditor}
           text="Add Certificate"
         />
       </div>
@@ -157,8 +168,8 @@ const CertificateView: React.FC<ICertificateView> = ({
         isOpen={isPopupOpen}
         onClose={() => {
           setIsPopupOpen(false);
-          setSelectedId(null); 
-          setSelectedRowData(null); 
+          setSelectedId(null);
+          setSelectedRowData(null);
         }}
         onSave={handleAddOrEditCertificate}
         initialData={selectedRowData}
@@ -176,6 +187,7 @@ const CertificateView: React.FC<ICertificateView> = ({
         }}
       />
     </div>
+
   );
 };
 

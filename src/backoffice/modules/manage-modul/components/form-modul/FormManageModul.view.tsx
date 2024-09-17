@@ -6,6 +6,7 @@ import { TextInput } from 'flowbite-react/components/TextInput';
 import Link from 'next/link';
 import React, {
   Dispatch,
+  FormEvent,
   SetStateAction,
   useEffect,
   useRef,
@@ -22,24 +23,14 @@ const FormManageModulView: React.FC<
   const formRef = useRef(null);
   const [editModalActive, setEditModalActive] = useState(false);
   const [isEditConfrm, setIsEditConfrm] = useState(false);
-  useEffect(() => {
-    const form = formRef.current;
-    if (isEditConfrm && form) {
-      setSubmitType({ type: 'defaultSubmit' });
-      setTimeout(() => {
-        (form as HTMLFormElement).requestSubmit();
-      }, 200);
-    }
-  }, [isEditConfrm]);
   return (
     <section>
-      <AlertModal
-        openModal={editModalActive}
-        setOpenModal={setEditModalActive}
-        setIsConfirmed={setIsEditConfrm}
-        messageText="Are you sure you want to update this item?"
-      />
-      <form ref={formRef} onSubmit={handleSubmitForm} action="" className="">
+      <form
+        ref={formRef}
+        onSubmit={(e) => handleSubmitForm(e, 'addContent')}
+        action=""
+        className=""
+      >
         <div className="flex items-center">
           <div className="flex-1">
             <div className="max-w-md">
@@ -104,20 +95,24 @@ const FormManageModulView: React.FC<
             type="button"
             outline
             className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+            onClick={() => (window.location.href = '/backoffice/manage-modul')}
           >
-            <Link className="" href={'/backoffice/manage-modul'}>
-              Cancel
-            </Link>
+            Cancel
           </Button>
           <Button
-            onClick={() => {
-              if (id) {
-                setEditModalActive(true);
-              } else {
-                setIsEditConfrm(true);
+            onClick={(e: FormEvent<HTMLButtonElement>) => {
+              e.preventDefault();
+              setSubmitType({ type: 'nextSubmit' });
+              const formElement = e.currentTarget.closest('form');
+              if (formElement) {
+                const formEvent = new Event('submit', {
+                  bubbles: true,
+                  cancelable: true,
+                }) as unknown as FormEvent<HTMLFormElement>;
+                handleSubmitForm(formEvent, 'edit');
               }
             }}
-            type="button"
+            type="submit"
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >

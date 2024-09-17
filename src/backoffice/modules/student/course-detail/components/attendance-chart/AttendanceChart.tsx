@@ -1,8 +1,17 @@
 import React from 'react';
 import AttendanceChartView from './AttendanceChart.view';
-import { chartData } from './attendanceChart.data';
+import { AttendanceData } from './attendanceChart.type';
 
-const AttendanceChart: React.FC = () => {
+interface AttendanceChartProps {
+  data: AttendanceData;
+}
+
+const AttendanceChart: React.FC<AttendanceChartProps> = ({ data }) => {
+  const chartData = {
+    present: data.presencePercentage,
+    absent: data.absencePercentage,
+  };
+
   return <AttendanceChartView {...chartData} />;
 };
 

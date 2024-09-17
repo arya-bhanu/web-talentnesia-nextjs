@@ -40,16 +40,14 @@ const Assignment: React.FC = () => {
           Submit Now
         </button>
       </div>
-      <div className="flex justify-between py-4 mt-6">
-        <button className="px-8 py-2 rounded-full border border-[#FFC862] text-gray-700 mr-8">
-          Previous
-        </button>
-        <button className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700 ml-8">
-          Next
-        </button>
-      </div>
     </div>
   );
 };
 
 export default Assignment;
+
+
+
+
+
+
