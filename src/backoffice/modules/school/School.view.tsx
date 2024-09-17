@@ -10,6 +10,7 @@ import { useSchoolActions } from './hooks/useSchoolAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import Link from 'next/link';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -23,8 +24,7 @@ const SchoolView: React.FC<ISchoolView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const { handleDeleteSchool } =
-    useSchoolActions();
+  const { handleDeleteSchool } = useSchoolActions();
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
@@ -63,22 +63,32 @@ const SchoolView: React.FC<ISchoolView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <Link href={`/backoffice/school/detail-school?schoolId=${id}`}>
-                    <button className="hover:text-green-500 hover:underline">
-                      Detail
+                  <PermissionGranted roleable role="school.detail.read">
+                    <Link
+                      href={`/backoffice/school/detail-school?schoolId=${id}`}
+                    >
+                      <button className="hover:text-green-500 hover:underline">
+                        Detail
+                      </button>
+                    </Link>
+                  </PermissionGranted>
+                  <PermissionGranted roleable role="school.edit">
+                    <Link
+                      href={`/backoffice/school/edit-school?schoolId=${id}`}
+                    >
+                      <button className="hover:text-blue-700 hover:underline">
+                        Edit
+                      </button>
+                    </Link>
+                  </PermissionGranted>
+                  <PermissionGranted roleable role="school.delete">
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
                     </button>
-                  </Link>
-                  <Link href={`/backoffice/school/edit-school?schoolId=${id}`}>
-                    <button className="hover:text-blue-700 hover:underline">
-                      Edit
-                    </button>
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
-                  >
-                    Delete
-                  </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -97,22 +107,26 @@ const SchoolView: React.FC<ISchoolView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <Link href="/backoffice/school/add-school" className="p-0 m-0 block">
-          <AddButton
-            onClick={() => {
-              setSelectedId(null);
-              setSelectedRowData(null);
-            }}
-            text="Add Course"
-          />
-        </Link>
+        <PermissionGranted roleable role="school.add">
+          <Link href="/backoffice/school/add-school" className="p-0 m-0 block">
+            <AddButton
+              onClick={() => {
+                setSelectedId(null);
+                setSelectedRowData(null);
+              }}
+              text="Add Course"
+            />
+          </Link>
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted roleable role="school.read">
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
 
       <AlertModal
         openModal={deleteModalOpen}

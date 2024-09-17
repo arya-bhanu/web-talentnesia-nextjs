@@ -7,6 +7,7 @@ import ModalAddProgram from '@/backoffice/components/modal-add-program/ModalAddP
 import DetailSchoolPage from './components/detail-school-page';
 import ListTableStudent from './components/list-table-student';
 import ListProgramCard from './components/list-program-card';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 type TabTypes = 'detailSchool' | 'student' | 'program';
 
@@ -37,19 +38,31 @@ function DetailSchoolView({
   const tabs: TabItem<TabTypes>[] = [
     {
       title: 'Detail School',
-      content: <DetailSchoolPage />,
+      content: (
+        <PermissionGranted role="school.detail.read" roleable>
+          <DetailSchoolPage />
+        </PermissionGranted>
+      ),
       type: 'detailSchool',
       active: activeTab === 'detailSchool',
     },
     {
       title: 'Student',
-      content: <ListTableStudent />,
+      content: (
+        <PermissionGranted roleable role="school.student.read">
+          <ListTableStudent />
+        </PermissionGranted>
+      ),
       type: 'student',
       active: activeTab === 'student',
     },
     {
       title: 'Program',
-      content: <ListProgramCard />,
+      content: (
+        <PermissionGranted role="school.program.read" roleable>
+          <ListProgramCard />
+        </PermissionGranted>
+      ),
       type: 'program',
       active: activeTab === 'program',
     },
@@ -72,7 +85,7 @@ function DetailSchoolView({
       />
       <TabFlex tabs={tabs} onTabChange={handleTabChange} />
       <div className="mt-4">
-        {tabs.find(tab => tab.type === activeTab)?.content}
+        {tabs.find((tab) => tab.type === activeTab)?.content}
       </div>
     </>
   );
