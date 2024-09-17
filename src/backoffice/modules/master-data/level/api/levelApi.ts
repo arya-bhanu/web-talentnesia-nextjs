@@ -16,12 +16,6 @@ export const levelAPI = {
     }).then((response) => response.data);
   },
 
-  generateCode: () => {
-    const randomString = Math.random().toString(36).substring(2, 5).toUpperCase();
-    const timestamp = new Date().getTime().toString().slice(-4);
-    return `LVL-${randomString}${timestamp}`;
-  },
-
   add: async (data: { name: string; code: string; active: number }) => {
     return fetchAxios<{ data: APIResponseLevel; message: string }>({
       url: `/v1/levels`,

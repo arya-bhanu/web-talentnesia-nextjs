@@ -36,6 +36,7 @@ export const ModalFormView: React.FC<ModalFormViewProps> = ({
                 }
                 className={`block w-full p-2 border ${hasError && !formData.code ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
                 maxLength={15}
+                required
               />
               {hasError && !formData.code && (
                 <p className="text-red-500 text-xs mt-1">Code is required.</p>
