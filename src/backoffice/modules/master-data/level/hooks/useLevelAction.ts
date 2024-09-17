@@ -7,26 +7,29 @@ export const useLevelActions = () => {
       await levelAPI.add({
         name,
         code: '',
-        status: 0,
+        active: 0,
       });
     } catch (error) {
-      console.error('Failed to add category');
+      console.error('Failed to add level:', error);
+      throw error;
     }
   }, []);
 
   const handleEditLevel = useCallback(async (id: string, data: any) => {
     try {
-       levelAPI.update(id, data);
+      await levelAPI.update(id, data);
     } catch (error) {
-      console.error('Failed to  level');
+      console.error('Failed to update level:', error);
+      throw error;
     }
   }, []);
 
   const handleDeleteLevel = useCallback(async (id: string) => {
     try {
-       levelAPI.delete(id);
+      await levelAPI.delete(id);
     } catch (error) {
-      console.error('Failed to  level');
+      console.error('Failed to delete level:', error);
+      throw error;
     }
   }, []);
 

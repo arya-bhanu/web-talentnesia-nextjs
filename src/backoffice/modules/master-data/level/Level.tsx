@@ -5,6 +5,7 @@ import LevelView from './Level.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLevelActions } from './hooks/useLevelAction';
 import { levelAPI } from './api/levelApi';
+import { APIResponseLevel } from './level.type';
 
 const Level = () => {
   const queryClient = useQueryClient();
@@ -14,7 +15,7 @@ const Level = () => {
 
   const { handleAddLevel, handleEditLevel, handleDeleteLevel } = useLevelActions();
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useQuery<APIResponseLevel[]>({
     queryKey: ['level'],
     queryFn: async () => {
       const response = await levelAPI.fetch();
@@ -47,7 +48,7 @@ const Level = () => {
 
   return (
     <LevelView
-      data={data}
+      data={data || []}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
@@ -60,5 +61,4 @@ const Level = () => {
     />
   );
 };
-
 export default Level;
