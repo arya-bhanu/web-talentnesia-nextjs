@@ -65,7 +65,7 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
     return null;
   }
 
-  const customPageStyle = ['/mentor/dashboard/'].includes(pathname);
+  const customPageStyle = ['/mentor/dashboard/', '/mentor/manage-program/'].includes(pathname);
 
   return (
     <div className='bg-[#FAFAFA]'>

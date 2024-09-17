@@ -43,6 +43,7 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { reorderContent } from '../../form-program/components/form-course/api/formCourse.api';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import ModalGenerate from '../../form-program/components/form-generateCertificate/components/modal';
+import { decodeToken } from '@/lib/tokenDecoder';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -120,6 +121,8 @@ const AccordionPanelDraggableView: React.FC<
   });
 
   const queryClient = useQueryClient();
+  const decodedToken = decodeToken();
+  const isAdmin = decodedToken?.role === 1;
 
   useEffect(() => {
     if (deleteConfirm) {
@@ -261,65 +264,69 @@ const AccordionPanelDraggableView: React.FC<
                     Mentoring
                   </button>
                 </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => handleOpenModalContent('open')}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <AddXs />
-                    Add File Content
-                  </button>
-                </li>
-                <li>
-                  <Link
-                    href={`/backoffice/manage-program/update-program/add-exam/?programId=${programId}&chapterId=${id}`}
-                    type="button"
-                    className="text-sm flex items-center gap-2 font-lato font-normal"
-                  >
-                    <AddXs />
-                    Add Exam
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => handleOpenModalCertificate('open')}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <ClarityCertificate />
-                    Certificate
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => handleOpenModalGenerate('open')}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <ClarityCertificate />
-                    Generate Certificate
-                  </button>
-                </li>
-                <li>
-                  <Link
-                    href={`/backoffice/manage-program/update-program/edit-chapter/?programId=${programId}&chapterId=${id}&schoolId=${schoolId}`}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <Edit />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => setOpenModalConfirm(true)}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <TrashXs />
-                    Delete
-                  </button>
-                </li>
+                {isAdmin && (
+                  <>
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenModalContent('open')}
+                        className="text-sm font-lato font-normal flex items-center gap-2"
+                      >
+                        <AddXs />
+                        Add File Content
+                      </button>
+                    </li>
+                    <li>
+                      <Link
+                        href={`/backoffice/manage-program/update-program/add-exam/?programId=${programId}&chapterId=${id}`}
+                        type="button"
+                        className="text-sm flex items-center gap-2 font-lato font-normal"
+                      >
+                        <AddXs />
+                        Add Exam
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenModalCertificate('open')}
+                        className="text-sm font-lato font-normal flex items-center gap-2"
+                      >
+                        <ClarityCertificate />
+                        Certificate
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenModalGenerate('open')}
+                        className="text-sm font-lato font-normal flex items-center gap-2"
+                      >
+                        <ClarityCertificate />
+                        Generate Certificate
+                      </button>
+                    </li>
+                    <li>
+                      <Link
+                        href={`/backoffice/manage-program/update-program/edit-chapter/?programId=${programId}&chapterId=${id}&schoolId=${schoolId}`}
+                        className="text-sm font-lato font-normal flex items-center gap-2"
+                      >
+                        <Edit />
+                        Edit
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => setOpenModalConfirm(true)}
+                        className="text-sm font-lato font-normal flex items-center gap-2"
+                      >
+                        <TrashXs />
+                        Delete
+                      </button>
+                    </li>
+                  </>
+                )}
               </ul>
             }
             button={

@@ -2,16 +2,14 @@
 import { Card } from 'flowbite-react';
 import { TabFlex, TabItem } from '@/backoffice/components/tabs/tabs';
 import { FormProgramTabs, IFormProgram } from './formProgram.type';
-import Search from '@/../public/icons/iconamoon_search-bold.svg';
-
-import Add from '@/../public/icons/add.svg';
 import TableStudents from './components/table-students';
 import ModalSelect from '@/backoffice/components/modal-select/ModalSelect';
 import { IAccordionPanelDraggable } from '@/backoffice/modules/manage-program/components/accordion-panel-draggable/accordionPanelDraggable.type';
-import { Dispatch, FormEvent, SetStateAction } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useEffect } from 'react';
 import FormCourse from './components/form-course';
 import FormDetail from './components/form-detail/FormDetail';
 import { useTabStoreFormProgram } from './formProgramStore';
+import { decodeToken } from '@/lib/tokenDecoder';
 
 function FormProgramView({
   open,
@@ -31,6 +29,15 @@ function FormProgramView({
   const handleTabChange = (tabType: FormProgramTabs[keyof FormProgramTabs]) => {
     setActiveTab(tabType);
   };
+
+  const decodedToken = decodeToken();
+  const isAdmin = decodedToken?.role === 1;
+
+  useEffect(() => {
+    if (!isAdmin && activeTab === 'detail') {
+      setActiveTab('course');
+    }
+  }, [isAdmin, activeTab]);
 
   const tabs: TabItem<FormProgramTabs[keyof FormProgramTabs]>[] = [
     {
@@ -57,6 +64,8 @@ function FormProgramView({
       : []),
   ];
 
+  const filteredTabs = isAdmin ? tabs : tabs.filter(tab => tab.type !== 'detail');
+
   return (
     <Card>
       <ModalSelect
@@ -69,14 +78,18 @@ function FormProgramView({
         rows={[]}
       />
       <TabFlex<FormProgramTabs[keyof FormProgramTabs]>
-        tabs={tabs}
+        tabs={filteredTabs}
         onTabChange={handleTabChange}
       />
-      {activeTab === 'detail' && <FormDetail />}
-      {programId && (
+      {(isAdmin || activeTab !== 'detail') && (
         <>
-          {activeTab === 'course' && <FormCourse />}
-          {activeTab === 'student' && <TableStudents setOpenModalBrowser={setOpen}/>}
+          {activeTab === 'detail' && <FormDetail />}
+          {programId && (
+            <>
+              {activeTab === 'course' && <FormCourse />}
+              {activeTab === 'student' && <TableStudents setOpenModalBrowser={setOpen}/>}
+            </>
+          )}
         </>
       )}
     </Card>
