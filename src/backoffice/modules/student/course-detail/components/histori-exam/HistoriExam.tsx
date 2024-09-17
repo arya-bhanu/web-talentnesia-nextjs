@@ -1,23 +1,26 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HistoriExamView from './HistoriExam.view';
-import { examData } from './historiExam.data'; 
 import { ExamData } from './historiExam.type';
 
-const HistoriExam: React.FC = () => {
-  const [itemsToShow, setItemsToShow] = useState(5); 
-  const [showAll, setShowAll] = useState(false); 
+interface HistoriExamProps {
+  historyExam: ExamData[];
+}
+
+const HistoriExam: React.FC<HistoriExamProps> = ({ historyExam }) => {
+  const [itemsToShow, setItemsToShow] = useState(5);
+  const [showAll, setShowAll] = useState(false);
   const [sortColumn, setSortColumn] = useState<keyof ExamData>('no');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const handleViewAll = () => {
-    setItemsToShow(examData.length); 
+    setItemsToShow(historyExam.length);
     setShowAll(true);
   };
 
   const handleHide = () => {
-    setItemsToShow(5); 
+    setItemsToShow(5);
     setShowAll(false);
   };
 
@@ -27,7 +30,7 @@ const HistoriExam: React.FC = () => {
     setSortColumn(column);
   };
 
-  const sortedData = [...examData].sort((a, b) => {
+  const sortedData = [...historyExam].sort((a, b) => {
     const aValue = a[sortColumn];
     const bValue = b[sortColumn];
 
