@@ -10,13 +10,14 @@ import ModalForm from './components/modal-form-title/ModalForm';
 import { useAcademicTitleActions } from './hooks/useAcademicTitleAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
 const AcademicTitleView: React.FC<IAcademicTitleView> = ({
   data,
   Filter,
-  setFilter,  
+  setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
@@ -31,11 +32,14 @@ const AcademicTitleView: React.FC<IAcademicTitleView> = ({
     handleDeleteAcademicTitle,
   } = useAcademicTitleActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
-    setSelectedId(id);
-    setSelectedRowData(rowData);
-    setIsPopupOpen(true);
-  }, [setIsPopupOpen]);
+  const handleEdit = useCallback(
+    (id: string, rowData: any) => {
+      setSelectedId(id);
+      setSelectedRowData(rowData);
+      setIsPopupOpen(true);
+    },
+    [setIsPopupOpen],
+  );
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
@@ -74,23 +78,33 @@ const AcademicTitleView: React.FC<IAcademicTitleView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-  
+
           return (
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted
+                    roleable
+                    role="master-data.academicTitle.edit"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.academicTitle.delete"
                   >
-                    Delete
-                  </button>
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -102,33 +116,37 @@ const AcademicTitleView: React.FC<IAcademicTitleView> = ({
         },
       }),
     ],
-    [handleEdit, handleDelete]
+    [handleEdit, handleDelete],
   );
 
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add Academic Title"
-        />
+        <PermissionGranted role="master-data.academicTitle.add" roleable>
+          <AddButton
+            onClick={() => {
+              setSelectedId(null);
+              setIsPopupOpen(true);
+            }}
+            text="Add Academic Title"
+          />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted role="master-data.academicTitle.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
           setIsPopupOpen(false);
-          setSelectedId(null); 
-          setSelectedRowData(null); 
+          setSelectedId(null);
+          setSelectedRowData(null);
         }}
         onSave={handleAddOrEditAcademicTitle}
         initialData={selectedRowData}

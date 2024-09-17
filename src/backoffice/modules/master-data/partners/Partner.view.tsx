@@ -6,18 +6,20 @@ import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-delete-modal';
-import ModalForm from './components/modal-form-certificate';
+import ModalForm from './components/modal-form-partner';
 import { usePartnerActions } from './hooks/usePartnerAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
+import { useRouter } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
 const PartnersView: React.FC<IPartnerView> = ({
   data,
   Filter,
-  setFilter,  
+  setFilter,
   isPopupOpen,
   setIsPopupOpen,
   fetchData,
@@ -25,6 +27,12 @@ const PartnersView: React.FC<IPartnerView> = ({
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
+
+  const router = useRouter();
+
+  const openDocumentEditor = () => {
+    router.push('/backoffice/master-data/partner/add-partner/');
+  };
 
   const {
     handleAddPartner,
@@ -98,23 +106,32 @@ const PartnersView: React.FC<IPartnerView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-  
+
           return (
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
-                  >
-                    Delete
-                  </button>
+                  <PermissionGranted roleable role="master-data.partner.edit">
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted roleable role="master-data.partner.read">
+                    <button className="hover:text-blue-700 hover:underline">
+                      Open
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted roleable role="master-data.partner.delete">
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -133,26 +150,24 @@ const PartnersView: React.FC<IPartnerView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add Partner"
-        />
+        <PermissionGranted role="master-data.partner.add" roleable>
+          <AddButton onClick={openDocumentEditor} text="Add Partner" />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'name', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted role="master-data.partner.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'name', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
           setIsPopupOpen(false);
-          setSelectedId(null); 
-          setSelectedRowData(null); 
+          setSelectedId(null);
+          setSelectedRowData(null);
         }}
         onSave={handleAddOrEditPartner}
         initialData={selectedRowData}
