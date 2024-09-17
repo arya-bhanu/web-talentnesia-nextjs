@@ -49,25 +49,23 @@ const PaginationView: React.FC<PaginationProps> = ({ currentPage, totalPages, on
             height={24}
           />
         </button>
-
-        {renderPageNumbers().map((number, index) =>
-          number === '...' ? (
-            <span key={index} className="text-gray-500 px-2">...</span>
-          ) : (
-            <button
-              key={number}
-              className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs ${
-                number === currentPage
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-900 hover:bg-gray-100'
-              }`}
-              onClick={() => onPageChange(Number(number))}
-            >
-              {number}
-            </button>
-          )
-        )}
-
+          {renderPageNumbers().map((number, index) =>
+            number === '...' ? (
+              <span key={index} className="text-gray-500 px-2">...</span>
+            ) : (
+              <button
+                key={number}
+                className={`inline-flex items-center justify-center rounded-full w-8 h-8 text-xs ${
+                  number === currentPage
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white text-gray-900 hover:bg-gray-100'
+                }`}
+                onClick={() => onPageChange(Number(number))}
+              >
+                {number}
+              </button>
+            )
+          )}
         <button
           className="inline-flex items-center justify-center rounded bg-white text-gray-900"
           disabled={currentPage === totalPages}

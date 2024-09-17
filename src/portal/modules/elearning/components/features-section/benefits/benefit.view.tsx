@@ -6,9 +6,9 @@ import SkeletonLoader from '@/portal/components/skeleton-animation';
 
 export const BenefitsView = ({ className, isLoading }: { className?: string, isLoading?: boolean }) => {
   return (
-    <section className={clsx(className)} style={{backgroundColor: '#f5f9ff'}}>
-      <div className="flex flex-col lg:flex-row lg:items-start lg:text-left ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
+    <section className={clsx(className, 'px-5 lg:px-0')} style={{backgroundColor: '#f5f9ff'}}>
+      <div className="flex flex-col lg:flex-row lg:items-start lg:text-left lg:pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-10 items-start">
           {benefitsData.map((feature, index) => (
             <div
               key={index}
