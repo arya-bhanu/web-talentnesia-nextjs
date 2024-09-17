@@ -62,3 +62,7 @@ export const authenticatedFetch = async (url: string, options: RequestInit = {})
   }
   return response;
 };
+
+export const isTokenNull = (): boolean => {
+  return getToken() === undefined;
+};
