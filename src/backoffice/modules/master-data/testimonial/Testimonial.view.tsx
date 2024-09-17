@@ -10,6 +10,8 @@ import ModalForm from './components/modal-form-testimonial/ModalForm';
 import { useTestimonialActions } from './hooks/useTestimonialAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import { useRouter } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -25,7 +27,17 @@ const TestimonialView: React.FC<ITestimonialView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const { handleDeleteTestimonial, handleEditTestimonial, handleAddTestimonial } = useTestimonialActions();
+  const router = useRouter();
+
+  const openDocumentEditor = () => {
+    router.push('/backoffice/master-data/testimonial/add-testimonial/');
+  };
+
+  const {
+    handleDeleteTestimonial,
+    handleEditTestimonial,
+    handleAddTestimonial,
+  } = useTestimonialActions();
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
@@ -40,7 +52,7 @@ const TestimonialView: React.FC<ITestimonialView> = ({
     },
     [setIsPopupOpen],
   );
-  
+
   const handleAddOrEditTestimonial = useCallback(
     async (id: string | undefined, data: TestimonialRequest) => {
       if (id) {
@@ -53,9 +65,8 @@ const TestimonialView: React.FC<ITestimonialView> = ({
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [fetchData, handleEditTestimonial, handleAddTestimonial]
+    [fetchData, handleEditTestimonial, handleAddTestimonial],
   );
-  
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -64,9 +75,7 @@ const TestimonialView: React.FC<ITestimonialView> = ({
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('name', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Name" />
-        ),
+        header: ({ column }) => <SortingTable column={column} title="Name" />,
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('description', {
@@ -86,18 +95,36 @@ const TestimonialView: React.FC<ITestimonialView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted
+                    roleable
+                    role="master-data.testimonial.edit"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.testimonial.read"
                   >
-                    Delete
-                  </button>
+                    <button className="hover:text-blue-700 hover:underline">
+                      Open
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.testimonial.delete"
+                  >
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -116,22 +143,18 @@ const TestimonialView: React.FC<ITestimonialView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setSelectedRowData(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add Testimonial"
-        />
+        <PermissionGranted role="master-data.testimonial.add" roleable>
+          <AddButton onClick={openDocumentEditor} text="Add Testimonial" />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
-
+      <PermissionGranted role="master-data.testimonial.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {

@@ -26,6 +26,7 @@ import { useDragContents } from '@/backoffice/modules/manage-modul/add-exam/stor
 import { contentsReorder } from '../../api/manageModelApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import AlertModal from '@/backoffice/components/alert-modal';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const FormChapterView: React.FC<
   IFormChapter &
@@ -128,7 +129,7 @@ const FormChapterView: React.FC<
         openModal={isOpenModalEdit}
         setIsConfirmed={setIsEditConfrm}
         setOpenModal={setIsOpenModalEdit}
-        messageText='Are you sure you want to update this item?'
+        messageText="Are you sure you want to update this item?"
       />
       <Modal
         handleSubmit={handleSubmitAddContent}
@@ -159,22 +160,26 @@ const FormChapterView: React.FC<
           <div className="flex items-center justify-between">
             <h3 className="text-base font-semibold font-poppins">Content</h3>
             <div className="flex items-center gap-2">
-              <Button
-                onClick={() => setActionSubChapter('exam')}
-                type="submit"
-                className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
-              >
-                <AddWhite />
-                <span>Add Exam</span>
-              </Button>
-              <button
-                onClick={() => setActionSubChapter('content')}
-                type="submit"
-                className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
-              >
-                <Add />
-                <span className="text-black"> Add Content</span>
-              </button>
+              <PermissionGranted roleable role="manage-module.addExam">
+                <Button
+                  onClick={() => setActionSubChapter('exam')}
+                  type="submit"
+                  className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
+                >
+                  <AddWhite />
+                  <span>Add Exam</span>
+                </Button>
+              </PermissionGranted>
+              <PermissionGranted roleable role='manage-module.addContent'>
+                <button
+                  onClick={() => setActionSubChapter('content')}
+                  type="submit"
+                  className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
+                >
+                  <Add />
+                  <span className="text-black"> Add Content</span>
+                </button>
+              </PermissionGranted>
             </div>
           </div>
           <section className="flex flex-col gap-5 mt-8">

@@ -10,6 +10,8 @@ import ModalForm from './components/modal-form-zip-code';
 import { useZipCodeActions } from './hooks/useZipCodeAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../../public/icons/more_horiz.svg';
+import { useRouter } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -25,7 +27,14 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const { handleAddZipCode, handleEditZipCode, handleDeleteZipCode } = useZipCodeActions();
+  const router = useRouter();
+
+  const openDocumentEditor = () => {
+    router.push('/backoffice/master-data/region/zip-code/add-zip-code/');
+  };
+
+  const { handleAddZipCode, handleEditZipCode, handleDeleteZipCode } =
+    useZipCodeActions();
 
   const handleEdit = useCallback(
     (id: string, rowData: any) => {
@@ -58,7 +67,9 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {
-        header: ({ column }) => <SortingTable column={column} title="Zip Code" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Zip Code" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('village', {
@@ -68,7 +79,9 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('subdictrictname', {
-        header: ({ column }) => <SortingTable column={column} title="Sub-District Name" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Sub-District Name" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('city', {
@@ -76,7 +89,9 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('province', {
-        header: ({ column }) => <SortingTable column={column} title="Province" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Province" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('id', {
@@ -90,18 +105,36 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.zipcode.edit"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.zipcode.read"
                   >
-                    Delete
-                  </button>
+                    <button className="hover:text-blue-700 hover:underline">
+                      Open
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.zipcode.delete"
+                  >
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -120,20 +153,18 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add ZipCode"
-        />
+        <PermissionGranted role="master-data.region.zipcode.add" roleable>
+          <AddButton onClick={openDocumentEditor} text="Add ZipCode" />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted role="master-data.region.zipcode.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {

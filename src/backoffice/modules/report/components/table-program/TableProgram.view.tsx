@@ -10,6 +10,7 @@ import { ITableProgramView } from './tableProgram.type';
 import { useRouter } from 'next/navigation';
 import Popover from '@/backoffice/components/popover';
 import Link from 'next/link';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -89,12 +90,17 @@ const TableProgramView: React.FC<ITableProgramView> = ({
                 content={
                   <div className="relative flex justify-center">
                     <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                      <Link
-                        href={`/backoffice/report/detail/?id=${id}`}
-                        className="hover:text-blue-500 hover:underline"
+                      <PermissionGranted
+                        roleable
+                        role="report.programProgressDetail.read"
                       >
-                        Detail
-                      </Link>
+                        <Link
+                          href={`/backoffice/report/detail/?id=${id}`}
+                          className="hover:text-blue-500 hover:underline"
+                        >
+                          Detail
+                        </Link>
+                      </PermissionGranted>
                     </div>
                   </div>
                 }

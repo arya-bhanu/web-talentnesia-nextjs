@@ -9,9 +9,11 @@ import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-discount';
 import { useDiscountActions } from './hooks/useDiscountAction';
 import { Popover } from 'flowbite-react';
-import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
-import { format } from 'date-fns'; 
+import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -27,7 +29,14 @@ const DiscountView: React.FC<IDiscountView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const { handleAddDiscount, handleEditDiscount, handleDeleteDiscount } = useDiscountActions();
+  const router = useRouter();
+
+  const openDocumentEditor = () => {
+    router.push('/backoffice/master-data/discount/add-discount/');
+  };
+
+  const { handleAddDiscount, handleEditDiscount, handleDeleteDiscount } =
+    useDiscountActions();
 
   const handleEdit = useCallback(
     (id: string, rowData: any) => {
@@ -35,7 +44,7 @@ const DiscountView: React.FC<IDiscountView> = ({
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
     },
-    [setIsPopupOpen]
+    [setIsPopupOpen],
   );
 
   const handleDelete = useCallback((id: string) => {
@@ -54,7 +63,7 @@ const DiscountView: React.FC<IDiscountView> = ({
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditDiscount, handleAddDiscount, fetchData]
+    [handleEditDiscount, handleAddDiscount, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(
@@ -64,36 +73,44 @@ const DiscountView: React.FC<IDiscountView> = ({
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('name', {
-        header: ({ column }) => <SortingTable column={column} title="Discount Name" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Discount Name" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('persentage', {
-        header: ({ column }) => <SortingTable column={column} title="Percentage" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Percentage" />
+        ),
         cell: (info) => (
-          <div className="w-full">
-            {String(info.getValue())}%
-          </div>
+          <div className="w-full">{String(info.getValue())}%</div>
         ),
       }),
       columnHelper.accessor('startDate-endDate', {
-        header: ({ column }) => <SortingTable column={column} title="Start Date -> End Date" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Start Date -> End Date" />
+        ),
         cell: (info) => {
           const startDate = info.row.original.startDate as string;
           const endDate = info.row.original.endDate as string;
           const formatDate = (dateString: string) => {
             const date = new Date(dateString);
-            return isNaN(date.getTime()) ? 'Invalid Date' : format(date, 'MMM-dd-yyyy');
+            return isNaN(date.getTime())
+              ? 'Invalid Date'
+              : format(date, 'MMM-dd-yyyy');
           };
-      
+
           const formattedStartDate = formatDate(startDate);
           const formattedEndDate = formatDate(endDate);
-      
+
           return `${formattedStartDate} -> ${formattedEndDate}`;
         },
       }),
       columnHelper.accessor('active', {
         header: ({ column }) => <SortingTable column={column} title="Status" />,
-        cell: (info) => <BadgeStatus status={info.getValue() as number}  type={1}/>,
+        cell: (info) => (
+          <BadgeStatus status={info.getValue() as number} type={1} />
+        ),
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -106,12 +123,30 @@ const DiscountView: React.FC<IDiscountView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button onClick={() => handleEdit(id, rowData)} className="hover:text-blue-700 hover:underline">
-                    Edit
-                  </button>
-                  <button onClick={() => handleDelete(id)} className="hover:text-red-700 hover:underline">
-                    Delete
-                  </button>
+                  <PermissionGranted roleable role="master-data.discount.edit">
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted roleable role="master-data.discount.read">
+                    <button className="hover:text-blue-700 hover:underline">
+                      Open
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.discount.delete"
+                  >
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -123,22 +158,25 @@ const DiscountView: React.FC<IDiscountView> = ({
         },
       }),
     ],
-    [handleEdit, handleDelete]
+    [handleEdit, handleDelete],
   );
 
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add Discount"
-        />
+        <PermissionGranted role="master-data.discount.add" roleable>
+          <AddButton onClick={openDocumentEditor} text="Add Discount" />
+        </PermissionGranted>
       </div>
-      <DataTable data={data} columns={columns} sorting={[{ id: 'code', desc: false }]} filter={{ Filter, setFilter }} />
+      <PermissionGranted role="master-data.discount.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {

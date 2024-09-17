@@ -43,6 +43,7 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { reorderContent } from '../../form-program/components/form-course/api/formCourse.api';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import ModalGenerate from '../../form-program/components/form-generateCertificate/components/modal';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const AccordionPanelDraggableView: React.FC<
   IAccordionPanelDraggable &
@@ -261,36 +262,51 @@ const AccordionPanelDraggableView: React.FC<
                     Mentoring
                   </button>
                 </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => handleOpenModalContent('open')}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <AddXs />
-                    Add File Content
-                  </button>
-                </li>
-                <li>
-                  <Link
-                    href={`/backoffice/manage-program/update-program/add-exam/?programId=${programId}&chapterId=${id}`}
-                    type="button"
-                    className="text-sm flex items-center gap-2 font-lato font-normal"
-                  >
-                    <AddXs />
-                    Add Exam
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => handleOpenModalCertificate('open')}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <ClarityCertificate />
-                    Certificate
-                  </button>
-                </li>
+                <PermissionGranted
+                  roleable
+                  role="manage-program.iicp.course.addFileContent"
+                >
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenModalContent('open')}
+                      className="text-sm font-lato font-normal flex items-center gap-2"
+                    >
+                      <AddXs />
+                      Add File Content
+                    </button>
+                  </li>
+                </PermissionGranted>
+                <PermissionGranted
+                  roleable
+                  role="manage-program.iicp.course.addExam"
+                >
+                  <li>
+                    <Link
+                      href={`/backoffice/manage-program/update-program/add-exam/?programId=${programId}&chapterId=${id}`}
+                      type="button"
+                      className="text-sm flex items-center gap-2 font-lato font-normal"
+                    >
+                      <AddXs />
+                      Add Exam
+                    </Link>
+                  </li>
+                </PermissionGranted>
+                <PermissionGranted
+                  roleable
+                  role="manage-program.iicp.course.certificate"
+                >
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenModalCertificate('open')}
+                      className="text-sm font-lato font-normal flex items-center gap-2"
+                    >
+                      <ClarityCertificate />
+                      Certificate
+                    </button>
+                  </li>
+                </PermissionGranted>
                 <li>
                   <button
                     type="button"
@@ -301,25 +317,32 @@ const AccordionPanelDraggableView: React.FC<
                     Generate Certificate
                   </button>
                 </li>
-                <li>
-                  <Link
-                    href={`/backoffice/manage-program/update-program/edit-chapter/?programId=${programId}&chapterId=${id}&schoolId=${schoolId}`}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <Edit />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => setOpenModalConfirm(true)}
-                    className="text-sm font-lato font-normal flex items-center gap-2"
-                  >
-                    <TrashXs />
-                    Delete
-                  </button>
-                </li>
+                <PermissionGranted
+                  roleable
+                  role="manage-program.iicp.course.editProgram"
+                >
+                  <li>
+                    <Link
+                      href={`/backoffice/manage-program/update-program/edit-chapter/?programId=${programId}&chapterId=${id}&schoolId=${schoolId}`}
+                      className="text-sm font-lato font-normal flex items-center gap-2"
+                    >
+                      <Edit />
+                      Edit
+                    </Link>
+                  </li>
+                </PermissionGranted>
+                <PermissionGranted roleable role='manage-program.iicp.course.delete'>
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => setOpenModalConfirm(true)}
+                      className="text-sm font-lato font-normal flex items-center gap-2"
+                    >
+                      <TrashXs />
+                      Delete
+                    </button>
+                  </li>
+                </PermissionGranted>
               </ul>
             }
             button={

@@ -15,6 +15,7 @@ import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -41,18 +42,21 @@ const CertificateView: React.FC<ICertificateView> = ({
     handleDeleteCertificate,
   } = useCertificateActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
-    setSelectedId(id);
-    setSelectedRowData(rowData);
-    setIsPopupOpen(true);
-  }, [setIsPopupOpen]);
+  const handleEdit = useCallback(
+    (id: string, rowData: any) => {
+      setSelectedId(id);
+      setSelectedRowData(rowData);
+      setIsPopupOpen(true);
+    },
+    [setIsPopupOpen],
+  );
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
     setDeleteModalOpen(true);
   }, []);
   const handleAddOrEditCertificate = useCallback(
-    async (id: string | undefined, data: { name: string, file: string }) => {
+    async (id: string | undefined, data: { name: string; file: string }) => {
       try {
         if (id) {
           await handleEditCertificate(id, data);
@@ -66,13 +70,15 @@ const CertificateView: React.FC<ICertificateView> = ({
         console.error('Failed to add or edit certificate', error);
       }
     },
-    [handleEditCertificate, handleAddCertificate, fetchData]
+    [handleEditCertificate, handleAddCertificate, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('name', {
-        header: ({ column }) => <SortingTable column={column} title="Template Name" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Template Name" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('file', {
@@ -86,25 +92,25 @@ const CertificateView: React.FC<ICertificateView> = ({
           <SortingTable column={column} title="Date Uploaded" />
         ),
         cell: (info) => {
-          const date = info.getValue() as string || new Date().toISOString();
+          const date = (info.getValue() as string) || new Date().toISOString();
           const parsedDate = new Date(date);
 
-          const formattedDate = format(parsedDate, "MMMM do yyyy");
+          const formattedDate = format(parsedDate, 'MMMM do yyyy');
           const formattedTime = format(parsedDate, "HH:mm 'WIB'");
 
           return (
             <div>
-              <div className='font-bold text-gray-900'>{formattedDate}</div>
-              <div className=' text-start'>{formattedTime}</div>
+              <div className="font-bold text-gray-900">{formattedDate}</div>
+              <div className=" text-start">{formattedTime}</div>
             </div>
           );
         },
       }),
       columnHelper.accessor('active', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Status" />
+        header: ({ column }) => <SortingTable column={column} title="Status" />,
+        cell: (info) => (
+          <BadgeStatus status={info.getValue() as number} type={1} />
         ),
-        cell: (info) => <BadgeStatus status={info.getValue() as number} type={1} />,
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -117,23 +123,36 @@ const CertificateView: React.FC<ICertificateView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={openDocumentEditor}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted
+                    roleable
+                    role="master-data.certificate.edit"
                   >
-                    Edit
-                  </button>
-                  <button
-                    className="hover:text-blue-700 hover:underline"
+                    <button
+                      onClick={openDocumentEditor}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.certificate.read"
                   >
-                    Open
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
+                    <button className="hover:text-blue-700 hover:underline">
+                      Open
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.certificate.delete"
                   >
-                    Delete
-                  </button>
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -145,25 +164,25 @@ const CertificateView: React.FC<ICertificateView> = ({
         },
       }),
     ],
-    [handleEdit, handleDelete]
+    [handleEdit, handleDelete],
   );
-
 
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={openDocumentEditor}
-          text="Add Certificate"
-        />
+        <PermissionGranted role="master-data.certificate.add" roleable>
+          <AddButton onClick={openDocumentEditor} text="Add Certificate" />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'name', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted role="master-data.certificate.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'name', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
@@ -187,7 +206,6 @@ const CertificateView: React.FC<ICertificateView> = ({
         }}
       />
     </div>
-
   );
 };
 

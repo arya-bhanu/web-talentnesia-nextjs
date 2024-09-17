@@ -10,6 +10,8 @@ import ModalForm from './components/modal-form-city';
 import { useDistrictActions } from './hooks/useDistrictAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../../public/icons/more_horiz.svg';
+import { useRouter } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -26,7 +28,14 @@ const DistrictView: React.FC<IDistrictView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const { handleAddDistrict, handleEditDistrict, handleDeleteDistrict } = useDistrictActions();
+  const router = useRouter();
+
+  const openDocumentEditor = () => {
+    router.push('/backoffice/master-data/region/district/add-district/');
+  };
+
+  const { handleAddDistrict, handleEditDistrict, handleDeleteDistrict } =
+    useDistrictActions();
 
   const handleEdit = useCallback(
     (id: string, rowData: any) => {
@@ -59,7 +68,9 @@ const DistrictView: React.FC<IDistrictView> = ({
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {
-        header: ({ column }) => <SortingTable column={column} title="District Code" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="District Code" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('name', {
@@ -79,18 +90,36 @@ const DistrictView: React.FC<IDistrictView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.district.edit"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.district.read"
                   >
-                    Delete
-                  </button>
+                    <button className="hover:text-blue-700 hover:underline">
+                      Open
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.district.delete"
+                  >
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -109,22 +138,18 @@ const DistrictView: React.FC<IDistrictView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setSelectedRowData(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add District"
-        />
+        <PermissionGranted role="master-data.region.district.add" roleable>
+          <AddButton onClick={openDocumentEditor} text="Add District" />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
-
+      <PermissionGranted role="master-data.region.district.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {
