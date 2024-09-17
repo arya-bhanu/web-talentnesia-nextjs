@@ -13,6 +13,7 @@ const PermissionGranted = ({
   roleable?: boolean;
 }) => {
   const [accessRights, setAccessRights] = useState<IAccessRight[] | null>(null);
+
   useEffect(() => {
     const accessString = window.localStorage.getItem('access');
     if (accessString) {
@@ -26,6 +27,7 @@ const PermissionGranted = ({
     }
     return roleable;
   }, [JSON.stringify(accessRights), role, roleable]);
+
   return <div className={clsx(!isGranted && 'hidden')}>{children}</div>;
 };
 

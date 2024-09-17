@@ -6,6 +6,7 @@ import IICP from './iicp';
 import Course from './course';
 import { useTabStoreManageProgram } from './manageProgramStore';
 import { ProgramTabs } from './manageProgram.type';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const ManageProgramView: React.FC = () => {
   const activeTab = useTabStoreManageProgram((state) => state.activeTab);
@@ -24,7 +25,11 @@ const ManageProgramView: React.FC = () => {
     },
     {
       title: 'IICP',
-      content: <IICP />,
+      content: (
+        <PermissionGranted roleable role="manage-program.iicp.read">
+          <IICP />
+        </PermissionGranted>
+      ),
       active: activeTab === 'iicp',
       type: 'iicp',
     },
@@ -32,7 +37,10 @@ const ManageProgramView: React.FC = () => {
 
   return (
     <Card>
-      <TabFlex<ProgramTabs[keyof ProgramTabs]> tabs={tabs} onTabChange={handleTabChange} />
+      <TabFlex<ProgramTabs[keyof ProgramTabs]>
+        tabs={tabs}
+        onTabChange={handleTabChange}
+      />
       <div className="mt-4">
         {activeTab === 'course' && <Course />}
         {activeTab === 'iicp' && <IICP />}

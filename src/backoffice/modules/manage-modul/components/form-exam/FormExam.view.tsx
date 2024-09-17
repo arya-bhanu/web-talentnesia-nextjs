@@ -6,7 +6,10 @@ import TimeInput from '@/backoffice/components/time-input';
 import Add from '@/../public/icons/add.svg';
 import QuestionListDraggable from '@/backoffice/components/question-list-draggable';
 import { defaultQuestionRadio } from './formExam.data';
-import { useExamStore, useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
+import {
+  useExamStore,
+  useQuestionExamStore,
+} from '@/backoffice/modules/manage-modul/add-exam/store';
 import { uuid } from 'uuidv4';
 import Link from 'next/link';
 import { convertStrToTime } from '@/helpers/formatter.helper';
@@ -14,6 +17,7 @@ import { useSearchParams } from 'next/navigation';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const FormExamView: React.FC<
   IFormExam & {
@@ -79,14 +83,16 @@ const FormExamView: React.FC<
       <div className="mt-10">
         <div className="flex items-center justify-between">
           <h2 className="font-poppins font-semibold text-sm">Question</h2>
-          <button
-            type="button"
-            onClick={handleAddQuestion}
-            className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
-          >
-            <Add />
-            <span className="text-black"> Add Question</span>
-          </button>
+          <PermissionGranted roleable role='manage-module.addQuestion'>
+            <button
+              type="button"
+              onClick={handleAddQuestion}
+              className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
+            >
+              <Add />
+              <span className="text-black"> Add Question</span>
+            </button>
+          </PermissionGranted>
         </div>
 
         <div className="mt-10 flex flex-col gap-14">
