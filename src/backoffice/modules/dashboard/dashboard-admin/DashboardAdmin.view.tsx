@@ -102,8 +102,8 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
         </PermissionGranted>
       </div>
 
-      <div className="grid grid-cols-3 gap-12 mb-6">
-        <div className="col-span-2 w-[115%]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="lg:col-span-2">
           <AreaChart />
         </div>
         <div className="grid grid-cols-1 gap-5 w-[280px] h-full ml-auto">

@@ -7,7 +7,7 @@ export const FeatureSectionView = ({className, isLoading} : {className?: string,
     return(
         <section
         className={clsx(className, 
-            'min-h-[80vh] md:min-h-[70vh] lg:min-h-[95vh] flex flex-col pt-10 mb-7 md:pt-14 lg:pt-24 lg:flex-row items-center lg:items-start px-4 lg:px-[278px]'
+            'min-h-[80vh] md:min-h-[70vh] lg:min-h-[95vh] flex flex-col pt-10 mb-7 md:pt-8 lg:pt-16 lg:flex-row items-center lg:items-start px-4 lg:px-[100px] pb-16'
         )} style={{backgroundColor: '#f5f9ff'}}>
             <div className="flex-[1] text-center lg:text-left">
                 <SkeletonLoader visible={isLoading ? isLoading : false} width={'45%'} height={30} />
