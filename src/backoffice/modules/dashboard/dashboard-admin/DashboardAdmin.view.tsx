@@ -26,9 +26,9 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
   if (error) return <Custom500 />;
 
   return (
-    <div className="">
-      <div className="grid grid-cols-3 gap-5 mb-6 h-32">
-        <div className="bg-[#FFE2E6] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+    <div className="px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+        <div className="bg-[#FFE2E6] overflow-hidden shadow sm:rounded-lg flex p-6 relative h-32">
           <div className="absolute top-4 left-4 flex items-center justify-center bg-[#F04438] rounded-full w-12 h-12 ml-2.5">
             <Image
               src={imageData.instructorData.image}
@@ -50,7 +50,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
           </div>
         </div>
 
-        <div className="bg-[#FFF4DC] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+        <div className="bg-[#FFF4DC] overflow-hidden shadow sm:rounded-lg flex p-6 relative h-32">
           <div className="absolute top-4 left-4 flex items-center justify-center bg-[#F79009] rounded-full w-12 h-12 ml-2.5">
             <Image
               src={imageData.studentData.image}
@@ -72,7 +72,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
           </div>
         </div>
 
-        <div className="bg-[#D8F1D9] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+        <div className="bg-[#D8F1D9] overflow-hidden shadow sm:rounded-lg flex p-6 relative h-32">
           <div className="absolute top-4 left-4 flex items-center justify-center bg-[#15B79E] rounded-full w-12 h-12 ml-2.5">
             <Image
               src={imageData.courseData.image}
@@ -95,11 +95,11 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-12 mb-6">
-        <div className="col-span-2 w-[115%]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="lg:col-span-2">
           <AreaChart />
         </div>
-        <div className="grid grid-cols-1 gap-5 w-[280px] h-full ml-auto">
+        <div className="grid grid-cols-1 gap-5">
           <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4">
             <div className="flex items-center justify-end">
               <div className="flex items-center justify-center bg-[#F2EFFE] rounded-lg w-14 h-14 mr-4 font-semibold">
@@ -187,11 +187,11 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 justify-start">
-        <div className="p-4 bg-white shadow-md rounded-lg w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="p-4 bg-white shadow-md rounded-lg">
           <ColumnChart />
         </div>
-        <div className="p-4 bg-white shadow-md rounded-lg w-full">
+        <div className="p-4 bg-white shadow-md rounded-lg">
           <ColumnChart2 />
         </div>
       </div>
