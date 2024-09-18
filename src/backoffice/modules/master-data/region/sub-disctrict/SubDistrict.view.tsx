@@ -10,6 +10,8 @@ import ModalForm from './components/modal-form-sub-district';
 import { useSubDistrictActions } from './hooks/useSubDistrictAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../../public/icons/more_horiz.svg';
+import { useRouter } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -25,7 +27,19 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const { handleAddSubDistrict, handleEditSubDistrict, handleDeleteSubDistrict } = useSubDistrictActions();
+  const router = useRouter();
+
+  const openDocumentEditor = () => {
+    router.push(
+      '/backoffice/master-data/region/sub-district/add-sub-district/',
+    );
+  };
+
+  const {
+    handleAddSubDistrict,
+    handleEditSubDistrict,
+    handleDeleteSubDistrict,
+  } = useSubDistrictActions();
 
   const handleEdit = useCallback(
     (id: string, rowData: any) => {
@@ -58,7 +72,9 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {
-        header: ({ column }) => <SortingTable column={column} title="Sub-District Code" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Sub-District Code" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('name', {
@@ -72,7 +88,9 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('province', {
-        header: ({ column }) => <SortingTable column={column} title="Province" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Province" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('id', {
@@ -86,18 +104,36 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.subDistrict.edit"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.subDistrict.read"
                   >
-                    Delete
-                  </button>
+                    <button className="hover:text-blue-700 hover:underline">
+                      Open
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.subDistrict.delete"
+                  >
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -116,20 +152,18 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add SubDistrict"
-        />
+        <PermissionGranted role="master-data.region.subDistrict.add" roleable>
+          <AddButton onClick={openDocumentEditor} text="Add SubDistrict" />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted role="master-data.region.subDistrict.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {

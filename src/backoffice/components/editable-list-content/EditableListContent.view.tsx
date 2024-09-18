@@ -26,6 +26,7 @@ import { useRouter } from 'next/navigation';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import PermissionGranted from '../permission-granted/PermissionGranted';
 
 const EditableListContentView: React.FC<
   IEditableListContent & { className?: string } & {
@@ -109,7 +110,7 @@ const EditableListContentView: React.FC<
           setOpenModal: setOpenModalEdit,
         }}
         handleSubmit={handleSubmitEdit}
-        buttonConfirmTitle='Update'
+        buttonConfirmTitle="Update"
         isEdit
         title="Update Content"
       >
@@ -127,22 +128,24 @@ const EditableListContentView: React.FC<
           {renderMinuteTime} minute
         </p>
         <div className="flex items-center gap-2.5">
-          <button
-            onClick={() => {
-              const modulId = params.get('modulId');
-              const chapterId = params.get('chapterId');
-              if (isexam) {
-                router.push(
-                  `${pathname}/update-exam/?modulId=${modulId}&chapterId=${chapterId}&examId=${id}`,
-                );
-              } else {
-                setOpenModalEdit(true);
-              }
-            }}
-            type="button"
-          >
-            <Edit />
-          </button>
+          <PermissionGranted roleable role='manage-module.editContent'>
+            <button
+              onClick={() => {
+                const modulId = params.get('modulId');
+                const chapterId = params.get('chapterId');
+                if (isexam) {
+                  router.push(
+                    `${pathname}/update-exam/?modulId=${modulId}&chapterId=${chapterId}&examId=${id}`,
+                  );
+                } else {
+                  setOpenModalEdit(true);
+                }
+              }}
+              type="button"
+            >
+              <Edit />
+            </button>
+          </PermissionGranted>
           <button
             type="button"
             onClick={() => {

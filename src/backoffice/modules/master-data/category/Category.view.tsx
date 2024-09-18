@@ -11,6 +11,7 @@ import { useCategoryActions } from './hooks/useCategoryAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -26,17 +27,17 @@ const CategoryView: React.FC<ICategoryView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const {
-    handleAddCategory,
-    handleEditCategory,
-    handleDeleteCategory,
-  } = useCategoryActions();
+  const { handleAddCategory, handleEditCategory, handleDeleteCategory } =
+    useCategoryActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
-    setSelectedId(id);
-    setSelectedRowData(rowData);
-    setIsPopupOpen(true);
-  }, [setIsPopupOpen]);
+  const handleEdit = useCallback(
+    (id: string, rowData: any) => {
+      setSelectedId(id);
+      setSelectedRowData(rowData);
+      setIsPopupOpen(true);
+    },
+    [setIsPopupOpen],
+  );
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
@@ -54,9 +55,8 @@ const CategoryView: React.FC<ICategoryView> = ({
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditCategory, handleAddCategory, fetchData]
+    [handleEditCategory, handleAddCategory, fetchData],
   );
-
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -71,11 +71,9 @@ const CategoryView: React.FC<ICategoryView> = ({
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('active', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Status" />
-        ),
+        header: ({ column }) => <SortingTable column={column} title="Status" />,
         cell: (info) => (
-          <BadgeStatus status={info.getValue() as number} type={1}/>
+          <BadgeStatus status={info.getValue() as number} type={1} />
         ),
       }),
       columnHelper.accessor('id', {
@@ -84,23 +82,30 @@ const CategoryView: React.FC<ICategoryView> = ({
         cell: (info) => {
           const id = info.getValue() as string;
           const rowData = info.row.original;
-  
+
           return (
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted roleable role="master-data.category.edit">
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.category.delete"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
-                  >
-                    Delete
-                  </button>
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -112,28 +117,31 @@ const CategoryView: React.FC<ICategoryView> = ({
         },
       }),
     ],
-    [handleEdit, handleDelete]
+    [handleEdit, handleDelete],
   );
-  
 
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add Category"
-        />
+        <PermissionGranted role="master-data.category.add" roleable>
+          <AddButton
+            onClick={() => {
+              setSelectedId(null);
+              setIsPopupOpen(true);
+            }}
+            text="Add Category"
+          />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted role="master-data.category.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
 
       <ModalForm
         isOpen={isPopupOpen}

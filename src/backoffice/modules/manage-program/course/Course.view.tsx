@@ -14,6 +14,7 @@ import {
 } from '@/helpers/formatter.helper';
 import ProgressBar from '@/backoffice/components/progress-bar/ProgressBar';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -85,11 +86,14 @@ const CourseView: React.FC<CourseViewProps> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <Link href={`/backoffice/manage-program/update-program?programId=${id}&schoolId=${institutionId}`} className="hover:text-blue-700 hover:underline">
+                  <Link
+                    href={`/backoffice/manage-program/update-program?programId=${id}&schoolId=${institutionId}`}
+                    className="hover:text-blue-700 hover:underline"
+                  >
                     Edit
                   </Link>
                   <button
-                    onClick={() => handleActionButtonRow(id, "delete")}
+                    onClick={() => handleActionButtonRow(id, 'delete')}
                     className="hover:text-red-700 hover:underline"
                   >
                     Delete
@@ -104,7 +108,6 @@ const CourseView: React.FC<CourseViewProps> = ({
           );
         },
       }),
-      
     ],
     [handleActionButtonRow],
   );
@@ -113,9 +116,11 @@ const CourseView: React.FC<CourseViewProps> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <Link href="/backoffice/manage-program/add-program">
-          <AddButton onClick={() => {}} text="Add New Program" />
-        </Link>
+        <PermissionGranted roleable role='manage-program.iicp.add'>
+          <Link href="/backoffice/manage-program/add-program">
+            <AddButton text="Add New Program" />
+          </Link>
+        </PermissionGranted>
       </div>
       <DataTable
         data={data}

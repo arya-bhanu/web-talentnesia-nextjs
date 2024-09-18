@@ -8,6 +8,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Loading from '@/components/loading';
 import { accessRole } from 'data';
+import AlertModal from '@/backoffice/components/alert-modal/AlertModal';
+import { isTokenNull } from '@/lib/lib';
 
 const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
   ssr: false,
@@ -20,6 +22,8 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const [isDashboard, setIsDashboard] = useState(false);
   const router = useRouter();
   const { user, setUser } = useAuth();
+
+  const [showSessionEndedModal, setShowSessionEndedModal] = useState(isTokenNull());
 
   useEffect(() => {
     if (user) {
@@ -43,9 +47,14 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
 
   const checkAuth = useCallback(async () => {
     try {
+      if (isTokenNull()) {
+        setShowSessionEndedModal(true);
+        return;
+      }
+
       const session = await getSession();
       if (!session || !session.isLoggedIn || session.role !== 1) {
-        router.push('/auth/login');
+        setShowSessionEndedModal(true);
       } else {
         setUser({
           userId: session.userId || '',
@@ -57,11 +66,11 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error('Authentication error:', error);
-      router.push('/auth/login');
+      setShowSessionEndedModal(true);
     } finally {
       setIsLoading(false);
     }
-  }, [router, setUser]);
+  }, [setUser]);
 
   useEffect(() => {
     checkAuth();
@@ -81,6 +90,17 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     const isDashboardPath = pathname.includes('dashboard');
     setIsDashboard(isDashboardPath);
   }, [pathname]);
+
+  // New useEffect for continuous token checking
+  useEffect(() => {
+    const tokenCheckInterval = setInterval(() => {
+      if (isTokenNull()) {
+        setShowSessionEndedModal(true);
+      }
+    }, 5000); // Check every minute
+
+    return () => clearInterval(tokenCheckInterval);
+  }, []);
 
   if (isLoading) { 
     return <Loading isLoading={isLoading} />;
@@ -104,8 +124,21 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     // marginLeft: '9%',
   };
 
+  const handleSessionEndedConfirm = () => {
+    setShowSessionEndedModal(false);
+    router.push('/auth/login');
+  };
+
   return (
     <div className="bg-[#FAFAFA]">
+      <AlertModal
+        openModal={showSessionEndedModal}
+        setOpenModal={setShowSessionEndedModal}
+        setIsConfirmed={handleSessionEndedConfirm}
+        messageText="Your Login Session Has Ended"
+        showCancelButton={false}
+        showCloseButton={false}
+      />
       {user && (
         <Navbar
           user={user}

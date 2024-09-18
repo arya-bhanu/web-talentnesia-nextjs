@@ -15,7 +15,7 @@ const renderContent = (
   return (
     <div className="relative flex justify-center">
       <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-        <PermissionGranted rule="manage-modul.edit">
+        <PermissionGranted roleable={true} role="manage-modul.edit">
           <Link
             href={`/backoffice/manage-modul/update?modulId=${id}`}
             className={clsx('hover:text-blue-500 hover:underline')}
@@ -23,7 +23,7 @@ const renderContent = (
             Edit
           </Link>
         </PermissionGranted>
-        <PermissionGranted rule='manage-modul.delete'>
+        <PermissionGranted role="manage-modul.delete">
           <button
             className={clsx('hover:text-red-500 hover:underline')}
             onClick={() => setOpenModal(true)}

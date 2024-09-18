@@ -44,7 +44,7 @@ const FeatureCardView = (props: courses) => {
             className="w-full object-cover"
           />
         </div>
-        
+    
         </>
       }
       
@@ -59,6 +59,9 @@ const FeatureCardView = (props: courses) => {
           <figcaption className="text-base sm:text-lg md:text-xl font-poppins font-semibold line-clamp-2">
             {props.title}
           </figcaption>
+          <p className="text-xs text-[#344054] mt-1 md:mt-2">
+          {props.level}
+          </p>
           <p className="text-xs text-[#667085] mt-1 md:mt-3">
             {props.description}
           </p>

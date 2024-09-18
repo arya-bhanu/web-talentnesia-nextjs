@@ -5,4 +5,6 @@ export interface IAlertModal {
   setOpenModal: React.Dispatch<SetStateAction<boolean>>;
   setIsConfirmed: React.Dispatch<SetStateAction<boolean>>;
   messageText?: string;
+  showCancelButton?: boolean;
+  showCloseButton?: boolean;
 }

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useFormCourseStore } from './formCourse.store';
 import ContainerChapter from './components/container-chapter';
 import { useSearchParams } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
   handleSubmitSelectedModul,
@@ -60,15 +61,17 @@ const FormCourseView: React.FC<IStateFormCourse & IHandlerFormCourse> = ({
           className="flex-1"
         />
         <div className="flex items-center gap-3">
-          <Link
-            href={`/backoffice/manage-program/update-program/add-chapter/?programId=${programId}&schoolId=${schoolId}`}
-            type="button"
-            className="text-yellow-400 group hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
-          >
-            <span className="text-black group-hover:text-white">
-              Add Chapter
-            </span>
-          </Link>
+          <PermissionGranted roleable role='manage-program.iicp.course.addChapter'>
+            <Link
+              href={`/backoffice/manage-program/update-program/add-chapter/?programId=${programId}&schoolId=${schoolId}`}
+              type="button"
+              className="text-yellow-400 group hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+            >
+              <span className="text-black group-hover:text-white">
+                Add Chapter
+              </span>
+            </Link>
+          </PermissionGranted>
           <button
             type="button"
             onClick={() => setOpenModalModul(true)}

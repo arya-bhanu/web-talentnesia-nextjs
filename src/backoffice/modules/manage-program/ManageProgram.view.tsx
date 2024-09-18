@@ -8,6 +8,7 @@ import { useTabStoreManageProgram } from './manageProgramStore';
 import { ProgramTabs } from './manageProgram.type';
 import { ListProgramView } from './list-program/ListProgram.view';
 import { decodeToken } from '@/lib/tokenDecoder';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const ManageProgramView: React.FC = () => {
   const activeTab = useTabStoreManageProgram((state) => state.activeTab);
@@ -26,7 +27,11 @@ const ManageProgramView: React.FC = () => {
     },
     {
       title: 'IICP',
-      content: <IICP />,
+      content: (
+        <PermissionGranted roleable role="manage-program.iicp.read">
+          <IICP />
+        </PermissionGranted>
+      ),
       active: activeTab === 'iicp',
       type: 'iicp',
     },
@@ -51,6 +56,7 @@ const ManageProgramView: React.FC = () => {
         </Card>
       )}
     </>
+
   );
 };
 

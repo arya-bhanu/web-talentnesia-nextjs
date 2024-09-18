@@ -75,10 +75,11 @@ const CourseCardView: React.FC<CourseCardProps> = ({
             {
               !isLoading &&
               <Image
-                src={logo}
+                // src={logo}
                 alt="course image"
                 className="rounded-xl object-cover max-h-[300px] w-full"
-              />
+                width={14}
+                height={14} src={''}              />
             }
           </div>
           <div className="w-full md:w-2/3 flex flex-col p-3">

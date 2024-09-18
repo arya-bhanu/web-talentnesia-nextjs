@@ -21,8 +21,6 @@ const FormManageModulView: React.FC<
     ISubmitType & { setSubmitType: Dispatch<SetStateAction<ISubmitType>> }
 > = ({ handleSubmitForm, populatedDatas, id, setSubmitType }) => {
   const formRef = useRef(null);
-  const [editModalActive, setEditModalActive] = useState(false);
-  const [isEditConfrm, setIsEditConfrm] = useState(false);
   return (
     <section>
       <form
