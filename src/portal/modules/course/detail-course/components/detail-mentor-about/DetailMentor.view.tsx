@@ -6,9 +6,9 @@ import LinkedInIcon from '../../../../../../../public/icons/course-detail/linked
 import FeatureCardView from '../../../../../components/feature-card/FeatureCard.view';
 
 const DetailMentorView: React.FC<{ mentor: any }> = ({ mentor }) => {
-  if (!mentor) return null;
-
   const [activeTab, setActiveTab] = useState('About');
+  if (!mentor) return null;
+  
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
