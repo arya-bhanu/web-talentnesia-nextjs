@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ProgramCardType } from './programCard.type';
 import TrashBtn from '@/../public/icons/manage-program/trash-btn.svg';
 import CourseDetail from '../../../components/course-detail';
+import Image from 'next/image';
 
 interface ProgramCardViewProps {
   data: ProgramCardType;
@@ -29,7 +30,7 @@ export const ProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) => {
         className="block p-4 shadow-sm shadow-indigo-100 cursor-pointer"
         onClick={handleOpenModal}
       >
-        <img
+        <Image
           alt={data.name}
           src={data.imageUrl}
           className="h-[150px] w-full rounded-t-xl object-cover"

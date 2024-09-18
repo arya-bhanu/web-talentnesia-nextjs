@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 interface CustomCardProps {
   id: string;
@@ -55,7 +56,7 @@ export function CustomCard({
   return (
     <Link href={`${pathname}detail-program?programId=${id}&schoolId=${institutionId}`}>
       <div className="relative max-w-full bg-white border border-gray-200 rounded-lg xl:rounded-2xl shadow dark:bg-gray-800 dark:border-gray-700 cursor-pointer">
-        <img
+        <Image
           src={image}
           alt="Program Image"
           className="rounded-t-lg xl:rounded-t-2xl w-full h-48 object-cover"

@@ -30,7 +30,13 @@ const MaterialModulView: React.FC = () => {
                 className="w-5 h-5 cursor-pointer text-gray-600"
                 onClick={() => setIsSidebarVisible(false)}
               >
-                <img src="/icons/manage-program/arrow-square-left.svg" alt="Hide Sidebar" />
+                <Image
+                  src="/icons/manage-program/arrow-square-left.svg"
+                  alt="Hide Sidebar"
+                  width={24}
+                  height={24}
+                />
+
               </button>
             </div>
             <div className="p-4">
@@ -71,8 +77,8 @@ const MaterialModulView: React.FC = () => {
                           onClick={() => handleTabClick(tab.id)}
                         >
                           <div className="flex items-center space-x-2">
-                            <img
-                               src={`/icons/${tab.iconId === 1 ? 'book' : tab.iconId === 2 ? 'play-circle' : tab.iconId === 3 ? 'play-circle' : tab.iconId === 4 ? 'play-circle' : tab.iconId === 5 ? 'edit-2'      : 'videocam'}.svg`}
+                            <Image
+                              src={`/icons/${tab.iconId === 1 ? 'book' : tab.iconId === 2 ? 'play-circle' : tab.iconId === 3 ? 'play-circle' : tab.iconId === 4 ? 'play-circle' : tab.iconId === 5 ? 'edit-2' : 'videocam'}.svg`}
                               alt={`${tab.label} icon`}
                               className="w-5 h-5"
                               style={{
@@ -83,16 +89,16 @@ const MaterialModulView: React.FC = () => {
                             />
                             <span>{tab.label}</span>
                           </div>
-                          <img
-                          src={tab.isCompleted === 1 ? "/icons/manage-program/clipboard-tick.svg" : "/icons/manage-program/clipboard.svg"}
-                          className={`w-5 h-5`}
-                          style={{
-                            filter: selectedTab === tab.id
-                              ? 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)'
-                              : 'none'
-                          }}
-                          alt="Clipboard Icon"
-                        />
+                          <Image
+                            src={tab.isCompleted === 1 ? "/icons/manage-program/clipboard-tick.svg" : "/icons/manage-program/clipboard.svg"}
+                            className={`w-5 h-5`}
+                            style={{
+                              filter: selectedTab === tab.id
+                                ? 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)'
+                                : 'none'
+                            }}
+                            alt="Clipboard Icon"
+                          />
                         </li>
                       ))}
                     </ul>
@@ -110,33 +116,33 @@ const MaterialModulView: React.FC = () => {
               className="absolute top-4 left-4 p-2 bg-blue-500 text-white rounded-full z-10 flex items-center space-x-1"
               onClick={() => setIsSidebarVisible(true)}
             >
-              <Image 
-                src="/icons/manage-program/arrow-square-left.svg" 
-                alt="Show Sidebar" 
+              <Image
+                src="/icons/manage-program/arrow-square-left.svg"
+                alt="Show Sidebar"
                 width={20}
                 height={20}
-                className="transform rotate-180" 
+                className="transform rotate-180"
               />
             </button>
           )}
           <div className="flex-1">
             {selectedContent}
             {!isExamContent || (isExamContent && isExamCompleted) ? (
-            <div className="flex justify-between px-8 py-4">
-              <button onClick={handlePreviousContent} className="px-8 py-2 rounded-full border border-[#FFC862] text-gray-700">
-                Previous
-              </button>
-              {selectedTab && sections.flatMap(s => s.tabs).find(t => t.id === selectedTab)?.isCompleted === 1 ? (
-                <button onClick={handleNextContent} className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">
-                  Next
+              <div className="flex justify-between px-8 py-4">
+                <button onClick={handlePreviousContent} className="px-8 py-2 rounded-full border border-[#FFC862] text-gray-700">
+                  Previous
                 </button>
-              ) : (
-                <button onClick={handleNextContent} className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">
-                  Tandai & Lanjut
-                </button>
-              )}
-            </div>
-          ) : null}
+                {selectedTab && sections.flatMap(s => s.tabs).find(t => t.id === selectedTab)?.isCompleted === 1 ? (
+                  <button onClick={handleNextContent} className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">
+                    Next
+                  </button>
+                ) : (
+                  <button onClick={handleNextContent} className="px-14 py-2 rounded-full bg-[#FFC862] hover:bg-[#ffb428] text-gray-700">
+                    Tandai & Lanjut
+                  </button>
+                )}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

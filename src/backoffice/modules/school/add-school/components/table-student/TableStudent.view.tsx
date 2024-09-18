@@ -4,6 +4,7 @@ import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
 import { School } from './tableStudent.type';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 interface TableStudentViewProps {
   schools: School[];
@@ -32,7 +33,7 @@ const TableStudentView: React.FC<TableStudentViewProps> = ({
                 <tr key={el.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <td className="px-6 py-4">{index + 1}</td>
                   <td className="px-6 py-4 flex items-center">
-                    <img
+                    <Image
                       src={el.photo}
                       alt={el.name}
                       className="w-5 h-5 rounded-full mr-3" 
