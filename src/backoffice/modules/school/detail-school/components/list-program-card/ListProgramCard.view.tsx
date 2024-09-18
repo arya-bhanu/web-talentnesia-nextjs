@@ -6,6 +6,7 @@ import { id } from 'date-fns/locale';
 import CourseSidebar from '../../../components/course-sidebar/CourseSidebar';
 import { getImageUrl } from '../../../api/minioApi';
 import { ListProgramCardAPI } from './api/listProgramCardApi';
+import Image from 'next/image';
 
 interface ProgramCardViewProps {
   data: ListProgramCardType;
@@ -56,7 +57,7 @@ export const ListProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) =>
   return (
     <>
       <div className="block p-4 shadow-sm shadow-indigo-100 cursor-pointer" onClick={handleOpenSidebar}>
-        <img
+        <Image
           alt={data.name}
           src={imageUrl || '/placeholder-image.jpg'}
           className="h-[150px] w-full rounded-t-xl object-cover"

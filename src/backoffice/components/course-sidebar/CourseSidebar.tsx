@@ -36,7 +36,13 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({
           className="w-5 h-5 cursor-pointer text-gray-600"
           onClick={() => setIsSidebarVisible(false)}
         >
-          <img src="/icons/manage-program/arrow-square-left.svg" alt="Hide Sidebar" />
+          <Image
+            src="/icons/manage-program/arrow-square-left.svg"
+            alt="Hide Sidebar"
+            width={24}
+            height={24}
+          />
+
         </button>
       </div>
       <div className="p-4">
@@ -77,8 +83,8 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({
                     onClick={() => handleTabClick(tab.id)}
                   >
                     <div className="flex items-center space-x-2">
-                      <img
-                        src={iconMap[tab.iconId as keyof typeof iconMap] || tab.icon}
+                      <Image
+                        src={iconMap[tab.iconId as keyof typeof iconMap] || tab.icon || ''}
                         alt={`${tab.label} icon`}
                         className="w-5 h-5"
                         style={{
@@ -86,17 +92,20 @@ const CourseSidebar: React.FC<CourseSidebarProps> = ({
                             ? 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)'
                             : 'brightness(0) saturate(100%) invert(49%) sepia(85%) saturate(433%) hue-rotate(144deg) brightness(91%) contrast(88%)'
                         }}
+                        width={20}
+                        height={20}
                       />
                       <span>{tab.label}</span>
                     </div>
-                    <img
+                    <Image
                       src="/icons/manage-program/clipboard.svg"
                       className={`w-5 h-5 ${selectedTab === tab.id ? 'filter invert' : ''}`}
                       alt="Clipboard Icon"
+                      width={20}
+                      height={20}
                     />
                   </li>
-                ))}
-              </ul>
+                ))}              </ul>
             )}
           </div>
         ))}

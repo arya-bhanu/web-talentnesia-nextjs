@@ -33,7 +33,7 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
   const fetchData = useCallback(async () => {
     const certificates = await certificateAPI.fetch();
   }, []);
-  
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -136,9 +136,9 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
         )}
 
       </div>
-        <div className="py-2">
-          <AddDocumentEditorComponent id={documentId} url={documentUrl} />
-        </div>
+      <div className="py-5">
+        <AddDocumentEditorComponent id={documentId} url={documentUrl} />
+      </div>
 
       <div className="flex justify-end pt-4">
         <button
@@ -158,5 +158,5 @@ export const AddCertificateView: React.FC<AddCertificateViewProps> = ({
       </div>
     </form>
   );
-};export default AddCertificateView;
+}; export default AddCertificateView;
 

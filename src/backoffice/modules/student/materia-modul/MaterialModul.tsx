@@ -9,6 +9,8 @@ import Media from './components/course-sidebar/media/media.view';
 import Mentoring from './components/course-sidebar/mentoring/Mentoring.view';
 import PdfReader from './components/course-sidebar/pdf/PdfReader.view';
 import Assignment from './components/course-sidebar/assignment/Assignment';
+import Image from 'next/image';
+
 
 const useMaterialModul = () => {
   const [selectedTab, setSelectedTab] = useState<string>('');
@@ -43,7 +45,15 @@ const useMaterialModul = () => {
               setSelectedContent(<Media url={selectedTab.content} />);
               break;
             case 3:
-              setSelectedContent(<img src={selectedTab.content || ''} alt="Content" className="max-w-full h-auto" />);
+              setSelectedContent(
+              <Image 
+                src={selectedTab.content || ''}
+                alt="Content"
+                layout="responsive"
+                width={100}
+                height={100}
+                objectFit="contain"
+              />);
               break;
             case 4:
               setSelectedContent(<Media url={selectedTab.content} />);
@@ -131,7 +141,7 @@ const useMaterialModul = () => {
             setSelectedContent(<Media url={selectedTab.content} />);
             break;
           case 3:
-            setSelectedContent(<img src={selectedTab.content || ''} alt="Content" className="max-w-full h-auto" />);
+            setSelectedContent(<Image src={selectedTab.content || ''} alt="Content" className="max-w-full h-auto" />);
 
             break;
           case 4:

@@ -9,7 +9,7 @@ import Partners from './components/partners';
 import NewsLetterSubscription from './components/news-letter-subscription';
 import { HomeViewProps } from './home.type';
 
-const HomeView: React.FC<HomeViewProps> = ({ data, isLoading }) => {
+const HomeView: React.FC<HomeViewProps> = ({ data = {}, isLoading }) => {
   
   return (
     <>

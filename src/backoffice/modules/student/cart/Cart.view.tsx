@@ -3,6 +3,7 @@ import { CartItem, OrderSummary } from './cart.type';
 import Trash from '@/../public/icons/trash.svg';
 import CodeReedem from './components/code-reedem';
 import Rating from './components/rating';
+import Image from 'next/image';
 
 interface CartViewProps {
   cartItems: CartItem[];
@@ -89,7 +90,7 @@ const CartView: React.FC<CartViewProps> = ({
                         checked={selectedItems[index]}
                         onChange={() => onSelectItem(index)}
                       />
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.title}
                         className="object-cover rounded-md"

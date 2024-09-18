@@ -1,6 +1,7 @@
 import React from 'react';
 import LabelForm from '@/backoffice/components/label-form';
 import { SchoolData } from './detailSchoolPage.type';
+import Image from 'next/image';
 
 interface DetailSchoolPageViewProps {
   schoolData: SchoolData;
@@ -12,7 +13,7 @@ const DetailSchoolPageView: React.FC<DetailSchoolPageViewProps> = ({ schoolData,
     <div className="container mx-auto p-6">
       <div className="items-start">
         <div className="w-[15%] gap-y-4">
-          <img 
+          <Image 
             src={fullImageUrl || '/default-image.png'} 
             alt="School Image" 
             className="w-full h-auto rounded-lg"

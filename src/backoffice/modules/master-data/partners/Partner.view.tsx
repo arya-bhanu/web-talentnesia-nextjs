@@ -13,6 +13,8 @@ import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
 import { useRouter } from 'next/navigation';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
+import Image from 'next/image';
+
 
 const columnHelper = createColumnHelper<any>();
 
@@ -84,7 +86,9 @@ const PartnersView: React.FC<IPartnerView> = ({
         cell: (info) => {
           const logoURL = info.getValue() as string;
           return(
-            <img src={logoURL}  alt='Logo' />
+            <Image 
+            src={logoURL}  
+            alt='Logo' />
           )
         },
       }),

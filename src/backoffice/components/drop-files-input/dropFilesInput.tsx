@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from 'flowbite-react';
 import { useFormDetailStore } from '@/backoffice/modules/manage-program/form-program/components/form-detail/formDetail.store';
+import Image from 'next/image';
 
 export function DropFile() {
   const { data, setData } = useFormDetailStore();
@@ -81,7 +82,7 @@ export function DropFile() {
           <p className="mb-2 font-medium">File Uploaded:</p>
           <p className="text-sm text-gray-500">{file.name}</p>
           {file.type.startsWith('image/') && (
-            <img
+            <Image
               src={URL.createObjectURL(file)}
               alt="Uploaded file preview"
               className="mt-4 max-w-full h-auto rounded-lg object-cover"
