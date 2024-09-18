@@ -70,13 +70,14 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
   }
 
   // Determine if background color should be hidden based on current route
-  const customPageStyle = 
-  pathname.startsWith('/operator/student/');
-
-  
+  const customPageStyle = [
+    '/operator/dashboard/',
+    '/operator/manage-program/',
+    '/operator/manage-program/detail-program/',
+  ].includes(pathname);
 
   return (
-    <div className='bg-[#FAFAFA]'>
+    <div className="bg-[#FAFAFA]">
       {user && <Navbar user={user} />}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
@@ -85,7 +86,9 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
       <div
         className={`px-8 py-16 min-h-screen transition-all duration-300 md:ml-64 bg-[#FAFAFA]`}
       >
-        <div className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}>
+        <div
+          className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}
+        >
           {children}
         </div>
       </div>

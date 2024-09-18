@@ -17,7 +17,7 @@ const HomeView: React.FC<HomeViewProps> = ({ data, isLoading }) => {
       <main className="container">
         <Benefits className="mt-9 md:mt-16 xl:mt-0" />
         <ProgramDimension
-          className="mt-14 md:mt-16 lg:mt-20"
+          className="mt-14 md:mt-16 lg:mt-0"
           programs={data?.programs ?? []}
           isLoading={isLoading}
         />
@@ -27,7 +27,7 @@ const HomeView: React.FC<HomeViewProps> = ({ data, isLoading }) => {
           isLoading={isLoading}
         />
         <UserStory
-          className=" mt-14 sm:mt-28 md:mt-36 lg:mt-48"
+          className="mt-14 sm:mt-28 md:mt-36 lg:mt-48"
           testimonials={data?.testimonials ?? []}
           isLoading={isLoading}
         />
