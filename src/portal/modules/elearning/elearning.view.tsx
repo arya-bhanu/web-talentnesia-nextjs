@@ -15,11 +15,11 @@ const ElearningView: React.FC<ElearningViewProps> = ({ data, courses, isLoading 
         <>
         <HeroSection isLoading={isLoading}/>
         <main className="container">
-            <PopularCourses courses={courses.items} isLoading={isLoading} className="mb-16" />
+        <PopularCourses courses={courses} className="mb-16" isLoading={isLoading} />
         </main>
         <FeatureSection isLoading={isLoading}/>
         <main className="container">
-            <AllClass courses={courses.items} filterOptions={filterCategories} isLoading={isLoading} title="Jelajahi Semua Course"/>
+            <AllClass courses={courses} filterOptions={filterCategories} isLoading={isLoading} title="Jelajahi Semua Course"/>
             <UserStoryCard 
                 className="mt-16 md:mt-20 lg:mt-32"
                 testimonials={data.testimonials || []}

@@ -1,11 +1,10 @@
-export interface CoursesData {
-    
-    testimonials: any[];
-  }
-  
-  export interface ElearningViewProps {
-    data: CoursesData;
-    courses: {items: any[]};
-    isLoading?: boolean
-  }
-  
+export interface ElearningData {
+  items: any[];
+  testimonials: any[];
+}
+
+export interface ElearningViewProps {
+  data: ElearningData;
+  courses: any[];
+  isLoading?: boolean;
+}
