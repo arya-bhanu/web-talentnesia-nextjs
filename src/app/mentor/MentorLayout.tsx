@@ -76,7 +76,7 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="bg-[#FAFAFA]">
-      {user && <Navbar user={user} />}
+      {user && <Navbar moduleRoutePath="mentor" user={user} />}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}

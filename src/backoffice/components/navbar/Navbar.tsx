@@ -7,9 +7,10 @@ import { User, NavbarState } from './navbar.type';
 interface NavbarProps {
   user: User;
   style?: CSSProperties;
+  moduleRoutePath: string;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ user, style }) => {
+const Navbar: React.FC<NavbarProps> = ({ user, style, moduleRoutePath }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -18,7 +19,14 @@ const Navbar: React.FC<NavbarProps> = ({ user, style }) => {
 
   const navbarState: NavbarState = { user, isMenuOpen };
 
-  return <NavbarView {...navbarState} toggleMenu={toggleMenu} style={style} />;
+  return (
+    <NavbarView
+      {...navbarState}
+      toggleMenu={toggleMenu}
+      style={style}
+      moduleRoutePath={moduleRoutePath}
+    />
+  );
 };
 
 export default Navbar;

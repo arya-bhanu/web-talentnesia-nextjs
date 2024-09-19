@@ -141,6 +141,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       />
       {user && (
         <Navbar
+          moduleRoutePath='backoffice'
           user={user}
           style={isDashboard ? { ...containerStyle } : undefined}
         />
