@@ -60,6 +60,8 @@ export function CustomCard({
         <Image
           src={image || ''}
           alt="Program Image"
+          width={300}
+          height={300}
           className="rounded-t-lg xl:rounded-t-2xl w-full h-48 object-cover"
         />
         <div className="absolute top-2 left-2">
