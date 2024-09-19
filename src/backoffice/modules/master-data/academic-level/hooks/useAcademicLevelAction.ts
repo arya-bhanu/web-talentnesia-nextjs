@@ -10,11 +10,11 @@ export const useAcademicLevelActions = () => {
     }
   }, []);
 
-  const handleEditAcademicLevel = useCallback(async (id: string, data: any) => {
+  const handleEditAcademicLevel = useCallback(async (id: string, data: { name: string }) => {
     try {
-      await academicLevelAPI.update(id, data);
+      await academicLevelAPI.update(id, data.name);
     } catch (error) {
-      console.error('Failed to edit academic level');
+      console.error('Failed to edit academic level', error);
     }
   }, []);
 

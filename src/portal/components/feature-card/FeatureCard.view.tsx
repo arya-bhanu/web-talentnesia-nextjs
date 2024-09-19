@@ -38,7 +38,7 @@ const FeatureCardView = (props: courses) => {
         <div className="h-[180px] overflow-clip w-full">
           <Image
             alt="card image"
-            src={props.logo || 'alt Image'}
+            src={`${process.env.API_SERVER_URL}/api/v1/file/${props.logo}`|| 'alt Image'}
             width={400}
             height={180}
             className="w-full object-cover"

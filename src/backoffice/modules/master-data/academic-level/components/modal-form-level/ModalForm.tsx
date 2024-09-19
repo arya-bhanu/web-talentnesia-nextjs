@@ -48,18 +48,17 @@ const ModalForm: React.FC<ModalFormProps> = ({
   const handleAlertConfirm = async (confirmed: boolean) => {
     if (confirmed) {
       try {
-        await onSave(id, formData);
+        await onSave(id, { name: formData.name });
         setFormData({ name: '' });
         onClose();
       } catch (error) {
-        console.error('Failed to save data');
+        console.error('Failed to save data', error);
       }
     } else {
       setShowFormModal(true);
     }
     setShowAlertModal(false);
   };
-
   return (
     <>
       <ModalFormView
