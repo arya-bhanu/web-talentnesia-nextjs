@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
-import { courses } from './featureCard.type';
+import { FeatureCardProps } from './featureCard.type';
 import SkeletonLoader from '../skeleton-animation';
 
-const FeatureCardView = (props: courses) => {
+const FeatureCardView: React.FC<FeatureCardProps> = (props) => {
   const formatRupiah = (angka: number) => {
     var reverse = angka.toString().split('').reverse().join('');
     var ribuan = reverse.match(/\d{1,3}/g);
@@ -37,7 +37,7 @@ const FeatureCardView = (props: courses) => {
         <div className="h-[180px] overflow-clip w-full">
           <Image
             alt="card image"
-            src={props.logo}
+            src={`${process.env.API_SERVER_URL}/v1/file/${props.logo}`}
             width={400}
             height={180}
             className="w-full object-cover"
@@ -67,21 +67,21 @@ const FeatureCardView = (props: courses) => {
               {props.title}
             </figcaption>
             <p className="text-xs text-[#344054] mt-1 md:mt-2">{props.level}</p>
-            <p className="text-xs text-[#667085] mt-1 md:mt-3">
+            <p className="text-xs text-[#667085] mt-1 md:mt-3 line-clamp-2">
               {props.description}
             </p>
             <div className="flex items-center gap-2 mt-1 md:mt-3">
               <p className="text-xs text-[#344054] ">{props.rating}</p>
               <div className="flex items-center gap-1 ">
-                {renderStar(parseFloat(props.rating))}
+                {renderStar(props.rating)}
               </div>
             </div>
             <div className="flex items-center justify-between mt-2 sm:mt-3 md:mt-5">
               <p className="text-base md:text-sm lg:text-base font-semibold">
-                {formatRupiah(parseFloat(props.currentPrice))}
+                {formatRupiah(props.currentPrice)}
               </p>
               <p className="font-poppins text-[#98A2B3] text-xs sm:text-sm md:text-base line-through">
-                {formatRupiah(parseFloat(props.originPrice))}
+                {formatRupiah(props.originalPrice)}
               </p>
             </div>
           </>
