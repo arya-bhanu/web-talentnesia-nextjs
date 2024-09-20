@@ -33,8 +33,7 @@ const FeatureCardView = (props: courses) => {
     <figure className="border border-[#EAECF0] rounded-md overflow-clip">
       <SkeletonLoader visible={props.isLoading ? props.isLoading : false} variant='image' height={180}/>
       {
-        !props.isLoading && 
-        <>
+        !props.isLoading && props.logo && 
         <div className="h-[180px] overflow-clip w-full">
           <Image
             alt="card image"
@@ -44,8 +43,6 @@ const FeatureCardView = (props: courses) => {
             className="w-full object-cover"
           />
         </div>
-    
-        </>
       }
       
       <div className="py-3 md:py-4 lg:py-6 px-2 md:px-4 lg:px-5">
