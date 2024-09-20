@@ -13,7 +13,10 @@ import {
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
 import { APIDetailProgram, Schools } from './formDetail.type';
 import { convertIntoNumericDate } from '@/helpers/formatter.helper';
-import { defaultDataFormDetail, defaultDataFormDetailEdit } from './formDetail.data';
+import {
+  defaultDataFormDetail,
+  defaultDataFormDetailEdit,
+} from './formDetail.data';
 import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
 import { useTabStoreManageProgram } from '../../../manageProgramStore';
 import Loading from '@/components/loading';
@@ -39,7 +42,9 @@ const FormDetail = () => {
   const [selectedSchool, setSelectedSchool] = useState<string>('');
   const [openAlertModal, setOpenAlertModal] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [formEvent, setFormEvent] = useState<FormEvent<HTMLFormElement> | null>(null);
+  const [formEvent, setFormEvent] = useState<FormEvent<HTMLFormElement> | null>(
+    null,
+  );
   const { openModal: openModalToast } = useStatusModalStore();
 
   const { data: dataProgramDetail, isLoading: isLoadingProgramDetail } =
@@ -64,33 +69,34 @@ const FormDetail = () => {
       mutationFn: createProgram,
     });
 
-    useEffect(() => {
-      const isDataLoaded = !isLoadingProgramDetail && !isLoadingMentors && !isLoadingSchools;
-      if (isDataLoaded) {
-        setIsLoading(false);
-      }
-    }, [isLoadingProgramDetail, isLoadingMentors, isLoadingSchools]);
+  useEffect(() => {
+    const isDataLoaded =
+      !isLoadingProgramDetail && !isLoadingMentors && !isLoadingSchools;
+    if (isDataLoaded) {
+      setIsLoading(false);
+    }
+  }, [isLoadingProgramDetail, isLoadingMentors, isLoadingSchools]);
 
-    useEffect(() => {
-      if (!programId) {
-        resetStore();
-      }
-    }, [programId]);
+  useEffect(() => {
+    if (!programId) {
+      resetStore();
+    }
+  }, [programId]);
 
-    useEffect(() => {
-      if (programId && dataProgramDetail?.data?.data) {
-        setDefaultData(dataProgramDetail.data.data);
-        setSelectedSchool(dataProgramDetail.data.data.institutionId || '');
-        if (dataProgramDetail.data.data.image) {
-          getImageUrl(dataProgramDetail.data.data.image)
-            .then(setFullImageUrl)
-            .catch(console.error);
-        }
-      } else {
-        setDefaultData(defaultDataFormDetailEdit);
-        setFullImageUrl('');
-        setSelectedSchool('');
+  useEffect(() => {
+    if (programId && dataProgramDetail?.data?.data) {
+      setDefaultData(dataProgramDetail.data.data);
+      setSelectedSchool(dataProgramDetail.data.data.institutionId || '');
+      if (dataProgramDetail.data.data.image) {
+        getImageUrl(dataProgramDetail.data.data.image)
+          .then(setFullImageUrl)
+          .catch(console.error);
       }
+    } else {
+      setDefaultData(defaultDataFormDetailEdit);
+      setFullImageUrl('');
+      setSelectedSchool('');
+    }
     if (dataMentors?.data?.data) {
       setDefaultMentors(
         dataMentors.data.data.map((el: Mentor) => {
@@ -155,15 +161,16 @@ const FormDetail = () => {
     const startDateFormated = convertIntoNumericDate(startDate);
     const endDateFormated = convertIntoNumericDate(endDate);
 
-    console.log(
-      programName,
-      active,
-      mentors,
-      startDateFormated,
-      endDateFormated,
-      school,
-    );
+    console.log(mentors);
     console.log(filePic);
+
+    if (!mentors || mentors.length === 0) {
+      openModalToast({
+        status: 'error',
+        message: 'Field Mentors is Required',
+      });
+      return;
+    }
 
     try {
       const response = await createProgramAsync({

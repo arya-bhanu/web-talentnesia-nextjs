@@ -14,8 +14,10 @@ const ToasterProvider = ({ children }: { children: ReactNode }) => {
           return 'Successfully Create Data';
         case 'delete':
           return 'Successfully Delete Data';
-        default:
+        case 'update':
           return 'Successfully Update Data';
+        default:
+          return '';
       }
     }
   }, [action]);

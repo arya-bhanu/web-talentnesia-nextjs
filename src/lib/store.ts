@@ -22,7 +22,7 @@ export const useStatusModalStore = create<IStatusModalStore>((set) => ({
   closeModal: () => set({ isModalActive: false }),
   modalMessage: '',
   openModal: (params) => {
-    if (params.status !== 'error') {
+    if (params.status !== 'error' || params.timeOut) {
       setTimeout(() => {
         set(() => {
           return {
