@@ -46,38 +46,46 @@ const FeatureCardView = (props: courses) => {
       }
       
       <div className="py-3 md:py-4 lg:py-6 px-2 md:px-4 lg:px-5">
-        <SkeletonLoader visible={props.isLoading ? props.isLoading : false}/>
-        <SkeletonLoader visible={props.isLoading ? props.isLoading : false} width={'40%'}/>
-        <SkeletonLoader visible={props.isLoading ? props.isLoading : false} width={70} height={10} containerStyle={{marginTop: 15}}/>
-        <SkeletonLoader visible={props.isLoading ? props.isLoading : false} containerStyle={{marginTop: 20}}/>
-        {
-          !props.isLoading &&
+        <SkeletonLoader visible={props.isLoading ? props.isLoading : false} />
+        <SkeletonLoader
+          visible={props.isLoading ? props.isLoading : false}
+          width={'40%'}
+        />
+        <SkeletonLoader
+          visible={props.isLoading ? props.isLoading : false}
+          width={70}
+          height={10}
+          containerStyle={{ marginTop: 15 }}
+        />
+        <SkeletonLoader
+          visible={props.isLoading ? props.isLoading : false}
+          containerStyle={{ marginTop: 20 }}
+        />
+        {!props.isLoading && (
           <>
-          <figcaption className="text-base sm:text-lg md:text-xl font-poppins font-semibold line-clamp-2">
-            {props.title}
-          </figcaption>
-          <p className="text-xs text-[#344054] mt-1 md:mt-2">
-          {props.level}
-          </p>
-          <p className="text-xs text-[#667085] mt-1 md:mt-3">
-            {props.description}
-          </p>
-          <div className="flex items-center gap-2 mt-1 md:mt-3">
-            <p className="text-xs text-[#344054] ">{props.rating}</p>
-            <div className="flex items-center gap-1 ">
-              {renderStar(parseFloat(props.rating))}
+            <figcaption className="text-base sm:text-lg md:text-xl font-poppins font-semibold line-clamp-2">
+              {props.title}
+            </figcaption>
+            <p className="text-xs text-[#344054] mt-1 md:mt-2">{props.level}</p>
+            <p className="text-xs text-[#667085] mt-1 md:mt-3">
+              {props.description}
+            </p>
+            <div className="flex items-center gap-2 mt-1 md:mt-3">
+              <p className="text-xs text-[#344054] ">{props.rating}</p>
+              <div className="flex items-center gap-1 ">
+                {renderStar(parseFloat(props.rating))}
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2 mt-2 sm:mt-3 md:mt-5">
-            <p className="text-base md:text-lg lg:text-xl font-semibold">
-              {formatRupiah(parseFloat(props.currentPrice))}
-            </p>
-            <p className="font-poppins text-[#98A2B3] text-xs sm:text-sm md:text-base line-through">
-              {formatRupiah(parseFloat(props.originPrice))}
-            </p>
-          </div>
+            <div className="flex items-center justify-between mt-2 sm:mt-3 md:mt-5">
+              <p className="text-base md:text-sm lg:text-base font-semibold">
+                {formatRupiah(parseFloat(props.currentPrice))}
+              </p>
+              <p className="font-poppins text-[#98A2B3] text-xs sm:text-sm md:text-base line-through">
+                {formatRupiah(parseFloat(props.originPrice))}
+              </p>
+            </div>
           </>
-        }
+        )}
       </div>
     </figure>
   );

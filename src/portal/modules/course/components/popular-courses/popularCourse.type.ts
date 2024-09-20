@@ -1,7 +1,8 @@
-import { courses } from '@/portal/components/feature-card/featureCard.type';
+// import { courses } from '@/portal/components/feature-card/featureCard.type';
+import { CourseCardProps } from '@/portal/components/course-card/courseCard.type';
 
 export interface PopularCoursesSectionViewProps {
   className?: string;
-  courses: courses[];
+  courses: CourseCardProps[];
   isLoading?: boolean
 }

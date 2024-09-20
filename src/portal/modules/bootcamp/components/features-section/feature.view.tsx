@@ -19,7 +19,7 @@ export const FeatureSectionView = ({className, isLoading} : {className?: string,
                     <h2 className="font-poppins font-semibold text-slate-800 md:text-start text-center text-xl md:text-2xl lg:mt-14 lg:text-2xl">
                         Kenapa harus pilih bootcamp Talentnesia?
                     </h2>
-                    <p className="text-[#2B2E33] text-base font-inter mt-7 w-3/4">
+                    <p className="text-[#2B2E33] text-base font-inter mt-4 sm:mt-5 lg:mt-7 w-full sm:w-11/12 md:w-5/6 lg:w-3/4 mx-auto lg:mx-0 text-center lg:text-left">
                     Dengan kurikulum dari para ahli industri, mentor yang personal, proyek
                     langsung dan, dan total support buat kesuksesan kamu, kita siap bikin pengalaman
                     belajar yang bener-bener ngena buat kamu!

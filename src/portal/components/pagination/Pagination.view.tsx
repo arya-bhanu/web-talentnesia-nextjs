@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { PaginationProps } from './pagination.type';
 
-const PaginationView: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+const PaginationView: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange, totalResults, itemsPerPage }) => {
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const renderPageNumbers = () => {
@@ -33,6 +33,9 @@ const PaginationView: React.FC<PaginationProps> = ({ currentPage, totalPages, on
 
     return pages;
   };
+
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, totalResults);
 
   return (
     <div className="flex items-center justify-between cursor-pointer">
@@ -81,7 +84,7 @@ const PaginationView: React.FC<PaginationProps> = ({ currentPage, totalPages, on
         </button>
       </div>
       <div className="text-base cursor-pointer text-gray-800">
-        <span>{totalPages * 4} Hasil</span> 
+        <span>{totalResults} Hasil</span> 
       </div>
     </div>
   );

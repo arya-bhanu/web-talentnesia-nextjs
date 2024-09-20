@@ -50,15 +50,15 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
 
   return (
     <header
-      className={clsx(
-        'py-2 px-1 lg:p-3 flex items-center gap-3 fixed top-0 bg-white w-full z-50 shadow-lg transition-all',
-        !isTopView && headerObserver.inView
-          ? '-translate-y-20'
-          : 'translate-y-0',
-      )}
-    >
-      <div className="flex items-center gap-x-8 lg:gap-x-14 xl:gap-x-16 w-full lg:w-fit" style={onMouseIn ? {width: '37%'} : undefined}>
-        <Link href={'/'} className="w-fit flex items-center gap-1 md:gap-3">
+    className={clsx(
+      'py-2 px-4 lg:px-6 flex items-center justify-between fixed top-0 bg-white w-full z-50 shadow-lg transition-all',
+      !isTopView && headerObserver.inView
+        ? '-translate-y-20'
+        : 'translate-y-0',
+    )}
+  >
+    <div className="flex items-center gap-x-4 lg:gap-x-8">
+      <Link href={'/'} className="w-fit flex items-center gap-1 md:gap-3">
           <Image
             alt="logo image"
             src={'/logo.png'}
@@ -92,7 +92,7 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
         <Dropdown links={programLinks}>Program</Dropdown>
         <Link
           href={'/contact'}
-          className="font-inter font-medium lg:text-base text-sm"
+          className="font-inter font-medium lg:text-base text-sm hover:text-blue-600"
         >
           Kontak Kami
         </Link>

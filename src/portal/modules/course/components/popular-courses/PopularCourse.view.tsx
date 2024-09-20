@@ -17,7 +17,12 @@ const PopularCoursesSectionView: React.FC<PopularCoursesSectionViewProps> = ({ c
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 md:mt-7 lg:mt-9 gap-10">
         {
           courses.map((course, index: number) => (
-            <FeatureCard key={index} {...course} isLoading={isLoading ? isLoading : false} />
+            <FeatureCard 
+              key={index} 
+              {...course} 
+              isLoading={isLoading ? isLoading : false} 
+              originPrice={course.originalPrice.toString()} currentPrice={course.currentPrice.toString()} rating={course.rating.toString()}
+            />
           ))
         }
       </div>
