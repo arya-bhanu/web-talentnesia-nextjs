@@ -85,7 +85,7 @@ const FeatureCardView = (props: courses) => {
               </div>
             </div>
             <div className="flex items-center justify-between mt-2 sm:mt-3 md:mt-5">
-              <p className="text-base md:text-base lg:text-lg font-semibold">
+              <p className="text-base md:text-sm lg:text-base font-semibold">
                 {formatRupiah(parseFloat(props.currentPrice))}
               </p>
               <p className="font-poppins text-[#98A2B3] text-xs sm:text-sm md:text-base line-through">
