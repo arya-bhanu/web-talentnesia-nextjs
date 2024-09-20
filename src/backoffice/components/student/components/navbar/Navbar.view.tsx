@@ -18,12 +18,14 @@ import Link from 'next/link';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
+  moduleRoutePath: string;
 }
 
 const NavbarView: React.FC<NavbarViewProps> = ({
   user,
   isMenuOpen,
   toggleMenu,
+  moduleRoutePath,
 }) => {
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -67,6 +69,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
             className=""
             pathSegments={[]}
             formattedSegments={[]}
+            moduleRoutePath={moduleRoutePath}
           />
         </div>
         <div className="flex items-center space-x-4">
@@ -138,7 +141,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <Link href={'/mentor/setting'} className='p-0 m-0 block'>
+                  <Link href={'/mentor/setting'} className="p-0 m-0 block">
                     <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
                       Setting
                     </li>

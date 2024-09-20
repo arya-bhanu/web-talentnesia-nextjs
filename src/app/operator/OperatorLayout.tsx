@@ -7,9 +7,12 @@ import { getSession } from '@/lib/action'; // Removed refreshToken
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-const Sidebar = dynamic(() => import('@/backoffice/components/operator/components/sidebar'), {
-  ssr: false,
-});
+const Sidebar = dynamic(
+  () => import('@/backoffice/components/operator/components/sidebar'),
+  {
+    ssr: false,
+  },
+);
 
 const OperatorLayout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
@@ -78,7 +81,7 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="bg-[#FAFAFA]">
-      {user && <Navbar user={user} />}
+      {user && <Navbar moduleRoutePath="operator" user={user} />}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}

@@ -23,9 +23,8 @@ export function CustomCard({
   userCount,
   institutionId,
 }: CustomCardProps) {
-
   const pathname = usePathname();
-  
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-GB', {
@@ -54,11 +53,15 @@ export function CustomCard({
         : 'bg-red-100 text-red-400';
 
   return (
-    <Link href={`${pathname}detail-program?programId=${id}&schoolId=${institutionId}`}>
+    <Link
+      href={`${pathname}detail-program?programId=${id}&schoolId=${institutionId}`}
+    >
       <div className="relative max-w-full bg-white border border-gray-200 rounded-lg xl:rounded-2xl shadow dark:bg-gray-800 dark:border-gray-700 cursor-pointer">
         <Image
-          src={image}
+          src={image || ''}
           alt="Program Image"
+          width={300}
+          height={300}
           className="rounded-t-lg xl:rounded-t-2xl w-full h-48 object-cover"
         />
         <div className="absolute top-2 left-2">

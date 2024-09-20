@@ -7,9 +7,12 @@ import { getSession } from '@/lib/action'; // Removed refreshToken
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-const Sidebar = dynamic(() => import('@/backoffice/components/student/components/sidebar'), {
-  ssr: false,
-});
+const Sidebar = dynamic(
+  () => import('@/backoffice/components/student/components/sidebar'),
+  {
+    ssr: false,
+  },
+);
 
 const StudentLayout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
@@ -70,14 +73,11 @@ const StudentLayout = ({ children }: { children: ReactNode }) => {
   }
 
   // Determine if background color should be hidden based on current route
-  const customPageStyle = 
-  pathname.startsWith('/student/student/');
-
-  
+  const customPageStyle = pathname.startsWith('/student/student/');
 
   return (
-    <div className='bg-[#FAFAFA]'>
-      {user && <Navbar user={user} />}
+    <div className="bg-[#FAFAFA]">
+      {user && <Navbar moduleRoutePath="student" user={user} />}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -85,7 +85,9 @@ const StudentLayout = ({ children }: { children: ReactNode }) => {
       <div
         className={`px-8 py-16 min-h-screen transition-all duration-300 md:ml-64 bg-[#FAFAFA]`}
       >
-        <div className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}>
+        <div
+          className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}
+        >
           {children}
         </div>
       </div>

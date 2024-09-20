@@ -3,6 +3,7 @@ export interface BreadcrumbViewProps {
   formattedSegments: string[];
   className?: string;
   currentPath?: string;
+  moduleRoutePath: string;
 }
 
 export interface CustomBreadcrumbs {

@@ -17,12 +17,14 @@ import Link from 'next/link';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
+  moduleRoutePath: string;
 }
 
 const NavbarView: React.FC<NavbarViewProps> = ({
   user,
   isMenuOpen,
   toggleMenu,
+  moduleRoutePath,
 }) => {
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -60,6 +62,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
             customBreadcrumbs={globalCustomBreadcrumbs}
             pathSegments={[]}
             formattedSegments={[]}
+            moduleRoutePath={moduleRoutePath}
           />
         </div>
         <div className="flex items-center space-x-4">
