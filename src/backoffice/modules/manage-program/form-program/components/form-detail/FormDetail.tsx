@@ -212,7 +212,7 @@ const FormDetail = () => {
         isLoadingMentors={isLoadingMentors}
         handleFileChange={handleFileChange}
         fullImageUrl={fullImageUrl}
-        programType={dataProgramDetail?.data?.data?.type}
+        programType={dataProgramDetail?.data?.data?.type || activeTab}
         selectedSchool={selectedSchool}
         setSelectedSchool={setSelectedSchool}
       />
