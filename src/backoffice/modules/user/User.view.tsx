@@ -20,8 +20,10 @@ import { useRouter } from 'next/navigation';
 import { ResponseModal } from './components/response-modal/responseModal';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { Spinner } from "flowbite-react";
+import { Spinner } from 'flowbite-react';
 import { ImportModal } from './components/import-modal/ImportModal';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
+import usePermission from '@/backoffice/components/permission-granted/usePermission';
 
 const UserView: React.FC<IUserView> = ({
   Filter,
@@ -34,13 +36,16 @@ const UserView: React.FC<IUserView> = ({
 }) => {
   const [activeTab, setActiveTab] = useState('Mentor');
   const [data, setData] = useState<User[]>([]);
-  const [profilePictures, setProfilePictures] = useState<Record<string, string>>({});
+  const [profilePictures, setProfilePictures] = useState<
+    Record<string, string>
+  >({});
   const [showResultModal, setShowResultModal] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const permission = usePermission;
 
   useEffect(() => {
     const success = searchParams.get('success');
@@ -49,13 +54,25 @@ const UserView: React.FC<IUserView> = ({
     if (success === 'true') {
       setIsSuccess(true);
       if (userType === 'student') {
-        setModalMessage(action === 'add' ? 'Berhasil Menambahkan Student' : 'Berhasil Mengubah Student');
+        setModalMessage(
+          action === 'add'
+            ? 'Berhasil Menambahkan Student'
+            : 'Berhasil Mengubah Student',
+        );
         setActiveTab('Student');
-      } else if (userType ==='School Operator') {
-        setModalMessage(action === 'add' ? 'Berhasil Menambahkan School Operator' : 'Berhasil Mengubah School Operator');
+      } else if (userType === 'School Operator') {
+        setModalMessage(
+          action === 'add'
+            ? 'Berhasil Menambahkan School Operator'
+            : 'Berhasil Mengubah School Operator',
+        );
         setActiveTab('School Operator');
       } else {
-        setModalMessage(action === 'add' ? 'Berhasil Menambahkan Mentor' : 'Berhasil Mengubah Mentor');
+        setModalMessage(
+          action === 'add'
+            ? 'Berhasil Menambahkan Mentor'
+            : 'Berhasil Mengubah Mentor',
+        );
         setActiveTab('Mentor');
       }
       setShowResultModal(true);
@@ -83,7 +100,7 @@ const UserView: React.FC<IUserView> = ({
           break;
       }
       setData(fetchedData);
-      
+
       const pictures: Record<string, string> = {};
       for (const user of fetchedData) {
         if (user.photoProfile) {
@@ -113,7 +130,7 @@ const UserView: React.FC<IUserView> = ({
       </button>
     );
   };
-  
+
   const handleDelete = async (id: string) => {
     const success = await userAPI.delete(id);
     if (success) {
@@ -138,7 +155,8 @@ const UserView: React.FC<IUserView> = ({
         header: ({ column }) => <SortingTable column={column} title="Name" />,
         cell: (info) => {
           const userId = info.row.original.id;
-          const profileImage = profilePictures[userId] || '/img/manage-user/profile-template.svg';
+          const profileImage =
+            profilePictures[userId] || '/img/manage-user/profile-template.svg';
 
           return (
             <div className="flex items-center">
@@ -173,19 +191,34 @@ const UserView: React.FC<IUserView> = ({
         cell: (info) => {
           const id = info.row.original.id;
           const rowData = info.row.original;
-      
+
           return (
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
                   <button
                     onClick={() => {
-                      if (activeTab === 'Mentor') {
-                        router.push(`/backoffice/manage-user/edit-mentor?id=${rowData.id}`);
-                      } else if (activeTab === 'Student') {
-                        router.push(`/backoffice/manage-user/edit-student?id=${rowData.id}`);
-                      } else if (activeTab === 'School Operator') {
-                        router.push(`/backoffice/manage-user/edit-school-operator?id=${rowData.id}`);
+                      if (
+                        activeTab === 'Mentor' &&
+                        permission('manage-user.mentor.edit', true)
+                      ) {
+                        router.push(
+                          `/backoffice/manage-user/edit-mentor?id=${rowData.id}`,
+                        );
+                      } else if (
+                        activeTab === 'Student' &&
+                        permission('manage-user.student.edit', true)
+                      ) {
+                        router.push(
+                          `/backoffice/manage-user/edit-student?id=${rowData.id}`,
+                        );
+                      } else if (
+                        activeTab === 'School Operator' &&
+                        permission('manage-user.operator.edit', true)
+                      ) {
+                        router.push(
+                          `/backoffice/manage-user/edit-school-operator?id=${rowData.id}`,
+                        );
                       } else {
                         handleActionButtonRow(id, 'edit', rowData);
                       }
@@ -211,12 +244,12 @@ const UserView: React.FC<IUserView> = ({
         },
       },
     ],
-    [handleActionButtonRow, profilePictures, activeTab, router]
+    [handleActionButtonRow, profilePictures, activeTab, router],
   );
 
   const filteredData = useMemo(() => {
     return data.filter((user) =>
-      user.name.toLowerCase().includes(Filter.toLowerCase())
+      user.name.toLowerCase().includes(Filter.toLowerCase()),
     );
   }, [data, Filter]);
 
@@ -224,78 +257,101 @@ const UserView: React.FC<IUserView> = ({
     <div>
       {isLoading ? (
         <div className="flex items-center justify-center h-[calc(80vh-200px)]">
-        <Spinner aria-label="Loading" size="xl" />
-      </div>
+          <Spinner aria-label="Loading" size="xl" />
+        </div>
       ) : (
         <div>
-      <ResponseModal
-        isOpen={showResultModal}
-        onClose={() => setShowResultModal(false)}
-        onConfirm={() => setShowResultModal(false)}
-        title={isSuccess ? "Success" : "Error"}
-        message={modalMessage}
-        confirmText="OK!"
-      />
-      <div className="flex justify-between items-center font-poppins mb-4">
-        <SearchTable value={Filter} onChange={setFilter} />
-        {tabName === 'Mentor' && (
-        <Link href={'/backoffice/manage-user/add-mentor/'} >
-        <AddButton
-        onClick={() => ('')}
-          text="Add Mentor"
-        />
-        </Link>
-      )}
-      {tabName === 'Student' && (
-        <div className="flex space-x-2">
-          <ImportButton onClick={() => setIsImportModalOpen(true)} />
-          <Link href={'/backoffice/manage-user/add-student/'}>
-            <AddButton
-              onClick={() => ('')}
-              text="Add Student"
-            />
-          </Link>
+          <ResponseModal
+            isOpen={showResultModal}
+            onClose={() => setShowResultModal(false)}
+            onConfirm={() => setShowResultModal(false)}
+            title={isSuccess ? 'Success' : 'Error'}
+            message={modalMessage}
+            confirmText="OK!"
+          />
+          <div className="flex justify-between items-center font-poppins mb-4">
+            <SearchTable value={Filter} onChange={setFilter} />
+            {tabName === 'Mentor' && (
+              <PermissionGranted roleable role="manage-user.mentor.add">
+                <Link href={'/backoffice/manage-user/add-mentor/'}>
+                  <AddButton onClick={() => ''} text="Add Mentor" />
+                </Link>
+              </PermissionGranted>
+            )}
+            {tabName === 'Student' && (
+              <div className="flex space-x-2">
+                <PermissionGranted roleable role="manage-user.student.import">
+                  <ImportButton onClick={() => setIsImportModalOpen(true)} />
+                </PermissionGranted>
+                <PermissionGranted roleable role="manage-user.student.add">
+                  <Link href={'/backoffice/manage-user/add-student/'}>
+                    <AddButton onClick={() => ''} text="Add Student" />
+                  </Link>
+                </PermissionGranted>
+              </div>
+            )}
+            {tabName === 'School Operator' && (
+              <PermissionGranted roleable role="manage-user.operator.add">
+                <Link href={'/backoffice/manage-user/add-school-operator/'}>
+                  <AddButton onClick={() => ''} text="Add School Operator" />
+                </Link>
+              </PermissionGranted>
+            )}
+          </div>
+          {tabName === 'Mentor' && (
+            <PermissionGranted roleable role="manage-user.mentor.read">
+              <DataTable
+                data={filteredData}
+                columns={columns}
+                filter={{ Filter, setFilter }}
+                sorting={[{ id: 'name', desc: false }]}
+              />
+            </PermissionGranted>
+          )}
+          {tabName === 'Student' && (
+            <PermissionGranted roleable role="manage-user.student.read">
+              <DataTable
+                data={filteredData}
+                columns={columns}
+                filter={{ Filter, setFilter }}
+                sorting={[{ id: 'name', desc: false }]}
+              />
+            </PermissionGranted>
+          )}
+          {tabName === 'School Operator' && (
+            <PermissionGranted roleable role="manage-user.operator.add">
+              <DataTable
+                data={filteredData}
+                columns={columns}
+                filter={{ Filter, setFilter }}
+                sorting={[{ id: 'name', desc: false }]}
+              />
+            </PermissionGranted>
+          )}
         </div>
       )}
-      {tabName === 'School Operator' && (
-        <Link href={'/backoffice/manage-user/add-school-operator/'} >
-        <AddButton
-        onClick={() => ('')}
-          text="Add School Operator"
-        />
-        </Link>
-      )}
-      </div>
-      <DataTable
-        data={filteredData}
-        columns={columns}
-        filter={{ Filter, setFilter }}
-        sorting={[{ id: 'name', desc: false }]}
-      />
-      </div>
-    )}
     </div>
   );
 
   const tabs: TabFlexProps['tabs'] = [
     {
-      title: "Mentor",
-      content: renderTabContent("Mentor"),
+      title: 'Mentor',
+      content: renderTabContent('Mentor'),
       active: activeTab === 'Mentor',
-      disabled: isLoading && activeTab !== 'Mentor'
+      disabled: isLoading && activeTab !== 'Mentor',
     },
     {
-      title: "Student",
-      content: renderTabContent("Student"),
+      title: 'Student',
+      content: renderTabContent('Student'),
       active: activeTab === 'Student',
-      disabled: isLoading && activeTab !== 'Student'
+      disabled: isLoading && activeTab !== 'Student',
     },
     {
-      title: "School Operator",
-      content: renderTabContent("School Operator"),
+      title: 'School Operator',
+      content: renderTabContent('School Operator'),
       active: activeTab === 'School Operator',
-      disabled: isLoading && activeTab !== 'School Operator'
-    }
+      disabled: isLoading && activeTab !== 'School Operator',
+    },
   ];
 
   const handleTabChange: TabFlexProps['onTabChange'] = (tabTitle) => {

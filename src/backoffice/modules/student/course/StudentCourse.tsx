@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Badge, Button, Progress } from 'flowbite-react';
 import { StudentCourseCardProps } from './studentCourse.type';
+import Image from 'next/image';
 
 
 const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
@@ -29,7 +30,10 @@ const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
   return (
     <div className="flex h-[100px] w-full">
       <div className="h-full aspect-square">
-        <img src={image} alt={title} className="h-full w-full object-cover rounded" />
+        <Image
+         src={image} 
+         alt={title}
+         className="h-full w-full object-cover rounded" />
       </div>
       <div className="flex-grow flex flex-col justify-center ml-4">
         <div className="flex items-center">

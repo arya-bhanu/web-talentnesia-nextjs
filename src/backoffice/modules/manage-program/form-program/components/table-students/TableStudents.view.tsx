@@ -7,6 +7,7 @@ import RedTrash from '@/../public/icons/red-trash.svg';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
 import Add from '@/../public/icons/add.svg';
 import { SearchTable } from '@/backoffice/components/search-table';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 interface TableStudentsViewProps {
   setOpenModalBrowser: (open: boolean) => void;
@@ -56,21 +57,25 @@ const TableStudentsView: React.FC<TableStudentsViewProps> = ({
 
   return (
     <div className={className}>
-      <div className="flex justify-between">
-        <SearchTable value={filter} onChange={setFilter} />
-        <button
-          onClick={() => setOpenModalBrowser(true)}
-          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-        >
-          <Add />
-          <span className="text-black"> Browse All</span>
-        </button>
-      </div>
-      <DataTable
-        data={dataStudentsJoined ?? []}
-        columns={columns}
-        filter={{ Filter: filter, setFilter: setFilter }}
-      />
+      <PermissionGranted roleable role='manage-program.iicp.student.read'>
+        <div className="flex justify-between">
+          <SearchTable value={filter} onChange={setFilter} />
+          <PermissionGranted roleable role="manage-program.iicp.student.add">
+            <button
+              onClick={() => setOpenModalBrowser(true)}
+              className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+            >
+              <Add />
+              <span className="text-black"> Browse All</span>
+            </button>
+          </PermissionGranted>
+        </div>
+        <DataTable
+          data={dataStudentsJoined ?? []}
+          columns={columns}
+          filter={{ Filter: filter, setFilter: setFilter }}
+        />
+      </PermissionGranted>
     </div>
   );
 };

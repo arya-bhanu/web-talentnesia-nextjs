@@ -14,6 +14,7 @@ export interface APIResponseCourseDetail {
       attendance: Attendance;
       assignment: Assignment;
       calendar: Calendar[];
+      historyExam: HistoryExam[];
     };
   }
 
@@ -109,3 +110,10 @@ export interface APIResponseCourseDetail {
     type: number;
   }
   
+  export interface HistoryExam {
+    id: string;
+    name: string;
+    startDate: string;
+    endDate: string;
+    status: string;
+  }

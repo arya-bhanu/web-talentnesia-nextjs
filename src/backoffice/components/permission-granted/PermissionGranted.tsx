@@ -5,12 +5,15 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 const PermissionGranted = ({
   children,
-  rule,
+  role,
+  roleable = false,
 }: {
   children: ReactNode;
-  rule: string;
+  role: string;
+  roleable?: boolean;
 }) => {
   const [accessRights, setAccessRights] = useState<IAccessRight[] | null>(null);
+
   useEffect(() => {
     const accessString = window.localStorage.getItem('access');
     if (accessString) {
@@ -20,10 +23,11 @@ const PermissionGranted = ({
   }, []);
   const isGranted = useMemo(() => {
     if (accessRights) {
-      return accessRights.map((el) => el.code).includes(rule);
+      return roleable || accessRights.map((el) => el.code).includes(role);
     }
-    return false;
-  }, [JSON.stringify(accessRights), rule]);
+    return roleable;
+  }, [JSON.stringify(accessRights), role, roleable]);
+
   return <div className={clsx(!isGranted && 'hidden')}>{children}</div>;
 };
 

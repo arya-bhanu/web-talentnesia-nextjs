@@ -147,22 +147,21 @@ const FormDetailView: React.FC<
 
       {/* School */}
       <div className="col-span-2">
-        <LabelForm htmlFor="school">School</LabelForm>
-        <Select 
-          id="school" 
-          name="school" 
-          required 
+        <LabelForm isImportant htmlFor="school">
+          School
+        </LabelForm>
+        <Select
+          id="school"
+          name="school"
+          required
           value={selectedSchool}
           onChange={(e) => setSelectedSchool(e.target.value)}
         >
-          <option value="" disabled className='hidden'>
+          <option value="" disabled className="hidden">
             Select School
           </option>
           {defaultSchools.map((el) => (
-            <option
-              key={el.id}
-              value={el.id}
-            >
+            <option key={el.id} value={el.id}>
               {el.name}
             </option>
           ))}

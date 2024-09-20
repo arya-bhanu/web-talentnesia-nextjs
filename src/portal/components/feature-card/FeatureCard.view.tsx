@@ -31,28 +31,20 @@ const FeatureCardView = (props: courses) => {
 
   return (
     <figure className="border border-[#EAECF0] rounded-md overflow-clip">
-      <SkeletonLoader
-        visible={props.isLoading ? props.isLoading : false}
-        variant="image"
-        height={180}
-      />
-      {!props.isLoading && (
-        <>
-          <div className="h-[180px] overflow-clip w-full">
-            <Image
-              alt="card image"
-              src={
-                `${process.env.API_SERVER_URL}/v1/file/${props.logo}` ||
-                'alt Image'
-              }
-              width={400}
-              height={180}
-              className="w-full object-cover"
-            />
-          </div>
-        </>
-      )}
-
+      <SkeletonLoader visible={props.isLoading ? props.isLoading : false} variant='image' height={180}/>
+      {
+        !props.isLoading && props.logo && 
+        <div className="h-[180px] overflow-clip w-full">
+          <Image
+            alt="card image"
+            src={props.logo}
+            width={400}
+            height={180}
+            className="w-full object-cover"
+          />
+        </div>
+      }
+      
       <div className="py-3 md:py-4 lg:py-6 px-2 md:px-4 lg:px-5">
         <SkeletonLoader visible={props.isLoading ? props.isLoading : false} />
         <SkeletonLoader

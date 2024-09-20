@@ -10,6 +10,8 @@ import ModalForm from './components/modal-form-province';
 import { useProvinceActions } from './hooks/useProvinceAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../../public/icons/more_horiz.svg';
+import { useRouter } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -25,7 +27,14 @@ const ProvinceView: React.FC<IProvinceView> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const { handleAddProvince, handleEditProvince, handleDeleteProvince } = useProvinceActions();
+  const router = useRouter();
+
+  const openDocumentEditor = () => {
+    router.push('/backoffice/master-data/region/province/add-province/');
+  };
+
+  const { handleAddProvince, handleEditProvince, handleDeleteProvince } =
+    useProvinceActions();
 
   const handleEdit = useCallback(
     (id: string, rowData: any) => {
@@ -58,7 +67,9 @@ const ProvinceView: React.FC<IProvinceView> = ({
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {
-        header: ({ column }) => <SortingTable column={column} title="Province Code" />,
+        header: ({ column }) => (
+          <SortingTable column={column} title="Province Code" />
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('Province-name', {
@@ -78,18 +89,36 @@ const ProvinceView: React.FC<IProvinceView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.province.edit"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.province.read"
                   >
-                    Delete
-                  </button>
+                    <button className="hover:text-blue-700 hover:underline">
+                      Open
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.region.province.delete"
+                  >
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -108,20 +137,18 @@ const ProvinceView: React.FC<IProvinceView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add Province"
-        />
+        <PermissionGranted role="master-data.region.province.add" roleable>
+          <AddButton onClick={openDocumentEditor} text="Add Province" />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted role="master-data.region.province.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
       <ModalForm
         isOpen={isPopupOpen}
         onClose={() => {

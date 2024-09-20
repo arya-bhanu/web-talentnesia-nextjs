@@ -1,11 +1,14 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Card } from 'flowbite-react';
 import { TabFlex, TabItem } from '@/backoffice/components/tabs/tabs';
 import IICP from './iicp';
 import Course from './course';
 import { useTabStoreManageProgram } from './manageProgramStore';
 import { ProgramTabs } from './manageProgram.type';
+import { ListProgramView } from './list-program/ListProgram.view';
+import { decodeToken } from '@/lib/tokenDecoder';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const ManageProgramView: React.FC = () => {
   const activeTab = useTabStoreManageProgram((state) => state.activeTab);
@@ -24,20 +27,36 @@ const ManageProgramView: React.FC = () => {
     },
     {
       title: 'IICP',
-      content: <IICP />,
+      content: (
+        <PermissionGranted roleable role="manage-program.iicp.read">
+          <IICP />
+        </PermissionGranted>
+      ),
       active: activeTab === 'iicp',
       type: 'iicp',
     },
   ];
 
+  const decodedToken = decodeToken();
+  const isAdmin = decodedToken?.role === 1;
+
   return (
-    <Card>
-      <TabFlex<ProgramTabs[keyof ProgramTabs]> tabs={tabs} onTabChange={handleTabChange} />
-      <div className="mt-4">
-        {activeTab === 'course' && <Course />}
-        {activeTab === 'iicp' && <IICP />}
-      </div>
-    </Card>
+    <>
+      {!isAdmin && <ListProgramView />}
+      {isAdmin && (
+        <Card>
+          <TabFlex<ProgramTabs[keyof ProgramTabs]>
+            tabs={tabs}
+            onTabChange={handleTabChange}
+          />
+          <div className="mt-4">
+            {activeTab === 'course' && <Course />}
+            {activeTab === 'iicp' && <IICP />}
+          </div>
+        </Card>
+      )}
+    </>
+
   );
 };
 

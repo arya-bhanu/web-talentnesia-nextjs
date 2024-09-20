@@ -18,13 +18,15 @@ import Link from 'next/link';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
+  moduleRoutePath: string;
 }
 
 const NavbarView: React.FC<NavbarViewProps> = ({
   user,
   isMenuOpen,
   toggleMenu,
-  style
+  style,
+  moduleRoutePath,
 }) => {
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -59,7 +61,10 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   };
 
   return (
-    <nav className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 pl-12 md:pl-64" style={style} >
+    <nav
+      className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 pl-12 md:pl-64"
+      style={style}
+    >
       <div className="flex justify-between items-center py-4 px-6">
         <div>
           <TitleNavbar customTitles={globalCustomTitles} />
@@ -68,6 +73,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
             className=""
             pathSegments={[]}
             formattedSegments={[]}
+            moduleRoutePath={moduleRoutePath}
           />
         </div>
         <div className="flex items-center space-x-4">
@@ -139,10 +145,10 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <Link href={'/backoffice/setting'} className='p-0 m-0 block'>
+                  <Link href={'/backoffice/setting'} className="p-0 m-0 block">
                     <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
                       Setting
-                    </li>     
+                    </li>
                   </Link>
                   <li
                     onClick={handleLogout}

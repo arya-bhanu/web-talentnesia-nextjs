@@ -10,6 +10,7 @@ import { useDragChapters } from '@/backoffice/modules/manage-modul/add-exam/stor
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { chapterReorder } from '../../api/manageModelApi';
 import { useSearchParams } from 'next/navigation';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const ChapterView: React.FC<IChapter & IStateChapter> = ({
   className,
@@ -98,13 +99,15 @@ const ChapterView: React.FC<IChapter & IStateChapter> = ({
         <h2 className="font-poppins text-sm font-semibold text-[#323232]">
           Chapter
         </h2>
-        <button
-          type="submit"
-          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
-        >
-          <Add />
-          <span className="text-black"> Add Chapter</span>
-        </button>
+        <PermissionGranted roleable role='manage-module.addChapter'>
+          <button
+            type="submit"
+            className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+          >
+            <Add />
+            <span className="text-black"> Add Chapter</span>
+          </button>
+        </PermissionGranted>
       </div>
       <div className="mt-5 flex flex-col gap-3">{renderPanelDraggable}</div>
     </section>

@@ -7,9 +7,12 @@ import { getSession } from '@/lib/action'; // Removed refreshToken
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-const Sidebar = dynamic(() => import('@/backoffice/components/mentor/components/sidebar'), {
-  ssr: false,
-});
+const Sidebar = dynamic(
+  () => import('@/backoffice/components/mentor/components/sidebar'),
+  {
+    ssr: false,
+  },
+);
 
 const MentorLayout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
@@ -65,11 +68,15 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
     return null;
   }
 
-  const customPageStyle = ['/mentor/dashboard/'].includes(pathname);
+  const customPageStyle = [
+    '/mentor/dashboard/',
+    '/mentor/manage-program/',
+    '/mentor/manage-program/detail-program/',
+  ].includes(pathname);
 
   return (
-    <div className='bg-[#FAFAFA]'>
-      {user && <Navbar user={user} />}
+    <div className="bg-[#FAFAFA]">
+      {user && <Navbar moduleRoutePath="mentor" user={user} />}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -77,7 +84,9 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
       <div
         className={`px-8 py-16 min-h-screen transition-all duration-300 md:ml-64 bg-[#FAFAFA]`}
       >
-        <div className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}>
+        <div
+          className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}
+        >
           {children}
         </div>
       </div>

@@ -10,6 +10,7 @@ import ModalForm from './components/modal-form-level/ModalForm';
 import { useAcademicLevelActions } from './hooks/useAcademicLevelAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
+import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -82,18 +83,28 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <button
-                    onClick={() => handleEdit(id, rowData)}
-                    className="hover:text-blue-700 hover:underline"
+                  <PermissionGranted
+                    roleable
+                    role="master-data.academicLevel.edit"
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(id)}
-                    className="hover:text-red-700 hover:underline"
+                    <button
+                      onClick={() => handleEdit(id, rowData)}
+                      className="hover:text-blue-700 hover:underline"
+                    >
+                      Edit
+                    </button>
+                  </PermissionGranted>
+                  <PermissionGranted
+                    roleable
+                    role="master-data.academicLevel.delete"
                   >
-                    Delete
-                  </button>
+                    <button
+                      onClick={() => handleDelete(id)}
+                      className="hover:text-red-700 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </PermissionGranted>
                 </div>
               }
             >
@@ -112,21 +123,25 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setSelectedRowData(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add Academic Level"
-        />
+        <PermissionGranted role="master-data.academicLevel.add" roleable>
+          <AddButton
+            onClick={() => {
+              setSelectedId(null);
+              setSelectedRowData(null);
+              setIsPopupOpen(true);
+            }}
+            text="Add Academic Level"
+          />
+        </PermissionGranted>
       </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        sorting={[{ id: 'code', desc: false }]}
-        filter={{ Filter, setFilter }}
-      />
+      <PermissionGranted role="master-data.academicLevel.read" roleable>
+        <DataTable
+          data={data}
+          columns={columns}
+          sorting={[{ id: 'code', desc: false }]}
+          filter={{ Filter, setFilter }}
+        />
+      </PermissionGranted>
 
       <ModalForm
         isOpen={isPopupOpen}
