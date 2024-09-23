@@ -28,7 +28,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = ({ status, type }) => {
   })();
 
     return (
-      <span className={clsx('px-3 py-2 rounded-lg text-xs font-medium', styling)}>
+      <span className={clsx('px-3 py-2 rounded-lg text-xs font-medium w-max block', styling)}>
         {textStatus}
       </span>
     );
