@@ -7,6 +7,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ITanstackTableViewProps } from './tanstackTable.type';
+import IconLeft from '@/../public/icons/btn-left.svg';
+import IconRight from '@/../public/icons/btn-right.svg';
+import SortArrow from '../../../../public/icons/sort-arrow.svg';
+import SortArrowUp from '../../../../public/icons/sort-arrow-up.svg';
 
 /**
  * TanstackTableView component to display data in a table format
@@ -36,6 +40,7 @@ const TanstackTableView = <T,>({
   columns,
   currentPage,
   totalPages,
+  totalData,
   pageSize,
   pageSizeOptions,
   searchTerm,
@@ -56,79 +61,122 @@ const TanstackTableView = <T,>({
   });
 
   return (
-    <div className="p-2">
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="border p-2 mb-4"
-      />
+    <>
+      <div className="p-2">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="bg-[#FFFFFF] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4"
+        />
 
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan}>
-                  <div
-                    onClick={() => {
-                      handleSort(header.column.id);
-                    }}
-                  >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
-                    {sortBy === header.column.id &&
-                      (sortOrder === 'asc' ? ' ↑' : ' ↓')}
-                  </div>
-                </th>
+        <div className="overflow-x-auto sm:rounded-lg mt-5">
+          <table className="w-full relative z-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-md font-bold text-[#323232] bg-[#FFFFFF] border-b">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      scope="col"
+                      className={
+                        header.column.id === 'action' ||
+                        header.column.id === 'actions'
+                          ? 'px-6 py-3 text-center'
+                          : 'px-6 py-3'
+                      }
+                      onClick={() => handleSort(header.column.id)}
+                    >
+                      <div className="flex items-center">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {sortBy === header.column.id ? (
+                          sortOrder === 'asc' ? (
+                            <SortArrowUp className="ml-1" />
+                          ) : (
+                            <SortArrowUp className="ml-1 transform rotate-180" />
+                          )
+                        ) : (
+                          <SortArrow className="ml-1" />
+                        )}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="bg-[#FFFFFF] border-b">
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className={
+                        cell.column.id === 'action' ||
+                        cell.column.id === 'actions'
+                          ? 'px-6 py-4 text-center items-center'
+                          : 'px-6 py-4'
+                      }
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
 
-      <div className="flex items-center gap-2">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </button>
+        <div className="flex justify-between items-center w-full mt-5">
+          <div className="flex items-center gap-2 text-[#667085]">
+            <label htmlFor="pageSize" className="block">
+              Showing
+            </label>
+            <select
+              id="pageSize"
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+              className="bg-[#FFFFFF] border max-w-[5rem] border-gray-300 text-[#667085] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+            >
+              {pageSizeOptions.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+            <p className="w-full min-w-max">data out of {totalData}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <p className="text-[#667085]">Data per page</p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                className={`transition-opacity duration-300 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'opacity-100 hover:opacity-80'}`}
+              >
+                <IconLeft />
+              </button>
+              {/* <span className="text-[#667085]">
+                Page {currentPage} of {totalPages}
+              </span> */}
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+                className={`transition-opacity duration-300 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'opacity-100 hover:opacity-80'}`}
+              >
+                <IconRight />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        Page {currentPage} of {totalPages}
-      </div>
-
-      <div className="mt-4">
-        <label htmlFor="pageSize">Items per page: </label>
-        <select
-          id="pageSize"
-          value={pageSize}
-          onChange={(e) => setPageSize(Number(e.target.value))}
-          className="border p-2"
-        >
-          {pageSizeOptions.map((size) => (
-            <option key={size} value={size}>
-              {size}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
+    </>
   );
 };
 

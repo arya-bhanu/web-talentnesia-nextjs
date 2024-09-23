@@ -25,6 +25,7 @@ const TanstackTable = <T,>({
   const [data, setData] = useState<T[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalData, setTotalData] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
   const [sortBy, setSortBy] = useState<string>('');
@@ -42,6 +43,7 @@ const TanstackTable = <T,>({
         const paginatedData = response.data;
         setData(paginatedData.items);
         setTotalPages(paginatedData.meta.lastPage);
+        setTotalData(paginatedData.meta.total);
         setCurrentPage(paginatedData.meta.currentPage);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -80,6 +82,7 @@ const TanstackTable = <T,>({
       columns={columns}
       currentPage={currentPage}
       totalPages={totalPages}
+      totalData={totalData}
       pageSize={pageSize}
       pageSizeOptions={pageSizeOptions}
       searchTerm={searchTerm}
