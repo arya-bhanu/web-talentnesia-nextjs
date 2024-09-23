@@ -7,7 +7,6 @@ import {
 } from './components/column-chart/ColumnChart';
 import AreaChart from './components/area-chart/AreaChart';
 import { DashboardData } from './dashboardAdmin.type';
-import { imageData } from './dashboardAdmin.data';
 import Custom500 from '@/components/500/500';
 import Loading from '@/components/loading';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
@@ -16,12 +15,14 @@ interface DashboardAdminViewProps {
   data: DashboardData;
   loading: boolean;
   error: Error | null;
+  imageData: any;
 }
 
 const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
   data,
   loading,
   error,
+  imageData,
 }) => {
   if (loading) return <Loading isLoading={loading} />;
   if (error) return <Custom500 />;
@@ -43,7 +44,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
             <div className="pl-3 mt-10  flex flex-col items-start">
               <div className="flex items-start pt-2">
                 <div className="text-xl leading-9 font-bold text-gray-900">
-                  {imageData.instructorData.data}
+                  {data.totalIntruction}
                 </div>
                 <div className="text-md leading-5 font-medium text-gray-900 pl-2 pt-2">
                   Instructor
@@ -67,7 +68,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
             <div className="mt-10 pl-3 flex flex-col">
               <div className="flex items-start pt-2">
                 <div className="text-xl leading-9 font-bold text-gray-900">
-                  {imageData.studentData.data}
+                  {data.totalStudent}
                 </div>
                 <div className="text-md leading-5 font-medium text-gray-900 pl-2 pt-2">
                   Active Students
@@ -91,7 +92,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
             <div className=" pl-3 mt-10 flex flex-col">
               <div className="flex items-start pt-2">
                 <div className="text-xl leading-9 font-bold text-gray-900">
-                  {imageData.courseData.data}
+                  {data.totalCourse}
                 </div>
                 <div className="text-md leading-5 font-medium text-gray-900 pl-2 pt-2">
                   Course
@@ -104,7 +105,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2">
-          <AreaChart />
+          <AreaChart data={data.growStudent} />
         </div>
         <div className="grid grid-cols-1 gap-5 w-[280px] h-full ml-auto">
           <PermissionGranted roleable role="dashboard.readTotalElearning">
@@ -126,7 +127,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col items-center">
                       <div className="text-xl leading-9 font-semibold text-[#957BF9]">
-                        {imageData.eLearningData.data}
+                        {data.totalElearning}
                       </div>
                     </div>
                     <div className="flex flex-col place-items-center pl-2 mr-auto">
@@ -156,7 +157,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col items-start">
                       <div className="text-xl leading-9 font-semibold text-[#58A6FB]">
-                        {imageData.bootcampData.data}
+                        {data.totalBootcamp}
                       </div>
                     </div>
                     <div className="flex flex-col place-items-center pl-2 mr-auto">
@@ -186,7 +187,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col items-start">
                       <div className="text-xl leading-9 font-semibold text-[#44C5B1]">
-                        {imageData.iicpData.data}
+                        {data.totalIicp}
                       </div>
                     </div>
                     <div className="flex flex-col items-start">
@@ -203,12 +204,12 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
       <div className="grid grid-cols-2 gap-6 justify-start">
         <PermissionGranted roleable role="dashboard.readBestSellerBootcamp">
           <div className="p-4 bg-white shadow-md rounded-lg w-full">
-            <ColumnChart />
+          <ColumnChart data={data.bestSellerBootcamp} title="Best Seller Bootcamp" />
           </div>
         </PermissionGranted>
         <PermissionGranted roleable role="dashboard.readLowestSellerBootcamp">
           <div className="p-4 bg-white shadow-md rounded-lg w-full">
-            <ColumnChart2 />
+          <ColumnChart2 data={data.lowSellerBootcamp} title="Lowest Seller Bootcamp" />
           </div>
         </PermissionGranted>
       </div>
