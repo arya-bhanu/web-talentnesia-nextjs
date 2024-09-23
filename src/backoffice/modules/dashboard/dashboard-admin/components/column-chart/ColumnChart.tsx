@@ -6,7 +6,7 @@ import type { ColumnChartProps } from './coulmChart.type';
 
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const ColumnChart: React.FC<ColumnChartProps> = ({ data, title }) => {
+const ColumnChart: React.FC<ColumnChartProps> = ({ data = [], title }) => {
     const options: ApexOptions = {
         series: data.map(bootcamp => ({
             name: bootcamp.title,
@@ -53,7 +53,7 @@ const ColumnChart: React.FC<ColumnChartProps> = ({ data, title }) => {
         },
         xaxis: {
             type: 'category',
-            categories: data[0].monthlyData.map(month => month.month),
+            categories: data[0]?.monthlyData?.map(month => month.month) || [],
         },
         legend: {
             position: 'bottom',
@@ -78,7 +78,7 @@ const ColumnChart: React.FC<ColumnChartProps> = ({ data, title }) => {
     );
 };
 
-const ColumnChart2: React.FC<ColumnChartProps> = ({ data, title }) => {
+const ColumnChart2: React.FC<ColumnChartProps> = ({ data = [], title }) => {
     const options: ApexOptions = {
         series: data.map(bootcamp => ({
             name: bootcamp.title,
@@ -125,7 +125,7 @@ const ColumnChart2: React.FC<ColumnChartProps> = ({ data, title }) => {
         },
         xaxis: {
             type: 'category',
-            categories: data[0].monthlyData.map(month => month.month),
+            categories: data[0]?.monthlyData?.map(month => month.month) || [],
         },
         legend: {
             position: 'bottom',
