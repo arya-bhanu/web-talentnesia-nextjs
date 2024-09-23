@@ -21,7 +21,9 @@ const PopularCoursesSectionView: React.FC<PopularCoursesSectionViewProps> = ({ c
               key={index} 
               {...course} 
               isLoading={isLoading ? isLoading : false} 
-              originPrice={course.originalPrice.toString()} currentPrice={course.currentPrice.toString()} rating={course.rating.toString()}
+              originalPrice={Number(course.originalPrice)}
+              currentPrice={Number(course.currentPrice)}
+              rating={Number(course.rating)}
             />
           ))
         }

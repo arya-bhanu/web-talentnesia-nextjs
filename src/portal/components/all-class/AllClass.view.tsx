@@ -88,13 +88,13 @@ const AllClassView: React.FC<AllClassProps> = ({
           <div className="grid gap-4">
             {currentCourses.map((course, index) => (
               <FeatureCard
-                key={index}
-                {...course}
-                isLoading={isLoading ? isLoading : false}
-                originPrice={course.originalPrice.toString()}
-                currentPrice={course.currentPrice.toString()}
-                rating={course.rating.toString()}
-              />
+              key={index}
+              {...course}
+              isLoading={isLoading ? isLoading : false}
+              originalPrice={Number(course.originalPrice)}
+              currentPrice={Number(course.currentPrice)}
+              rating={Number(course.rating)}
+            />            
             ))}
           </div>
           <SkeletonLoader
