@@ -144,18 +144,18 @@ const DetailMentorView: React.FC<{ mentor: any }> = ({ mentor }) => {
                       logo="/path/to/course1-image.jpg"
                       level="Beginner"
                       description="A brief description of the course"
-                      rating="4.5"
-                      currentPrice="1000000"
-                      originPrice="1500000"
+                      rating={4.5}
+                      currentPrice={1000000}
+                      originalPrice={1500000}
                       isLoading={false} url={''} />
                     <FeatureCardView
                       title="Sample Course 2"
                       logo="/path/to/course2-image.jpg"
                       level="Intermediate"
                       description="Another brief description"
-                      rating="4.8"
-                      currentPrice="1200000"
-                      originPrice="1800000"
+                      rating={4.8}
+                      currentPrice={1200000}
+                      originalPrice={1800000}
                       isLoading={false} url={''} />
                     
                   </div>

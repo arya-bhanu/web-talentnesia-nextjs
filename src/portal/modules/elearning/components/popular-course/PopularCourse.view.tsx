@@ -1,7 +1,7 @@
 import FeatureCard from '@/portal/components/feature-card/FeatureCard';
 import React from 'react';
 import SkeletonLoader from '@/portal/components/skeleton-animation';
-import { courses } from '@/portal/components/feature-card/featureCard.type';
+import { FeatureCardProps as courses } from '@/portal/components/feature-card/featureCard.type';
 
 const PopularCoursesSectionView = ({ className, courses, isLoading }: { className?: string, courses: courses[], isLoading?: boolean }) => {
   return (
