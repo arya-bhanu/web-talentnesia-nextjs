@@ -5,6 +5,7 @@ import SkeletonLoader from '../skeleton-animation';
 
 const FeatureCardView: React.FC<FeatureCardProps> = (props) => {
   const formatRupiah = (angka: number) => {
+    if (angka === undefined) return 'Rp 0';
     var reverse = angka.toString().split('').reverse().join('');
     var ribuan = reverse.match(/\d{1,3}/g);
     var formatted = ribuan?.join('.').split('').reverse().join('');
