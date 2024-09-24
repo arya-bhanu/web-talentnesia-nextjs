@@ -172,35 +172,55 @@ const FormDetail = () => {
       return;
     }
 
-    try {
-      const response = await createProgramAsync({
-        active,
-        endDate: endDateFormated,
-        startDate: startDateFormated,
-        mentors,
-        name: programName,
-        image: filePic,
-        type: activeTab,
-        institutionId: school,
-      });
+    if (programId) {
+      try {
+        setData(defaultDataFormDetail);
+        await queryClient.invalidateQueries({ queryKey: ['programs'] });
+        router.push('/backoffice/manage-program');
+        openModalToast({
+          status: 'success',
+          action: 'update',
+          message: 'Program updated successfully',
+        });
+      } catch (err) {
+        console.error('Error updating program:', err);
+        openModalToast({
+          status: 'error',
+          action: 'create',
+          message: 'Failed to updating program. Please try again.',
+        });
+      }
+    } else {
+      try {
+        const response = await createProgramAsync({
+          active,
+          endDate: endDateFormated,
+          startDate: startDateFormated,
+          mentors,
+          name: programName,
+          image: filePic,
+          type: activeTab,
+          institutionId: school,
+        });
 
-      console.log(response);
-      setData(defaultDataFormDetail);
-      await queryClient.invalidateQueries({ queryKey: ['programs'] });
-      router.push('/backoffice/manage-program');
+        console.log(response);
+        setData(defaultDataFormDetail);
+        await queryClient.invalidateQueries({ queryKey: ['programs'] });
+        router.push('/backoffice/manage-program');
 
-      openModalToast({
-        status: 'success',
-        action: 'create',
-        message: 'Program created successfully',
-      });
-    } catch (error) {
-      console.error('Error creating program:', error);
-      openModalToast({
-        status: 'error',
-        action: 'create',
-        message: 'Failed to create program. Please try again.',
-      });
+        openModalToast({
+          status: 'success',
+          action: 'create',
+          message: 'Program created successfully',
+        });
+      } catch (error) {
+        console.error('Error creating program:', error);
+        openModalToast({
+          status: 'error',
+          action: 'create',
+          message: 'Failed to create program. Please try again.',
+        });
+      }
     }
   };
 
