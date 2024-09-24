@@ -197,4 +197,6 @@ const TableView = forwardRef<HTMLDivElement, ITableViewProps>(({
     );
 });
 
+TableView.displayName = 'TableView';
+
 export default TableView;

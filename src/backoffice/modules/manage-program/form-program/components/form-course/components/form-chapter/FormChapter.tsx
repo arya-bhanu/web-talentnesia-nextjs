@@ -133,23 +133,18 @@ const FormChapter = () => {
     }
   };
 
-  const handleSubmitChapter = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const programId = params.get('programId');
-    const chapterId = params.get('chapterId');
-
-    if (programId && chapterId) {
-      // await handleConfirmedSubmitChapter(formData);
-      setTempChapterFormData(formData);
-      setAlertMessageChapter('Are you sure you want to update this chapter?');
-      setOpenAlertModalChapter(true);
+  const handleSubmitChapter = (form: HTMLFormElement, action: 'addContent' | 'submit' | 'addExam') => {
+    const formData = new FormData(form);
+    setTempChapterFormData(formData);
+  
+    if (action === 'addContent' || action === 'addExam') {
+      setIsConfirmedChapter(true);
     } else {
-      setTempChapterFormData(formData);
-      setAlertMessageChapter('Are you sure you want to update this chapter?');
+      setAlertMessageChapter('Are you sure you want to submit this chapter?');
       setOpenAlertModalChapter(true);
     }
   };
+  
 
   const handleConfirmedSubmitChapter = async (formData: FormData) => {
     try {

@@ -43,7 +43,6 @@ const FormChapterView: React.FC<
   const params = useSearchParams();
   const chapterId = params.get('chapterId');
   const queryClient = useQueryClient();
-  const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
   const [isEditConfrm, setIsEditConfrm] = useState(false);
   const { setSortContents, sortContents, sortActionContents } =
     useDragContents();
@@ -125,12 +124,6 @@ const FormChapterView: React.FC<
 
   return (
     <div>
-      <AlertModal
-        openModal={isOpenModalEdit}
-        setIsConfirmed={setIsEditConfrm}
-        setOpenModal={setIsOpenModalEdit}
-        messageText="Are you sure you want to update this item?"
-      />
       <Modal
         handleSubmit={handleSubmitAddContent}
         state={stateFormAddContent}
@@ -138,7 +131,13 @@ const FormChapterView: React.FC<
       >
         <FormContent />
       </Modal>
-      <form ref={formRef} onSubmit={handleSubmitCreateChapter}>
+      <form
+        ref={formRef}
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+          handleSubmitCreateChapter(e.currentTarget, 'submit');
+        }}
+      >
         <div>
           <div className="mb-2 block">
             <LabelForm aria-required htmlFor="chapter" isImportant>
@@ -162,18 +161,30 @@ const FormChapterView: React.FC<
             <div className="flex items-center gap-2">
               <PermissionGranted roleable role="manage-module.addExam">
                 <Button
-                  onClick={() => setActionSubChapter('exam')}
-                  type="submit"
+                  onClick={() => {
+                    setActionSubChapter('exam');
+                    const form = document.querySelector(
+                      'form',
+                    ) as HTMLFormElement;
+                    if (form) handleSubmitCreateChapter(form, 'addExam');
+                  }}
+                  type="button"
                   className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
                 >
                   <AddWhite />
                   <span>Add Exam</span>
                 </Button>
               </PermissionGranted>
-              <PermissionGranted roleable role='manage-module.addContent'>
+              <PermissionGranted roleable role="manage-module.addContent">
                 <button
-                  onClick={() => setActionSubChapter('content')}
-                  type="submit"
+                  onClick={() => {
+                    setActionSubChapter('content');
+                    const form = document.querySelector(
+                      'form',
+                    ) as HTMLFormElement;
+                    if (form) handleSubmitCreateChapter(form, 'addContent');
+                  }}
+                  type="button"
                   className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
                 >
                   <Add />
@@ -187,28 +198,24 @@ const FormChapterView: React.FC<
           </section>
         </div>
         <div className="flex gap-5 w-fit ml-auto mt-14">
-          <Button
-            type="button"
-            outline
-            className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
-          >
-            <Link className="" href={'/backoffice/manage-modul'}>
+          <Link className="" href={'/backoffice/manage-modul'}>
+            <Button
+              type="button"
+              outline
+              className="border transition-none delay-0 border-[#F04438] text-[#F04438] outline-transparent bg-transparent enabled:hover:bg-[#F04438] enabled:hover:text-white"
+            >
               Cancel
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <Button
             onClick={() => {
-              if (chapterId) {
-                setIsOpenModalEdit(true);
-              } else {
                 setIsEditConfrm(true);
-              }
             }}
             type="button"
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >
-            {chapterId ? 'Update' : 'Submit'}
+            {"Submit"}
           </Button>
         </div>
       </form>
