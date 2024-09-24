@@ -88,7 +88,6 @@ export const useStudentForm = (id: string | null = null) => {
     }));
   };
 
-
   const handleFileChange = (fieldName: string) => async (file: File | null) => {
     try {
       if (file) {
@@ -165,13 +164,6 @@ export const useStudentForm = (id: string | null = null) => {
     setShowAlertModal(true);
   };
 
-  useEffect(() => {
-    if (isConfirmed) {
-      confirmSubmit();
-      setIsConfirmed(false);
-    }
-  }, [isConfirmed]);
-
   const confirmSubmit = async () => {
     setShowAlertModal(false);
     try {
@@ -200,6 +192,13 @@ export const useStudentForm = (id: string | null = null) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (isConfirmed) {
+      confirmSubmit();
+      setIsConfirmed(false);
+    }
+  }, [isConfirmed, confirmSubmit]);
 
   const resetForm = () => {
     setForm({
