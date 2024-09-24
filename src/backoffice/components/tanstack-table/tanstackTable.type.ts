@@ -11,6 +11,7 @@ export interface ITanstackTableViewProps<T> {
   columns: ColumnDef<T>[];
   currentPage: number;
   totalPages: number;
+  totalData: number;
   pageSize: number;
   pageSizeOptions: number[];
   searchTerm: string;

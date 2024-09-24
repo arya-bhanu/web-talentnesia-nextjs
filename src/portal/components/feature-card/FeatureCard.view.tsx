@@ -38,7 +38,9 @@ const FeatureCardView: React.FC<FeatureCardProps> = (props) => {
         <div className="h-[180px] overflow-clip w-full">
           <Image
             alt="card image"
-            src={`${process.env.API_SERVER_URL}/v1/file/${props.logo}`}
+            src={props.logo && props.logo !== "null"
+              ? `${process.env.API_SERVER_URL}/v1/file/${props.logo}`
+              : "/public/images/default-image.jpg"}
             width={400}
             height={180}
             className="w-full object-cover"
