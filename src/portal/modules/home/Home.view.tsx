@@ -15,7 +15,7 @@ const HomeView: React.FC<HomeViewProps> = ({ data = {}, isLoading }) => {
     <>
       <Hero isLoading={isLoading} />
       <main className="container">
-        <Benefits className="mt-9 md:mt-16 xl:mt-0" />
+        <Benefits className="-mt-16 md:-mt-16 lg:mt-6" />
         <ProgramDimension
           className="mt-14 md:mt-16 lg:mt-0"
           programs={data?.programs ?? []}

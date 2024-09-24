@@ -33,29 +33,29 @@ const CourseHeroView = ({ className, isLoading }: { className?: string, isLoadin
           
           
           <div className="flex text-center text-blue-500 gap-[10px]">
-            <div className="bg-white w-[180px] h-[78px] rounded-lg flex items-center justify-center mr-2">
+            <div className="bg-white w-full sm:w-[180px] h-[78px] rounded-lg flex items-center justify-center mr-2 mb-2 sm:mb-0">
               <div className="flex items-center justify-center gap-2">
-                <SkeletonLoader visible={isLoading ? isLoading : false} width={180} height={78} borderRadius={8} containerStyle={{margin: 0}} />
+                <SkeletonLoader visible={isLoading ? isLoading : false} width="100%" height={78} borderRadius={8} containerStyle={{margin: 0}} />
                 {
                   !isLoading &&
                   <>
-                  <p className="text-blue-500 text-3xl font-bold">200</p>
-                  <p className="text-slate-700 font-inter text-[14px]">
+                  <p className="text-blue-500 text-2xl sm:text-3xl font-bold">200</p>
+                  <p className="text-slate-700 font-inter text-[12px] sm:text-[14px]">
                     Kursus Aktif
                   </p>
                   </>
                 }
-                
               </div>
             </div>
-            <div className="bg-white w-[180px] h-[78px] rounded-lg flex items-center justify-center mr-2">
+            <div className="bg-white w-full sm:w-[180px] h-[78px] rounded-lg flex items-center justify-center mr-2 mb-2 sm:mb-0">
               <div className="flex items-center justify-center gap-2">
                 <SkeletonLoader visible={isLoading ? isLoading : false} width={180} height={78} borderRadius={8} containerStyle={{margin: 0}} />
                 {
                   !isLoading &&
                   <>
-                  <p className="text-blue-500 text-3xl font-bold">3000+</p>
-                  <p className="text-slate-700 font-inter text-[14px]">Siswa</p>
+                  <p className="text-blue-500 text-2xl sm:text-3xl font-bold">3000+</p>
+                  <p className="text-slate-700 font-inter text-[12px] sm:text-[14px]">
+                   Siswa</p>
                   </>
                 }
                 
