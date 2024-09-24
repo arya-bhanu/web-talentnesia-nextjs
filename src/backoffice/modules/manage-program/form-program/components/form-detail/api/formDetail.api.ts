@@ -39,6 +39,30 @@ export const createProgram = async (
   }
 };
 
+export const updateProgram = async ({
+  programId,
+  data
+}: {
+  programId: string;
+  data: Omit<APIDetailProgram, 'mentors'> & { mentors: string[] };
+}) => {
+  try {
+    const response = await fetchAxios<{
+      data: Omit<APIDetailProgram, 'mentors'> & { mentors: string[] };
+    }>({
+      url: `/v1/manage-program/${programId}`,
+      method: 'PUT',
+      formData: data,
+    });
+    return response;
+  } catch (err) {
+    console.error('Error updating program:', err);
+    throw err;
+  }
+};
+
+
+
 export const fetchDetailProgram = async (programId?: string | null) => {
   try {
     if (programId) {

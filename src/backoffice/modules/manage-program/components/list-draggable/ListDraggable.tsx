@@ -261,7 +261,7 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
         mentoringId: idDefaultMentoring || '',
         payload: {
           link,
-          location: null,
+          location: null, 
           title,
           chapterId: props.chapterId,
           mentorId,
@@ -274,6 +274,11 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
       queryClient.invalidateQueries({
         queryKey: ['mentoring', 'list', props.chapterId],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['chapters', 'program', programId],
+      });
+      
       openModalToast({
         status: 'success',
         action: 'update',

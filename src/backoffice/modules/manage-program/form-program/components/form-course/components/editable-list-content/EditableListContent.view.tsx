@@ -63,7 +63,7 @@ const EditableListContentView: React.FC<
   const params = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const progamId = params.get('programId');
+  const programId = params.get('programId');
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: id });
 
@@ -155,7 +155,7 @@ const EditableListContentView: React.FC<
               const chapterId = params.get('chapterId');
               if (isexam) {
                 router.push(
-                  `/backoffice/manage-program/update-program/edit-exam/?programId=${progamId}&chapterId=${chapterId}&examId=${id}`,
+                  `/backoffice/manage-program/update-program/edit-exam/?programId=${programId}&chapterId=${chapterId}&examId=${id}`,
                 );
               } else if (type === '6') {
                 handleEditMentoring?.();

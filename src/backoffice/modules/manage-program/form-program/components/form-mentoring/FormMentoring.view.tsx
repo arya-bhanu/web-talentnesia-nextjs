@@ -13,6 +13,8 @@ import ListMentoring from '../list-mentoring';
 import { useFormMentoringStore } from './formMentoring.store';
 import TimeInputRange from '@/backoffice/components/time-input-range/TimeInputRange';
 import { convertTimeHHmmssToDate } from '@/helpers/formatter.helper';
+import linkIcon from '@/../public/icons/link-2.svg'
+import Image from 'next/image';
 
 const Datepicker = dynamic(
   () =>
@@ -102,28 +104,7 @@ const FormMentoringView: React.FC<
           </LabelForm>
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-              <svg
-                width="25"
-                height="24"
-                viewBox="0 0 25 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.3933 10.9399C15.6433 13.1899 15.6433 16.8299 13.3933 19.0699C11.1433 21.3099 7.50334 21.3199 5.26334 19.0699C3.02334 16.8199 3.01334 13.1799 5.26334 10.9399"
-                  stroke="#989FAD"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M10.9235 13.4099C8.58346 11.0699 8.58346 7.26988 10.9235 4.91988C13.2635 2.56988 17.0635 2.57988 19.4135 4.91988C21.7635 7.25988 21.7535 11.0599 19.4135 13.4099"
-                  stroke="#989FAD"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <Image src={"/icons/link-2.svg"} width={18} height={18} alt='unavailable'/>
             </div>
             <input
               defaultValue={defaultMentoring?.link}
