@@ -16,7 +16,7 @@ export const BenefitsView = ({
       className={clsx(className, 'px-4 sm:px-5 lg:px-0')}
       style={{ backgroundColor: '#f5f9ff' }}
     >
-      <div className="flex flex-col lg:flex-row lg:items-start lg:text-left lg:pb-12">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:text-left lg:pb-0">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4 lg:gap-10 items-start">
           {benefitsData.map((feature, index) => (
             <div
@@ -56,7 +56,7 @@ export const BenefitsView = ({
                       height={38}
                       className="mb-4 sm:mb-6 mx-auto sm:mx-0"
                     />
-                    <div>
+                    <div className="mb-0">
                       <h3 className="font-semibold text-base sm:text-lg mb-2 font-poppins">
                         {feature.title}
                       </h3>
