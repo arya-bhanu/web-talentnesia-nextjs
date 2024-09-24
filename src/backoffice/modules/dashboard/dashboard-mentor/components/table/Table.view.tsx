@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
-import { APIResponseManageModul } from './table.type';
+import { DashboardProgressItem } from '../../dashboardMentor.type';
 
 interface ITableViewProps {
-    data?: APIResponseManageModul[];
+    data: DashboardProgressItem[];
     selectedType: string;
     onTypeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     currentPage: number;
@@ -70,7 +70,7 @@ const TableView: React.FC<ITableViewProps> = ({
                                 <li>
                                     <a 
                                         href="#" 
-                                        onClick={() => handleOptionClick('IICP')} 
+                                        onClick={() => handleOptionClick('iicp')} 
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         IICP
@@ -79,16 +79,16 @@ const TableView: React.FC<ITableViewProps> = ({
                                 <li>
                                     <a 
                                         href="#" 
-                                        onClick={() => handleOptionClick('BootCamp')} 
+                                        onClick={() => handleOptionClick('bootcamp')} 
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
-                                        BootCamp
+                                        Bootcamp
                                     </a>
                                 </li>
                                 <li>
                                     <a 
                                         href="#" 
-                                        onClick={() => handleOptionClick('Course')} 
+                                        onClick={() => handleOptionClick('course')} 
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         Course
@@ -130,7 +130,7 @@ const TableView: React.FC<ITableViewProps> = ({
                             {data.map((el, index) => (
                                 <tr key={el.id} className="bg-white border-b">
                                     <td className="px-6 py-4">{index + 1}</td>
-                                    <td className="px-6 py-4">{el.class}</td>
+                                    <td className="px-6 py-4">{el.name}</td>
                                     <td className="px-6 py-4">{el.type}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex flex-col">
