@@ -112,9 +112,9 @@ const FormManageModulView: React.FC<
             }}
             type="submit"
             color={'warning'}
-            className="bg-[#FFC862] text-black"
+            className={`bg-[#FFC862] text-black ${id ? '' : 'px-3'}`}
           >
-            {id ? 'Update' : 'Submit'}
+            {id ? 'Submit' : 'Next'}
           </Button>
         </div>
       </form>

@@ -117,12 +117,15 @@ const FormChapter = () => {
     }
   }, [isConfirmedChapter]);
 
-  const handleSubmitChapter = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const formData = new FormData(e.currentTarget);
+  const handleSubmitChapter = (form: HTMLFormElement, action: 'addContent' | 'submit' | 'addExam') => {
+    const formData = new FormData(form);
     setTempChapterFormData(formData);
-    setOpenAlertModalChapter(true);
+  
+    if (action === 'addContent' || action === 'addExam') {
+      setIsConfirmedChapter(true);
+    } else {
+      setOpenAlertModalChapter(true);
+    }
   };
 
   const handleConfirmedSubmitChapter = async (formData: FormData) => {
@@ -206,7 +209,7 @@ const FormChapter = () => {
         openModal={openAlertModalChapter}
         setOpenModal={setOpenAlertModalChapter}
         setIsConfirmed={setIsConfirmedChapter}
-        messageText={`Are you sure you want to ${params.get('chapterId') ? 'update' : 'create'} this chapter?`}
+        messageText={`Are you sure you want to submit this chapter?`}
       />
       <AlertModal
         openModal={openAlertModalContent}

@@ -72,7 +72,11 @@ const FormManageModul = () => {
   
     setTempFormData(formData);
     setIsAddingContent(action === 'addContent');
-    setOpenAlertModal(true);
+    if (!moduleId) {
+      setIsConfirmed(true);
+    } else {
+      setOpenAlertModal(true);
+    }
   };
   
 
@@ -102,13 +106,6 @@ const FormManageModul = () => {
         const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         const id = responseCreate.id;
-
-        openModal({
-          status: 'success',
-          timeOut: 2000,
-          action: 'create',
-          message: 'Module created successfully',
-        });
 
         if (submitType.type === 'defaultSubmit') {
           router.push(`/backoffice/manage-modul`);
