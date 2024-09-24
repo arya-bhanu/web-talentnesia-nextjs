@@ -80,6 +80,8 @@ const MaterialModulView: React.FC = () => {
                             <Image
                               src={`/icons/${tab.iconId === 1 ? 'book' : tab.iconId === 2 ? 'play-circle' : tab.iconId === 3 ? 'play-circle' : tab.iconId === 4 ? 'play-circle' : tab.iconId === 5 ? 'edit-2' : 'videocam'}.svg`}
                               alt={`${tab.label} icon`}
+                              width={20}
+                              height={20}
                               className="w-5 h-5"
                               style={{
                                 filter: selectedTab === tab.id
@@ -92,6 +94,8 @@ const MaterialModulView: React.FC = () => {
                           <Image
                             src={tab.isCompleted === 1 ? "/icons/manage-program/clipboard-tick.svg" : "/icons/manage-program/clipboard.svg"}
                             className={`w-5 h-5`}
+                            width={20}
+                            height={20}
                             style={{
                               filter: selectedTab === tab.id
                                 ? 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)'

@@ -2,9 +2,9 @@ export interface CourseCardProps {
     logo: string;
     title: string;
     description: string;
-    duration: string;
+    duration?: string;
     level: string;
-    totalModul: number;
+    totalModul?: number;
     currentPrice: number;
     originalPrice: number;
     url: string;
