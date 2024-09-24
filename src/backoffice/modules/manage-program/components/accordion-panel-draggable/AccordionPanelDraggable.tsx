@@ -60,8 +60,6 @@ const AccordionPanelDraggable: React.FC<
 
   const { timeStart, date, timeEnd, clear } = useFormMentoringStore();
 
-  const programId = params.get('programId');
-
   const handleOpenModalContent = (action: 'open' | 'close') => {
     if (action === 'close') {
       setOpenModalContent(false);
@@ -171,10 +169,6 @@ const AccordionPanelDraggable: React.FC<
 
         queryClient.invalidateQueries({
           queryKey: ['mentoring', 'list', props.id],
-        });
-
-        queryClient.invalidateQueries({
-          queryKey: ['chapters', 'program', programId],
         });
 
         clear();

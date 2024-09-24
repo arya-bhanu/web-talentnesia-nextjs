@@ -13,7 +13,6 @@ import ListMentoring from '../list-mentoring';
 import { useFormMentoringStore } from './formMentoring.store';
 import TimeInputRange from '@/backoffice/components/time-input-range/TimeInputRange';
 import { convertTimeHHmmssToDate } from '@/helpers/formatter.helper';
-import linkIcon from '@/../public/icons/link-2.svg'
 import Image from 'next/image';
 
 const Datepicker = dynamic(

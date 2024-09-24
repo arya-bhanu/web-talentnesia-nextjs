@@ -165,9 +165,18 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
       await queryClient.invalidateQueries({
         queryKey: ['chapters', 'program', programId],
       });
-      
+      openModalToast({
+        status: 'success',
+        action: 'delete',
+        message: 'Content deleted successfully',
+      });
     } catch (err) {
       console.error(err);
+      openModalToast({
+        status: 'error',
+        action: 'delete',
+        message: 'Failed to delete content',
+      })
     }
   };
 
@@ -262,7 +271,7 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
         mentoringId: idDefaultMentoring || '',
         payload: {
           link,
-          location: null, 
+          location: null,
           title,
           chapterId: props.chapterId,
           mentorId,
@@ -279,7 +288,7 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
       queryClient.invalidateQueries({
         queryKey: ['chapters', 'program', programId],
       });
-      
+
       openModalToast({
         status: 'success',
         action: 'update',
