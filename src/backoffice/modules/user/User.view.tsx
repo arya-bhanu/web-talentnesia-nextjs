@@ -46,6 +46,10 @@ const UserView: React.FC<IUserView> = ({
   const searchParams = useSearchParams();
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const permission = usePermission;
+  const canEditMentor = usePermission('manage-user.mentor.edit', true);
+  const canEditStudent = usePermission('manage-user.student.edit', true);
+  const canEditOperator = usePermission('manage-user.operator.edit', true);
+
 
   useEffect(() => {
     const success = searchParams.get('success');
@@ -198,24 +202,15 @@ const UserView: React.FC<IUserView> = ({
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
                   <button
                     onClick={() => {
-                      if (
-                        activeTab === 'Mentor' &&
-                        permission('manage-user.mentor.edit', true)
-                      ) {
+                      if (activeTab === 'Mentor' && canEditMentor) {
                         router.push(
                           `/backoffice/manage-user/edit-mentor?id=${rowData.id}`,
                         );
-                      } else if (
-                        activeTab === 'Student' &&
-                        permission('manage-user.student.edit', true)
-                      ) {
+                      } else if (activeTab === 'Student' && canEditStudent) {
                         router.push(
                           `/backoffice/manage-user/edit-student?id=${rowData.id}`,
                         );
-                      } else if (
-                        activeTab === 'School Operator' &&
-                        permission('manage-user.operator.edit', true)
-                      ) {
+                      } else if (activeTab === 'School Operator' && canEditOperator) {
                         router.push(
                           `/backoffice/manage-user/edit-school-operator?id=${rowData.id}`,
                         );
