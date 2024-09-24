@@ -161,10 +161,11 @@ const ListDraggable: React.FC<IListDraggable> = (props) => {
 
   const handleDeleteContent = async (isexam: boolean, id: string) => {
     try {
-      isexam ? await deleteContentAsync(id) : await deleteExamAsync(id);
+      isexam ? await deleteExamAsync(id) : await deleteContentAsync(id);
       await queryClient.invalidateQueries({
         queryKey: ['chapters', 'program', programId],
       });
+      
     } catch (err) {
       console.error(err);
     }
