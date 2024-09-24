@@ -13,11 +13,11 @@ export const BenefitsView = ({
 }) => {
   return (
     <section
-      className={clsx(className, 'px-4 sm:px-5 lg:px-0')}
+      className={clsx(className, 'px-4 sm:px-5 lg:px-0 pb-0')}
       style={{ backgroundColor: '#f5f9ff' }}
     >
-      <div className="flex flex-col lg:flex-row lg:items-start lg:text-left lg:pb-0">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4 lg:gap-10 items-start">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:text-left md:pb-6 lg:pb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4 md:gap-10 lg:gap-10 items-start">
           {benefitsData.map((feature, index) => (
             <div
               key={index}
