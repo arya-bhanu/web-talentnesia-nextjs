@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, forwardRef } from 'react';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
-import { APIResponseManageModul } from './table.type';
+import { DashboardProgressItem } from '../../dashboardOperator.type';
 
 interface ITableViewProps {
-    data?: APIResponseManageModul[];
+    data: DashboardProgressItem[];
     selectedType: string;
     onTypeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     currentPage: number;
@@ -14,7 +14,7 @@ interface ITableViewProps {
     itemsPerPage: number;
 }
 
-const TableView: React.FC<ITableViewProps> = ({
+const TableView = forwardRef<HTMLDivElement, ITableViewProps>(({
     data,
     selectedType,
     onTypeChange,
@@ -23,7 +23,7 @@ const TableView: React.FC<ITableViewProps> = ({
     onPageChange,
     onItemsPerPageChange,
     itemsPerPage,
-}) => {
+}, ref) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const toggleDropdown = useCallback(() => {
@@ -38,7 +38,7 @@ const TableView: React.FC<ITableViewProps> = ({
     }, [onTypeChange]);
 
     return (
-        <div className='bg-white rounded-lg p-8'>
+        <div ref={ref} className='bg-white rounded-lg p-8'>
             <div className="flex justify-between items-center">
                 <h1 className="text-lg font-semibold text-gray-800">Class Progress</h1>
 
@@ -70,7 +70,7 @@ const TableView: React.FC<ITableViewProps> = ({
                                 <li>
                                     <a 
                                         href="#" 
-                                        onClick={() => handleOptionClick('IICP')} 
+                                        onClick={() => handleOptionClick('iicp')} 
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         IICP
@@ -79,16 +79,16 @@ const TableView: React.FC<ITableViewProps> = ({
                                 <li>
                                     <a 
                                         href="#" 
-                                        onClick={() => handleOptionClick('BootCamp')} 
+                                        onClick={() => handleOptionClick('bootcamp')} 
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
-                                        BootCamp
+                                        Bootcamp
                                     </a>
                                 </li>
                                 <li>
                                     <a 
                                         href="#" 
-                                        onClick={() => handleOptionClick('Course')} 
+                                        onClick={() => handleOptionClick('course')} 
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         Course
@@ -130,7 +130,7 @@ const TableView: React.FC<ITableViewProps> = ({
                             {data.map((el, index) => (
                                 <tr key={el.id} className="bg-white border-b">
                                     <td className="px-6 py-4">{index + 1}</td>
-                                    <td className="px-6 py-4">{el.class}</td>
+                                    <td className="px-6 py-4">{el.name}</td>
                                     <td className="px-6 py-4">{el.type}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex flex-col">
@@ -138,10 +138,10 @@ const TableView: React.FC<ITableViewProps> = ({
                                                 <div className="w-full bg-gray-200 rounded-full h-2.5 flex-grow">
                                                     <div
                                                         className="bg-[#219EBC] h-2.5 rounded-full"
-                                                        style={{ width: `${el.progress}%` }}
+                                                        style={{ width: `${el.progress || 0}%` }}
                                                     ></div>
                                                 </div>
-                                                <span className="ml-2 text-sm text-gray-900">{el.progress}% </span>
+                                                <span className="ml-2 text-sm text-gray-900">{el.progress || 0}% </span>
                                                 <span className="ml-1.5 text-sm text-gray-900"> Selesai</span>
                                             </div>
                                         </div>
@@ -195,6 +195,6 @@ const TableView: React.FC<ITableViewProps> = ({
             </div>
         </div>
     );
-};
+});
 
 export default TableView;

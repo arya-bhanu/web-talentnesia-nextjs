@@ -1,41 +1,52 @@
 'use client';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import TableView from './Table.view';
-import { dummyData } from './table.data'; 
-import { APIResponseManageModul } from './table.type';
+import { dashboardOperatorApi } from '../../api/dashboardOperatorApi';
+import { DashboardProgressItem } from '../../dashboardOperator.type';
 
 const Table = () => {
-  const [data, setData] = useState<APIResponseManageModul[]>(dummyData);
+  const [data, setData] = useState<DashboardProgressItem[]>([]);
   const [selectedType, setSelectedType] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const tableRef = useRef<HTMLDivElement>(null);
+
+  const fetchData = useCallback(async () => {
+    const response = await dashboardOperatorApi.getDashboardProgress(currentPage, selectedType);
+    if (response && response.data) {
+      setData(response.data.items);
+      setTotalPages(response.data.meta.lastPage);
+    }
+  }, [currentPage, selectedType]);
+
+  useEffect(() => {
+    fetchData().then(() => {
+      setTimeout(() => {
+        tableRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }, 0);
+    });
+  }, [fetchData]);
 
   const handleTypeChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedType = event.target.value;
-    setSelectedType(selectedType);
-    setCurrentPage(1); // Reset to the first page when filter changes
-    if (selectedType === '') {
-      setData(dummyData); 
-    } else {
-      setData(dummyData.filter(item => item.type === selectedType));
-    }
+    const newType = event.target.value;
+    setSelectedType(newType);
+    setCurrentPage(1);
   }, []);
 
   const handleItemsPerPageChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1); // Reset to the first page when items per page changes
+    setCurrentPage(1);
   }, []);
 
   const handlePageChange = useCallback((direction: 'prev' | 'next') => {
     setCurrentPage(prevPage => direction === 'next' ? prevPage + 1 : prevPage - 1);
   }, []);
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-  const paginatedData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
   return (
     <TableView
-      data={paginatedData}
+      ref={tableRef}
+      data={data}
       selectedType={selectedType}
       onTypeChange={handleTypeChange}
       currentPage={currentPage}

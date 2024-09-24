@@ -1,27 +1,41 @@
 'use client';
-import React, { useState } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import React, { useState, useEffect } from 'react';
 import DashboardOperatorview from './DashboardOperator.view';
+import { dashboardOperatorApi } from './api/dashboardOperatorApi';
+import { DashboardOperatorResponse } from './dashboardOperator.type';
 
-
-interface DashboardOperatorProps {
-  onDateChange?: (date: string) => void; 
-}
-
-const DashboardOperator = ({ onDateChange }: DashboardOperatorProps) => {
+const DashboardOperator = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [dashboardData, setDashboardData] = useState<DashboardOperatorResponse | null>(null);
+  const [isDateChangeTriggered, setIsDateChangeTriggered] = useState<boolean>(false);
 
-  const handleDateChange = (value: Date) => {
-    setSelectedDate(value);
-    if (onDateChange) {
-      onDateChange(value.toDateString());
+  useEffect(() => {
+    fetchDashboardData(selectedDate);
+  }, [selectedDate]);
+
+  const fetchDashboardData = async (date: Date) => {
+    let requestDate = new Date(date);
+    if (isDateChangeTriggered) {
+      requestDate.setDate(requestDate.getDate() + 1);
     }
+    const formattedDate = requestDate.toISOString().split('T')[0];
+    const response = await dashboardOperatorApi.getDashboard(formattedDate);
+    setDashboardData(response);
+    setIsDateChangeTriggered(false);
+  };
+
+  const handleDateChange = (date: Date) => {
+    setIsDateChangeTriggered(true);
+    setSelectedDate(date);
   };
 
   return (
     <div>
-      <DashboardOperatorview/>
+      <DashboardOperatorview 
+        selectedDate={selectedDate} 
+        onDateChange={handleDateChange}
+        dashboardData={dashboardData}
+      />
     </div>
   );
 };
