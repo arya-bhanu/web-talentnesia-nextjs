@@ -96,7 +96,7 @@ const AllClassView: React.FC<AllClassProps> = ({
             {!isLoading && (
               <SearchBar
                 placeHolder="Jelajahi Kursus"
-                className="w-40 md:max-w-60 lg:max-w-80 border-none"
+                className="max-w-45 md:max-w-60 lg:max-w-80 border-none"
               />
             )}
 

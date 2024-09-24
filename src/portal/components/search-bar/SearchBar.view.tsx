@@ -25,18 +25,18 @@ const SearchBarView: React.FC<SearchBarViewProps> = ({
       <input
         type="text"
         placeholder={placeHolder}
-        className="font-poppins text-[#667085] text-sm sm:text-xs w-full px-2 md:px-3 lg:px-5 border-none outline-none focus:outline-none focus:ring-0"
+        className="font-poppins text-[#667085] text-xs w-full px-1 md:px-3 lg:px-5 border-none outline-none focus:outline-none focus:ring-0"
         value={value}
         onChange={onChangeInput}
-        
       />
-      <button>
+
+      <button className="ml-0 md:ml-1">
         <Image
           alt="icon search"
           src={'/icons/search-normal.svg'}
           width={15}
           height={15}
-          className="mr-1 md:mr-2 lg:mr-3"
+          className="mr-0 md:mr-2 lg:mr-3"
         />
       </button>
     </div>
