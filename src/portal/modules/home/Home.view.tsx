@@ -9,15 +9,15 @@ import Partners from './components/partners';
 import NewsLetterSubscription from './components/news-letter-subscription';
 import { HomeViewProps } from './home.type';
 
-const HomeView: React.FC<HomeViewProps> = ({ data = {}, isLoading }) => {
+const HomeView: React.FC<HomeViewProps> = ({ data, isLoading }) => {
   
   return (
     <>
       <Hero isLoading={isLoading} />
       <main className="container">
-        <Benefits className="-mt-16 md:-mt-16 lg:mt-6" />
+        <Benefits className="mt-9 md:mt-16 xl:mt-0" />
         <ProgramDimension
-          className="mt-14 md:mt-16 lg:mt-0"
+          className="mt-14 md:mt-16 lg:mt-20"
           programs={data?.programs ?? []}
           isLoading={isLoading}
         />
@@ -27,7 +27,7 @@ const HomeView: React.FC<HomeViewProps> = ({ data = {}, isLoading }) => {
           isLoading={isLoading}
         />
         <UserStory
-          className="mt-14 sm:mt-28 md:mt-36 lg:mt-48"
+          className=" mt-14 sm:mt-28 md:mt-36 lg:mt-48"
           testimonials={data?.testimonials ?? []}
           isLoading={isLoading}
         />

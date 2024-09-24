@@ -19,7 +19,7 @@ const HeroSectionView = ({
       ref={headerObserver.observerRef}
       className={clsx(
         className,
-        'bg-primary min-h-[75vh] lg:min-h-[110vh] md:min-h-[70vh] ',
+        'bg-primary min-h-[80vh] lg:min-h-[80vh] md:min-h-[70vh] ',
       )}
     >
       <div className="flex container pt-28 md:pt-32 lg:pt-36 xl:pt-32">
@@ -62,7 +62,7 @@ const HeroSectionView = ({
           />
           {!isLoading && (
             <>
-              <h1 className="font-semibold text-white font-poppins text-2xl md:text-3xl lg:text-4xl xl:text-5xl lg:leading-normal xl:leading-[58px]">
+              <h1 className="font-semibold text-white font-poppins text-2xl md:text-3xl lg:text-4xl xl:text-5xl  lg:leading-normal xl:leading-[58px]">
                 Elevate Your IT Career with Industry Pioneers
               </h1>
               <p className="text-white text-base font-normal font-inter leading-6 mt-7 ">
@@ -106,7 +106,7 @@ const HeroSectionView = ({
           }}
         />
         {!isLoading && (
-          <h4 className="font-poppins font-normal text-base md:text-lg lg:text-xl container mt-6 md:mt-8 lg:mt-16 text-white">
+          <h4 className="font-poppins font-normal text-base md:text-lg lg:text-xl container text-white mt-5 xl:mt-0">
             Bagaimana Talentnesia membantu meraih{' '}
             <span className="font-bold text-2xl">Karir Impianmu</span>
           </h4>
