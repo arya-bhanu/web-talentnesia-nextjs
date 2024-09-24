@@ -65,7 +65,12 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
           </React.Fragment>
         );
       }),
-    [JSON.stringify(paramsQueries)],
+    [
+      JSON.stringify(paramsQueries),
+      JSON.stringify(pathSegments),
+      JSON.stringify(moduleRoutePath),
+      JSON.stringify(formattedSegments),
+    ],
   );
   return (
     <nav

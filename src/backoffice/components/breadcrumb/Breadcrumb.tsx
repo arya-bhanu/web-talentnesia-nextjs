@@ -36,7 +36,6 @@ export const Breadcrumb: React.FC<BreadcrumbViewProps & { customBreadcrumbs?: Cu
     return null; // or a loading placeholder
   }
 
-  console.log(filteredSegments)
   return (
     <BreadcrumbView
       {...props}
