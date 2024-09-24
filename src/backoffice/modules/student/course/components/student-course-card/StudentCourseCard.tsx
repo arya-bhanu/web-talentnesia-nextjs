@@ -23,17 +23,18 @@ const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
   progress,
   image,
 }) => {
+  
   return (
     <div className="flex h-[100px] w-full">
       <div className="h-full aspect-square">
-        <Image
-          src={image}
-          alt={title}
-          width={10}
-          height={10}
-          objectFit="cover"
-          className="h-full w-full object-cover rounded"
-        />
+      <Image
+        src={`${process.env.API_SERVER_URL}/v1/file/${image}`}
+        alt={title}
+        width={10}
+        height={10}
+        objectFit="cover"
+        className="h-full w-full object-cover rounded"
+      />
       </div>
       <div className="flex-grow flex flex-col justify-center ml-4">
         <div className="flex items-center">
