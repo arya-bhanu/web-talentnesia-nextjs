@@ -1,16 +1,22 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { holidays } from './calendar.data';
 import CalendarsView from './Calendar.view';
 
-const getDaysInMonth = (month: number, year: number) => new Date(year, month, 0).getDate();
+const getDaysInMonth = (month: number, year: number) => new Date(year, month + 1, 0).getDate();
 const getFirstDayOfMonth = (month: number, year: number) => new Date(year, month, 1).getDay();
 
-const Calendars: React.FC = () => {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [agenda, setAgenda] = useState<Record<number, string>>({});
-  const [newAgenda, setNewAgenda] = useState<string>('');
+interface CalendarsProps {
+  onDateChange: (date: Date) => void;
+  selectedDate: Date;
+}
+
+const Calendars: React.FC<CalendarsProps> = ({ onDateChange, selectedDate }) => {
+  const [currentDate, setCurrentDate] = useState<Date>(selectedDate);
+
+  useEffect(() => {
+    setCurrentDate(selectedDate);
+  }, [selectedDate]);
 
   const changeMonth = (offset: number) => {
     const newDate = new Date(currentDate);
@@ -19,30 +25,15 @@ const Calendars: React.FC = () => {
   };
 
   const handleDateClick = (day: number) => {
-    if (day) {
-      const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-      setSelectedDate(newDate);
-      setNewAgenda(agenda[day] || '');
-    }
-  };
-
-  const handleSaveAgenda = () => {
-    if (selectedDate && newAgenda) {
-      const day = selectedDate.getDate();
-      setAgenda(prevAgenda => ({
-        ...prevAgenda,
-        [day]: newAgenda
-      }));
-      setNewAgenda('');
-      setSelectedDate(null);
-    }
+    const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    onDateChange(newDate);
   };
 
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
 
   const firstDay = getFirstDayOfMonth(month, year);
-  const daysInMonth = getDaysInMonth(month + 1, year);
+  const daysInMonth = getDaysInMonth(month, year);
 
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const emptyDays = Array.from({ length: firstDay }, (_, i) => null);
@@ -63,15 +54,10 @@ const Calendars: React.FC = () => {
       currentDate={currentDate}
       changeMonth={changeMonth}
       handleDateClick={handleDateClick}
-      handleSaveAgenda={handleSaveAgenda}
-      agenda={agenda}
-      newAgenda={newAgenda}
-      setNewAgenda={setNewAgenda}
-      selectedDate={selectedDate}
       calendarGrid={calendarGrid}
       isHoliday={isHoliday}
       isSunday={isSunday}
-      firstDay={firstDay}
+      selectedDate={selectedDate}
     />
   );
 };
