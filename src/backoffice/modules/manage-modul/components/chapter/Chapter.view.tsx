@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { chapterReorder } from '../../api/manageModelApi';
 import { useSearchParams } from 'next/navigation';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
+import Link from 'next/link';
 
 const ChapterView: React.FC<IChapter & IStateChapter> = ({
   className,
@@ -100,13 +101,17 @@ const ChapterView: React.FC<IChapter & IStateChapter> = ({
           Chapter
         </h2>
         <PermissionGranted roleable role="manage-module.addChapter">
-          <button
-            type="submit"
-            className={`flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900 ${!modulId ? 'hidden' : ''}`}
+          <Link
+            href={`/backoffice/manage-modul/update/chapter?modulId=${modulId}`}
           >
-            <Add />
-            <span className="text-black"> Add Chapter</span>
-          </button>
+            <button
+              type="button"
+              className={`flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900 ${!modulId ? 'hidden' : ''}`}
+            >
+              <Add />
+              <span className="text-black"> Add Chapter</span>
+            </button>
+          </Link>
         </PermissionGranted>
       </div>
       <div className="mt-5 flex flex-col gap-3">{renderPanelDraggable}</div>

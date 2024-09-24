@@ -9,7 +9,7 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/program.svg',
     title: 'Program',
-    path: '/operator/program',
+    path: '/operator/manage-program',
   },
   {
     icon: '/icons/sidebar/user.svg',

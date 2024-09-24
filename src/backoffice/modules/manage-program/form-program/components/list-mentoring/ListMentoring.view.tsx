@@ -16,6 +16,14 @@ const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
   const [isConfirmDel, setIsConfirmDel] = useState(false);
   const [idMentoring, setIdMentoring] = useState('');
   const { mentorings, setIdDefaultMentoring } = useFormMentoringStore();
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const handleCopy = (id: string = '', link: string) => {
+    navigator.clipboard.writeText(link);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+  
   useEffect(() => {
     if (isConfirmDel) {
       handleDeleteMentoring(idMentoring);
@@ -36,7 +44,7 @@ const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
                 key={el.mentorId}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
-                <Table.Cell className="font-lato text-sm text-[#2B2F38] font-normal">
+                <Table.Cell className="font-lato text-sm text-[#2B2F38] font-normal w-[5%]">
                   {index + 1}
                 </Table.Cell>
                 <Table.Cell className="font-lato text-sm text-[#2B2F38] font-normal">
@@ -49,8 +57,12 @@ const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
                   {convertTimeHHmmss(el.startTime)} -{' '}
                   {convertTimeHHmmss(el.endTime)}
                 </Table.Cell>
-                <Table.Cell>
-                  <button className="text-sm font-lato flex items-center gap-7">
+                <Table.Cell className="w-[20%]">
+                  <button
+                    className="text-sm font-lato flex items-center gap-7"
+                    type="button"
+                    onClick={() => handleCopy(el.id, el.link)}
+                  >
                     <span className="text-[#219EBC]">{el.link}</span>
                     <Image
                       alt="icon"
@@ -73,7 +85,7 @@ const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
                       src={'/icons/manage-program/Edit-btn.svg'}
                       width={32}
                       height={32}
-                      className="w-6 h-6 object-contain"
+                      className="w-8 h-8 object-contain"
                     />
                   </button>
                   <button
@@ -88,7 +100,7 @@ const ListMentoringView: React.FC<IListMentoring & IListMentoringHandler> = ({
                       src={'/icons/manage-program/trash-btn.svg'}
                       width={32}
                       height={32}
-                      className="w-6 h-6 object-contain"
+                      className="w-8 h-8 object-contain"
                     />
                   </button>
                 </Table.Cell>

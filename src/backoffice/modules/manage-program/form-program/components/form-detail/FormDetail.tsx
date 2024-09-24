@@ -9,6 +9,7 @@ import {
   fetchDetailProgram,
   fetchMentors,
   fetchSchools,
+  updateProgram,
 } from './api/formDetail.api';
 import { Mentor } from '@/backoffice/components/mentor-selector/mentorSelector.type';
 import { APIDetailProgram, Schools } from './formDetail.type';
@@ -67,6 +68,12 @@ const FormDetail = () => {
     useMutation({
       mutationKey: ['program'],
       mutationFn: createProgram,
+    });
+
+  const { mutateAsync: updateProgramAsync, isPending: isLoadingUpdateProgram } =
+    useMutation({
+      mutationKey: ['updateProgram'],
+      mutationFn: updateProgram,
     });
 
   useEffect(() => {
@@ -149,6 +156,7 @@ const FormDetail = () => {
       console.error('Invalid form event');
       return;
     }
+    
     const formData = new FormData(e.target);
     const programName = formData.get('program_name') as string;
     const active = Number(formData.get('active') as string) as 0 | 1;
@@ -172,8 +180,24 @@ const FormDetail = () => {
       return;
     }
 
+    const programData = {
+      active,
+      endDate: endDateFormated,
+      startDate: startDateFormated,
+      mentors,
+      name: programName,
+      image: filePic,
+      type: activeTab,
+      institutionId: school,
+    };
+
     if (programId) {
       try {
+        const response = await updateProgramAsync({
+          programId,
+          data: programData
+        });
+        console.log(response);
         setData(defaultDataFormDetail);
         await queryClient.invalidateQueries({ queryKey: ['programs'] });
         router.push('/backoffice/manage-program');
@@ -186,11 +210,12 @@ const FormDetail = () => {
         console.error('Error updating program:', err);
         openModalToast({
           status: 'error',
-          action: 'create',
-          message: 'Failed to updating program. Please try again.',
+          action: 'update',
+          message: 'Failed to update program. Please try again.',
         });
       }
-    } else {
+    }
+    else {
       try {
         const response = await createProgramAsync({
           active,

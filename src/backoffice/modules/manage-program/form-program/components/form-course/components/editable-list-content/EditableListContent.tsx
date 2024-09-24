@@ -17,6 +17,7 @@ import {
   convertHHmmTime,
   convertTimeHHmmssToDate,
 } from '@/helpers/formatter.helper';
+import { useSearchParams } from 'next/navigation';
 
 const EditableListContent: React.FC<IEditableListContent> = (props) => {
   const [openModal, setOpenModal] = useState(false);
@@ -46,6 +47,8 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     clear,
   } = useFormMentoringStore();
 
+  const params = useSearchParams();
+
   const queryClient = useQueryClient();
 
   const { mutateAsync: deleteContentAsync } = useMutation({
@@ -68,6 +71,8 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
     mutationFn: editMentoring,
   });
 
+  const programId = params.get('programId');
+
   useEffect(() => {
     (async function () {
       if (isConfirmDel) {
@@ -75,6 +80,9 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
         await queryClient.invalidateQueries({ queryKey: ['content'] });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
+        queryClient.invalidateQueries({
+          queryKey: ['mentoring', 'list', props.id],
+        });
       }
     })();
   }, [isConfirmDel]);
@@ -195,6 +203,11 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
       queryClient.invalidateQueries({
         queryKey: ['mentoring', 'list', props.chapterId],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['chapters', 'program', programId],
+      });
+      
       openModalToast({
         status: 'success',
         action: 'update',
