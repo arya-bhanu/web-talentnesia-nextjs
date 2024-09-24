@@ -25,7 +25,7 @@ const SearchBarView: React.FC<SearchBarViewProps> = ({
       <input
         type="text"
         placeholder={placeHolder}
-        className="font-poppins text-[#667085] text-xs w-full px-1 md:px-3 lg:px-5 border-none outline-none focus:outline-none focus:ring-0"
+        className="font-poppins text-[#667085] text-xs md:text-base w-full px-1 md:px-3 lg:px-5 border-none outline-none focus:outline-none focus:ring-0"
         value={value}
         onChange={onChangeInput}
       />
