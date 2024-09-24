@@ -1,20 +1,13 @@
 import React from 'react';
 import { CalendarProps } from './calendar.type';
-import CalendarsEvent from '../schedule/schedule';
 
 const CalendarsView: React.FC<CalendarProps> = ({
   currentDate,
   changeMonth,
   handleDateClick,
-  handleSaveAgenda,
-  agenda,
-  newAgenda,
-  setNewAgenda,
-  selectedDate,
   calendarGrid,
-  isHoliday,
   isSunday,
-  firstDay
+  selectedDate,
 }) => {
   return (
     <div className="flex flex-col md:flex-row items-start justify-start">
@@ -64,7 +57,7 @@ const CalendarsView: React.FC<CalendarProps> = ({
                 {Array.from({ length: Math.ceil(calendarGrid.length / 7) }, (_, row) => (
                   <tr key={row}>
                     {calendarGrid.slice(row * 7, row * 7 + 7).map((day, idx) => {
-                      const isSelected = selectedDate && selectedDate.getDate() === day;
+                      const isSelected = selectedDate && selectedDate.getDate() === day && selectedDate.getMonth() === currentDate.getMonth();
                       return (
                         <td key={idx} className={`pt-6 ${day === null ? 'text-gray-400' : ''}`}>
                           <div
@@ -75,9 +68,7 @@ const CalendarsView: React.FC<CalendarProps> = ({
                                   ? 'bg-blue-500 text-white'
                                   : isSunday(day!) 
                                     ? 'text-yellow-300 hover:bg-yellow-200'
-                                    : isHoliday(day!)
-                                      ? 'bg-red-200 text-red-600 hover:bg-red-300'
-                                      : 'hover:bg-blue-200 hover:text-black'
+                                    : 'hover:bg-blue-200 hover:text-black'
                             }`}
                             onClick={() => day !== null && handleDateClick(day)}
                           >
