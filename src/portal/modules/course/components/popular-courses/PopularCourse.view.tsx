@@ -9,7 +9,7 @@ const PopularCoursesSectionView: React.FC<PopularCoursesSectionViewProps> = ({ c
       <SkeletonLoader visible={isLoading ? isLoading : false} width={'20%'} height={35} containerStyle={{ marginBottom: 20, marginTop: 68 }} />
       {
         !isLoading &&
-        <h2 className="font-poppins font-semibold text-slate-800 md:text-start text-center text-xl md:text-2xl lg:mt-20 lg:text-3xl">
+        <h2 className="font-poppins font-semibold text-slate-800 md:text-start text-center text-xl md:text-2xl mt-12 md:mt-16 lg:mt-20 lg:text-3xl">
           Popular Kursus
         </h2>
       }

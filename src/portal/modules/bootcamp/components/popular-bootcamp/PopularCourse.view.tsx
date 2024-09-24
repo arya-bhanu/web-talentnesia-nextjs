@@ -9,7 +9,7 @@ const PopularCoursesSectionView = ({ className, courses, isLoading }: { classNam
       <SkeletonLoader visible={isLoading ? isLoading : false} width={'40%'} height={35} containerStyle={{ marginBottom: 20, marginTop: 112 }} />
       {
         !isLoading &&
-        <h2 className="font-poppins font-semibold text-slate-800 md:text-start text-center text-xl md:text-2xl lg:mt-28 lg:text-3xl">
+        <h2 className="font-poppins font-semibold text-slate-800 md:text-start text-center text-xl md:text-2xl mt-12 md:mt-16 lg:mt-28 lg:text-3xl">
           Rekomendasi Bootcamp Terpopuler
         </h2>
       }
