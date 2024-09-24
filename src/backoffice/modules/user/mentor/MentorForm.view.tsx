@@ -610,7 +610,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     >
                       <option value="">Select Title</option>
                       {academicTitles.map((title: any, index: number) => {
-                        console.log(title);
                         return (
                           <option key={index} value={title.id}>
                             {title.name}
