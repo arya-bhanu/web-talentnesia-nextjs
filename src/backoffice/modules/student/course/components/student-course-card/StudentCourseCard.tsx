@@ -29,7 +29,8 @@ const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
         <Image
           src={image}
           alt={title}
-          layout="fill"
+          width={10}
+          height={10}
           objectFit="cover"
           className="h-full w-full object-cover rounded"
         />

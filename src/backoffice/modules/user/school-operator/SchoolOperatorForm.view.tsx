@@ -207,7 +207,6 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                     Select Religion
                   </option>
                   {religions.map((religion: any, index: number) => {
-                    console.log(religion);
                     return (
                       <option key={index} value={religion.id}>
                         {religion.name}

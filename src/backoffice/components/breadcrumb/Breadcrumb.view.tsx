@@ -21,17 +21,12 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
 
   const { setParamsQueries, paramsQueries } = useBreadCrumbStore();
   useEffect(() => {
-    console.log('running ...');
     const paramsArr: { key: string; value: string }[] = [];
     for (const [key, value] of params.entries()) {
       paramsArr.push({ key, value });
     }
     setParamsQueries(paramsArr);
   }, [pathName, JSON.stringify(params)]);
-
-  useEffect(() => {
-    console.log(paramsQueries);
-  }, [JSON.stringify(paramsQueries)]);
 
   const renderComponent = useMemo(
     () =>
@@ -70,7 +65,12 @@ export const BreadcrumbView: React.FC<BreadcrumbViewProps> = ({
           </React.Fragment>
         );
       }),
-    [JSON.stringify(paramsQueries)],
+    [
+      JSON.stringify(paramsQueries),
+      JSON.stringify(pathSegments),
+      JSON.stringify(moduleRoutePath),
+      JSON.stringify(formattedSegments),
+    ],
   );
   return (
     <nav
