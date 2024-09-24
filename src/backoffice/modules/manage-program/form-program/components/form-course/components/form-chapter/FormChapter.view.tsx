@@ -111,8 +111,9 @@ const FormChapterView: React.FC<
         <FormContent />
       </Modal>
       <form
-        onSubmit={(el) => {
-          handleSubmitCreateChapter(el);
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+          handleSubmitCreateChapter(e.currentTarget, 'submit');
         }}
       >
         <div>
@@ -137,16 +138,28 @@ const FormChapterView: React.FC<
             <h3 className="text-base font-semibold font-poppins">Content</h3>
             <div className="flex items-center gap-2">
               <Button
-                onClick={() => setActionSubChapter('exam')}
-                type="submit"
+                onClick={() => {
+                  setActionSubChapter('exam');
+                  const form = document.querySelector(
+                    'form',
+                  ) as HTMLFormElement;
+                  if (form) handleSubmitCreateChapter(form, 'addExam');
+                }}
+                type="button"
                 className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
               >
                 <AddWhite />
                 <span>Add Exam</span>
               </Button>
               <button
-                onClick={() => setActionSubChapter('content')}
-                type="submit"
+                onClick={() => {
+                  setActionSubChapter('content');
+                  const form = document.querySelector(
+                    'form',
+                  ) as HTMLFormElement;
+                  if (form) handleSubmitCreateChapter(form, 'addContent');
+                }}
+                type="button"
                 className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5  dark:focus:ring-yellow-900"
               >
                 <Add />
