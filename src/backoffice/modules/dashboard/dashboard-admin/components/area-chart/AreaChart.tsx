@@ -2,17 +2,14 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
-import type {AreaChartProps} from './areaChart.type'
+import type { AreaChartProps } from './areaChart.type'
 
-
-
-const AreaChart: React.FC<AreaChartProps> = ({ data = { count: [], years: [] } }) => {
-
+const AreaChart: React.FC<AreaChartProps> = ({ data }) => {
   const options: ApexOptions = {
     series: [
       {
         name: "Student",
-        data: [110, 222, 333]
+        data: data.count
       },
     ],
     chart: {
@@ -26,7 +23,7 @@ const AreaChart: React.FC<AreaChartProps> = ({ data = { count: [], years: [] } }
       curve: "smooth"
     },
     xaxis: {
-      categories: ["2021", "2022", "2023"]
+      categories: data.years.map(String)
     },
     tooltip: {
       x: {
