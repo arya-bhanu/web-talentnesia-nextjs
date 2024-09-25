@@ -28,18 +28,9 @@ const StudentCourseView: React.FC = () => {
     const fetchCourses = async () => {
       try {
         const response = await StudentCourseAPI.fetch();
-        const coursesWithImages = await Promise.all(response.data.items.map(async (course) => {
-          let imageUrl = '/img/course/course-image-example-1.png'; // Default fallback image
-          try {
-            const imageBlob = await fileHelper.getFile(course.image);
-            if (imageBlob) {
-              imageUrl = URL.createObjectURL(imageBlob);
-            }
-          } catch (error) {
-            console.error('Error loading image:', error);
-          }
-          return { ...course, imageUrl };
-        }));
+        const coursesWithImages = response.data.items.map((course) => {
+          return { ...course, imageUrl: course.image };
+        });
         setCourses(coursesWithImages);
       } catch (error) {
         console.error('Error fetching courses:', error);

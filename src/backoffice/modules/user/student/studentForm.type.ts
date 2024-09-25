@@ -7,6 +7,7 @@ export interface StudentFormData {
   profilePicture: string;
   profilePictureOrigin: string | null;
   name: string;
+  password?: string;
   nik: string;
   photoKtp: string;
   photoKtpOrigin?: string | null;
