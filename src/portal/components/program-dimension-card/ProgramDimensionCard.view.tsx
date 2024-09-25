@@ -5,7 +5,7 @@ import { Programs } from './programDimensionCard.type';
 const ProgramDimensionCardView = ({ logo, title, url }: Programs) => {
   const logoUrl = logo && typeof logo === 'string' && logo.startsWith('http')
     ? logo
-    : `https://api-talentnesia.skwn.dev/${logo || ''}`;
+    : `${process.env.API_SERVER_URL}/v1/file/${logo || ''}`;
 
   return (
     <div className="p-2 flex flex-col md:items-start items-center md:p-3 lg:p-5 hover:bg-[#EFF8FF] transition">
