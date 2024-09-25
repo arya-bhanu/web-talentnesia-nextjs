@@ -26,6 +26,7 @@ export const login = async (data: { email: string; password: string }) => {
       profilePicture: userData.profilePicture || '',
       role: userData.role,
       isLoggedIn: true,
+      educationInstitutionId: userData.educationInstitutionId,
       token: userData.token
     };
 
