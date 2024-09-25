@@ -237,7 +237,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion: any, index: number) => {
+                  {religions.map((religion: APIResponseReligion, index: number) => {
                     return (
                       <option key={index} value={religion.id}>
                         {religion.name}
@@ -482,7 +482,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Academic Level
                   </option>
-                  {academicLevels.map((education: any, index: number) => {
+                  {academicLevels.map((education: APIResponseAcademicLevel, index: number) => {
                     return (
                       <option key={index} value={education.id}>
                         {education.name}

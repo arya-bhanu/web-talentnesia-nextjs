@@ -4,8 +4,9 @@ import EmailIcon from '../../../../../../../public/icons/course-detail/mail.svg'
 import PhoneIcon from '../../../../../../../public/icons/course-detail/phone.svg';
 import LinkedInIcon from '../../../../../../../public/icons/course-detail/linkedin.svg';
 import FeatureCardView from '../../../../../components/feature-card/FeatureCard.view';
+import { Mentor } from './detailMentor.type';
 
-const DetailMentorView: React.FC<{ mentor: any }> = ({ mentor }) => {
+const DetailMentorView: React.FC<{ mentor: Mentor }> = ({ mentor }) => {
   const [activeTab, setActiveTab] = useState('About');
   if (!mentor) return null;
   
@@ -35,6 +36,8 @@ const DetailMentorView: React.FC<{ mentor: any }> = ({ mentor }) => {
           <Image
             src={mentor.image}
             alt={mentor.name}
+            height={30}
+            width={30}
             className="h-[90px] w-[90px] rounded-full border-4 border-white"
           />
           <div>

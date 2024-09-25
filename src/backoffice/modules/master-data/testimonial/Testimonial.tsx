@@ -37,7 +37,7 @@ const Testimonial = () => {
   }, [queryClient]);
 
   const handleActionButtonRow = useCallback(
-    async (id: string, action: 'delete' | 'edit', rowData?: any) => {
+    async (id: string, action: 'delete' | 'edit', rowData?: string) => {
       if (action === 'delete') {
         await handleDeleteTestimonial(id);
         fetchData();

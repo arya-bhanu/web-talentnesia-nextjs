@@ -9,7 +9,9 @@ export interface DecodedToken {
   profilePicture: string;
   isLoggedIn: string;
   token: string;
+  educationInstitutionId: string;
 }
+
 
 export const decodeToken = (): DecodedToken | null => {
   const cookieData = Cookies.get('talentnesia_token');
@@ -17,7 +19,10 @@ export const decodeToken = (): DecodedToken | null => {
     try {
       const decodedToken = jwt.decode(cookieData) as DecodedToken;
       if (decodedToken && typeof decodedToken === 'object') {
-        return decodedToken;
+        return {
+          ...decodedToken,
+          educationInstitutionId: decodedToken.educationInstitutionId 
+        };
       }
     } catch (error) {
       console.error('Error decoding token');
@@ -25,3 +30,4 @@ export const decodeToken = (): DecodedToken | null => {
   }
   return null;
 };
+

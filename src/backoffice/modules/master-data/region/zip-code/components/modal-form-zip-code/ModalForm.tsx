@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ModalFormProps } from './modalForm.type';
 import { ModalFormView } from './ModalForm.view';
+import { APIResponseZipCode } from '../../zipCode.type';
 
 const ModalForm: React.FC<ModalFormProps> = ({ 
   isOpen, 
@@ -39,7 +40,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
     }
 
     try {
-      await onSave(id, formData);
+      await onSave(id, { name: formData.zipCode } as APIResponseZipCode);
       onClose();
     } catch (error) {
       console.error('Failed to save data');

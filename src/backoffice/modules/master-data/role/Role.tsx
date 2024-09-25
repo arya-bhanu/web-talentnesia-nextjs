@@ -5,6 +5,7 @@ import RoleView from './Role.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRoleActions } from './hooks/useRoleAction';
 import { roleAPI } from './api/roleApi';
+import { APIResponseRole } from './role.type';
 
 const Role = () => {
   const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ const Role = () => {
     await queryClient.invalidateQueries({ queryKey: ['Role'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: APIResponseRole) => {
     if (action === "delete") {
       await handleDeleteRole(id);
       fetchData();
@@ -35,6 +36,7 @@ const Role = () => {
       fetchData();
     }
   }, [fetchData, handleDeleteRole, handleEditRole]);
+  
 
   const handleAdd = useCallback(async (name: string) => {
     await handleAddRole(name);
@@ -47,17 +49,25 @@ const Role = () => {
 
   return (
     <RoleView
-      data={data}
-      openPopoverIndex={openPopoverIndex}
-      setOpenPopoverIndex={setOpenPopoverIndex}
-      handleActionButtonRow={handleActionButtonRow}
-      handleAddRole={handleAdd}
-      Filter={Filter}
-      setFilter={setFilter}
-      isPopupOpen={isPopupOpen}
-      setIsPopupOpen={setIsPopupOpen}
-      fetchData={fetchData}
-    />
+  data={data}
+  openPopoverIndex={openPopoverIndex}
+  setOpenPopoverIndex={setOpenPopoverIndex}
+  handleActionButtonRow={(id: string, action: "delete" | "edit", rowData?: string) => {
+    if (action === "edit" && rowData) {
+      const parsedRowData: APIResponseRole = JSON.parse(rowData);
+      handleActionButtonRow(id, action, parsedRowData);
+    } else {
+      handleActionButtonRow(id, action);
+    }
+  }}
+  handleAddRole={handleAdd}
+  Filter={Filter}
+  setFilter={setFilter}
+  isPopupOpen={isPopupOpen}
+  setIsPopupOpen={setIsPopupOpen}
+  fetchData={fetchData}
+/>
+
   );
 };
 

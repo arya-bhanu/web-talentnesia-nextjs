@@ -68,12 +68,13 @@ const RatingModalView: React.FC<RatingModalProps> = ({ isOpen, onClose }) => {
                       : '/icons/rate-star-gray.svg'
                   }
                   alt={`Star ${star}`}
+                  width={32}
+                  height={32}
                   layout="fill"
                   objectFit="contain"
                 />
               </button>
-            ))}
-          </div>
+            ))}          </div>
           <div className="mb-2 text-left px-8">
             <p className="text-gray-800 text-sm font-bold mb-2">Suggestions*</p>
             <input

@@ -33,7 +33,7 @@ const AcademicTitleView: React.FC<IAcademicTitleView> = ({
   } = useAcademicTitleActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -49,15 +49,14 @@ const AcademicTitleView: React.FC<IAcademicTitleView> = ({
   const handleAddOrEditAcademicTitle = useCallback(
     async (id: string | undefined, data: { name: string }) => {
       if (id) {
-        await handleEditAcademicTitle(id, data);
+        await handleEditAcademicTitle(id, data.name);
       } else {
         await handleAddAcademicTitle(data.name);
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
-    },
-    [handleEditAcademicTitle, handleAddAcademicTitle, fetchData],
+    },    [handleEditAcademicTitle, handleAddAcademicTitle, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(

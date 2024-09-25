@@ -35,16 +35,15 @@ const Religion = () => {
     await queryClient.invalidateQueries({ queryKey: ['religion'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string) => {
     if (action === "delete") {
       await handleDeleteReligion(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditReligion(id, rowData);
+      await handleEditReligion(id, { name: rowData });
       fetchData();
     }
   }, [fetchData, handleDeleteReligion, handleEditReligion]);
-
   const handleAdd = useCallback(async (name: string) => {
     await handleAddReligion(name);
     fetchData();

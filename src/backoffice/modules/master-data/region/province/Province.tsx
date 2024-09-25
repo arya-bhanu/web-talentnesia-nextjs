@@ -35,7 +35,7 @@ const Province = () => {
     await queryClient.invalidateQueries({ queryKey: ['province'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string) => {
     if (action === "delete") {
       await handleDeleteProvince(id);
       fetchData();

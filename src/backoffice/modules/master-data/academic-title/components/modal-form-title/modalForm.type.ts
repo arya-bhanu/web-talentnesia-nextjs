@@ -1,7 +1,13 @@
+import { APIResponseAcademicTitle } from "../../academicTitle.type";
+
+export interface FormData {
+  name: string;
+  [key: string]: string;
+}
 export interface ModalFormProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (id: string | undefined, data: any) => Promise<void>;
+  onSave: (id: string | undefined, data: APIResponseAcademicTitle) => Promise<void>;
   initialData?: { [key: string]: string } | null;
   id?: string;
   title: string;

@@ -35,16 +35,15 @@ const District = () => {
     await queryClient.invalidateQueries({ queryKey: ['district'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string) => {
     if (action === "delete") {
       await handleDeleteDistrict(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditDistrict(id, rowData);
+      await handleEditDistrict(id, { name: rowData });
       fetchData();
     }
   }, [fetchData, handleDeleteDistrict, handleEditDistrict]);
-
   const handleAdd = useCallback(async (name: string) => {
     await handleAddDistrict(name);
     fetchData();

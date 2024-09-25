@@ -17,7 +17,7 @@ export function DropFile() {
       reader.readAsDataURL(file);
     }
   }, [file]);
-  
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -86,7 +86,9 @@ export function DropFile() {
               src={URL.createObjectURL(file)}
               alt="Uploaded file preview"
               className="mt-4 max-w-full h-auto rounded-lg object-cover"
-              style={{ maxHeight: '200px', padding: '10px' }} // Sesuaikan maxHeight dan padding sesuai kebutuhan
+              style={{ maxHeight: '200px', padding: '10px' }}
+              width={400} 
+              height={200}
             />
           )}
         </div>

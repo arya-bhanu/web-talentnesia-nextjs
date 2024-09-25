@@ -11,6 +11,7 @@ import { TabFlex } from './components/tabs/tabs';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import Import from '@/../public/icons/manage-user/import_export.svg';
+import LinkRegis from '@/../public/icons/manage-user/link.svg';
 import { userAPI } from './api/userApi';
 import { mentorAPI } from './mentor/api/mentorApi';
 import { schoolOperatorAPI } from './school-operator/api/schoolOperatorApi';
@@ -24,6 +25,8 @@ import { Spinner } from 'flowbite-react';
 import { ImportModal } from './components/import-modal/ImportModal';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 import usePermission from '@/backoffice/components/permission-granted/usePermission';
+import { LinkRegisterModal } from './components/import-linkRegister/ImportRegister';
+
 
 const UserView: React.FC<IUserView> = ({
   Filter,
@@ -45,6 +48,8 @@ const UserView: React.FC<IUserView> = ({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isLinkRegisterModalOpen, setIsLinkRegisterModalOpen] = useState(false);
+
   const permission = usePermission;
   const canEditMentor = usePermission('manage-user.mentor.edit', true);
   const canEditStudent = usePermission('manage-user.student.edit', true);
@@ -102,8 +107,8 @@ const UserView: React.FC<IUserView> = ({
         case 'School Operator':
           fetchedData = await schoolOperatorAPI.fetchSchoolOperators();
           break;
-      }
-      setData(fetchedData);
+        }
+        setData(fetchedData);
 
       const pictures: Record<string, string> = {};
       for (const user of fetchedData) {
@@ -121,6 +126,18 @@ const UserView: React.FC<IUserView> = ({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const LinkRegisterButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+    return (
+      <button
+        onClick={onClick}
+        className="flex items-center focus:outline-none bg-white border-[3px] border-[#FFC862] text-[#323232] hover:bg-orange-50 focus:ring-4 focus:ring-transparent font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+      >
+        <LinkRegis/>
+        <span className='ml-2'> Generate Link Register</span>
+      </button>
+    );
   };
 
   const ImportButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
@@ -274,8 +291,11 @@ const UserView: React.FC<IUserView> = ({
               </PermissionGranted>
             )}
             {tabName === 'Student' && (
-              <div className="flex space-x-2">
-                <PermissionGranted roleable role="manage-user.student.import">
+              <div className="flex  space-x-2">
+                <PermissionGranted roleable role="manage-user.student.generate">
+                  <LinkRegisterButton onClick={() => setIsLinkRegisterModalOpen(true)} />
+                </PermissionGranted>
+                <PermissionGranted roleable role="manage-user.student.generate">
                   <ImportButton onClick={() => setIsImportModalOpen(true)} />
                 </PermissionGranted>
                 <PermissionGranted roleable role="manage-user.student.add">
@@ -285,6 +305,7 @@ const UserView: React.FC<IUserView> = ({
                 </PermissionGranted>
               </div>
             )}
+  
             {tabName === 'School Operator' && (
               <PermissionGranted roleable role="manage-user.operator.add">
                 <Link href={'/backoffice/manage-user/add-school-operator/'}>
@@ -327,6 +348,7 @@ const UserView: React.FC<IUserView> = ({
       )}
     </div>
   );
+  
 
   const tabs: TabFlexProps['tabs'] = [
     {
@@ -358,6 +380,10 @@ const UserView: React.FC<IUserView> = ({
   return (
     <div className="p-4">
       <TabFlex tabs={tabs} onTabChange={handleTabChange} />
+      <LinkRegisterModal
+        isOpen={isLinkRegisterModalOpen}
+        onClose={() => setIsLinkRegisterModalOpen(false)}
+      />
       <ImportModal
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
@@ -365,6 +391,7 @@ const UserView: React.FC<IUserView> = ({
       />
     </div>
   );
+
 };
 
 export default UserView;

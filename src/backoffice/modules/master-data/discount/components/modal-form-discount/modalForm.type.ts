@@ -1,9 +1,17 @@
 // modalForm.type.ts
+export interface FormDataDisc {
+    name: string;
+    persentage: number;
+    code: string;
+    startDate: string;
+    endDate: string;
+    active?: number; 
+}
 
 export interface ModalFormProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (id: string | undefined, data: any) => Promise<void>;
+  onSave: (id: string | undefined, data: FormDataDisc) => Promise<void>;
   initialData?: {
     name: string;
     persentage: number;

@@ -7,6 +7,7 @@ export const Iicp = () => {
   const [data, setData] = React.useState<any>();
   const [skeletonAnimation, setSkeleton] = React.useState(true);
 
+
   React.useEffect(() => {
     iicpApi()
     .then((data) => {setData(data), 

@@ -33,7 +33,7 @@ const AreaChart: React.FC<AreaChartProps> = ({ data }) => {
   };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg">
+    <div className="p-4 bg-white shadow-md rounded-lg">
       <h3 className="text-lg font-semibold text-gray-900 mb-2">Growth Student</h3> 
       <Chart
         options={options}

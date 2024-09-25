@@ -33,6 +33,8 @@ const StudentCourseCard: React.FC<StudentCourseCardProps> = ({
         <Image
          src={image} 
          alt={title}
+         width={100}
+         height={100}
          className="h-full w-full object-cover rounded" />
       </div>
       <div className="flex-grow flex flex-col justify-center ml-4">

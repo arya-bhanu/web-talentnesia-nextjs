@@ -7,13 +7,13 @@ export const ListProgramCardAPI = {
       const response = await axios.get(
         `${process.env.API_SERVER_URL}/v1/manage-program/program/${schoolId}`,
       );
-      const transformedData = response.data.data.items.map((item: any) => ({
+      const transformedData = response.data.data.items.map((item: ListProgramCardType) => ({
         id: item.id,
         name: item.name,
         startDate: item.startDate,
         endDate: item.endDate,
-        imageUrl: item.image,
-        length: item.active,
+        imageUrl: item.imageUrl,
+        length: item.length,
         durationMinute: item.durationMinute || 0,
       }));
       return transformedData;
