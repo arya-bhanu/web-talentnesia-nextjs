@@ -16,10 +16,10 @@ export interface courses {
   title: string;
   description: string;
   level: string;
-  currentPrice: string;
-  originPrice: string;
+  currentPrice: number;
+  originalPrice: number;
   url: string;
-  rating: string;
+  rating: number;
   isLoading?: boolean
 }
 

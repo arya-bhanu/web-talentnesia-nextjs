@@ -6,7 +6,7 @@ export interface IModalSelect extends IModalSelectState, IModalSelectOpenState {
     key: string;
     val: string;
   }[];
-  rows: {}[];
+  rows: Record<string, string | number | boolean | (() => React.ReactNode)>[];
 }
 
 export interface IModalSelectState {

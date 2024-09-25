@@ -1,1 +1,1 @@
-export { ButtonImport } from './ButtonGenerate';
+export { ButtonGenerate as ButtonImport } from './ButtonGenerate';
