@@ -133,6 +133,8 @@ const AccordionPanelDraggableView: React.FC<
       const sortData = contents.sort((a, b) => a.order - b.order);
       if (sortData && sortData.length > 0) {
         setSortContents(sortData);
+      } else {
+        setSortContents(null);
       }
     }
   }, [JSON.stringify(contents), index === activeAccordion]);

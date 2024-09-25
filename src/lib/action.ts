@@ -27,7 +27,7 @@ export const login = async (data: { email: string; password: string }) => {
       role: userData.role,
       isLoggedIn: true,
       educationInstitutionId: userData.educationInstitutionId,
-      token: userData.token,
+      token: userData.token
     };
 
     const token = generateToken(sessionData);

@@ -7,6 +7,7 @@ export interface SessionData {
   email: string;
   profilePicture: string;
   role: number;
+  educationInstitutionId?: string;
   token?: string;
   isLoggedIn: boolean;
   educationInstitutionId?: string;
