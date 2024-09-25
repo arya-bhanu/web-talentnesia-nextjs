@@ -108,13 +108,13 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
         </PermissionGranted>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+        <div className="lg:col-span-3 w-full">
           <AreaChart data={data.growStudent} />
         </div>
         <div className="grid grid-cols-1 gap-5 w-full h-full ml-auto">
           <PermissionGranted roleable role="dashboard.readTotalElearning">
-            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4">
+            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4 h-full">
               <div className="flex items-center justify-end">
                 <div className="flex items-center justify-center bg-[#F2EFFE] rounded-lg w-14 h-14 mr-4 font-semibold">
                   <Image
@@ -144,7 +144,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
             </div>
           </PermissionGranted>
           <PermissionGranted roleable role="dashboard.readTotalBootcamp">
-            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4 w-full">
+            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4 h-full">
               <div className="flex items-center">
                 <div className="flex items-center justify-center bg-[#EAF4FF] rounded-lg w-14 h-14 mr-4 font-semibold">
                   <Image
@@ -174,7 +174,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
             </div>
           </PermissionGranted>
           <PermissionGranted roleable role="dashboard.readTotalIicp">
-            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4 ">
+            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4 h-full">
               <div className="flex items-center">
                 <div className="flex items-center justify-center bg-[#E8F8F5] rounded-lg w-14 h-14 mr-4 font-semibold">
                   <Image
