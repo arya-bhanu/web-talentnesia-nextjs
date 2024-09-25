@@ -9,6 +9,7 @@ export interface SessionData {
   role: number;
   token?: string;
   isLoggedIn: boolean;
+  educationInstitutionId?: string;
 }
 
 const JWT_SECRET = 'your_secret_key_here';
@@ -27,7 +28,7 @@ export const verifyToken = (token: string): SessionData | null => {
 };
 
 export const setToken = (token: string): void => {
-  Cookies.set(TOKEN_NAME, token, { expires: 1/24, secure: true, sameSite: 'strict' });
+  Cookies.set(TOKEN_NAME, token, { expires: 10/24, secure: true, sameSite: 'strict' });
 };
 
 export const getToken = (): string | undefined => {

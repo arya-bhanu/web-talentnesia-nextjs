@@ -38,6 +38,8 @@ const ProfileImageInput: React.FC = () => {
           <Image
             src={profileImage}
             alt="Profile"
+            width={164}
+            height={164}
             layout="fill"
             objectFit="cover"
             className="rounded-full"
@@ -55,5 +57,4 @@ const ProfileImageInput: React.FC = () => {
     </div>
   );
 };
-
 export default ProfileImageInput;

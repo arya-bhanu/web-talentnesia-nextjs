@@ -5,6 +5,7 @@ import PartnersView from './Partner.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { usePartnerActions } from './hooks/usePartnerAction';
 import { partnerAPI } from './api/partnerApi';
+import { APIResponsePartner } from './partner.type';
 
 const Partner = () => {
   const queryClient = useQueryClient();
@@ -31,7 +32,7 @@ const Partner = () => {
       await handleDeletePartner(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditPartner(id, rowData);
+      await handleEditPartner(id, rowData );
       fetchData();
     }
   }, [fetchData, handleDeletePartner, handleEditPartner]);

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { certificateAPI } from '../api/certificateApi';
+import { FormData } from '../add-certificate/addCertificate.type';
 
 export const useCertificateActions = () => {
   const handleAddCertificate = useCallback(async (name: string, file: string) => {
@@ -11,7 +12,7 @@ export const useCertificateActions = () => {
       throw error;
     }
   }, []);
-  const handleEditCertificate = useCallback(async (id: string, data: any) => {
+  const handleEditCertificate = useCallback(async (id: string, data: FormData) => {
     try {
       await certificateAPI.update(id, data);
     } catch (error) {

@@ -35,7 +35,7 @@ const SubDistrict = () => {
     await queryClient.invalidateQueries({ queryKey: ['subDistrict'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string) => {
     if (action === "delete") {
       await handleDeleteSubDistrict(id);
       fetchData();

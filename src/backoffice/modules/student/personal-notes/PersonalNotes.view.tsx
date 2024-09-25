@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import PersonalNotesCard from './components/personal-notes-card/PersonalNotesCard';
 import { PersonalNoteProps, ApiResponse } from './personalNotes.type';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
@@ -70,7 +70,7 @@ const PersonalNotesView: React.FC<PersonalNotesViewProps> = ({ initialNotes }) =
     }, 300);
   };
 
-  const onDragEnd = (result: any) => {
+  const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
     const items = Array.from(notes);

@@ -66,7 +66,7 @@ export const reorderExam = async ({
   examId: string;
 }) => {
   const response = await fetchAxios<{
-    data: any;
+    data: APIExamChapter;
   }>({
     url: `/v1/program-exam/reorder-exams/${examId}`,
     method: 'POST',

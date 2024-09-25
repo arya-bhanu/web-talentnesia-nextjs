@@ -621,7 +621,8 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       className={styles.inputField}
                     >
                       <option value="">Select Title</option>
-                      {academicTitles.map((title: any, index: number) => {
+                      {academicTitles.map((title: APIResponseAcademicTitle, index: number) => {
+                        console.log(title);
                         return (
                           <option key={index} value={title.id}>
                             {title.name}

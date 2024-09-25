@@ -10,7 +10,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
   id = undefined,
   title,
 }) => {
-  const [formData, setFormData] = useState({ name: '' });
+  const [formData, setFormData] = useState<{ name: string }>({ name: '' });
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {

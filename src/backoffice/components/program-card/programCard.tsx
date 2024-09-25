@@ -63,6 +63,8 @@ export function CustomCard({
           width={300}
           height={300}
           className="rounded-t-lg xl:rounded-t-2xl w-full h-48 object-cover"
+          width={500}
+          height={500}
         />
         <div className="absolute top-2 left-2">
           <span

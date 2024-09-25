@@ -10,7 +10,7 @@ export interface IModalSelect extends IModalSelectState, IModalSelectOpenState {
 }
 
 export interface IModalSelectState {
-  selected: any[];
+  selected: string[];
   setSelected: Dispatch<SetStateAction<any[]>>;
 }
 

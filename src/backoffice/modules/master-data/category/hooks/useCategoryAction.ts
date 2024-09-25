@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { categoryAPI } from '../api/categoryApi';
+import { FormData } from '../components/modal-form-category/modalForm.type';
 
 export const useCategoryActions = () => {
   const handleAddCategory = useCallback(async (name: string) => {

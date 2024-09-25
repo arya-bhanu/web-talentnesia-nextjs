@@ -15,7 +15,7 @@ export const fetchModules = async () => {
     success: boolean;
     code: number;
     status: string;
-    errors: any;
+    errors: unknown;
     messages: string;
   }>({
     url: '/v1/manage-module',

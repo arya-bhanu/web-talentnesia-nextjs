@@ -1,6 +1,10 @@
 import { useCallback } from 'react';
 import { quizTypeAPI } from '../api/quizTypeApi';
+import { APIResponseQuizType } from '../quizType.type';
 
+interface QuizTypeFormData {
+  quizType: string;
+}
 export const useQuizTypeActions = () => {
   const handleAddQuizType = useCallback(async (name: string) => {
     try {
@@ -10,7 +14,7 @@ export const useQuizTypeActions = () => {
     }
   }, []);
 
-  const handleEditQuizType = useCallback(async (id: string, data: any) => {
+  const handleEditQuizType = useCallback(async (id: string, data: APIResponseQuizType) => {
     try {
       quizTypeAPI.update(id, data);
     } catch (error) {
