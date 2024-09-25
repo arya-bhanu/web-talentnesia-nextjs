@@ -16,6 +16,7 @@ export interface MentorFormData {
   profilePicture: string;
   profilePictureOrigin: string | null;
   name: string;
+  password?: string;
   nik: string;
   npwp?: string;
   photoKtp?: string;

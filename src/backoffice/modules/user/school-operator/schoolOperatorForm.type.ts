@@ -8,6 +8,7 @@ export interface SchoolOperatorFormData {
   profilePictureOrigin: string | null;
 
   name: string;
+  password?: string;
   nik: string;
   placeOfBirth: string;
   dateOfBirth: string;
