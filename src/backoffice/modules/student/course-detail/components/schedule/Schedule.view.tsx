@@ -22,12 +22,12 @@ const ScheduleView: React.FC<ScheduleViewProps> = ({
   onPrevious,
 }) => {
   return (
-    <section className="border-indigo-50 rounded-md shadow-sm">
-      <div className="max-w-7xl px-4 sm:px-6 md:px-4 mx-auto lg:px-4 py-12 sm:py-24">
-        <div className="flex items-center justify-between">
+    <section className="">
+      <div className="px-4 sm:px-6 md:px-4 lg:px-4">
+        <div className="flex items-center">
           <div className="flex flex-grow items-center space-x-4">
             <div className="flex flex-col flex-grow">
-              <h2 className="text-base sm:text-lg font-bold tracking-tight text-gray-900">
+              <h2 className="text-base font-poppins sm:text-xl font-bold tracking-tight text-gray-900">
                 Next Schedule
               </h2>
               <div className="flex items-center">
@@ -45,7 +45,7 @@ const ScheduleView: React.FC<ScheduleViewProps> = ({
                 />
               </div>
               {taskDetails.map((task, index) => (
-                <div key={index} className="flex flex-col items-start">
+                <div key={index} className="flex flex-col items-start bg-[#FAFAFA] rounded-2xl p-6">
                   <div className="text-sm text-gray-500">{task.title}</div>
                   <div className="text-base mt-2 font-semibold text-gray-600">
                     {task.mentor}

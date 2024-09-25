@@ -45,9 +45,9 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     : hours.filter((hour) => parseInt(hour.split(':')[0]) <= 14);
 
   return (
-    <div className="flex flex-col items-center py-8">
-      <div className="max-w-sm w-full shadow-lg">
-        <div className="md:p-8 p-5 bg-white rounded-t">
+    <div className="flex flex-col items-center">
+      <div className="max-w-sm w-full">
+        <div className="md:p-8 p-5 rounded-t">
           <div className="mb-4">
             <h1 className="text-xl font-bold text-gray-800">Calendar</h1>
           </div>

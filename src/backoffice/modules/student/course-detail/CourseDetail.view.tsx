@@ -10,7 +10,7 @@ import JoinDiscord from './components/join-discord/JoinDiscord';
 import Statistic from './components/statistic';
 import Mentor from './components/list-mentor';
 import { APIResponseCourseDetail } from './courseDetail.type';
-import { Spinner } from "flowbite-react";
+import { Spinner } from 'flowbite-react';
 
 interface CourseDetailViewProps {
   courseId: string;
@@ -18,7 +18,11 @@ interface CourseDetailViewProps {
   loading: boolean;
 }
 
-const CourseDetailView: React.FC<CourseDetailViewProps> = ({ courseId, courseDetailData, loading }) => {
+const CourseDetailView: React.FC<CourseDetailViewProps> = ({
+  courseId,
+  courseDetailData,
+  loading,
+}) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[calc(80vh-200px)]">
@@ -31,42 +35,60 @@ const CourseDetailView: React.FC<CourseDetailViewProps> = ({ courseId, courseDet
     return <div>No course data available</div>;
   }
 
-  const { course, mentors, joinGroup, attendance, assignment, certificates, calendar, historyExam } = courseDetailData.data;
+  const {
+    course,
+    mentors,
+    joinGroup,
+    attendance,
+    assignment,
+    certificates,
+    calendar,
+    historyExam,
+  } = courseDetailData.data;
 
   return (
     <div className="p-4">
       <ModulProgress progress={course.progress} />
-      <div className="mt-10 flex flex-col md:flex-row gap-6">
-        <div className="flex-1">
-          <AssignmentChart data={assignment} />
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col">
+          <div className="flex-1">
+            <AssignmentChart data={assignment} />
+          </div>
         </div>
-        <div className="flex-1">
-          <AttendanceChart data={attendance} />
-        </div>
-      </div>
-      <div className="mt-10 flex flex-col md:flex-row gap-6">
-        <div className="flex-1">
-        <Calendar calendarData={calendar} />
-        </div>
-        <div className="flex-1">
-        <HistoriExam historyExam={historyExam.map((exam, index) => ({
-          ...exam,
-          no: index + 1,
-          examName: exam.name,
-          submitDate: exam.endDate
-        }))} />
+        <div className="flex flex-col">
+          <div className="flex-1">
+            <AttendanceChart data={attendance} />
+          </div>
         </div>
       </div>
-      <Schedule />
-      <div className="mt-10 flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-3/4">
-          <Modul certificates={certificates} course={course}/>
+
+      <div className="mt-6 grid grid-cols-4 md:flex-row gap-6">
+        <div className="grid col-span-1 bg-[#FFFFFF] rounded-xl">
+          <Calendar calendarData={calendar} />
         </div>
-        <div className="w-full md:w-1/3 space-y-12">
-          {joinGroup.link && joinGroup.link !== "" && (
-            <JoinDiscord data={joinGroup} />
-          )}
-          <Mentor mentors={mentors} />
+        <div className="col-span-3 bg-[#FFFFFF] rounded-xl">
+          <HistoriExam
+            historyExam={historyExam.map((exam, index) => ({
+              ...exam,
+              no: index + 1,
+              examName: exam.name,
+              submitDate: exam.endDate,
+            }))}
+          />
+        </div>
+      </div>
+      <div className="bg-[#FFFFFF] rounded-xl mt-6 p-4">
+        <Schedule />
+        <div className="mt-10 flex flex-col md:flex-row gap-6">
+          <div className="w-full md:w-3/4">
+            <Modul certificates={certificates} course={course} />
+          </div>
+          <div className="w-full md:w-1/3 space-y-12">
+            {joinGroup.link && joinGroup.link !== '' && (
+              <JoinDiscord data={joinGroup} />
+            )}
+            <Mentor mentors={mentors} />
+          </div>
         </div>
       </div>
     </div>
