@@ -37,7 +37,7 @@ const ProvinceView: React.FC<IProvinceView> = ({
     useProvinceActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -66,13 +66,13 @@ const ProvinceView: React.FC<IProvinceView> = ({
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      columnHelper.accessor('code', {
+      columnHelper.accessor('id', {
         header: ({ column }) => (
           <SortingTable column={column} title="Province Code" />
         ),
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor('Province-name', {
+      columnHelper.accessor('name', {
         header: ({ column }) => (
           <SortingTable column={column} title="Province Name" />
         ),

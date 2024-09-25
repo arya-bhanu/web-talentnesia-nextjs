@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { IZipCodeView } from './zipCode.type';
+import { APIResponseZipCode, IZipCodeView } from './zipCode.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
@@ -37,7 +37,7 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
     useZipCodeActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -51,7 +51,7 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
   }, []);
 
   const handleAddOrEditZipCode = useCallback(
-    async (id: string | undefined, data: { name: string }) => {
+    async (id: string | undefined, data: APIResponseZipCode) => {
       if (id) {
         await handleEditZipCode(id, data);
       } else {
@@ -63,6 +63,8 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
     },
     [handleEditZipCode, handleAddZipCode, fetchData],
   );
+  
+  
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [

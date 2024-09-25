@@ -6,6 +6,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { academicTitleAPI } from './api/academicTitleApi';
 import { useAcademicTitleActions } from './hooks/useAcademicTitleAction';
 import { decodeToken } from '@/lib/tokenDecoder';
+import { APIResponseAcademicTitle } from './academicTitle.type';
 
 const AcademicTitle = () => {
   const queryClient = useQueryClient();
@@ -35,7 +36,7 @@ const AcademicTitle = () => {
     await queryClient.invalidateQueries({ queryKey: ['academicTitle'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string ) => {
     if (action === "delete") {
       await handleDeleteAcademicTitle(id);
       fetchData();

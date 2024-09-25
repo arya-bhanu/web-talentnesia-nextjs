@@ -1,6 +1,12 @@
 import { useCallback } from 'react';
 import { partnerAPI } from '../api/partnerApi';
 
+interface PartnerData {
+  name: string, 
+  address: string, 
+  logo: string, 
+  description: string
+}
 export const usePartnerActions = () => {
   const handleAddPartner = useCallback(async (name: string, address: string, logo: string, description: string) => {
     try {
@@ -10,7 +16,7 @@ export const usePartnerActions = () => {
     }
   }, []);
 
-  const handleEditPartner = useCallback(async (id: string, data: any) => {
+  const handleEditPartner = useCallback(async (id: string, data: PartnerData) => {
     try {
       await partnerAPI.update(id, data);
     } catch (error) {

@@ -1,9 +1,10 @@
 import { fetchAxios } from '@/lib/fetchAxios';
+import { User } from '../../user.type';
 
 export const studentAPI = {
   fetchStudents: async () => {
     try {
-      const response = await fetchAxios<{ data: { items: any[] } }>({
+      const response = await fetchAxios<{ data: { items: User[] } }>({
         url: '/v1/manage-user/4/table',
         method: 'GET',
       });
