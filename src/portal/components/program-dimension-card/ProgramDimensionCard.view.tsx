@@ -3,14 +3,14 @@ import React from 'react';
 import { Programs } from './programDimensionCard.type';
 
 const ProgramDimensionCardView = ({ logo, title, url }: Programs) => {
-  const logoUrl = logo.startsWith('http')
+  const logoUrl = logo && typeof logo === 'string' && logo.startsWith('http')
     ? logo
-    : `https://api-talentnesia.skwn.dev/${logo}`;
+    : `https://api-talentnesia.skwn.dev/${logo || ''}`;
 
   return (
     <div className="p-2 flex flex-col md:items-start items-center md:p-3 lg:p-5 hover:bg-[#EFF8FF] transition">
       <Image
-        alt={logo}
+        alt={title || 'Program logo'}
         src={logoUrl}
         width={50}
         height={50}
