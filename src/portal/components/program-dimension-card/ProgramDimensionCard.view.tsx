@@ -4,9 +4,10 @@ import { Programs } from './programDimensionCard.type';
 
 const ProgramDimensionCardView = ({ logo, title, url }: Programs) => {
   const logoUrl = logo.startsWith('http')
-    ? logo
-    : `${process.env.API_SERVER_URL}/v1/${logo}`;
-
+  ? logo
+  : `${process.env.API_SERVER_URL}/v1/file/${logo}`;
+  
+  console.log(logoUrl);
   return (
     <div className="p-2 flex flex-col md:items-start items-center md:p-3 lg:p-5 hover:bg-[#EFF8FF] transition">
       <Image
