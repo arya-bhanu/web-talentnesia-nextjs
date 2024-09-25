@@ -33,10 +33,10 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
   if (error) return <Custom500 />;
 
   return (
-    <PermissionGranted roleable role='dashboard.read'>
-      <div className="grid grid-cols-3 gap-5 mb-6 h-32">
+    <PermissionGranted roleable role="dashboard.read">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6 h-auto">
         <PermissionGranted roleable role="dashboard.readTotalInstructor">
-          <div className="bg-[#FFE2E6] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+          <div className="bg-[#FFE2E6] shadow sm:rounded-lg flex p-6 relative">
             <div className="absolute top-4 left-4 flex items-center justify-center bg-[#F04438] rounded-full w-12 h-12 ml-2.5">
               <Image
                 src={imageData.instructorData.image}
@@ -46,7 +46,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
                 className="rounded-lg"
               />
             </div>
-            <div className="pl-3 mt-10  flex flex-col items-start">
+            <div className="pl-3 mt-10 flex flex-col items-start">
               <div className="flex items-start pt-2">
                 <div className="text-xl leading-9 font-bold text-gray-900">
                   {data.totalIntruction}
@@ -60,7 +60,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
         </PermissionGranted>
 
         <PermissionGranted roleable role="dashboard.readTotalActiveStudent">
-          <div className="bg-[#FFF4DC] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+          <div className="bg-[#FFF4DC] shadow sm:rounded-lg flex p-6 relative">
             <div className="absolute top-4 left-4 flex items-center justify-center bg-[#F79009] rounded-full w-12 h-12 ml-2.5">
               <Image
                 src={imageData.studentData.image}
@@ -84,7 +84,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
         </PermissionGranted>
 
         <PermissionGranted roleable role="dashboard.readTotalCourse">
-          <div className="bg-[#D8F1D9] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+          <div className="bg-[#D8F1D9] shadow sm:rounded-lg flex p-6 relative">
             <div className="absolute top-4 left-4 flex items-center justify-center bg-[#15B79E] rounded-full w-12 h-12 ml-2.5">
               <Image
                 src={imageData.courseData.image}
@@ -94,7 +94,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
                 className="rounded-lg"
               />
             </div>
-            <div className=" pl-3 mt-10 flex flex-col">
+            <div className="pl-3 mt-10 flex flex-col">
               <div className="flex items-start pt-2">
                 <div className="text-xl leading-9 font-bold text-gray-900">
                   {data.totalCourse}
@@ -108,13 +108,15 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
         </PermissionGranted>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 w-full">
-          <AreaChart data={data.growStudent} />
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+        <div className="lg:col-span-3 w-full">
+          <div className="shadow-md">
+            <AreaChart data={data.growStudent} />
+          </div>
         </div>
         <div className="grid grid-cols-1 gap-5 w-full h-full ml-auto">
           <PermissionGranted roleable role="dashboard.readTotalElearning">
-            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4">
+            <div className="bg-white shadow-md sm:rounded-lg flex items-center p-4 h-full">
               <div className="flex items-center justify-end">
                 <div className="flex items-center justify-center bg-[#F2EFFE] rounded-lg w-14 h-14 mr-4 font-semibold">
                   <Image
@@ -144,7 +146,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
             </div>
           </PermissionGranted>
           <PermissionGranted roleable role="dashboard.readTotalBootcamp">
-            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4 w-full">
+            <div className="bg-white shadow-md sm:rounded-lg flex items-center p-4 h-full">
               <div className="flex items-center">
                 <div className="flex items-center justify-center bg-[#EAF4FF] rounded-lg w-14 h-14 mr-4 font-semibold">
                   <Image
@@ -174,7 +176,7 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
             </div>
           </PermissionGranted>
           <PermissionGranted roleable role="dashboard.readTotalIicp">
-            <div className="bg-white overflow-hidden shadow sm:rounded-lg flex items-center p-4 ">
+            <div className="bg-white shadow-md sm:rounded-lg flex items-center p-4 h-full">
               <div className="flex items-center">
                 <div className="flex items-center justify-center bg-[#E8F8F5] rounded-lg w-14 h-14 mr-4 font-semibold">
                   <Image
@@ -206,15 +208,21 @@ const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 justify-start">
-        <PermissionGranted roleable role="dashboard.readBestSellerBootcamp">
-          <div className="p-4 bg-white shadow-md rounded-lg w-full">
-          <ColumnChart data={data.bestSellerBootcamp} title="Best Seller Bootcamp" />
-          </div>
-        </PermissionGranted>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-start">
+        <div className="p-4 bg-white shadow-md rounded-lg w-full">
+          <PermissionGranted roleable role="dashboard.readBestSellerBootcamp">
+            <ColumnChart
+              data={data.bestSellerBootcamp}
+              title="Best Seller Bootcamp"
+            />
+          </PermissionGranted>
+        </div>
         <PermissionGranted roleable role="dashboard.readLowestSellerBootcamp">
           <div className="p-4 bg-white shadow-md rounded-lg w-full">
-          <ColumnChart2 data={data.lowSellerBootcamp} title="Lowest Seller Bootcamp" />
+            <ColumnChart2
+              data={data.lowSellerBootcamp}
+              title="Lowest Seller Bootcamp"
+            />
           </div>
         </PermissionGranted>
       </div>
