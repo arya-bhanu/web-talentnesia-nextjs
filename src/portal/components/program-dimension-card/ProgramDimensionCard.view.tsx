@@ -7,7 +7,6 @@ const ProgramDimensionCardView = ({ logo, title, url }: Programs) => {
   ? logo
   : `${process.env.API_SERVER_URL}/v1/file/${logo}`;
   
-  console.log(logoUrl);
   return (
     <div className="p-2 flex flex-col md:items-start items-center md:p-3 lg:p-5 hover:bg-[#EFF8FF] transition">
       <Image
