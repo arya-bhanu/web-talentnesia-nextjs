@@ -36,6 +36,8 @@ const TableStudentView: React.FC<TableStudentViewProps> = ({
                     <Image
                       src={el.photo}
                       alt={el.name}
+                      width={90}
+                      height={90}
                       className="w-5 h-5 rounded-full mr-3" 
                     />
                     {el.name}

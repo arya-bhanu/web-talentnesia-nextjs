@@ -1,7 +1,12 @@
+export interface FormData {
+  name: string; 
+  code: string; 
+  active: number
+}
 export interface ModalFormProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (id: string | undefined, data: any) => Promise<void>;
+  onSave: (id: string | undefined, data: FormData) => Promise<void>;
   initialData?: { name: string; code: string; active: number } | null;
   id?: string;
   title: string;

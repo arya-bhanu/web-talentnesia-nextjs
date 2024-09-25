@@ -1,7 +1,12 @@
+export interface FormData {
+      name: string;
+      file: string;
+      active?: number;
+}
 export interface AddCertificateProps {
     isOpen: boolean;
     onClose: () => void;
-    onSave: (id: string | undefined, data: any) => Promise<void>;
+    onSave: (id: string | undefined, data: FormData) => Promise<void>;
     initialData?: { [key: string]: string } | null;
     id?: string;
     title: string;

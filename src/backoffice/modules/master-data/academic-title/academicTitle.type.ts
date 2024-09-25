@@ -21,6 +21,9 @@ export interface SingleAcademicTitleResponse {
   data: APIResponseAcademicTitle;
 }
 
+export interface rowData {
+  rowData?: string;
+}
 export interface IAcademicTitleView {
   data: APIResponseAcademicTitle[];
   openPopoverIndex: number | null;

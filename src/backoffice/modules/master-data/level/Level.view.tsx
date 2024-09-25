@@ -38,7 +38,7 @@ const LevelView: React.FC<ILevelView> = ({
     useLevelActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -52,7 +52,7 @@ const LevelView: React.FC<ILevelView> = ({
   }, []);
 
   const handleAddOrEditLevel = useCallback(
-    async (id: string | undefined, data: { name: string }) => {
+    async (id: string | undefined, data: any) => {
       if (id) {
         await handleEditLevel(id, data);
       } else {

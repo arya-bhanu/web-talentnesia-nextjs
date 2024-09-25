@@ -31,12 +31,13 @@ const AcademicLevel = () => {
   }, [queryClient]);
 
   const handleActionButtonRow = useCallback(
-    async (id: string, action: 'delete' | 'edit', rowData?: any) => {
+    async (id: string, action: 'delete' | 'edit', rowData?: string) => {
       if (action === 'delete') {
         await handleDeleteAcademicLevel(id);
         fetchData();
       } else if (action === 'edit' && rowData) {
-        await handleEditAcademicLevel(id, rowData);
+
+        await handleEditAcademicLevel(id, { name: rowData });
         fetchData();
       }
     },

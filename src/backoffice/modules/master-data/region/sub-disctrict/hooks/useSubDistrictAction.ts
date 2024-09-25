@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { subDistrictAPI } from '../api/subDistrictApi';
+import { APIResponseSubDistrict } from '../subDistrict.type';
 
 export const useSubDistrictActions = () => {
   const handleAddSubDistrict = useCallback(async (name: string) => {
@@ -10,11 +11,11 @@ export const useSubDistrictActions = () => {
     }
   }, []);
 
-  const handleEditSubDistrict = useCallback(async (id: string, data: any) => {
+  const handleEditSubDistrict = useCallback(async (id: string, data: string) => {
     try {
       subDistrictAPI.update(id, data);
     } catch (error) {
-      console.error('Failed to sub district');
+      console.error('Failed to update sub district');
     }
   }, []);
 

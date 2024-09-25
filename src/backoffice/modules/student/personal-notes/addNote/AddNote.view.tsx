@@ -23,7 +23,12 @@ const AddNoteView: React.FC = () => {
   const [courses, setCourses] = useState<Array<{ id: string; name: string }>>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [CustomToolbar, setCustomToolbar] = useState<React.ComponentType<any> | null>(null);
+  const [CustomToolbar, setCustomToolbar] = useState<React.ComponentType<{ onColorChange: (color: string) => void }> | null>(null);
+
+  interface CourseItem {
+    id: string;
+    name: string;
+  }
 
   const decodedToken = decodeToken();
   const userId = decodedToken?.userId;
@@ -37,7 +42,7 @@ const AddNoteView: React.FC = () => {
   const fetchCourses = useCallback(async (page: number) => {
     const response = await personalNoteAPI.getStudentCourses(page);
     if (response && response.success) {
-      const newCourses = response.data.items.map((item: any) => ({ id: item.id, name: item.name }));
+      const newCourses = response.data.items.map((item: CourseItem) => ({ id: item.id, name: item.name }));
       setCourses(prevCourses => page === 1 ? newCourses : [...prevCourses, ...newCourses]);
       setHasMore(response.data.meta.currentPage < response.data.meta.lastPage);
       setCurrentPage(response.data.meta.currentPage);

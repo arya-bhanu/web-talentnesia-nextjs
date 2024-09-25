@@ -5,10 +5,11 @@ import LabelForm from '@/backoffice/components/label-form';
 import Legenda from './components/Legenda/Legenda';
 import { DocumentEditor } from '@onlyoffice/document-editor-react';
 import DocumentEditorComponent from './components/Certificatedocs';
+import { certificateData } from './formCertificate.type';
 
 interface FormCertificateViewProps {
   generateCertificate: (certificateNumber: string) => Promise<void>;
-  certificateData: any;
+  certificateData: certificateData | null;
 }
 const FormCertificateView: React.FC<FormCertificateViewProps> = ({ generateCertificate, certificateData }) => {
   const [certificateNumber, setCertificateNumber] = useState('');

@@ -6,10 +6,17 @@ import DetailMentorview from '../detail-mentor-about/DetailMentor.view';
 import CloseIcon from '../../../../../../../public/icons/course-detail/close-circle.svg'
 import Image from 'next/image';
 
+interface Mentor {
+    name: string;
+    role: string;
+    image: string;
+}
+
 const Tabs = () => {
     const [activeTab, setActiveTab] = useState('pendahuluan');
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedMentor, setSelectedMentor] = useState<any>(null);
+    const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
+
 
     const disableScroll = () => {
         document.body.style.overflow = 'hidden';
@@ -24,7 +31,7 @@ const Tabs = () => {
         setActiveTab(tab);
     };
 
-    const openModal = (mentor: any) => {
+    const openModal = (mentor: Mentor) => {
         setSelectedMentor(mentor);
         setIsModalOpen(true);
         disableScroll();
@@ -104,7 +111,7 @@ const Tabs = () => {
                 </div>
             </div>
 
-            {isModalOpen && (
+            {isModalOpen && selectedMentor && (
                 <div className="fixed inset-0 flex items-center justify-center z-40 mt-14">
                     <div className="fixed inset-0 bg-black opacity-50" onClick={closeModal}></div>
                     <div className="bg-white rounded-lg shadow-lg z-50 p-4 relative w-full max-w-4xl mx-auto h-[85vh] overflow-y-auto">
@@ -114,12 +121,8 @@ const Tabs = () => {
                         <DetailMentorview mentor={selectedMentor} />
                     </div>
                 </div>
-
-
-
             )}
 
         </div>
-    )
-}
+    )}
 export default Tabs;

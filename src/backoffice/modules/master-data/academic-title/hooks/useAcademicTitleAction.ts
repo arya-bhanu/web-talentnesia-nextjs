@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 import { academicTitleAPI } from '../api/academicTitleApi';
+import { FormData } from '../components/modal-form-title/modalForm.type';
+import { APIResponseAcademicTitle } from '../academicTitle.type';
 
 export const useAcademicTitleActions = () => {
   const handleAddAcademicTitle = useCallback(async (name: string) => {
@@ -10,7 +12,7 @@ export const useAcademicTitleActions = () => {
     }
   }, []);
 
-  const handleEditAcademicTitle = useCallback(async (id: string, data: any) => {
+  const handleEditAcademicTitle = useCallback(async (id: string, data: string) => {
     try {
       await academicTitleAPI.update(id, data);
     } catch (error) {

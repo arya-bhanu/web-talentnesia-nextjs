@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { IQuizTypeView } from './quizType.type';
+import { APIResponseQuizType, IQuizTypeView } from './quizType.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
@@ -31,7 +31,7 @@ const QuizTypeView: React.FC<IQuizTypeView> = ({
     handleDeleteQuizType,
   } = useQuizTypeActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
+  const handleEdit = useCallback((id: string, rowData: string) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
     setIsPopupOpen(true);
@@ -43,7 +43,7 @@ const QuizTypeView: React.FC<IQuizTypeView> = ({
   }, []);
 
   const handleAddOrEditQuizType = useCallback(
-    async (id: string | undefined, data: { name: string }) => {
+    async (id: string | undefined, data: APIResponseQuizType) => {
       if (id) {
         await handleEditQuizType(id, data);
       } else {
@@ -55,7 +55,7 @@ const QuizTypeView: React.FC<IQuizTypeView> = ({
     },
     [handleEditQuizType, handleAddQuizType, fetchData],
   );
-
+  
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {
@@ -136,7 +136,7 @@ const QuizTypeView: React.FC<IQuizTypeView> = ({
           setSelectedId(null); 
           setSelectedRowData(null); 
         }}
-        onSave={handleAddOrEditQuizType}
+        onSave={(id, data) => handleAddOrEditQuizType(id, data as unknown as APIResponseQuizType)}
         initialData={selectedRowData}
         id={selectedId || undefined}
         title={selectedId ? 'Edit QuizType' : 'Add QuizType'}
@@ -153,6 +153,6 @@ const QuizTypeView: React.FC<IQuizTypeView> = ({
       />
     </div>
   );
-};
 
+};
 export default QuizTypeView;

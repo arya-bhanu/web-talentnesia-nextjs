@@ -93,6 +93,8 @@ const CartView: React.FC<CartViewProps> = ({
                       <Image
                         src={item.image}
                         alt={item.title}
+                        width={100}
+                        height={100}
                         className="object-cover rounded-md"
                       />
                     </div>

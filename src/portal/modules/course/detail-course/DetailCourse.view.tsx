@@ -6,6 +6,7 @@ import { DetailCourseViewProps } from './detailCourse.type';
 import DetailCard from '@/portal/components/detailCourse-card';
 import Tabs from './components/tabs/tabs';
 import ShareIcon from '../../../../../public/icons/course-detail/share.svg';
+import { FeatureCardProps as courses } from '@/portal/components/feature-card/featureCard.type';
 
 const DetailCourseView: React.FC<DetailCourseViewProps> = ({ data, isLoading }) => {
   return (

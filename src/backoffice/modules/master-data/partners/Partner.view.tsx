@@ -42,7 +42,7 @@ const PartnersView: React.FC<IPartnerView> = ({
     handleDeletePartner,
   } = usePartnerActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
+  const handleEdit = useCallback((id: string, rowData: string) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
     setIsPopupOpen(true);
@@ -88,7 +88,11 @@ const PartnersView: React.FC<IPartnerView> = ({
           return(
             <Image 
             src={logoURL}  
-            alt='Logo' />
+            alt='Logo'
+            width={100}
+            height={100}
+            />
+          
           )
         },
       }),

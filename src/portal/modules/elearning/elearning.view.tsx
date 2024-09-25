@@ -29,5 +29,4 @@ const ElearningView: React.FC<ElearningViewProps> = ({ data, courses, isLoading 
         </>
     );
 };
-
 export default ElearningView;
