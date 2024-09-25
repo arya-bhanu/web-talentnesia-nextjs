@@ -36,8 +36,8 @@ const LinkRegisterModal: React.FC<LinkRegisterModalProps> = ({ isOpen, onClose }
       return;
     }
     try {
-      const { url } = await InviteTokenAPI.generate(decodedToken.educationInstitutionId);
-      setNewLink(url);
+      const { registrationUrl } = await InviteTokenAPI.generate(decodedToken.educationInstitutionId);
+      setNewLink(registrationUrl);
       setError(null);
     } catch (error) {
       console.error('Error generating link:', error);

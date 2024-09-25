@@ -64,8 +64,8 @@ const LinkRegisterModalView: React.FC<LinkRegisterModalViewProps> = ({
     }
 
     try {
-      const { url } = await InviteTokenAPI.generate(selectedSchoolId);
-      setGeneratedLink(url); 
+      const { registrationUrl } = await InviteTokenAPI.generate(selectedSchoolId);
+      setGeneratedLink(registrationUrl); 
     } catch (error) {
       console.error('Error generating link:', error);
     }

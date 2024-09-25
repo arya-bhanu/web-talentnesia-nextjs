@@ -3,7 +3,7 @@ import { fetchAxios, UseFetchProps } from '@/lib/fetchAxios';
 const BASE_URL = '/v1/invite-token';
 
 export const InviteTokenAPI = {
-  generate: async (selectedInstitutionId: string): Promise<{ url: string }> => {
+  generate: async (selectedInstitutionId: string): Promise<{ registrationUrl: string }> => {
     const config: UseFetchProps = {
       url: `${BASE_URL}/generate`,
       method: 'POST',
@@ -11,7 +11,7 @@ export const InviteTokenAPI = {
         institutionId: selectedInstitutionId,
       },
     };
-    return fetchAxios<{ data: { url: string } }>(config)
+    return fetchAxios<{ data: { registrationUrl: string } }>(config)
       .then(response => response.data);
   },
 };
