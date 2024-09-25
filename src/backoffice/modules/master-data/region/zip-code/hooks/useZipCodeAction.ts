@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { zipCodeAPI } from '../api/zipCodeApi';
+import { APIResponseZipCode } from '../zipCode.type';
 
 export const useZipCodeActions = () => {
   const handleAddZipCode = useCallback(async (name: string) => {
@@ -10,7 +11,7 @@ export const useZipCodeActions = () => {
     }
   }, []);
 
-  const handleEditZipCode = useCallback(async (id: string, data: any) => {
+  const handleEditZipCode = useCallback(async (id: string, data: APIResponseZipCode) => {
     try {
       zipCodeAPI.update(id, data);
     } catch (error) {

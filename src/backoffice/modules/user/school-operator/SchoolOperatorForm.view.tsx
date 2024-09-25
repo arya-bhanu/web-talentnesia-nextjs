@@ -148,6 +148,19 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
               </div>
               <div>
                 <label className="flex mb-1">
+                  Password<div className="text-red-600">*</div>
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={form.password || ''}
+                  onChange={handleInputChange}
+                  className={styles.inputField}
+                  placeholder="Input Password"
+                />
+              </div>
+              <div>
+                <label className="flex mb-1">
                   NIK/Identity Number<div className="text-red-600">*</div>
                 </label>
                 <input
@@ -206,7 +219,8 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion: any, index: number) => {
+                  {religions.map((religion: APIResponseReligion, index: number) => {
+                    console.log(religion);
                     return (
                       <option key={index} value={religion.id}>
                         {religion.name}

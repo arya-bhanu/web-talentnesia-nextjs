@@ -33,7 +33,7 @@ const AcademicLevelView: React.FC<IAcademicLevelView> = ({
   } = useAcademicLevelActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);

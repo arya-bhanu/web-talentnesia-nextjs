@@ -1,7 +1,14 @@
 import { fetchAxios } from '@/lib/fetchAxios';
 
+interface UploadResponse {
+  success: boolean;
+  path: { origins: string };
+  fileOrigin: string;
+}
+
 export const fileHelper = {
 
+  
   getFile: async (filePath: string): Promise<Blob | null> => {
     try {
       const response = await fetchAxios<Blob>({
@@ -16,7 +23,7 @@ export const fileHelper = {
     }
   },
 
-  uploadFile: async (file: File, path: string): Promise<any> => {
+  uploadFile: async (file: File, path: string): Promise<UploadResponse> => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('path', path);

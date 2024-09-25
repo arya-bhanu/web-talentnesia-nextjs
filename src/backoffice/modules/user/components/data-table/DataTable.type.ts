@@ -1,4 +1,5 @@
 import { ColumnDef, ColumnOrderState, SortingState } from "@tanstack/react-table";
+import { Row } from '@tanstack/react-table';
 
 export interface DataTableProps<T> {
   data: T[];
@@ -11,9 +12,12 @@ export interface DataTableProps<T> {
   };
 }
 
-export interface Column {
+
+
+export interface Column<T> {
   id: string;
   header: string | React.ReactNode;
-  accessorKey?: string;
-  cell?: (info: any) => React.ReactNode;
+  accessorKey?: keyof T;
+  cell?: (info: { row: Row<T> }) => React.ReactNode;
 }
+

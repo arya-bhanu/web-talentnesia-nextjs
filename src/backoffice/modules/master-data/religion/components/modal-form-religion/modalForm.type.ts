@@ -1,7 +1,9 @@
+import { APIResponseReligion } from "../../religion.type";
+
 export interface ModalFormProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (id: string | undefined, data: any) => Promise<void>;
+  onSave: (id: string | undefined, data: APIResponseReligion) => Promise<void>;
   initialData?: { [key: string]: string } | null;
   id?: string;
   title: string;

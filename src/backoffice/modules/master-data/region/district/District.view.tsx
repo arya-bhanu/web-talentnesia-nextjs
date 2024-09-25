@@ -38,7 +38,7 @@ const DistrictView: React.FC<IDistrictView> = ({
     useDistrictActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);

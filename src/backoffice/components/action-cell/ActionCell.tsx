@@ -6,11 +6,11 @@ import MoreHoriz from '../../../../public/icons/more_horiz.svg';
 
 // interface ActionCellProps {
 //   id: string;
-//   rowData: any;
+//   rowData:string ;
 //   fetchData: () => void;
 //   apiGetById: (id: string) => Promise<{ code: string; name: string }>;
 //   apiDelete: (id: string) => Promise<void>;
-//   apiUpdate: (id: string, updatedData: any) => Promise<void>;
+//   apiUpdate: (id: string, updatedData: ) => Promise<void>;
 //   fields: { name: string; label: string }[];
 //   title: string;
 //   actions: Array<{
@@ -21,9 +21,9 @@ import MoreHoriz from '../../../../public/icons/more_horiz.svg';
 
 interface ActionCellProps {
   id: string;
-  rowData: any;
+  rowData: string;
   fetchData: () => void;
-  handleActionButtonRow: (id: string, action: "edit" | "delete", rowData?: any) => void;
+  handleActionButtonRow: (id: string, action: "edit" | "delete", rowData?: string) => void;
   fields?: { name: string; label: string }[];
   title?: string;
   actions: { name: string; render: (id: string) => React.ReactNode }[];

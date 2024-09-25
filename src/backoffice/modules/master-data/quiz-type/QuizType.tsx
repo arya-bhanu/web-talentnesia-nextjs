@@ -5,6 +5,7 @@ import QuizTypeView from './QuizType.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useQuizTypeActions } from './hooks/useQuizTypeAction';
 import { quizTypeAPI } from './api/quizTypeApi';
+import { APIResponseQuizType } from './quizType.type';
 
 const QuizType = () => {
   const queryClient = useQueryClient();
@@ -26,12 +27,12 @@ const QuizType = () => {
     await queryClient.invalidateQueries({ queryKey: ['quizType'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string) => {
     if (action === "delete") {
       await handleDeleteQuizType(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditQuizType(id, rowData);
+      await handleEditQuizType(id, rowData as unknown as APIResponseQuizType);
       fetchData();
     }
   }, [fetchData, handleDeleteQuizType, handleEditQuizType]);
@@ -60,5 +61,4 @@ const QuizType = () => {
     />
   );
 };
-
 export default QuizType;

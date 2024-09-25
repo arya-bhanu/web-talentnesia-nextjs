@@ -16,6 +16,8 @@ const DetailSchoolPageView: React.FC<DetailSchoolPageViewProps> = ({ schoolData,
           <Image 
             src={fullImageUrl || '/default-image.png'} 
             alt="School Image" 
+            width={400}
+            height={250}
             className="w-full h-auto rounded-lg"
           />
         </div>

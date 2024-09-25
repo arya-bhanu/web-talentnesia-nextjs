@@ -20,6 +20,7 @@ export const useMentorForm = (id: string | null = null) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const { openModal } = useStatusModalStore();
 
+
   const [form, setForm] = useState<MentorFormData>({
     id: id || '',
     role: 3,
@@ -27,6 +28,7 @@ export const useMentorForm = (id: string | null = null) => {
     profilePicture: '',
     profilePictureOrigin: '',
     name: '',
+    password: '',
     nik: '',
     npwp: '',
     photoKtp: '',
@@ -298,6 +300,7 @@ export const useMentorForm = (id: string | null = null) => {
       profilePicture: '',
       profilePictureOrigin: '',
       name: '',
+      password: '',
       nik: '',
       npwp: '',
       photoKtp: '',

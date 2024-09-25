@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { IDiscountView } from './discount.type';
+import { APIResponseDiscount, IDiscountView } from './discount.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
@@ -14,6 +14,7 @@ import { BadgeStatus } from '@/backoffice/components/badge-status';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
+import { FormDataDisc } from './components/modal-form-discount/modalForm.type';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -39,7 +40,7 @@ const DiscountView: React.FC<IDiscountView> = ({
     useDiscountActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -53,9 +54,9 @@ const DiscountView: React.FC<IDiscountView> = ({
   }, []);
 
   const handleAddOrEditDiscount = useCallback(
-    async (id: string | undefined, data: { name: string }) => {
+    async (id: string | undefined, data: {name: string}) => {
       if (id) {
-        await handleEditDiscount(id, data);
+        await handleEditDiscount(id, data );
       } else {
         await handleAddDiscount(data.name);
       }
@@ -183,12 +184,10 @@ const DiscountView: React.FC<IDiscountView> = ({
           setIsPopupOpen(false);
           setSelectedId(null);
           setSelectedRowData(null);
-        }}
+        } }
         onSave={handleAddOrEditDiscount}
         initialData={selectedRowData}
-        id={selectedId || undefined}
-        title={selectedId ? 'Edit Discount' : 'Add Discount'}
-      />
+        id={selectedId || undefined} title={''}      />
 
       <AlertModal
         openModal={deleteModalOpen}
@@ -202,5 +201,4 @@ const DiscountView: React.FC<IDiscountView> = ({
     </div>
   );
 };
-
 export default DiscountView;

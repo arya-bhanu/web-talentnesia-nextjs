@@ -1,6 +1,11 @@
 import { useCallback } from 'react';
 import { levelAPI } from '../api/levelApi';
 
+interface Level {
+  name: string;
+  code: string;
+  active: number; 
+}
 export const useLevelActions = () => {
   const handleAddLevel = useCallback(async (name: string) => {
     try {
@@ -15,7 +20,7 @@ export const useLevelActions = () => {
     }
   }, []);
 
-  const handleEditLevel = useCallback(async (id: string, data: any) => {
+  const handleEditLevel = useCallback(async (id: string, data: Level) => {
     try {
       await levelAPI.update(id, data);
     } catch (error) {

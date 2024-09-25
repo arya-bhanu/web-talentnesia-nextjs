@@ -13,6 +13,11 @@ interface FileInputProps {
   initialFilename?: string | null;
 }
 
+interface Answer {
+  valueText: string;
+  originalFileName: string;
+}
+
 const allowedFileTypes = [
   'image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/webp',
   'application/pdf', 'text/plain', 'text/html', 'text/csv',
@@ -32,7 +37,7 @@ export function Component({ id, label, onChange, onReset, initialValue, initialF
       setHasFile(true);
     } else if (initialValue) {
       const storedAnswers = JSON.parse(localStorage.getItem('taskAnswers') || '{}');
-      const answer = storedAnswers.answers?.find((a: any) => a.valueText === initialValue);
+      const answer = storedAnswers.answers?.find((a: Answer) => a.valueText === initialValue);
       setFileName(answer?.originalFileName || initialValue.split('/').pop() || 'Select File');
       setHasFile(true);
     }

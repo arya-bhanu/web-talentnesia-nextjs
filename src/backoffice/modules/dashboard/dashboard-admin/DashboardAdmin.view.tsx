@@ -11,11 +11,16 @@ import Custom500 from '@/components/500/500';
 import Loading from '@/components/loading';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 
+interface ImageData {
+  [key: string]: {
+    image: string;
+  };
+}
 interface DashboardAdminViewProps {
   data: DashboardData;
   loading: boolean;
   error: Error | null;
-  imageData: any;
+  imageData: ImageData;
 }
 
 const DashboardAdminView: React.FC<DashboardAdminViewProps> = ({

@@ -10,9 +10,14 @@ import ModalForm from './components/modal-form-list-student/ModalForm';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRouter } from 'next/navigation';
 import { ButtonImport } from './components/button-import/ButtonImport';
+import { ButtonGenerate } from './components/button-generate/ButtonGenerate';
 import { ModalImport } from './components/modal-import/ModalImport';
+import LinkRegisterModal from './components/modal-generate/modal-generate';
+
+
+
 
 const columnHelper = createColumnHelper<any>();
 
@@ -29,6 +34,7 @@ const ListStudentView: React.FC<IListStudentView> = ({
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
+  const [isLinkRegisterModalOpen, setIsLinkRegisterModalOpen] = useState(false);
   const router = useRouter(); // Initialize useRouter
 
   const handleImportSubmit = (file: File) => {
@@ -38,7 +44,7 @@ const ListStudentView: React.FC<IListStudentView> = ({
   };
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -150,6 +156,7 @@ const ListStudentView: React.FC<IListStudentView> = ({
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
         <div className="flex">
+          <ButtonGenerate onClick={() => setIsLinkRegisterModalOpen(true)} />
           <ButtonImport onClick={() => setIsPopoverOpen(true)} />
           <AddButton
             onClick={() => {
@@ -171,6 +178,11 @@ const ListStudentView: React.FC<IListStudentView> = ({
         isOpen={isPopoverOpen}
         onClose={() => setIsPopoverOpen(false)}
         onSubmit={handleImportSubmit}
+      />
+
+      <LinkRegisterModal
+        isOpen={isLinkRegisterModalOpen}
+        onClose={() => setIsLinkRegisterModalOpen(false)}
       />
 
       <ModalForm

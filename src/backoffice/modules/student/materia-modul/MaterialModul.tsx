@@ -9,7 +9,7 @@ import Media from './components/course-sidebar/media/media.view';
 import Mentoring from './components/course-sidebar/mentoring/Mentoring.view';
 import PdfReader from './components/course-sidebar/pdf/PdfReader.view';
 import Assignment from './components/course-sidebar/assignment/Assignment';
-import Image from 'next/image';
+import Image from 'next/image'; 
 
 
 const useMaterialModul = () => {
@@ -44,17 +44,23 @@ const useMaterialModul = () => {
             case 2:
               setSelectedContent(<Media url={selectedTab.content} />);
               break;
-            case 3:
-              setSelectedContent(
-              <Image 
-                src={selectedTab.content || ''}
-                alt="Content"
-                layout="responsive"
-                width={100}
-                height={100}
-                objectFit="contain"
-              />);
-              break;
+              case 3:
+                setSelectedContent(
+                  selectedTab.content ? (
+                <Image
+                  src={`${process.env.API_SERVER_URL}/v1/file/${selectedTab.content}`}
+                  alt={'material module image'}
+                  width={100}
+                  height={100}
+                  objectFit="cover"
+                  className="h-full w-full object-cover rounded"
+                  style={{ height: 'auto', objectFit: 'contain', position: 'relative' }}
+                />
+                  ) : (
+                    <p>No content available</p>
+                  )
+                );
+                break;
             case 4:
               setSelectedContent(<Media url={selectedTab.content} />);
               break;

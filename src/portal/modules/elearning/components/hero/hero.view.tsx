@@ -9,7 +9,7 @@ export const HeroSectionView = ({ className, isLoading }: { className?: string, 
     <section
       className={clsx(
         className,
-        'bg-secondary min-h-[80vh] md:min-h-[70vh] lg:min-h-[70vh]',
+        'bg-secondary min-h-[70vh] md:min-h-[70vh] lg:min-h-[70vh]',
       )}
     >
       <div className="container pt-10 md:pt-14 lg:pt-24 flex flex-col lg:flex-row items-center lg:items-start">
@@ -44,8 +44,6 @@ export const HeroSectionView = ({ className, isLoading }: { className?: string, 
             </p>
             </>
           }
-          
-          
           
         </div>
         <div className="flex-[2] hidden lg:flex justify-end lg:justify-end items-center lg:items-end">

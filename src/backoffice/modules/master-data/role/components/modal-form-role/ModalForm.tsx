@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ModalFormProps } from './modalForm.type';
 import { ModalFormView } from './ModalForm.view';
+import { APIResponseRole } from '../../role.type';
 
 const ModalForm: React.FC<ModalFormProps> = ({ 
   isOpen, 
@@ -39,7 +40,15 @@ const ModalForm: React.FC<ModalFormProps> = ({
     }
 
     try {
-      await onSave(id, formData);
+      const roleData: APIResponseRole = {
+        id: id || '',
+        code: '',
+        name: formData.role,
+        active: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      await onSave(id, roleData);
       onClose();
     } catch (error) {
       console.error('Failed to save data');
