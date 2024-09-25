@@ -10,7 +10,6 @@ export interface SessionData {
   educationInstitutionId?: string;
   token?: string;
   isLoggedIn: boolean;
-  educationInstitutionId?: string;
 }
 
 const JWT_SECRET = 'your_secret_key_here';

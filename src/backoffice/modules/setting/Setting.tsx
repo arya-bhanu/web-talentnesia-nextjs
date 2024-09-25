@@ -37,6 +37,7 @@ export const Setting = () => {
     token: '',
     password: '',
     hashedPassword: '',
+    educationInstitutionId: '',
   });
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
   const [password, setPassword] = useState('');

@@ -43,9 +43,7 @@ const ModalAddProgramView: React.FC<IModalSelect> = ({
                     <tr>
                       {columns.map((el, index) => (
                         <th key={index} scope="col" className="px-6 py-3">
-                          <div className="flex items-center">
-                            {el.val}
-                          </div>
+                          <div className="flex items-center">{el.val}</div>
                         </th>
                       ))}
                       <th scope="col" className="px-6 py-3">
@@ -61,9 +59,13 @@ const ModalAddProgramView: React.FC<IModalSelect> = ({
                       >
                         {columns.map((column, colIndex) => (
                           <td key={colIndex} className="px-6 py-4">
-                            {typeof row[column.key] === 'function'
-                              ? row[column.key]()
-                              : row[column.key]}
+                            {(() => {
+                              const value = row[column.key];
+                              if (typeof value === 'function') {
+                                return value();
+                              }
+                              return value;
+                            })()}
                           </td>
                         ))}
                         <td className="pl-10 py-4">
@@ -81,12 +83,16 @@ const ModalAddProgramView: React.FC<IModalSelect> = ({
 
           <div className="flex justify-between items-center w-full mt-5">
             <div className="flex items-center gap-2 text-[#667085]">
-              <label htmlFor="pagination" className="block">Showing</label>
+              <label htmlFor="pagination" className="block">
+                Showing
+              </label>
               <select
                 id="pagination"
                 className="bg-gray-50 border max-w-[5rem] border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               >
-                <option defaultChecked value={5}>5</option>
+                <option defaultChecked value={5}>
+                  5
+                </option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>
                 <option value={30}>30</option>
