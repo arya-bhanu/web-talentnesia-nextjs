@@ -15,6 +15,7 @@ import {
 import ProgressBar from '@/backoffice/components/progress-bar/ProgressBar';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
+import { useTabStoreFormProgram } from '../form-program/formProgramStore';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -24,6 +25,8 @@ const IICPView: React.FC<IICPViewProps> = ({
   setFilter,
   handleActionButtonRow,
 }) => {
+  const setActiveTab = useTabStoreFormProgram((state) => state.setActiveTab);
+
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('no', {
@@ -86,7 +89,7 @@ const IICPView: React.FC<IICPViewProps> = ({
             <Popover
               content={
                 <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                  <PermissionGranted roleable role='manage-program.iicp.edit'>
+                  <PermissionGranted roleable role="manage-program.iicp.edit">
                     <Link
                       href={`/backoffice/manage-program/update-program?programId=${id}&schoolId=${institutionId}`}
                       className="hover:text-blue-700 hover:underline"
@@ -119,7 +122,10 @@ const IICPView: React.FC<IICPViewProps> = ({
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
         <PermissionGranted roleable role="manage-program.iicp.add">
-          <Link href="/backoffice/manage-program/add-program">
+          <Link
+            href="/backoffice/manage-program/add-program"
+            onClick={() => setActiveTab('detail')}
+          >
             <AddButton text="Add New Program" />
           </Link>
         </PermissionGranted>
