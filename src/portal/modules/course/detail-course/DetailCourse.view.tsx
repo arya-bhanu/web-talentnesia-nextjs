@@ -6,6 +6,7 @@ import { DetailCourseViewProps } from './detailCourse.type';
 import DetailCard from '@/portal/components/detailCourse-card';
 import Tabs from './components/tabs/tabs';
 import ShareIcon from '../../../../../public/icons/course-detail/share.svg';
+import { FeatureCardProps as courses } from '@/portal/components/feature-card/featureCard.type';
 
 const DetailCourseView: React.FC<DetailCourseViewProps> = ({ data, isLoading }) => {
   return (
@@ -24,7 +25,7 @@ const DetailCourseView: React.FC<DetailCourseViewProps> = ({ data, isLoading }) 
             </div>
 
           </div>
-          <div className=" md:mt-20 flex justify-center md:pr-20 md:mr-[-24rem]">
+          <div className="relative md:mt-20 flex justify-center md:pr-20 md:mr-[-24rem]">
             <div className='flex items-center md:mt-[-4rem]'>
               <ShareIcon className="w-5 h-5 mr-2" />
               <button className="text-sm font-medium">
@@ -33,12 +34,13 @@ const DetailCourseView: React.FC<DetailCourseViewProps> = ({ data, isLoading }) 
             </div>
           </div>
         </div>
-        <div className="container pt-2 mt-[-8rem]">
-          <PopularCourses courses={data?.items} isLoading={isLoading} />
+        <div className="relative container pt-2 mt-[-8rem]">
+          <PopularCourses courses={data?.items?.map(item => ({...item, currentPrice: parseFloat(item.currentPrice), rating: parseFloat(item.rating)}))} isLoading={isLoading} />
         </div>
       </div>
     </div>
   );
+
 };
 
 export default DetailCourseView;

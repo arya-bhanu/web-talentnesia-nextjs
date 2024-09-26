@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
-import { IRoleView } from './role.type';
+import { APIResponseRole, IRoleView } from './role.type';
 import { SearchTable } from '@/backoffice/components/search-table';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import { DataTable } from '@/backoffice/components/data-table';
@@ -31,7 +31,7 @@ const RoleView: React.FC<IRoleView> = ({
     handleDeleteRole,
   } = useRoleActions();
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
+  const handleEdit = useCallback((id: string, rowData: string) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
     setIsPopupOpen(true);
@@ -43,7 +43,7 @@ const RoleView: React.FC<IRoleView> = ({
   }, []);
 
   const handleAddOrEditRole = useCallback(
-    async (id: string | undefined, data: { name: string }) => {
+    async (id: string | undefined, data: APIResponseRole) => {
       if (id) {
         await handleEditRole(id, data);
       } else {

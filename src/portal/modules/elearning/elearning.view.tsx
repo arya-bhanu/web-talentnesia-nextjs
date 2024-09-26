@@ -2,7 +2,7 @@
 import React from "react";
 import { HeroSection } from "./components/hero";
 import {PopularCourses} from "./components/popular-course/PopularCourse";
-import { ElearningViewProps } from "./elearning.type";
+import { AllCourseProps, ElearningViewProps } from "./elearning.type";
 import {FeatureSection} from "./components/features-section";
 import AllClass from "@/portal/components/all-class/AllClass";
 import { courseDataArray } from "@/portal/components/course-card/courseCard.data";
@@ -19,7 +19,7 @@ const ElearningView: React.FC<ElearningViewProps> = ({ data, courses, isLoading 
         </main>
         <FeatureSection isLoading={isLoading}/>
         <main className="container">
-            <AllClass courses={courses} filterOptions={filterCategories} isLoading={isLoading} title="Jelajahi Semua Course"/>
+        <AllClass courses={courses as unknown as AllCourseProps[]} filterOptions={filterCategories} isLoading={isLoading} title="Jelajahi Semua Course"/>
             <UserStoryCard 
                 className="mt-16 md:mt-20 lg:mt-56"
                 testimonials={data.testimonials || []}
@@ -29,5 +29,4 @@ const ElearningView: React.FC<ElearningViewProps> = ({ data, courses, isLoading 
         </>
     );
 };
-
 export default ElearningView;

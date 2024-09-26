@@ -1,0 +1,1 @@
+export { ButtonGenerate as ButtonImport } from './ButtonGenerate';

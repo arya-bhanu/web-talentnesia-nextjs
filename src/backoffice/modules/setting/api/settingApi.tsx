@@ -1,4 +1,5 @@
 import { backOfficeAPI } from '@/lib/axiosConfig';
+import { UserData } from '../Setting';
 
 export const getUserProfile = async (id: string) => {
   try {
@@ -10,7 +11,7 @@ export const getUserProfile = async (id: string) => {
   }
 };
 
-export const updateUserProfile = async (id: string, userData: any) => {
+export const updateUserProfile = async (id: string, userData: UserData) => {
   try {
     const response = await backOfficeAPI.put(`/v1/user-profile-setting/${id}`, userData);
     return response.data;

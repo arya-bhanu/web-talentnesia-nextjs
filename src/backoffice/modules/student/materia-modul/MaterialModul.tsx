@@ -11,16 +11,16 @@ import PdfReader from './components/course-sidebar/pdf/PdfReader.view';
 import Assignment from './components/course-sidebar/assignment/Assignment';
 import Image from 'next/image';
 
-
 const useMaterialModul = () => {
   const [selectedTab, setSelectedTab] = useState<string>('');
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [sections, setSections] = useState<SectionItem[]>([]);
-  const [selectedContent, setSelectedContent] = useState<JSX.Element | null>(null);
+  const [selectedContent, setSelectedContent] = useState<JSX.Element | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [isContentLoading, setIsContentLoading] = useState(false);
   const [isExamCompleted, setIsExamCompleted] = useState(false);
-
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -28,13 +28,18 @@ const useMaterialModul = () => {
   const chapterId = searchParams.get('chapterId');
   const contentId = searchParams.get('contentId');
 
-  const selectInitialContent = (sections: SectionItem[], contentId: string | null) => {
+  const selectInitialContent = (
+    sections: SectionItem[],
+    contentId: string | null,
+  ) => {
     if (contentId) {
-      const selectedSection = sections.find(section => 
-        section.tabs.some(tab => tab.id === contentId)
+      const selectedSection = sections.find((section) =>
+        section.tabs.some((tab) => tab.id === contentId),
       );
       if (selectedSection) {
-        const selectedTab = selectedSection.tabs.find(tab => tab.id === contentId);
+        const selectedTab = selectedSection.tabs.find(
+          (tab) => tab.id === contentId,
+        );
         if (selectedTab) {
           setSelectedTab(contentId);
           switch (selectedTab.iconId) {
@@ -46,14 +51,18 @@ const useMaterialModul = () => {
               break;
             case 3:
               setSelectedContent(
-              <Image 
-                src={selectedTab.content || ''}
-                alt="Content"
-                layout="responsive"
-                width={100}
-                height={100}
-                objectFit="contain"
-              />);
+                selectedTab.content ? (
+                  <Image
+                    src={`${process.env.API_SERVER_URL}/v1/file/${selectedTab.content}`}
+                    alt={'material module image'}
+                    width={100}
+                    height={100}
+                    className="h-full w-full object-cover rounded relative"
+                  />
+                ) : (
+                  <p>No content available</p>
+                ),
+              );
               break;
             case 4:
               setSelectedContent(<Media url={selectedTab.content} />);
@@ -79,7 +88,7 @@ const useMaterialModul = () => {
           setIsLoading(true);
           const response = await StudentCourseAPI.fetchDetail(courseId);
           const { chapters } = response.data.course;
-  
+
           const formattedSections: SectionItem[] = chapters.map((chapter) => ({
             id: chapter.id,
             title: chapter.title,
@@ -93,12 +102,14 @@ const useMaterialModul = () => {
               isCompleted: content.isCompleted,
             })),
           }));
-  
+
           setSections(formattedSections);
           selectInitialContent(formattedSections, contentId);
-          
+
           // Set isExamCompleted based on the selected content
-          const selectedContent = formattedSections.flatMap(s => s.tabs).find(t => t.id === contentId);
+          const selectedContent = formattedSections
+            .flatMap((s) => s.tabs)
+            .find((t) => t.id === contentId);
           setIsExamCompleted(selectedContent?.isCompleted === 1);
         } catch (error) {
           console.error('Error fetching course data:', error);
@@ -107,14 +118,15 @@ const useMaterialModul = () => {
         }
       }
     };
-  
+
     fetchCourseData();
   }, [courseId, chapterId, contentId]);
-  
 
-  const isExamContent = selectedTab && sections.some(section => 
-    section.tabs.some(tab => tab.id === selectedTab && tab.iconId === 5)
-  );
+  const isExamContent =
+    selectedTab &&
+    sections.some((section) =>
+      section.tabs.some((tab) => tab.id === selectedTab && tab.iconId === 5),
+    );
 
   const handleTabClick = async (tabId: string) => {
     if (tabId === selectedTab) return;
@@ -122,16 +134,18 @@ const useMaterialModul = () => {
     setSelectedTab(tabId);
     setIsContentLoading(true);
 
-    const selectedSection = sections.find(section => 
-      section.tabs.some(tab => tab.id === tabId)
+    const selectedSection = sections.find((section) =>
+      section.tabs.some((tab) => tab.id === tabId),
     );
 
     if (selectedSection) {
-      const selectedTab = selectedSection.tabs.find(tab => tab.id === tabId);
+      const selectedTab = selectedSection.tabs.find((tab) => tab.id === tabId);
       if (selectedTab) {
-        router.push(`/student/course/course-detail/material-modul/?courseId=${courseId}&chapterId=${selectedSection.id}&contentId=${tabId}`);
+        router.push(
+          `/student/course/course-detail/material-modul/?courseId=${courseId}&chapterId=${selectedSection.id}&contentId=${tabId}`,
+        );
 
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise((resolve) => setTimeout(resolve, 300));
 
         switch (selectedTab.iconId) {
           case 1:
@@ -141,8 +155,19 @@ const useMaterialModul = () => {
             setSelectedContent(<Media url={selectedTab.content} />);
             break;
           case 3:
-            setSelectedContent(<Image src={selectedTab.content || ''} alt="Content" className="max-w-full h-auto" />);
-
+            setSelectedContent(
+              selectedTab.content ? (
+                <Image
+                  src={`${process.env.API_SERVER_URL}/v1/file/${selectedTab.content}`}
+                  alt={'material module image'}
+                  width={100}
+                  height={100}
+                  className="h-full w-full object-cover rounded relative"
+                />
+              ) : (
+                <p>No content available</p>
+              ),
+            );
             break;
           case 4:
             setSelectedContent(<Media url={selectedTab.content} />);
@@ -163,14 +188,20 @@ const useMaterialModul = () => {
   };
 
   const handleSectionToggle = (sectionId: string) => {
-    setSections(prevSections => prevSections.map(section => 
-      section.id === sectionId ? { ...section, isOpen: !section.isOpen } : section
-    ));
+    setSections((prevSections) =>
+      prevSections.map((section) =>
+        section.id === sectionId
+          ? { ...section, isOpen: !section.isOpen }
+          : section,
+      ),
+    );
   };
 
   const handleNextContent = async () => {
     if (selectedTab) {
-      const currentContent = sections.flatMap(s => s.tabs).find(t => t.id === selectedTab);
+      const currentContent = sections
+        .flatMap((s) => s.tabs)
+        .find((t) => t.id === selectedTab);
       if (currentContent && currentContent.isCompleted !== 1) {
         try {
           await StudentCourseAPI.checkAndNext(selectedTab);
@@ -178,14 +209,16 @@ const useMaterialModul = () => {
           console.error('Error marking content as complete:', error);
         }
       }
-      
+
       // Navigate to the next content
-      const currentSectionIndex = sections.findIndex(section => 
-        section.tabs.some(tab => tab.id === selectedTab)
+      const currentSectionIndex = sections.findIndex((section) =>
+        section.tabs.some((tab) => tab.id === selectedTab),
       );
       const currentSection = sections[currentSectionIndex];
-      const currentTabIndex = currentSection.tabs.findIndex(tab => tab.id === selectedTab);
-  
+      const currentTabIndex = currentSection.tabs.findIndex(
+        (tab) => tab.id === selectedTab,
+      );
+
       if (currentTabIndex < currentSection.tabs.length - 1) {
         // Next tab in the same section
         handleTabClick(currentSection.tabs[currentTabIndex + 1].id);
@@ -198,11 +231,13 @@ const useMaterialModul = () => {
   };
 
   const handlePreviousContent = () => {
-    const currentSectionIndex = sections.findIndex(section => 
-      section.tabs.some(tab => tab.id === selectedTab)
+    const currentSectionIndex = sections.findIndex((section) =>
+      section.tabs.some((tab) => tab.id === selectedTab),
     );
     const currentSection = sections[currentSectionIndex];
-    const currentTabIndex = currentSection.tabs.findIndex(tab => tab.id === selectedTab);
+    const currentTabIndex = currentSection.tabs.findIndex(
+      (tab) => tab.id === selectedTab,
+    );
 
     if (currentTabIndex > 0) {
       // Previous tab in the same section
@@ -213,8 +248,6 @@ const useMaterialModul = () => {
       handleTabClick(previousSection.tabs[previousSection.tabs.length - 1].id);
     }
   };
-
-  
 
   return {
     selectedTab,

@@ -3,8 +3,9 @@
 import React, { useState, useCallback } from 'react';
 import PartnersView from './Partner.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { usePartnerActions } from './hooks/usePartnerAction';
+import { PartnerData, usePartnerActions } from './hooks/usePartnerAction';
 import { partnerAPI } from './api/partnerApi';
+import { APIResponsePartner } from './partner.type';
 
 const Partner = () => {
   const queryClient = useQueryClient();
@@ -26,18 +27,17 @@ const Partner = () => {
     await queryClient.invalidateQueries({ queryKey: ['partner'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback((id: string, action: "delete" | "edit", rowData?: string) => {
     if (action === "delete") {
-      await handleDeletePartner(id);
-      fetchData();
+      handleDeletePartner(id).then(() => fetchData());
     } else if (action === "edit" && rowData) {
-      await handleEditPartner(id, rowData);
-      fetchData();
+      const partnerData: PartnerData = JSON.parse(rowData);
+      handleEditPartner(id, partnerData).then(() => fetchData());
     }
   }, [fetchData, handleDeletePartner, handleEditPartner]);
 
   const handleAdd = useCallback(async (name: string, address: string, logo: string, description: string) => {
-    await handleAddPartner(name, address, logo, description);
+    await handleAddPartner(name);
     fetchData();
     setIsPopupOpen(false);
   }, [fetchData, handleAddPartner]);
@@ -60,5 +60,4 @@ const Partner = () => {
     />
   );
 };
-
 export default Partner;

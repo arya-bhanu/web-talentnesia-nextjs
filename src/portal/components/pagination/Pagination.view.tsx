@@ -38,7 +38,7 @@ const PaginationView: React.FC<PaginationProps> = ({ currentPage, totalPages, on
   const endItem = Math.min(currentPage * itemsPerPage, totalResults);
 
   return (
-    <div className="flex items-center justify-between cursor-pointer">
+    <div className="flex items-center justify-between cursor-pointer mt-8">
       <div className="flex items-center gap-1 text-xs font-medium ml-[20px]">
         <button
           className="inline-flex items-center justify-center rounded text-gray-900"

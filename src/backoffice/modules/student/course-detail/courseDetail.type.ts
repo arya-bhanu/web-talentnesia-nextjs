@@ -9,7 +9,7 @@ export interface APIResponseCourseDetail {
     data: {
       course: CourseData;
       mentors: Mentor[];
-      certificates: any[];
+      certificates: Certificate[];
       joinGroup: JoinGroup;
       attendance: Attendance;
       assignment: Assignment;

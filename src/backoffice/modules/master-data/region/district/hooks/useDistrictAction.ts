@@ -10,7 +10,7 @@ export const useDistrictActions = () => {
     }
   }, []);
 
-  const handleEditDistrict = useCallback(async (id: string, data: any) => {
+  const handleEditDistrict = useCallback(async (id: string, data: {name: string}) => {
     try {
       await districtAPI.update(id, data.name);
     } catch (error) {

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { roleAPI } from '../api/roleApi';
+import { APIResponseRole } from '../role.type';
 
 export const useRoleActions = () => {
   const handleAddRole = useCallback(async (name: string) => {
@@ -10,7 +11,7 @@ export const useRoleActions = () => {
     }
   }, []);
 
-  const handleEditRole = useCallback(async (id: string, data: any) => {
+  const handleEditRole = useCallback(async (id: string, data: APIResponseRole) => {
     try {
        roleAPI.update(id, data);
     } catch (error) {

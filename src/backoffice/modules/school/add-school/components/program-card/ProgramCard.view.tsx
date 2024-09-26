@@ -33,6 +33,8 @@ export const ProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) => {
         <Image
           alt={data.name}
           src={data.imageUrl}
+          width={300}
+          height={150}
           className="h-[150px] w-full rounded-t-xl object-cover"
         />
         <div className="mt-2">

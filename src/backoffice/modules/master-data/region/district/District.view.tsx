@@ -38,7 +38,7 @@ const DistrictView: React.FC<IDistrictView> = ({
     useDistrictActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -67,7 +67,7 @@ const DistrictView: React.FC<IDistrictView> = ({
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      columnHelper.accessor('code', {
+      columnHelper.accessor('id', {
         header: ({ column }) => (
           <SortingTable column={column} title="District Code" />
         ),

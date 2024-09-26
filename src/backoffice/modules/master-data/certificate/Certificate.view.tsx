@@ -43,7 +43,7 @@ const CertificateView: React.FC<ICertificateView> = ({
   } = useCertificateActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);

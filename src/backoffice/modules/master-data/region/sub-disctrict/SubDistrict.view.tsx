@@ -42,7 +42,7 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
   } = useSubDistrictActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -58,7 +58,7 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
   const handleAddOrEditSubDistrict = useCallback(
     async (id: string | undefined, data: { name: string }) => {
       if (id) {
-        await handleEditSubDistrict(id, data);
+        await handleEditSubDistrict(id, data.name);
       } else {
         await handleAddSubDistrict(data.name);
       }
@@ -68,7 +68,6 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
     },
     [handleEditSubDistrict, handleAddSubDistrict, fetchData],
   );
-
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('code', {

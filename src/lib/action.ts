@@ -8,8 +8,8 @@ const JWT_SECRET = 'your_secret_key_here';
 
 const staticUsers = [
   { userId: '', name: 'admin', email: 'admin@example.com', password: 'admin', role: 1, profilePicture: '' },
-  { userId: 'mmf3ga2z7zda2qmd', name: 'operator', email: 'operator@example.com', password: 'operator', role: 2, profilePicture: '' },
-  { userId: 'xwgfok4w1uyf1ym2', name: 'mentor', email: 'mentor@example.com', password: 'mentor', role: 3, profilePicture: '' },
+  { userId: 'mmf3ga2z7zda2qmd', name: 'operator', email: 'operator@example.com', password: 'operator', role: 2, profilePicture: '', educationInstitutionId: '' },
+  { userId: 'xwgfok4w1uyf1ym2', name: 'mentor', email: 'mentor@example.com', password: 'mentor', role: 3, profilePicture: '', educationInstitutionId: '' },
 ];
 
 export const login = async (data: { email: string; password: string }) => {
@@ -26,6 +26,7 @@ export const login = async (data: { email: string; password: string }) => {
       profilePicture: userData.profilePicture || '',
       role: userData.role,
       isLoggedIn: true,
+      educationInstitutionId: userData.educationInstitutionId,
       token: userData.token
     };
 
@@ -40,7 +41,7 @@ export const login = async (data: { email: string; password: string }) => {
     };
   
     return { redirectTo: redirectMap[sessionData.role] || '/' };
-  };
+  }
 
   // If API login fails, try static login
   const staticUser = staticUsers.find(u => u.email === email && u.password === password);
@@ -52,6 +53,7 @@ export const login = async (data: { email: string; password: string }) => {
       profilePicture: staticUser.profilePicture,
       role: staticUser.role,
       isLoggedIn: true,
+      educationInstitutionId: staticUser.educationInstitutionId,
     };
     const token = generateToken(sessionData);
     setToken(token);
@@ -66,9 +68,7 @@ export const login = async (data: { email: string; password: string }) => {
 
   // If both fail, return error
   return { error: 'Invalid credentials' };
-};
-
-export const getUserData = () => {
+};export const getUserData = () => {
   const token = getToken();
   if (token) {
     const decoded = verifyToken(token);

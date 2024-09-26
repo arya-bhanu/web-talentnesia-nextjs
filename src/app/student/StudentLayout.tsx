@@ -3,7 +3,7 @@
 import Navbar from '@/backoffice/components/student/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession } from '@/lib/action'; // Removed refreshToken
+import { getSession } from '@/lib/action'; 
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -77,13 +77,15 @@ const StudentLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="bg-[#FAFAFA]">
-      {user && <Navbar moduleRoutePath="student" user={user} />}
+      {user && <Navbar moduleRoutePath="mentor" user={user} />}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div
-        className={`px-8 py-16 min-h-screen transition-all duration-300 md:ml-64 bg-[#FAFAFA]`}
+        className={`px-8 py-16 min-h-screen transition-all duration-300 ${
+          isSidebarOpen ? 'md:ml-64' : 'md:ml-16'
+        } bg-[#FAFAFA]`}
       >
         <div
           className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}

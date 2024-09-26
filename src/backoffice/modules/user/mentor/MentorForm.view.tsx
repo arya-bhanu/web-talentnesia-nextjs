@@ -163,7 +163,19 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   required
                 />
               </div>
-              <div className="rounded-lg w-full p-2.5 hidden md:block"></div>
+              <div>
+                <label className="flex mb-1">
+                  Password<div className="text-red-600">*</div>
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={form.password || ''}
+                  onChange={handleInputChange}
+                  className={styles.inputField}
+                  placeholder="Input password"
+                />
+              </div>
               <div>
                 <label className="flex mb-1">
                   NIK<div className="text-red-600">*</div>
@@ -609,7 +621,8 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       className={styles.inputField}
                     >
                       <option value="">Select Title</option>
-                      {academicTitles.map((title: any, index: number) => {
+                      {academicTitles.map((title: APIResponseAcademicTitle, index: number) => {
+                        console.log(title);
                         return (
                           <option key={index} value={title.id}>
                             {title.name}

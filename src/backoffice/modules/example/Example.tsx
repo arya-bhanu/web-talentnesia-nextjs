@@ -9,6 +9,7 @@ import { AddButton } from '@/backoffice/components/add-button-table';
 import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-example/ModalForm';
 import { exampleAPI } from './api/example.api';
+import { SearchTable } from '@/backoffice/components/search-table';
 
 export default function Example() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function Example() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const handleEdit = useCallback((id: string, rowData: any) => {
+  const handleEdit = useCallback((id: string, rowData: string) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
     setIsPopupOpen(true);
@@ -100,6 +101,7 @@ export default function Example() {
   return (
     <div>
       <div className="flex justify-between items-center font-poppins">
+        <SearchTable onChange={() => {}} value="" />
         <AddButton
           onClick={() => {
             setSelectedId(null);

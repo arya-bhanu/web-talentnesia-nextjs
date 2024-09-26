@@ -154,7 +154,19 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   required
                 />
               </div>
-              <div className="rounded-lg w-full p-2.5 hidden md:block"></div>
+              <div>
+                <label className="flex mb-1">
+                  Password<div className="text-red-600">*</div>
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={form.password || ''}
+                  onChange={handleInputChange}
+                  className={styles.inputField}
+                  placeholder="Input Password"
+                />
+              </div>
               <div>
                 <label className="flex mb-1">
                   NIK/Identity Number<div className="text-red-600">*</div>
@@ -225,7 +237,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Religion
                   </option>
-                  {religions.map((religion: any, index: number) => {
+                  {religions.map((religion: APIResponseReligion, index: number) => {
                     return (
                       <option key={index} value={religion.id}>
                         {religion.name}
@@ -470,7 +482,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   <option className="hidden" value="" disabled>
                     Select Academic Level
                   </option>
-                  {academicLevels.map((education: any, index: number) => {
+                  {academicLevels.map((education: APIResponseAcademicLevel, index: number) => {
                     return (
                       <option key={index} value={education.id}>
                         {education.name}

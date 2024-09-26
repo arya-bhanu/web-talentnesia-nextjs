@@ -10,7 +10,7 @@ import { Modal } from 'flowbite-react';
 import { HiOutlineCheckCircle, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { DecodedToken, decodeToken } from '@/lib/tokenDecoder';
 
-interface UserData extends DecodedToken {
+export interface UserData extends DecodedToken {
   firstName?: string;
   lastName?: string;
   linkedIn?: string;
@@ -37,6 +37,7 @@ export const Setting = () => {
     token: '',
     password: '',
     hashedPassword: '',
+    educationInstitutionId: '',
   });
   const [fullImageUrl, setFullImageUrl] = useState<string>('');
   const [password, setPassword] = useState('');

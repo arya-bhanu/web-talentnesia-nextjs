@@ -7,7 +7,7 @@ import { DataTable } from '@/backoffice/components/data-table';
 import SortingTable from '@/backoffice/components/sorting-table/SortingTable';
 import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-level';
-import { useLevelActions } from './hooks/useLevelAction';
+import { Level, useLevelActions } from './hooks/useLevelAction';
 import { Popover } from 'flowbite-react';
 import MoreHoriz from '../../../../../public/icons/more_horiz.svg';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
@@ -38,7 +38,7 @@ const LevelView: React.FC<ILevelView> = ({
     useLevelActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData: any) => {
+    (id: string, rowData: string) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -52,7 +52,7 @@ const LevelView: React.FC<ILevelView> = ({
   }, []);
 
   const handleAddOrEditLevel = useCallback(
-    async (id: string | undefined, data: { name: string }) => {
+    async (id: string | undefined, data: Level) => {
       if (id) {
         await handleEditLevel(id, data);
       } else {

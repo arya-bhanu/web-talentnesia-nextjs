@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ModalFormProps } from './modalForm.type';
 import { ModalFormView } from './ModalForm.view';
+import { APIResponseReligion } from '../../religion.type';
 
 const ModalForm: React.FC<ModalFormProps> = ({ 
   isOpen, 
@@ -39,7 +40,7 @@ const ModalForm: React.FC<ModalFormProps> = ({
     }
   
     try {
-      await onSave(id, formData);
+      await onSave(id, { name: formData.name } as APIResponseReligion);
       setFormData({name: ''});
       onClose();
     } catch (error) {

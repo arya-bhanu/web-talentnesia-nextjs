@@ -5,6 +5,7 @@ import ZipCodeView from './ZipCode.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useZipCodeActions } from './hooks/useZipCodeAction';
 import { zipCodeAPI } from './api/zipCodeApi';
+import { APIResponseZipCode } from './zipCode.type';
 
 const ZipCode = () => {
   const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ const ZipCode = () => {
     await queryClient.invalidateQueries({ queryKey: ['ZipCode'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: APIResponseZipCode) => {
     if (action === "delete") {
       await handleDeleteZipCode(id);
       fetchData();
@@ -50,15 +51,22 @@ const ZipCode = () => {
       data={data}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
-      handleActionButtonRow={handleActionButtonRow}
-      handleAddZipCode={handleAdd}
-      Filter={Filter}
-      setFilter={setFilter}
-      isPopupOpen={isPopupOpen}
-      setIsPopupOpen={setIsPopupOpen}
-      fetchData={fetchData}
-    />
-  );
+          handleActionButtonRow={(id: string, action: "delete" | "edit", rowData?: string | undefined) => {
+            if (action === "edit" && rowData) {
+              const parsedRowData: APIResponseZipCode = JSON.parse(rowData);
+              handleActionButtonRow(id, action, parsedRowData);
+            } else {
+              handleActionButtonRow(id, action);
+            }
+          }}
+          handleAddZipCode={handleAdd}
+          Filter={Filter}
+          setFilter={setFilter}
+          isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
+          fetchData={fetchData}
+        />
+      );
 };
 
 export default ZipCode;
