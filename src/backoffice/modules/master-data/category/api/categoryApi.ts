@@ -2,11 +2,11 @@ import { fetchAxios } from '@/lib/fetchAxios';
 import { APIResponseCategory } from '../category.type';
 
 export const categoryAPI = {
-  fetch: async () => {
-    return fetchAxios<{ data: { items: APIResponseCategory[] } }>({
-      url: `/v1/category`,
+  fetch: async (page: number = 1) => {
+    return fetchAxios<{ data: { items: APIResponseCategory[], meta: any } }>({
+      url: `/v1/category?page=${page}`,
       method: 'GET',
-    }).then((response) => response.data.items);
+    }).then((response) => response.data);
   },
 
   getById: async (id: string) => {
