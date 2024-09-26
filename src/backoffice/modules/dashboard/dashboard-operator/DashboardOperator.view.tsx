@@ -73,7 +73,7 @@ const DashboardOperatorview: React.FC<DashboardOperatorviewProps> = ({
 
       <div className="bg-white rounded-lg relative">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          <div className="lg:col-span-2 flex flex-col gap-4 p-4 sm:border-r-2">
+          <div className="lg:col-span-2 flex flex-col gap-4 p-4 lg:border-r-2">
             <div className="border-b-2 pb-3">
               <Calendars
                 onDateChange={onDateChange}

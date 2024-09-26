@@ -41,8 +41,7 @@ const CalendarsEvent: React.FC<CalendarsEventProps> = ({
         },
         headerToolbar: {
           left: 'agendaButton',
-          center: 'title',
-          right: '',
+          end: 'title'
         },
         customButtons: {
           agendaButton: {

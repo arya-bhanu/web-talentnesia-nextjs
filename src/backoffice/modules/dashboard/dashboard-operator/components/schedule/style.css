@@ -163,8 +163,8 @@
 /* Hide scrollbar but keep scrolling */
 #mycalendar {
   margin-left: -30px;
-  height: 680px; /* Adjust height as needed */
-  width: 200%; /* Adjust width as needed */
+  height: 675px; /* Adjust height as needed */
+  width: 220%; /* Adjust width as needed */
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -189,7 +189,7 @@
   border-bottom: none !important;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 910px) {
   .calendar-event-container {
     width: 100%;
     margin-left: 0;
