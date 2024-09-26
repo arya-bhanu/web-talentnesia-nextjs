@@ -93,9 +93,9 @@ const DashboardMentorview: React.FC<DashboardMentorviewProps> = ({
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-lg relative">
+      <div className="bg-white rounded-lg relative">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          <div className="lg:col-span-2 flex flex-col gap-4">
+          <div className="lg:col-span-2 flex flex-col gap-4 p-4 lg:border-r-2">
             <div className="border-b-2 pb-3">
               <Calendars
                 onDateChange={onDateChange}
@@ -129,8 +129,8 @@ const DashboardMentorview: React.FC<DashboardMentorviewProps> = ({
               </div>
             </div>
           </div>
-          <div className="lg:col-span-3 flex flex-col">
-            <div className="bg-white p-4 rounded-lg relative overflow-hidden">
+          <div className="lg:col-span-3 flex flex-col p-4">
+            <div className="relative p-4">
               <CalendarsEvent
                 selectedDate={selectedDate}
                 agenda={dashboardData?.data.agenda || []}
