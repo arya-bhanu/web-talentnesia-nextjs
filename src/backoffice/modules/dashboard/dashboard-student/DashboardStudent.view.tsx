@@ -15,9 +15,9 @@ const DashboardStudentview = () => {
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6 h-32">
-        <div className="bg-[#FFF4DC] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+    <div className="max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+        <div className="bg-[#FFF4DC] overflow-hidden shadow sm:rounded-lg flex p-6 relative h-32">
           <div className="absolute top-4 left-4 flex items-center justify-center bg-[#F79009] rounded-full w-12 h-12 ml-2.5">
             <Image
               src={studentData.image}
@@ -39,7 +39,7 @@ const DashboardStudentview = () => {
           </div>
         </div>
 
-        <div className="bg-[#D8F1D9] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+        <div className="bg-[#D8F1D9] overflow-hidden shadow sm:rounded-lg flex p-6 relative h-32">
           <div className="absolute top-4 left-4 flex items-center justify-center bg-[#15B79E] rounded-full w-12 h-12 ml-2.5">
             <Image
               src={iicpData.image}
@@ -61,7 +61,7 @@ const DashboardStudentview = () => {
           </div>
         </div>
 
-        <div className="bg-[#F4E8FF] overflow-hidden shadow sm:rounded-lg flex p-6 relative">
+        <div className="bg-[#F4E8FF] overflow-hidden shadow sm:rounded-lg flex p-6 relative h-32">
           <div className="absolute top-4 left-4 flex items-center justify-center bg-[#7A5AF8] rounded-full w-12 h-12 ml-2.5">
             <Image
               src={classData.image}
@@ -86,11 +86,11 @@ const DashboardStudentview = () => {
 
       <div className="bg-white p-4 rounded-lg relative">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          <div className="lg:col-span-2 lg:row-span-4">
-            <div className="bg-white rounded-lg w-full">
+          <div className="lg:col-span-2 flex flex-col gap-4">
+            <div className="border-b-2 pb-3">
               <Calendars />
             </div>
-            <div className="bg-white mt-4 rounded-lg mb-2 w-full lg:w-[100%]">
+            <div className="bg-white mt-4 rounded-lg mb-2 w-full">
               <div className="bg-white overflow-hidden shadow sm:rounded-lg flex p-6 relative">
                 <div className="absolute top-4 left-4 flex items-center justify-center bg-[#E7F8F0] rounded-full w-12 h-12 ml-2.5">
                   <Image
@@ -117,7 +117,7 @@ const DashboardStudentview = () => {
               </div>
             </div>
           </div>
-          <div className="lg:col-span-3 lg:row-span-4 flex flex-col">
+          <div className="lg:col-span-3 flex flex-col">
             <div className="bg-white p-4 rounded-lg relative overflow-hidden">
               <CalendarsEvent selectedDate={selectedDate} agenda={agendaData} />
             </div>

@@ -1,5 +1,5 @@
 .fc-toolbar-title {
-  font-size: 14px !important;
+  font-size: 16px !important;
   font-weight: semibold !important;
   color: #667085 !important;
   font-family: poppins;
@@ -32,9 +32,12 @@
 .fc-toolbar-chunk {
   display: flex !important;
   align-items: center !important;
+  justify-content: flex-end !important; 
+  text-align: right !important;
 }
 
 .fc-agendaButton-button {
+  margin-left: auto !important; 
   margin-right: 10px !important;
 }
 
@@ -155,17 +158,14 @@
 }
 .fc-event-title {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Hide scrollbar but keep scrolling */
 #mycalendar {
   margin-left: -30px;
-  height: 645px; /* Adjust height as needed */
-  width: 230%; /* Adjust width as needed */
+  height: 680px; /* Adjust height as needed */
+  width: 200%; /* Adjust width as needed */
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -203,9 +203,8 @@
   }
 
   .fc-toolbar-title {
-    font-size: 12px !important;
+    font-size: 18px !important;
     margin-left: 0 !important;
-    padding: 10px !important;
   }
 
   .fc-agendaButton-button {

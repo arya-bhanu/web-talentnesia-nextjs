@@ -14,7 +14,7 @@ const CalendarsView: React.FC<CalendarProps> = ({
     <div className="flex flex-col">
       <div className="bg-white rounded-lg">
         <div className="">
-          <div className="px-4 flex items-center justify-between pt-2">
+          <div className="px-4 flex items-center justify-between">
             <span className="text-2xl font-bold text-gray-800">
               {currentDate.toLocaleString('id-ID', { month: 'long' })}{' '}
               {currentDate.getFullYear()}

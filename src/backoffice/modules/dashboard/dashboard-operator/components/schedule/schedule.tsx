@@ -11,8 +11,20 @@ interface CalendarsEventProps {
   agenda: Agenda[];
 }
 
-const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda }) => {
+const CalendarsEvent: React.FC<CalendarsEventProps> = ({
+  selectedDate,
+  agenda,
+}) => {
   const calendarRef = useRef<HTMLDivElement>(null);
+
+  const formatDate = (date: { year: number; month: number; day: number }) => {
+    const jsDate = new Date(date.year, date.month - 1, date.day);
+    return jsDate.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
 
   useEffect(() => {
     if (calendarRef.current && selectedDate) {
@@ -24,6 +36,9 @@ const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda })
         droppable: true,
         editable: true,
         allDaySlot: false,
+        titleFormat: function(date) {
+          return formatDate(date.date);
+        },
         headerToolbar: {
           left: 'agendaButton',
           center: 'title',
@@ -38,13 +53,13 @@ const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda })
           },
         },
         slotLabelFormat: { hour: 'numeric', hour12: true },
-        events: agenda.map(item => ({
+        events: agenda.map((item) => ({
           title: item.title,
           start: `${item.date}T${item.startTime}`,
           end: `${item.date}T${item.endTime}`,
           className: 'custom-event',
         })),
-        eventContent: function(arg) {
+        eventContent: function (arg) {
           return {
             html: `
               <div class="custom-event-content">

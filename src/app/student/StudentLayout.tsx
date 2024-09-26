@@ -74,7 +74,7 @@ const StudentLayout = ({ children }: { children: ReactNode }) => {
 
   // Determine if background color should be hidden based on current route
   const customPageStyle = [
-    '/student/dashboard',
+    '/student/dashboard/',
     '/student/course/course-detail/',
   ].includes(pathname);
 
