@@ -151,7 +151,9 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div
-        className={`px-8 py-16 min-h-screen transition-all duration-300 md:ml-64 bg-[#FAFAFA]`}
+        className={`px-8 py-16 min-h-screen transition-all duration-300 ${
+          isSidebarOpen ? 'md:ml-64' : 'md:ml-16'
+        } bg-[#FAFAFA]`}
       >
         <div
           className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}
