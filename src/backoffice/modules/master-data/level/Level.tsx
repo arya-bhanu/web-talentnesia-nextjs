@@ -3,6 +3,7 @@
 import React, { useState, useCallback } from 'react';
 import LevelView from './Level.view';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import type { Level } from './hooks/useLevelAction';
 import { useLevelActions } from './hooks/useLevelAction';
 import { levelAPI } from './api/levelApi';
 import { APIResponseLevel } from './level.type';
@@ -27,12 +28,16 @@ const Level = () => {
     await queryClient.invalidateQueries({ queryKey: ['level'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string) => {
     if (action === "delete") {
       await handleDeleteLevel(id);
       fetchData();
     } else if (action === "edit" && rowData) {
-      await handleEditLevel(id, rowData);
+      await handleEditLevel(id, {
+        name: rowData,
+        code: '',
+        active: 0
+      });
       fetchData();
     }
   }, [fetchData, handleDeleteLevel, handleEditLevel]);
@@ -60,5 +65,4 @@ const Level = () => {
       fetchData={fetchData}
     />
   );
-};
-export default Level;
+};export default Level;

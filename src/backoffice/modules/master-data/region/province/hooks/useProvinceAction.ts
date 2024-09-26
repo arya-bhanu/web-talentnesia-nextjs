@@ -10,11 +10,13 @@ export const useProvinceActions = () => {
     }
   }, []);
 
-  const handleEditProvince = useCallback(async (id: string, data: any) => {
+
+  const handleEditProvince = useCallback(async (id: string, data: string) => {
     try {
       provinceAPI.update(id, data);
     } catch (error) {
-      console.error('Failed to province');
+
+      console.error('Failed to update province');
     }
   }, []);
 

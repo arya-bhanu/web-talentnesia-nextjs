@@ -26,12 +26,13 @@ const Category = () => {
     await queryClient.invalidateQueries({ queryKey: ['Category'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
+
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string | { name: string; code: string; status?: number }) => {
     if (action === "delete") {
-      await handleDeleteCategory(id); 
+      await handleDeleteCategory(id);
       fetchData();
-    } else if (action === "edit" && rowData) {
-      await handleEditCategory(id, rowData); 
+    } else if (action === "edit" && typeof rowData === 'object') {
+      await handleEditCategory(id, rowData);
       fetchData();
     }
   }, [fetchData, handleDeleteCategory, handleEditCategory]);
@@ -61,5 +62,4 @@ const Category = () => {
     />
   );
 };
-
 export default Category;
