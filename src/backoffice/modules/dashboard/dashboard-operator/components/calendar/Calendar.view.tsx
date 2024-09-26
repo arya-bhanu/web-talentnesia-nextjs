@@ -48,7 +48,7 @@ const CalendarsView: React.FC<CalendarProps> = ({
               </button>
             </div>
           </div>
-          <div className="pt-12">
+          <div className="pt-10">
             <table className="w-full">
               <thead>
                 <tr>
@@ -79,7 +79,7 @@ const CalendarsView: React.FC<CalendarProps> = ({
                               className={`pt-6 ${day === null ? 'text-gray-400' : ''}`}
                             >
                               <div
-                                className={`px-2 py-2 cursor-pointer flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-300 ${
+                                className={`py-2 cursor-pointer flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-300 ${
                                   day === null
                                     ? 'text-gray-400'
                                     : isSelected
