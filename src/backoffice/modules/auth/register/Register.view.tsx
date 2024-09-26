@@ -1,7 +1,6 @@
 'use client';
 
-//
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RegisterViewProps } from './register.type';
@@ -10,7 +9,19 @@ import './register.style.css';
 export const RegisterView: React.FC<RegisterViewProps> = ({
   showPassword,
   togglePasswordVisibility,
+  onSubmit,
+  error,
 }) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(firstName, lastName, email, password);
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-screen font-poppins">
       <div className="flex flex-col justify-center w-full md:w-1/2 lg:w-[45%] p-8 md:p-12 lg:p-20 xl:p-28 bg-white">
@@ -44,11 +55,14 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
           <span className="mx-4 text-gray-500">or</span>
           <div className="flex-grow border-t border-gray-300 border-dashed" />
         </div>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          {error && <div className="text-red-500 text-sm">{error}</div>}
           <div className="relative">
             <input
               type="text"
               placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
             />
@@ -57,6 +71,8 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
             <input
               type="text"
               placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
             />
@@ -65,6 +81,8 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
             <input
               type="email"
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
             />
@@ -73,6 +91,8 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border-b border-gray-300 focus:outline-none focus:ring-[#219EBC] focus:border-[#219EBC] sm:text-sm text-gray-600"
               required
             />

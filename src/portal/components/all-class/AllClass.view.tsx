@@ -7,6 +7,7 @@ import Pagination from '@/portal/components/pagination';
 import SkeletonLoader from '@/portal/components/skeleton-animation';
 import Image from 'next/image';
 import DropdownCourse from '../dropdown-course/DropdownCourse';
+import AllCourse from '@/portal/components/all-course/AllCourse';
 
 const AllClassView: React.FC<AllClassProps> = ({
   filterOptions,
@@ -36,7 +37,10 @@ const AllClassView: React.FC<AllClassProps> = ({
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+    if (
+      sidebarRef.current &&
+      !sidebarRef.current.contains(event.target as Node)
+    ) {
       setIsSidebarOpen(false);
       setIsOverlayVisible(false);
     }
@@ -74,7 +78,7 @@ const AllClassView: React.FC<AllClassProps> = ({
           ref={sidebarRef}
           className={`fixed md:static inset-y-0 left-0 w-64 bg-white shadow-lg z-20 transform ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } transition-transform duration-300 ease-in-out md:translate-x-0 md:w-1/4 lg:w-1/5`}
+          } transition-transform duration-300 ease-in-out md:translate-x-0`}
         >
           <SkeletonLoader
             visible={!!isLoading}
@@ -96,7 +100,7 @@ const AllClassView: React.FC<AllClassProps> = ({
             {!isLoading && (
               <SearchBar
                 placeHolder="Jelajahi Kursus"
-                className="max-w-45 md:max-w-60 lg:max-w-80 border-none"
+                className="max-w-40 md:max-w-60 lg:max-w-80 border-none"
               />
             )}
 
@@ -108,7 +112,7 @@ const AllClassView: React.FC<AllClassProps> = ({
               <SkeletonLoader visible={!!isLoading} width={'50%'} height={40} />
               {!isLoading && (
                 <>
-                  <p className="hidden sm:block text-gray-700 font-medium text-sm sm:text-base md:text-base">
+                  <p className="hidden sm:block text-gray-700 font-medium text-sm sm:text-base md:text-12">
                     Sort By
                   </p>
                   <div className="flex items-center space-x-2">
@@ -138,7 +142,7 @@ const AllClassView: React.FC<AllClassProps> = ({
           {/* Course Cards */}
           <div className="grid gap-4">
             {currentCourses.map((course, index) => (
-              <FeatureCard
+              <AllCourse
                 key={index}
                 {...course}
                 isLoading={!!isLoading}

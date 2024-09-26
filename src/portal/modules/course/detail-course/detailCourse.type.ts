@@ -12,7 +12,7 @@ export interface CourseItem {
 }
 
 export interface DetailCourseData {
-  items: any[];
+  items: CourseItem[];
 }
   
   export interface DetailCourseViewProps {

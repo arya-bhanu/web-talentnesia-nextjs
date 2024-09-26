@@ -64,8 +64,8 @@ const LinkRegisterModalView: React.FC<LinkRegisterModalViewProps> = ({
     }
 
     try {
-      const { url } = await InviteTokenAPI.generate(selectedSchoolId);
-      setGeneratedLink(url); 
+      const { registrationUrl } = await InviteTokenAPI.generate(selectedSchoolId);
+      setGeneratedLink(registrationUrl); 
     } catch (error) {
       console.error('Error generating link:', error);
     }
@@ -95,14 +95,14 @@ const LinkRegisterModalView: React.FC<LinkRegisterModalViewProps> = ({
         <div className="text-lg font-semibold mb-8">Generate Link Registrasi</div>
         <div className="space-y-6">
           <label className="flex mb-[-22px]">
-            School Id<div className="text-red-600">*</div>
+            School Name<div className="text-red-600">*</div>
           </label>
           <div className="relative">
             <button
               onClick={toggleDropdown}
               className="w-full bg-[#EAECF0] text-[#323232] border border-transparent rounded-lg p-3 flex justify-between items-center"
             >
-              {selectedSchoolId ? schools.find(school => school.id === selectedSchoolId)?.id: 'Select School ID'}
+              {selectedSchoolId ? schools.find(school => school.id === selectedSchoolId)?.name: 'Select School ID'}
               <ArrowDown className={`w-5 h-5 transition-transform ${isDropdownOpen ? 'transform rotate-180' : ''}`} />
             </button>
             {isDropdownOpen && (
@@ -113,7 +113,7 @@ const LinkRegisterModalView: React.FC<LinkRegisterModalViewProps> = ({
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => handleSelectSchool(school.id)}
                   >
-                    {school.id}
+                    {school.name}
                   </div>
                 ))}
               </div>

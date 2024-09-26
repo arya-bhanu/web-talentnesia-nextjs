@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { levelAPI } from '../api/levelApi';
 
-interface Level {
+export interface Level {
   name: string;
   code: string;
   active: number; 

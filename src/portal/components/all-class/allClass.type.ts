@@ -1,9 +1,10 @@
 import { FilterCategory } from '@/portal/components/filter/filter.type';
-import { CourseCardProps } from '@/portal/components/course-card/courseCard.type';
+import { AllCourseProps } from '@/portal/components/all-course/allCourse.type';
 
 export interface AllClassProps {
-  courses: CourseCardProps[];
+  courses: AllCourseProps[];
   filterOptions: FilterCategory[]; 
   isLoading?: boolean,
   title?: string
 }
+
