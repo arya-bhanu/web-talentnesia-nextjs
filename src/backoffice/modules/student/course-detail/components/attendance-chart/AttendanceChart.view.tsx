@@ -42,7 +42,7 @@ const AttendanceChartView: React.FC<IAttendanceChart> = ({
 
   return (
     <div
-      className={clsx(`flex flex-col bg-[#FFFFFF] shadow-md p-4 rounded-md`)}
+      className={clsx(`flex flex-col bg-[#FFFFFF] p-4 rounded-md`)}
     >
       <h2 className="text-xl font-bold mb-4">Attendance</h2>
       <div className="flex space-x-4">

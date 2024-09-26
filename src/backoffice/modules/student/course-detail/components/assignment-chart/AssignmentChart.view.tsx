@@ -41,7 +41,7 @@ const AssignmentChartView: React.FC<IAssignmentChart> = ({
   const lateDegrees = animatedLate * 3.6;
 
   return (
-    <div className={clsx(`bg-[#FFFFFF] shadow-md p-4 rounded-md`)}>
+    <div className={clsx(`bg-[#FFFFFF] p-4 rounded-md`)}>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Assignment</h2>
       </div>
