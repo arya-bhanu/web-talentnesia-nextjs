@@ -117,8 +117,8 @@ export function DataTableView<T>({
           </tbody>
         </table>
       </div>
-      <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-5 space-y-4 sm:space-y-0">
-        <div className="flex justify-between w-full sm:w-auto items-center gap-2 text-[#667085] text-xs sm:text-sm">
+      <div className="flex flex-row justify-between items-center w-full mt-6">
+        <div className="flex justify-center items-center gap-2 text-[#667085] text-xs sm:text-sm">
           <div className="flex items-center gap-2">
             <label htmlFor="pagination" className="block">
               Showing
@@ -139,33 +139,35 @@ export function DataTableView<T>({
               ))}
             </select>
           </div>
-          <p className="w-full sm:w-auto">data out of {data && data.length}</p>
+          <p className="hidden sm:block">data out of {data && data.length}</p>
         </div>
-        <div className="flex justify-between w-full sm:w-auto items-center gap-2 text-xs sm:text-sm">
+        <div className="flex gap-2 text-xs sm:text-sm items-center">
           <p className="text-[#667085]">Data per page</p>
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 items-center">
             <button
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              className="flex items-center justify-center w-8 h-8 sm:w-8 sm:h-8"
             >
               <Image
                 src="/icons/btn-left.svg"
                 alt="Previous"
-                width={40}
-                height={40}
-                className="w-8 h-8 sm:w-8 sm:h-8"
+                width={8}
+                height={8}
+                className="w-8 h-8"
               />
             </button>
             <button
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              className="flex items-center justify-center w-8 h-8 sm:w-8 sm:h-8"
             >
               <Image
                 src="/icons/btn-right.svg"
                 alt="Next"
-                width={40}
-                height={40}
-                className="w-8 h-8 sm:w-8 sm:h-8"
+                width={8}
+                height={8}
+                className="w-8 h-8"
               />
             </button>
           </div>
