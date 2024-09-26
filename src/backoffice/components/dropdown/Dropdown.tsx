@@ -164,12 +164,12 @@ const Dropdown = <T extends { id: string }>({
   );
 
   return (
-    <div className={`relative ${containerClassName} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
+    <div className={`relative w-full ${containerClassName} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
       <label className={`block mb-2 text-sm font-medium text-gray-900 ${labelClassName}`}>
         {label}
       </label>
       <div
-        className={`border border-gray-300 shadow-sm flex w-[26rem] items-center rounded-lg ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${inputClassName}`}
+        className={`border border-gray-300 shadow-sm flex w-full items-center rounded-lg ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${inputClassName}`}
         onClick={disabled ? undefined : handleDropdownToggle}
       >
         <div className="relative flex items-center w-full">
@@ -186,7 +186,7 @@ const Dropdown = <T extends { id: string }>({
       {dropdownOpen && (
         <div
           ref={dropdownRef}
-          className={`absolute top-full left-0 mt-2 w-[26rem] bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto z-10 ${dropdownClassName}`}
+          className={`absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded shadow-lg max-h-60 overflow-y-auto z-10 ${dropdownClassName}`}
         >
           {error && <div className="p-2 text-red-500 text-sm">{error}</div>}
           <ul className="divide-y divide-gray-200">

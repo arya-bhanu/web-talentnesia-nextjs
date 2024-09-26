@@ -1,34 +1,37 @@
-import { useEffect, useState } from 'react';
-import { Button } from 'flowbite-react';
-import { useFormDetailStore } from '@/backoffice/modules/manage-program/form-program/components/form-detail/formDetail.store';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { uploadFile } from '@/backoffice/modules/school/api/minioApi';
+import { Button } from 'flowbite-react';
 
-export function DropFile() {
-  const { data, setData } = useFormDetailStore();
-  const [file, setFile] = useState<File | null>(null);
+interface DropFileProps {
+  onChange: (imageUrl: string) => void;
+  initialImage?: string;
+}
+
+export function DropFile({ onChange, initialImage }: DropFileProps) {
+  const [imageSrc, setImageSrc] = useState<string | null>(initialImage || null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const { image, ...res } = data;
-        setData({ ...res, image: e.target?.result as string });
-      };
-      reader.readAsDataURL(file);
+    if (initialImage) {
+      setImageSrc(initialImage);
     }
-  }, [file]);
+  }, [initialImage]);
 
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setFile(event.target.files[0]);
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      await handleImageUpload(file);
     }
-  };
+  };  
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    if (event.dataTransfer.files) {
-      setFile(event.dataTransfer.files[0]);
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      const file = event.dataTransfer.files[0];
+      await handleImageUpload(file);
     }
   };
 
@@ -37,8 +40,30 @@ export function DropFile() {
   };
 
   const handleClick = () => {
-    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-    fileInput?.click();
+    document.getElementById('fileUpload')?.click();
+  };
+
+  const handleImageUpload = async (file: File) => {
+    setIsUploading(true);
+    try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageSrc(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+
+      const response = await uploadFile(file, 'users');
+      const imageUrl = response.path.thumbs;  
+
+      await delay(500);
+      
+      onChange(imageUrl);
+      setImageSrc(imageUrl);
+    } catch (error) {
+      console.error('Failed to upload image:', error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -48,7 +73,7 @@ export function DropFile() {
       onDragOver={handleDragOver}
       className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-[#219EBC] rounded-lg p-4 cursor-pointer"
     >
-      {!file ? (
+      {!imageSrc ? (
         <div className="text-center p-4">
           <svg
             className="w-12 h-12 mb-4 text-gray-800 dark:text-white mx-auto"
@@ -95,10 +120,16 @@ export function DropFile() {
       )}
       <input
         type="file"
-        onChange={handleFileChange}
+        onChange={handleImageChange}
         className="hidden"
         id="fileUpload"
+        accept="image/*"
       />
+      {isUploading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70">
+          <span>Uploading...</span>
+        </div>
+      )}
     </div>
   );
 }
