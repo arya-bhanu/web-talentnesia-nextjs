@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { sidebarData } from './sidebar.data';
-import Hamburger from 'hamburger-react';
 import './sidebar.style.css';
 import { SidebarViewProps } from './sidebar.type';
 
@@ -31,32 +30,39 @@ const SidebarView: React.FC<SidebarViewProps> = ({
   return (
     <aside
       id="icon-sidebar"
-      className={`fixed top-0 left-0 z-50 h-screen  flex flex-col transition-all duration-300 md:w-64 md:translate-x-0 ${
-        isSidebarOpen ? 'w-64' : 'w-0 -translate-x-full'
+      className={`fixed top-0 left-0 z-40 h-screen flex flex-col transition-all duration-300 ${
+        isSidebarOpen ? 'w-64' : 'w-16'
       } ${isSidebarOpen ? 'bg-[#FFFFFF] shadow-md overflow-y-auto' : 'bg-transparent'}`}
       aria-label="Sidebar"
     >
-<div className="flex-shrink-0">
-  <div className="flex items-center justify-between py-4 px-3 md:justify-center">
-    <button
-      onClick={toggleSidebar}
-      className={`md:hidden transition-all duration-300 ${isSidebarOpen ? 'order-last ml-auto' : 'mr-auto'}`}
-    >
-      <Hamburger toggled={isSidebarOpen} toggle={toggleSidebar} />
-    </button>
-    {isSidebarOpen && (
-      <Link href="/" className="flex items-center">
-        <Image
-          src="/icons/backoffice-logo-company.svg"
-          alt="logo image"
-          width={144}
-          height={48}
-          className="ml-2 md:ml-0"
-        />
-      </Link>
-    )}
-  </div>
-</div>
+      <div className="flex-shrink-0">
+        <div className="flex items-center justify-between py-4 px-3">
+          {isSidebarOpen && (
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/icons/backoffice-logo-company.svg"
+                alt="logo image"
+                width={144}
+                height={48}
+              />
+            </Link>
+          )}
+          <button
+            onClick={toggleSidebar}
+            className={`transition-all duration-300 p-2 ${
+              !isSidebarOpen ? 'bg-blue-500 rounded-full' : ''
+            }`}
+          >
+            <Image
+              src="/icons/sidebar/arrow-sidebar.svg"
+              alt="Toggle sidebar"
+              width={24}
+              height={24}
+              className={`transform ${isSidebarOpen ? '' : 'rotate-180'}`}
+            />
+          </button>
+        </div>
+      </div>
       <div className="flex-grow overflow-y-auto">
         {isSidebarOpen && (
           <div className="px-3 pb-4">
