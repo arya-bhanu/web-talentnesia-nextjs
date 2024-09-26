@@ -7,12 +7,16 @@ import {
   iicpData,
   studentData,
 } from './dashboardStudent.data';
-import Calendars from './components/calendar/Calendar';
 import Table from './components/table/Table';
 import CalendarsEvent from './components/schedule/schedule';
+import Calendars from '../dashboard-operator/components/calendar/Calendar';
 
 const DashboardStudentview = () => {
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
+
+  const onDateChange = (date: Date) => {
+    setSelectedDate(date);
+  };
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -84,11 +88,14 @@ const DashboardStudentview = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-lg relative">
+      <div className="bg-white rounded-lg relative">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          <div className="lg:col-span-2 flex flex-col gap-4">
+          <div className="lg:col-span-2 flex flex-col gap-4 p-4 lg:border-r-2">
             <div className="border-b-2 pb-3">
-              <Calendars />
+              <Calendars
+                onDateChange={onDateChange}
+                selectedDate={selectedDate || new Date()}
+              />
             </div>
             <div className="bg-white mt-4 rounded-lg mb-2 w-full">
               <div className="bg-white overflow-hidden shadow sm:rounded-lg flex p-6 relative">
@@ -117,8 +124,8 @@ const DashboardStudentview = () => {
               </div>
             </div>
           </div>
-          <div className="lg:col-span-3 flex flex-col">
-            <div className="bg-white p-4 rounded-lg relative overflow-hidden">
+          <div className="lg:col-span-3 flex flex-col p-4">
+            <div className="relative p-4">
               <CalendarsEvent selectedDate={selectedDate} agenda={agendaData} />
             </div>
           </div>

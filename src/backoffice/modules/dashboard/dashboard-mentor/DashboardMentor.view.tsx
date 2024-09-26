@@ -9,8 +9,8 @@ import {
 } from './dashboardMentor.data';
 import Calendars from './components/calendar/Calendar';
 import Table from './components/table/Table';
-import CalendarsEvent from './components/schedule/schedule';
 import { DashboardMentorResponse } from './dashboardMentor.type';
+import CalendarsEvent from '../dashboard-operator/components/schedule/schedule';
 
 interface DashboardMentorviewProps {
   selectedDate: Date;
