@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import FilterView from '@/portal/components/filter/Filter.view';
 import FeatureCard from '@/portal/components/feature-card/FeatureCard';
 import { AllClassProps } from './allClass.type';
-import SearchBar from '@/portal/components/search-bar';
 import Pagination from '@/portal/components/pagination';
 import SkeletonLoader from '@/portal/components/skeleton-animation';
 import Image from 'next/image';
 import DropdownCourse from '../dropdown-course/DropdownCourse';
 import AllCourse from '@/portal/components/all-course/AllCourse';
+import SearchBarCourse from '../search-bar-course';
 
 const AllClassView: React.FC<AllClassProps> = ({
   filterOptions,
@@ -98,7 +98,7 @@ const AllClassView: React.FC<AllClassProps> = ({
           <div className="flex items-center justify-between mb-6 space-x-4">
             <SkeletonLoader visible={!!isLoading} height={55} width={'30%'} />
             {!isLoading && (
-              <SearchBar
+              <SearchBarCourse
                 placeHolder="Jelajahi Kursus"
                 className="max-w-40 md:max-w-60 lg:max-w-80 border-none"
               />
