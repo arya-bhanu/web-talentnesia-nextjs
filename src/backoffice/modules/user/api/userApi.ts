@@ -1,7 +1,8 @@
 import { fetchAxios, UseFetchProps } from '@/lib/fetchAxios';
+import { User } from '../user.type';
 
 export const userAPI = {
-  add: async (data: FormData | { [key: string]: any }) => {
+  add: async (data: FormData | { [key: string]: User }) => {
     const config: UseFetchProps = {
       url: '/v1/manage-user',
       method: 'POST',
@@ -30,7 +31,7 @@ export const userAPI = {
     }
   },
 
-  update: async (id: string, data: FormData | { [key: string]: any }) => {
+  update: async (id: string, data: FormData | { [key: string]: User }) => {
     const config: UseFetchProps = {
       url: `/v1/manage-user/${id}`,
       method: 'PUT',

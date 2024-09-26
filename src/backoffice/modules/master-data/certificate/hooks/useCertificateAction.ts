@@ -12,9 +12,9 @@ export const useCertificateActions = () => {
       throw error;
     }
   }, []);
-  const handleEditCertificate = useCallback(async (id: string, data: FormData) => {
+  const handleEditCertificate = useCallback(async (id: string, data: {name: string, file: string, active?: number}) => {
     try {
-      await certificateAPI.update(id, data);
+      await certificateAPI.update(id, { name: data.name, file: data.file, active: data.active });
     } catch (error) {
       console.error('Failed to edit certificate');
     }

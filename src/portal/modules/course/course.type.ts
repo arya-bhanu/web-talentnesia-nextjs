@@ -1,5 +1,5 @@
 export interface CoursesData {
-    items: any[] ;
+    items: CourseItem[] ;
   }
 
   export interface CourseItem {
@@ -12,6 +12,7 @@ export interface CoursesData {
     url: string;
     rating: string;
     logo:string;
+    originalPrice: number,
   }
   
   export interface CoursesViewProps {
