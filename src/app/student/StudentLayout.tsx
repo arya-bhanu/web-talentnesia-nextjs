@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { getSession } from '@/lib/action'; 
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import Loading from '@/components/loading';
 
 const Sidebar = dynamic(
   () => import('@/backoffice/components/student/components/sidebar'),
@@ -65,14 +66,13 @@ const StudentLayout = ({ children }: { children: ReactNode }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
-  }
+    return <Loading isLoading={isLoading} />;
+  }  
 
   if (!user) {
     return null;
   }
 
-  // Determine if background color should be hidden based on current route
   const customPageStyle = pathname.startsWith('/student/student/');
 
   return (

@@ -3,9 +3,10 @@
 import Navbar from '@/backoffice/components/mentor/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession } from '@/lib/action'; // Removed refreshToken
+import { getSession } from '@/lib/action'; 
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import Loading from '@/components/loading';
 
 const Sidebar = dynamic(
   () => import('@/backoffice/components/mentor/components/sidebar'),
@@ -34,7 +35,6 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
           profilePicture: session.profilePicture || '',
           role: session.role,
         });
-        // Removed refreshToken call
       }
     } catch (error) {
       console.error('Authentication error:', error);
@@ -46,7 +46,6 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     checkAuth();
-    // Removed interval for checkAuth
   }, [checkAuth]);
 
   useEffect(() => {
@@ -61,8 +60,8 @@ const MentorLayout = ({ children }: { children: ReactNode }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Consider using a proper loading component
-  }
+    return <Loading isLoading={isLoading} />;
+  }  
 
   if (!user) {
     return null;

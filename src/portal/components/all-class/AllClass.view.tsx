@@ -76,7 +76,7 @@ const AllClassView: React.FC<AllClassProps> = ({
         {/* Sidebar */}
         <div
           ref={sidebarRef}
-          className={`fixed md:static inset-y-0 left-0 w-64 bg-white shadow-lg z-20 transform ${
+          className={`fixed md:static inset-y-0 left-0 w-72 bg-white z-20 transform ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 ease-in-out md:translate-x-0`}
         >

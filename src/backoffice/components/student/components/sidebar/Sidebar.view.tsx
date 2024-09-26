@@ -36,66 +36,76 @@ const SidebarView: React.FC<SidebarViewProps> = ({
       aria-label="Sidebar"
     >
       <div className="flex-shrink-0">
-        <div className="flex items-center justify-between py-4 px-3">
-          {isSidebarOpen && (
-            <Link href="/" className="flex items-center">
+        <div className={`flex items-center justify-between py-4 px-3 ${isSidebarOpen ? '' : 'justify-center'}`}>
+          <Link href="/" className="flex items-center">
+            <div className="w-12 h-12 flex-shrink-0 mr-2">
               <Image
-                src="/icons/backoffice-logo-company.svg"
+                src="/icons/sidebar/logo.png"
                 alt="logo image"
-                width={144}
+                width={48}
                 height={48}
+                className="w-full h-full object-contain"
               />
-            </Link>
-          )}
+            </div>
+            {isSidebarOpen && (
+              <span className="font-medium text-2xl md:text-3xl font-khand">
+                talentnesia
+              </span>
+            )}
+          </Link>
           <button
             onClick={toggleSidebar}
-            className={`transition-all duration-300 p-2 ${
-              !isSidebarOpen ? 'bg-blue-500 rounded-full' : ''
+            className={`p-2 transition-all duration-300 rounded-full flex-shrink-0 ${
+              isSidebarOpen ? 'bg-transparent' : 'bg-blue-500 ml-2'
             }`}
+            style={{ width: 38, height: 38 }}
           >
             <Image
               src="/icons/sidebar/arrow-sidebar.svg"
               alt="Toggle sidebar"
-              width={24}
-              height={24}
-              className={`transform ${isSidebarOpen ? '' : 'rotate-180'}`}
+              width={38}
+              height={38}
+              className={`transition-transform transform ${isSidebarOpen ? '' : 'rotate-180'} flex-shrink-0`}
             />
           </button>
         </div>
       </div>
       <div className="flex-grow overflow-y-auto">
-        {isSidebarOpen && (
-          <div className="px-3 pb-4">
-            <ul className="space-y-2 font-medium">
-              {sidebarData.map((item, index) => (
-                <li key={index}>
-                  {item.links ? (
-                    <div className="group">
-                      <button
-                        type="button"
-                        onClick={() => handleItemClick(index, true)}
-                        className={`flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-100 ${
-                          activeIndex === index
-                            ? 'text-[#219EBC]'
-                            : 'text-[#667085]'
-                        }`}
-                      >
-                        <div className="flex items-center">
-                          <Image
-                            src={item.icon || ''}
-                            alt={`${item.title} icon`}
-                            width={20}
-                            height={20}
-                            className="mr-3"
-                            style={{
-                              filter:
-                                activeIndex === index
-                                  ? 'brightness(0) saturate(100%) invert(49%) sepia(85%) saturate(433%) hue-rotate(144deg) brightness(91%) contrast(88%)'
-                                  : 'none',
-                            }}
-                          />
+        <div className="px-3 pb-4">
+          <ul className="space-y-2 font-medium">
+            {sidebarData.map((item, index) => (
+              <li key={index}>
+                {item.links ? (
+                  <div className="group">
+                    <button
+                      type="button"
+                      onClick={() => handleItemClick(index, true)}
+                      className={`flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-100 ${
+                        activeIndex === index
+                          ? 'text-[#219EBC]'
+                          : 'text-[#667085]'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <Image
+                          src={item.icon || ''}
+                          alt={`${item.title} icon`}
+                          width={20}
+                          height={20}
+                          className="mr-3"
+                          style={{
+                            filter:
+                              activeIndex === index
+                                ? 'brightness(0) saturate(100%) invert(49%) sepia(85%) saturate(433%) hue-rotate(144deg) brightness(91%) contrast(88%)'
+                                : 'none',
+                          }}
+                        />
+                        {/* Conditionally render the title based on sidebar state */}
+                        {isSidebarOpen && (
                           <span className="ml-3">{item.title}</span>
-                        </div>
+                        )}
+                      </div>
+                      {isSidebarOpen && (
                         <Image
                           src="/icons/sidebar/arrow-up.svg"
                           alt="Toggle arrow"
@@ -113,9 +123,13 @@ const SidebarView: React.FC<SidebarViewProps> = ({
                                 : 'none',
                           }}
                         />
-                      </button>
+                      )}
+                    </button>
+                    {isSidebarOpen && (
                       <ul
-                        className={`${expandedIndex === index ? 'block' : 'hidden'} mt-2 space-y-2`}
+                        className={`${
+                          expandedIndex === index ? 'block' : 'hidden'
+                        } mt-2 space-y-2`}
                       >
                         {item.links.map((link, subIndex) => (
                           <li key={subIndex}>
@@ -146,40 +160,40 @@ const SidebarView: React.FC<SidebarViewProps> = ({
                           </li>
                         ))}
                       </ul>
-                    </div>
-                  ) : (
-                    <Link
-                      href={item.path || '#'}
-                      onClick={() => handleItemClick(index)}
-                      className={`flex items-center p-2 rounded-lg hover:bg-gray-100 ${
-                        activeIndex === index
-                          ? 'text-[#219EBC]'
-                          : 'text-[#667085]'
-                      }`}
-                    >
-                      <Image
-                        src={item.icon || ''}
-                        alt={`${item.title} icon`}
-                        width={20}
-                        height={20}
-                        className={`mr-3 ${
-                          activeIndex === index ? 'filter invert' : ''
-                        }`}
-                        style={{
-                          filter:
-                            activeIndex === index
-                              ? 'brightness(0) saturate(100%) invert(49%) sepia(85%) saturate(433%) hue-rotate(144deg) brightness(91%) contrast(88%)'
-                              : 'none',
-                        }}
-                      />
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    href={item.path || '#'}
+                    onClick={() => handleItemClick(index)}
+                    className={`flex items-center p-2 rounded-lg hover:bg-gray-100 ${
+                      activeIndex === index
+                        ? 'text-[#219EBC]'
+                        : 'text-[#667085]'
+                    }`}
+                  >
+                    <Image
+                      src={item.icon || ''}
+                      alt={`${item.title} icon`}
+                      width={20}
+                      height={20}
+                      className={`mr-3 ${activeIndex === index ? 'filter invert' : ''}`}
+                      style={{
+                        filter:
+                          activeIndex === index
+                            ? 'brightness(0) saturate(100%) invert(49%) sepia(85%) saturate(433%) hue-rotate(144deg) brightness(91%) contrast(88%)'
+                            : 'none',
+                      }}
+                    />
+                    {isSidebarOpen && (
                       <span className="ml-3">{item.title}</span>
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+                    )}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </aside>
   );
