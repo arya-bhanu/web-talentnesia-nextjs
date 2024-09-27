@@ -4,10 +4,11 @@ import { Mentor } from './mentor.type';
 
 interface MentorProps {
   mentors: Mentor[];
+  className?: string;
 }
 
-const MentorComponent: React.FC<MentorProps> = ({ mentors }) => {
-  return <MentorView mentorData={mentors} />;
+const MentorComponent: React.FC<MentorProps> = ({ mentors, className }) => {
+  return <MentorView mentorData={mentors} className={className} />;
 };
 
 export default MentorComponent;

@@ -15,8 +15,7 @@ const FormCampaignView: React.FC<IFormCampaignView> = ({ id }) => {
     <form className="grid grid-cols-2 gap-6">
       <div className="col-span-1">
         <LabelForm htmlFor="cover_image">Cover Image</LabelForm>
-        {DropFile()}{' '}
-        {/* Menggunakan komponen dropFile yang sudah dimodifikasi */}
+        {/* <DropFile onChange={''} /> */}
       </div>
       <div className="col-span-1"></div>
       <div>

@@ -36,7 +36,7 @@ const FullCalendarsView: React.FC<FullCalendarProps> = ({
                   width={24}
                   height={24}
                   alt="Chevron Left"
-                  className='rotate-90'
+                  className="rotate-90"
                 />
               </button>
               <button
@@ -49,7 +49,7 @@ const FullCalendarsView: React.FC<FullCalendarProps> = ({
                   width={24}
                   height={24}
                   alt="Chevron Left"
-                  className='rotate-[-90deg]'
+                  className="rotate-[-90deg]"
                 />
               </button>
             </div>

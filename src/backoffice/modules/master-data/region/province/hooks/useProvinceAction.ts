@@ -6,7 +6,7 @@ export const useProvinceActions = () => {
     try {
       provinceAPI.add(name);
     } catch (error) {
-      console.error('Failed to province');
+      console.error('Failed to add province');
     }
   }, []);
 
@@ -14,7 +14,7 @@ export const useProvinceActions = () => {
     try {
       provinceAPI.update(id, data);
     } catch (error) {
-      console.error('Failed to province');
+      console.error('Failed to update province');
     }
   }, []);
 
@@ -22,7 +22,7 @@ export const useProvinceActions = () => {
     try {
       provinceAPI.delete(id);
     } catch (error) {
-      console.error('Failed to province');
+      console.error('Failed to delete province');
     }
   }, []);
 

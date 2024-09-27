@@ -46,9 +46,11 @@ const Category = () => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
+  const categoryItems = data?.items || [];
+
   return (
     <CategoryView
-      data={data || []}
+      data={categoryItems}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}

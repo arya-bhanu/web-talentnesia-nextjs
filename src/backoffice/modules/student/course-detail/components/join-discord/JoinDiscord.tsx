@@ -15,8 +15,8 @@ const JoinDiscord: React.FC<JoinDiscordProps> = ({ data }) => {
   };
 
   return (
-    <div className="mx-auto max-w-md">
-      <div className="relative isolate overflow-hidden bg-white px-6 text-start sm:rounded-3xl sm:shadow-sm">
+    <div className="mx-auto max-w-md ">
+      <div className="relative isolate overflow-hidden px-6 text-start bg-[#FAFAFA] rounded-xl py-6">
         <h2 className="text-base font-bold tracking-tight text-gray-800 sm:text-lg">
           Join Group On Discord
         </h2>
@@ -27,7 +27,7 @@ const JoinDiscord: React.FC<JoinDiscordProps> = ({ data }) => {
 
         <div className="mt-8 flex items-center justify-center">
           <a
-            className="inline-flex items-center justify-center gap-2 px-20 py-3 text-sm font-semibold text-gray-700 rounded-full shadow-sm transition-all duration-150 bg-[#FFC862] hover:bg-[#ffc24f]"
+            className="inline-flex w-full items-center justify-center gap-2 py-4 text-sm font-semibold text-gray-700 rounded-full shadow-sm transition-all duration-150 bg-[#FFC862] hover:bg-[#ffc24f]"
             href="#"
             onClick={(e) => {
               e.preventDefault();

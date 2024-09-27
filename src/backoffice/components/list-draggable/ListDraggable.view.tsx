@@ -8,6 +8,8 @@ import Book from '@/../public/icons/manage-program/book.svg';
 import Video from '@/../public/icons/videocam.svg';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const ListDraggableView: React.FC<IListDraggable> = ({
   className,
@@ -24,7 +26,10 @@ const ListDraggableView: React.FC<IListDraggable> = ({
     transform: CSS.Transform.toString(transform),
     transition,
   };
-  
+
+  // const pathname = usePathname();
+  // const moduleId = useSearchParams().get('modulId');
+
   const Icon = useMemo(() => {
     if (isexam) {
       return <Edit2 />;
@@ -52,11 +57,18 @@ const ListDraggableView: React.FC<IListDraggable> = ({
       className={clsx('flex items-center justify-between', className)}
     >
       <div className="flex items-center gap-2">
-        <button type="button" {...listeners} {...attributes}>
+        <button
+          type="button"
+          {...listeners}
+          {...attributes}
+          className="cursor-move"
+        >
           <DragIndicator />
         </button>
         {Icon}
+        {/* <Link href={pathname + `detail-content?contentId=${id}&modulId=${moduleId}`}> */}
         <h3 className="font-medium font-lato">{title}</h3>
+        {/* </Link> */}
       </div>
       <p className="font-semibold font-lato text-xs">{durationMinute} minute</p>
     </div>

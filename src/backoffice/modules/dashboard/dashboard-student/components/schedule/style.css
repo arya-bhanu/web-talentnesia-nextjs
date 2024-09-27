@@ -1,10 +1,7 @@
 .fc-toolbar-title {
-  font-size: 14px !important;
+  font-size: 16px !important;
   font-weight: semibold !important;
   color: #667085 !important;
-  margin-left: -20px !important;
-  padding: 20px !important;
-  margin-bottom: -28px !important;
   font-family: poppins;
 }
 
@@ -24,7 +21,31 @@
   padding-top: 22px !important;                            
 }
 
-.fc-agendaButton-button:hover,
+.fc-agendaButton-button,
+.fc-header-toolbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 10px 0 !important;
+}
+
+.fc-toolbar-chunk {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important; 
+  text-align: right !important;
+}
+
+.fc-agendaButton-button {
+  margin-left: auto !important; 
+  margin-right: 10px !important;
+}
+
+.fc-toolbar-title {
+  margin-left: 0 !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
 .fc-agendaButton-button:focus {
   background: transparent !important;  
   color: black !important;           
@@ -137,17 +158,14 @@
 }
 .fc-event-title {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Hide scrollbar but keep scrolling */
 #mycalendar {
   margin-left: -30px;
-  height: 645px; /* Adjust height as needed */
-  width: 230%; /* Adjust width as needed */
+  height: 675px; /* Adjust height as needed */
+  width: 220%; /* Adjust width as needed */
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -171,3 +189,53 @@
   border-bottom: none !important;
 }
 
+@media screen and (max-width: 910px) {
+  .calendar-event-container {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  #mycalendar {
+    margin-left: 0;
+    height: 500px;
+    width: 100%;
+  }
+
+  .fc-toolbar-title {
+    font-size: 18px !important;
+    margin-left: 0 !important;
+  }
+
+  .fc-agendaButton-button {
+    font-size: 16px !important;
+    padding-top: 15px !important;
+  }
+
+  .custom-event {
+    left: 5px;
+  }
+
+  .custom-event-time {
+    font-size: 8px;
+    padding: 2px;
+  }
+
+  .fc-event-title {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #mycalendar {
+    height: 600px;
+  }
+
+  .fc-toolbar-title {
+    font-size: 14px !important;
+  }
+
+  .fc-agendaButton-button {
+    font-size: 16px !important;
+  }
+}

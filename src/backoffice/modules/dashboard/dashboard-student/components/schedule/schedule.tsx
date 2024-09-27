@@ -13,6 +13,15 @@ interface CalendarsEventProps {
 const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda }) => {
   const calendarRef = useRef<HTMLDivElement>(null);
 
+  const formatDate = (date: { year: number; month: number; day: number }) => {
+    const jsDate = new Date(date.year, date.month - 1, date.day);
+    return jsDate.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
   useEffect(() => {
     if (calendarRef.current) {
       const calendar = new Calendar(calendarRef.current, {
@@ -22,15 +31,19 @@ const CalendarsEvent: React.FC<CalendarsEventProps> = ({ selectedDate, agenda })
         droppable: true,
         editable: true,
         allDaySlot: false,
+        titleFormat: function(date) {
+          return formatDate(date.date);
+        },
         headerToolbar: {
           left: 'agendaButton',
-          center: '',
-          right: 'title',
+          end: 'title'
         },
         customButtons: {
           agendaButton: {
             text: "Today's Agenda",
-            click: () => {},
+            click: () => {
+              calendar.gotoDate(new Date());
+            },
           },
         },
         slotLabelFormat: { hour: 'numeric', hour12: true },

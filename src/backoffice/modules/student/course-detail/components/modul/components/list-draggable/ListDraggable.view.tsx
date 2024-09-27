@@ -1,14 +1,8 @@
 import React, { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import clsx from 'clsx';
 import { IListDraggable } from './listDraggableType.type';
-import PlayCircle from '@/../public/icons/play-circle.svg';
-import Book from '@/../public/icons/manage-program/book.svg';
-import VideoCam from '@/../public/icons/videocam.svg';
-import Pencil from '@/../public/icons/edit-2.svg';
-import BookGray from '@/../public/icons/book3.svg';
-import ClipboardTick from '@/../public/icons/clipboard-tick.svg';
-import Task from '@/../public/icons/manage-program/clipboard.svg';
 import { format, isFuture } from 'date-fns';
 
 const ListDraggableView: React.FC<IListDraggable> = ({
@@ -26,51 +20,77 @@ const ListDraggableView: React.FC<IListDraggable> = ({
   const formattedDate = useMemo(() => {
     if (!date) return '';
     const dateObj = new Date(date);
-    const formattedString = format(dateObj, "dd MMMM yyyy 'Pukul' HH:mm");
-    return isFuture(dateObj) ? `Akses Mulai ${formattedString}` : formattedString;
-  }, [date]); 
+    const formattedString = format(dateObj, "dd MMM yyyy 'Pukul' HH:mm");
+    return isFuture(dateObj)
+      ? `Akses Mulai ${formattedString}`
+      : formattedString;
+  }, [date]);
 
-  const generateIcon = useMemo(() => {
+  const generateIconSrc = useMemo(() => {
     switch (type) {
       case '1':
-        return <Book />;
+        return '/icons/manage-program/book.svg';
       case '2':
-        return <PlayCircle />;
+        return '/icons/play-circle.svg';
       case '3':
-        return <PlayCircle />;
+        return '/icons/play-circle.svg';
       case '4':
-        return <PlayCircle />;
+        return '/icons/play-circle.svg';
       case '5':
-        return <Pencil />;
+        return '/icons/edit-2.svg';
       case '6':
-        return <VideoCam />;
+        return '/icons/videocam.svg';
       default:
-        return <VideoCam />;
+        return '/icons/videocam.svg';
     }
   }, [type]);
 
-  const statusIcon = completed ? <ClipboardTick /> : <Task />;
+  const statusIconSrc = completed
+    ? '/icons/clipboard-tick.svg'
+    : '/icons/manage-program/clipboard.svg';
 
   const handleClick = () => {
-    router.push(`/student/course/course-detail/material-modul/?courseId=${courseId}&chapterId=${chapterId}&contentId=${contentId}`);
+    router.push(
+      `/student/course/course-detail/material-modul/?courseId=${courseId}&chapterId=${chapterId}&contentId=${contentId}`,
+    );
   };
 
   return (
-    <div 
-      className={clsx('flex items-center justify-between cursor-pointer', className)}
+    <div
+      className={clsx(
+        'flex items-start gap-2 cursor-pointer p-2 sm:p-3',
+        className,
+      )}
       onClick={handleClick}
     >
-      <div className="flex items-center gap-2">
-        {generateIcon}
-        <div>
-          <h3 className="font-semibold text-gray-800 text-sm font-lato">
+      <Image
+        src={generateIconSrc}
+        alt="Content type"
+        width={20}
+        height={20}
+        className="w-5 h-5 mt-1 flex-shrink-0"
+      />
+      <div className="flex-grow min-w-0">
+        <div className="flex items-start justify-between">
+          <h3 className="font-semibold text-gray-800 text-xs sm:text-sm font-lato pr-2 flex-grow truncate">
             {title}
           </h3>
+          <div className="flex items-center flex-shrink-0 ml-2">
+            <span className="font-semibold text-gray-400 text-xs sm:text-sm font-lato mr-2 hidden sm:inline whitespace-nowrap">
+              {formattedDate}
+            </span>
+            <Image
+              src={statusIconSrc}
+              alt="Status"
+              width={20}
+              height={20}
+              className="w-5 h-5 flex-shrink-0"
+            />
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <span className="font-semibold text-gray-400 text-sm font-lato">{formattedDate}</span>
-        {statusIcon}
+        <span className="font-semibold text-gray-400 text-xs sm:text-sm font-lato mt-1 block sm:hidden">
+          {formattedDate}
+        </span>
       </div>
     </div>
   );

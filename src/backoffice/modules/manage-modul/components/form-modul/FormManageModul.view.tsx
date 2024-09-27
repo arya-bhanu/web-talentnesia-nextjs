@@ -42,9 +42,9 @@ const FormManageModulView: React.FC<
                 name="modul"
                 type="text"
                 placeholder="UI/UX Designer"
-                required
                 defaultValue={populatedDatas?.data?.name}
                 key={populatedDatas?.data?.name}
+                required
               />
             </div>
           </div>

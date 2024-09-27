@@ -52,7 +52,7 @@ const ModulView = ({ activeAccordion, setActiveAccordion, certificates, course }
   };
 
   return (
-    <Card>
+    <Card className='border-none shadow-none bg-[#FAFAFA]'>
       <TabFlex tabs={tabs} onTabChange={handleTabChange} />
       <div className="mt-4">
         {tabs.find(tab => tab.type === activeTab)?.content}

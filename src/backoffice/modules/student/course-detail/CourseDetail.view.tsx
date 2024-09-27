@@ -10,7 +10,8 @@ import JoinDiscord from './components/join-discord/JoinDiscord';
 import Statistic from './components/statistic';
 import Mentor from './components/list-mentor';
 import { APIResponseCourseDetail } from './courseDetail.type';
-import { Spinner } from "flowbite-react";
+import { Spinner } from 'flowbite-react';
+import { Divider } from '@/portal/components/divider';
 
 interface CourseDetailViewProps {
   courseId: string;
@@ -18,7 +19,11 @@ interface CourseDetailViewProps {
   loading: boolean;
 }
 
-const CourseDetailView: React.FC<CourseDetailViewProps> = ({ courseId, courseDetailData, loading }) => {
+const CourseDetailView: React.FC<CourseDetailViewProps> = ({
+  courseId,
+  courseDetailData,
+  loading,
+}) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[calc(80vh-200px)]">
@@ -31,42 +36,76 @@ const CourseDetailView: React.FC<CourseDetailViewProps> = ({ courseId, courseDet
     return <div>No course data available</div>;
   }
 
-  const { course, mentors, joinGroup, attendance, assignment, certificates, calendar, historyExam } = courseDetailData.data;
+  const {
+    course,
+    mentors,
+    joinGroup,
+    attendance,
+    assignment,
+    certificates,
+    calendar,
+    historyExam,
+  } = courseDetailData.data;
 
   return (
     <div className="p-4">
       <ModulProgress progress={course.progress} />
-      <div className="mt-10 flex flex-col md:flex-row gap-6">
-        <div className="flex-1">
+      
+      {/* Grid layout for mobile and desktop */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col">
           <AssignmentChart data={assignment} />
         </div>
-        <div className="flex-1">
+        <div className="flex flex-col">
           <AttendanceChart data={attendance} />
         </div>
       </div>
-      <div className="mt-10 flex flex-col md:flex-row gap-6">
-        <div className="flex-1">
-        <Calendar calendarData={calendar} />
+
+      {/* Scrollable HistoriExam section only on mobile */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="md:col-span-1 bg-[#FFFFFF] rounded-xl">
+          <Calendar calendarData={calendar} />
         </div>
-        <div className="flex-1">
-        <HistoriExam historyExam={historyExam.map((exam, index) => ({
-          ...exam,
-          no: index + 1,
-          examName: exam.name,
-          submitDate: exam.endDate
-        }))} />
+        <div className="md:col-span-3 bg-[#FFFFFF] rounded-xl">
+          <div className="md:hidden overflow-x-auto"> {/* Make this div scrollable on mobile */}
+            <HistoriExam
+              historyExam={historyExam.map((exam, index) => ({
+                ...exam,
+                no: index + 1,
+                examName: exam.name,
+                submitDate: exam.endDate,
+              }))}
+            />
+          </div>
+          <div className="hidden md:block"> {/* Show this on desktop only */}
+            <HistoriExam
+              historyExam={historyExam.map((exam, index) => ({
+                ...exam,
+                no: index + 1,
+                examName: exam.name,
+                submitDate: exam.endDate,
+              }))}
+            />
+          </div>
         </div>
       </div>
-      <Schedule />
-      <div className="mt-10 flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-3/4">
-          <Modul certificates={certificates} course={course}/>
+
+      {/* Other components */}
+      <div className="bg-[#FFFFFF] rounded-xl mt-6 p-4">
+        <div className="space-y-10">
+          <Schedule />
+          <Divider />
         </div>
-        <div className="w-full md:w-1/3 space-y-12">
-          {joinGroup.link && joinGroup.link !== "" && (
-            <JoinDiscord data={joinGroup} />
-          )}
-          <Mentor mentors={mentors} />
+        <div className="mt-10 flex flex-col md:flex-row gap-6">
+          <div className="w-full md:w-3/4">
+            <Modul certificates={certificates} course={course} />
+          </div>
+          <div className="w-full md:w-1/4 space-y-12">
+            {joinGroup.link && joinGroup.link !== '' && (
+              <JoinDiscord data={joinGroup} />
+            )}
+            <Mentor mentors={mentors} className='bg-[#FAFAFA] rounded-xl p-6 w-full'/>
+          </div>
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ import { APIResponseManageModul } from '../../manageModul.type';
 import Loading from '@/components/loading';
 import { useStatusModalStore } from '@/lib/store';
 import AlertModal from '@/backoffice/components/alert-modal';
+import { z } from 'zod';
 
 const FormManageModul = () => {
   const queryClient = useQueryClient();
@@ -28,6 +29,11 @@ const FormManageModul = () => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [tempFormData, setTempFormData] = useState<FormData | null>(null);
   const [isAddingContent, setIsAddingContent] = useState(false);
+
+  const modulSchema = z.object({
+    modul: z.string().min(1, "Module name is required"),
+    status: z.enum(['0', '1'])
+  });
 
   // edit
   const { mutateAsync: createAsync } = useMutation({
@@ -54,10 +60,13 @@ const FormManageModul = () => {
     }
   }, [isConfirmed]);
 
-  const handleSubmitForm: IManageModulForm['handleSubmitForm'] = async (e, action) => {
+  const handleSubmitForm: IManageModulForm['handleSubmitForm'] = async (
+    e,
+    action,
+  ) => {
     e.preventDefault();
     let formData: FormData;
-    
+
     if (e.currentTarget instanceof HTMLFormElement) {
       formData = new FormData(e.currentTarget);
     } else {
@@ -69,7 +78,7 @@ const FormManageModul = () => {
         return;
       }
     }
-  
+
     setTempFormData(formData);
     setIsAddingContent(action === 'addContent');
     if (!moduleId) {
@@ -78,16 +87,17 @@ const FormManageModul = () => {
       setOpenAlertModal(true);
     }
   };
-  
 
   const handleConfirmedSubmitForm = async (formData: FormData) => {
-    const modul = formData.get('modul');
-    const status = formData.get('status');
-    const modulObject = { active: Number(status), name: modul } as Pick<
-      APIResponseManageModul,
-      'active' | 'name'
-    >;
+    const formObject = Object.fromEntries(formData);
+    
     try {
+      const validatedData = modulSchema.parse(formObject);
+      const modulObject = { 
+        active: Number(validatedData.status), 
+        name: validatedData.modul 
+      } as Pick<APIResponseManageModul, 'active' | 'name'>;
+  
       if (moduleId) {
         await updateModulAsync({ data: modulObject, moduleId });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
@@ -106,7 +116,7 @@ const FormManageModul = () => {
         const responseCreate = await createAsync({ ...modulObject });
         await queryClient.invalidateQueries({ queryKey: ['modules'] });
         const id = responseCreate.id;
-
+  
         if (submitType.type === 'defaultSubmit') {
           router.push(`/backoffice/manage-modul`);
         } else {
@@ -115,10 +125,18 @@ const FormManageModul = () => {
       }
     } catch (err) {
       console.error(err);
+      let errorMessage = 'Failed to process module';
+  
+      if (err instanceof z.ZodError) {
+        errorMessage = err.errors[0].message;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+  
       openModal({
         status: 'error',
         timeOut: 2000,
-        message: 'Failed to process module',
+        message: errorMessage,
       });
     }
   };
