@@ -15,6 +15,11 @@ export const Register: React.FC = () => {
   };
 
   const handleSubmit = async (firstName: string, lastName: string, email: string, password: string) => {
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+  
     try {
       const response = await loginApi(email, password, `${firstName} ${lastName}`, firstName, lastName);
       if (response) {
@@ -23,10 +28,15 @@ export const Register: React.FC = () => {
       } else {
         setError('Registration failed. Please try again.');
       }
-    } catch (error) {
-      setError('An error occurred during registration. Please try again.');
+    } catch (error: any) {
+      if (error.response && error.response.status === 409) {
+        setError('Email is already taken. Please use a different email.');
+      } else {
+        setError('An error occurred during registration. Please try again.');
+      }
     }
   };
+  
 
   return (
     <RegisterView

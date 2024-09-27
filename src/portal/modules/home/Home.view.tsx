@@ -44,5 +44,4 @@ const HomeView: React.FC<HomeViewProps> = ({ data, isLoading }) => {
     </>
   );
 };
-
 export default HomeView;

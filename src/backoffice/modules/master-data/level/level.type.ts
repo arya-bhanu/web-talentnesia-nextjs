@@ -21,4 +21,8 @@ export interface ILevelView {
   fetchData: () => Promise<void>;
 }
 
-
+export interface level {
+  name: string;
+  code: string;
+  active: number; 
+}

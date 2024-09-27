@@ -166,10 +166,16 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
     setShowAlertModal(false);
     try {
       let response;
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          formData.append(key, value.toString());
+        }
+      });
       if (form.id) {
-        response = await userAPI.update(form.id, form);
+        response = await userAPI.update(form.id, formData);
       } else {
-        response = await userAPI.add(form);
+        response = await userAPI.add(formData);
       }
       if (response && response.success) {
         openModal({
@@ -190,7 +196,6 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
       });
     }
   };
-
   const resetForm = () => {
     setForm({
       id: id || '',

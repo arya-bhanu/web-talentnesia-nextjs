@@ -102,7 +102,7 @@ const LinkRegisterModalView: React.FC<LinkRegisterModalViewProps> = ({
               onClick={toggleDropdown}
               className="w-full bg-[#EAECF0] text-[#323232] border border-transparent rounded-lg p-3 flex justify-between items-center"
             >
-              {selectedSchoolId ? schools.find(school => school.id === selectedSchoolId)?.name: 'Select School ID'}
+              {selectedSchoolId ? schools.find(school => school.id === selectedSchoolId)?.name: 'Select School Name'}
               <ArrowDown className={`w-5 h-5 transition-transform ${isDropdownOpen ? 'transform rotate-180' : ''}`} />
             </button>
             {isDropdownOpen && (

@@ -5,7 +5,6 @@ import {PopularCourses} from "./components/popular-bootcamp/PopularCourse";
 import { BootcampViewProps } from "./bootcamp.type";
 import {FeatureSection} from "./components/features-section";
 import AllClass from "@/portal/components/all-class/AllClass";
-import { courseDataArray } from "@/portal/components/course-card/courseCard.data";
 import { filterCategories } from "@/portal/components/filter/filter.data";
 import UserStoryCard from "@/portal/components/user-story-card";
 
