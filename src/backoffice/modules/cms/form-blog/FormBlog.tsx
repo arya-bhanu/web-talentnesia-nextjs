@@ -21,6 +21,7 @@ const FormBlog = () => {
     status: 0,
     image: "",
     categoryId: "",
+    categoryName: "",
     tags: [],
     slug: "",
   });
@@ -44,7 +45,12 @@ const FormBlog = () => {
     try {
       const response = await cmsApi.show(blogId);
       if (response && response.data) {
-        setFormData(response.data);
+        const categoryResponse = await categoryAPI.getById(response.data.categoryId);
+        setFormData({
+          ...response.data,
+          categoryId: categoryResponse.id,
+          categoryName: categoryResponse.name
+        });
         if (response.data.image) {
           try {
             const imageUrl = await getImageUrl(response.data.image);
