@@ -30,7 +30,9 @@ const ProvinceView: React.FC<IProvinceView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push('/backoffice/master-data/region/province/add-province/');
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push('/backoffice/master-data/region/province/add-province/');
   };
 
   const { handleAddProvince, handleEditProvince, handleDeleteProvince } =

@@ -31,7 +31,9 @@ const DistrictView: React.FC<IDistrictView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push('/backoffice/master-data/region/district/add-district/');
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push('/backoffice/master-data/region/district/add-district/');
   };
 
   const { handleAddDistrict, handleEditDistrict, handleDeleteDistrict } =

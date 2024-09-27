@@ -32,7 +32,9 @@ const PartnersView: React.FC<IPartnerView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push('/backoffice/master-data/partner/add-partner/');
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push('/backoffice/master-data/partner/add-partner/');
   };
 
   const { handleAddPartner, handleEditPartner, handleDeletePartner } =

@@ -128,7 +128,7 @@ const EditableListContentView: React.FC<
         </button>
         {Icon}
         {/* <Link href={pathname + `detail-content?contentId=${id}`}> */}
-          <h3 className="font-medium font-lato cursor-pointer">{title}</h3>
+          <h3 className="font-medium font-lato">{title}</h3>
         {/* </Link> */}
       </div>
       <div className="flex items-center gap-3">
