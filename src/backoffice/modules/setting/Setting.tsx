@@ -6,8 +6,6 @@ import { getUserProfile, updateUserProfile } from './api/settingApi';
 import { getImageUrl } from '../school/api/minioApi';
 import { DropFile } from './components/drop-files-input/dropFilesInput';
 import Link from 'next/link';
-import { Modal } from 'flowbite-react';
-import { HiOutlineCheckCircle, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { DecodedToken, decodeToken } from '@/lib/tokenDecoder';
 
 export interface UserData extends DecodedToken {
@@ -46,7 +44,6 @@ export const Setting = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const decodedToken = decodeToken();
-      console.log(decodedToken);
       if (decodedToken) {
         setUserData(decodedToken as UserData);
         try {
@@ -67,7 +64,6 @@ export const Setting = () => {
           setUserData((prevData) => ({
             ...prevData,
             ...data,
-            hashedPassword: data.password,
           }));
         } catch (error) {
           console.error('Error fetching user data');
@@ -103,9 +99,6 @@ export const Setting = () => {
         return;
       }
       const updatedData = { ...userData };
-      if (password) {
-        updatedData.password = password;
-      }
       await updateUserProfile(userData.userId, updatedData);
 
       setModalMessage('Profile updated successfully!');

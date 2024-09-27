@@ -15,6 +15,7 @@ import {
 import ProgressBar from '@/backoffice/components/progress-bar/ProgressBar';
 import { BadgeStatus } from '@/backoffice/components/badge-status';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
+import { useTabStoreFormProgram } from '../form-program/formProgramStore';
 
 const columnHelper = createColumnHelper<any>();
 
@@ -24,6 +25,8 @@ const CourseView: React.FC<CourseViewProps> = ({
   setFilter,
   handleActionButtonRow,
 }) => {
+  const setActiveTab = useTabStoreFormProgram((state) => state.setActiveTab);
+
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       columnHelper.accessor('no', {
@@ -116,8 +119,11 @@ const CourseView: React.FC<CourseViewProps> = ({
     <div>
       <div className="flex justify-between items-center font-poppins">
         <SearchTable value={Filter} onChange={setFilter} />
-        <PermissionGranted roleable role='manage-program.iicp.add'>
-          <Link href="/backoffice/manage-program/add-program">
+        <PermissionGranted roleable role="manage-program.iicp.add">
+          <Link
+            href="/backoffice/manage-program/add-program"
+            onClick={() => setActiveTab('detail')}
+          >
             <AddButton text="Add New Program" />
           </Link>
         </PermissionGranted>

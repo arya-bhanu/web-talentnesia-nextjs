@@ -1,22 +1,27 @@
-import { backOfficeAPI } from '@/lib/axiosConfig';
+import { fetchAxios } from '@/lib/fetchAxios';
 import { UserData } from '../Setting';
 
 export const getUserProfile = async (id: string) => {
   try {
-    const response = await backOfficeAPI.get(`/v1/user-profile-setting/${id}`);
-    return response.data.data;
-  } catch (error) {
+    const response = await fetchAxios({
+      url: `/v1/user-profile-setting/${id}`,
+      method: 'GET',
+    });
+    return response;
+  } catch {
     console.error('Error fetching user profile');
-    throw error;
   }
 };
 
 export const updateUserProfile = async (id: string, userData: UserData) => {
   try {
-    const response = await backOfficeAPI.put(`/v1/user-profile-setting/${id}`, userData);
-    return response.data;
-  } catch (error) {
+    const response = await fetchAxios({
+      url: `/v1/user-profile-setting/${id}`,
+      method: 'PUT',
+      formData: userData,
+    });
+    return response;
+  } catch {
     console.error('Error updating user profile');
-    throw error;
   }
 };

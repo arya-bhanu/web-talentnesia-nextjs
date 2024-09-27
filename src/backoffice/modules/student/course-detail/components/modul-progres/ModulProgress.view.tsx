@@ -1,5 +1,6 @@
 import React from 'react';
 import { IModulProgress } from './modulProgress.type';
+import clsx from 'clsx';
 
 const ModulProgressView: React.FC<IModulProgress> = ({
   progress,
@@ -15,7 +16,7 @@ const ModulProgressView: React.FC<IModulProgress> = ({
   const completedSessions = 250;
 
   return (
-    <div className={className}>
+    <div className={clsx(className, 'bg-[#FFFFFF] p-4 rounded-md')}>
       <div className="flex items-center justify-between">
         <h2 className="font-semibold text-lg font-poppins">Course Detail</h2>
       </div>

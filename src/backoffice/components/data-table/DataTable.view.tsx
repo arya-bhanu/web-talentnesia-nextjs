@@ -12,6 +12,7 @@ import {
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
 import { DataTableProps } from './DataTable.type';
+import Image from 'next/image';
 
 export function DataTableView<T>({
   data,
@@ -59,8 +60,8 @@ export function DataTableView<T>({
   return (
     <>
       <div className="overflow-x-auto sm:rounded-lg mt-5">
-        <table className="w-full relative z-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-          <thead className="text-md font-bold text-[#323232] bg-[#FFFFFF] border-b">
+        <table className="w-full relative z-0 text-xs sm:text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs sm:text-md font-bold text-[#323232] bg-[#FFFFFF] border-b">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => (
@@ -83,7 +84,7 @@ export function DataTableView<T>({
             ))}
           </thead>
           <tbody>
-            {data &&data.length > 0 ? (
+            {data && data.length > 0 ? (
               table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="bg-[#FFFFFF] border-b">
                   {row.getVisibleCells().map((cell, cellIndex) => (
@@ -116,42 +117,58 @@ export function DataTableView<T>({
           </tbody>
         </table>
       </div>
-      <div className="flex justify-between items-center w-full mt-5">
-        <div className="flex items-center gap-2 text-[#667085]">
-          <label htmlFor="pagination" className="block">
-            Showing
-          </label>
-          <select
-            id="pagination"
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-              setPageIndex(0);
-            }}
-            className="bg-[#FFFFFF] border max-w-[5rem] border-gray-300 text-[#667085] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
-          >
-            {[5, 10, 20, 30, 50].map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-          <p className="w-full min-w-max">data out of {data && data.length}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <p className="text-[#667085]">Data per page</p>
+      <div className="flex flex-row justify-between items-center w-full mt-6">
+        <div className="flex justify-center items-center gap-2 text-[#667085] text-xs sm:text-sm">
           <div className="flex items-center gap-2">
+            <label htmlFor="pagination" className="block">
+              Showing
+            </label>
+            <select
+              id="pagination"
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setPageIndex(0);
+              }}
+              className="bg-[#FFFFFF] border max-w-[5rem] border-gray-300 text-[#667085] text-xs sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+            >
+              {[5, 10, 20, 30, 50].map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p className="hidden sm:block">data out of {data && data.length}</p>
+        </div>
+        <div className="flex gap-2 text-xs sm:text-sm items-center">
+          <p className="text-[#667085]">Data per page</p>
+          <div className="flex gap-2 items-center">
             <button
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              className="flex items-center justify-center w-8 h-8 sm:w-8 sm:h-8"
             >
-              <IconLeft />
+              <Image
+                src="/icons/btn-left.svg"
+                alt="Previous"
+                width={8}
+                height={8}
+                className="w-8 h-8"
+              />
             </button>
             <button
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              className="flex items-center justify-center w-8 h-8 sm:w-8 sm:h-8"
             >
-              <IconRight />
+              <Image
+                src="/icons/btn-right.svg"
+                alt="Next"
+                width={8}
+                height={8}
+                className="w-8 h-8"
+              />
             </button>
           </div>
         </div>

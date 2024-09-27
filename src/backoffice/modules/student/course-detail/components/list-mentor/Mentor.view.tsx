@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Mentor } from './mentor.type';
 import { fileHelper } from '@/helpers/file-manager/fileUpload.helper';
+import clsx from 'clsx';
 
 interface MentorViewProps {
   mentorData: Mentor[];
+  className?: string;
 }
 
-const MentorView: React.FC<MentorViewProps> = ({ mentorData }) => {
+const MentorView: React.FC<MentorViewProps> = ({ mentorData, className }) => {
   const [mentorImages, setMentorImages] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -36,12 +38,15 @@ const MentorView: React.FC<MentorViewProps> = ({ mentorData }) => {
   }, [mentorData]);
 
   return (
-    <div className="mt-1">
-      <div className="max-w-xl mx-auto px-10">
-        <h2 className="text-base font-bold text-gray-900 mb-4">Mentors</h2>
+    <div className={clsx(className, 'mt-1')}>
+      <div className="max-w-xl mx-auto">
+        <h2 className="text-xl font-bold font-poppins text-gray-900 mb-4">Mentors</h2>
         <div>
           {mentorData.map((mentor) => (
-            <div key={mentor.mentorId} className="flex items-center space-x-4 p-4">
+            <div
+              key={mentor.mentorId}
+              className="flex items-center space-x-4 px-4"
+            >
               <Image
                 src={`${process.env.API_SERVER_URL}/v1/file/${mentor.mentorPhoto}`}
                 alt={mentor.mentorName}
@@ -49,11 +54,13 @@ const MentorView: React.FC<MentorViewProps> = ({ mentorData }) => {
                 height={40}
                 className="rounded-full object-cover w-[40px] h-[40px]"
                 onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = '/img/manage-user/profile-template.svg';
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/img/manage-user/profile-template.svg';
                 }}
-                />
-              <span className="text-sm font-medium text-gray-800">{mentor.mentorName}</span>
+              />
+              <span className="text-base font-medium font-lato text-gray-800">
+                {mentor.mentorName}
+              </span>
             </div>
           ))}
         </div>

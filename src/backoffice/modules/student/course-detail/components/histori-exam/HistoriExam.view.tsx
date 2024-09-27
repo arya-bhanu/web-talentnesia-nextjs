@@ -58,7 +58,7 @@ const HistoriExamView: React.FC<HistoriExamViewProps> = ({
     <div className="p-4">
       <h1 className="text-xl font-bold text-gray-800 mb-8">Histori Exam</h1>
       <table className="min-w-full divide-y divide-gray-200 mb-4">
-        <thead className="bg-gray-50">
+        <thead className="">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider">
               <div className="flex items-center cursor-pointer" onClick={() => onSort('no')}>
@@ -78,8 +78,8 @@ const HistoriExamView: React.FC<HistoriExamViewProps> = ({
                 <SortIcon className={`ml-2 h-4 w-4 text-gray-400 ${sortColumn === 'submitDate' ? (sortDirection === 'asc' ? 'rotate-180' : '') : ''}`} />
               </div>
             </th>
-            <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider">
-              <div className="flex items-center cursor-pointer" onClick={() => onSort('status')}>
+            <th className="px-6 py-3 text-center text-xs font-bold text-gray-800 uppercase tracking-wider">
+              <div className="flex items-center cursor-pointer relative justify-center" onClick={() => onSort('status')}>
                 Status
                 <SortIcon className={`ml-2 h-4 w-4 text-gray-400 ${sortColumn === 'status' ? (sortDirection === 'asc' ? 'rotate-180' : '') : ''}`} />
               </div>
