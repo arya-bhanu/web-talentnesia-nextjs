@@ -31,7 +31,7 @@ const CategoryView: React.FC<ICategoryView> = ({
     useCategoryActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData?: string) => {
+    (id: string, rowData: any) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);

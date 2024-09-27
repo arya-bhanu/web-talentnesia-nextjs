@@ -105,17 +105,14 @@ export function DropFile({ onChange, initialImage }: DropFileProps) {
       ) : (
         <div className="text-center p-4">
           <p className="mb-2 font-medium">File Uploaded:</p>
-          <p className="text-sm text-gray-500">{file.name}</p>
-          {file.type.startsWith('image/') && (
-            <Image
-              src={URL.createObjectURL(file)}
-              alt="Uploaded file preview"
-              className="mt-4 max-w-full h-auto rounded-lg object-cover"
-              style={{ maxHeight: '200px', padding: '10px' }}
-              width={400} 
-              height={200}
-            />
-          )}
+          <Image
+            src={imageSrc}
+            alt="Uploaded file preview"
+            className="mt-4 max-w-full h-auto rounded-lg object-cover"
+            width={200}
+            height={200}
+            style={{ maxHeight: '200px', padding: '10px' }}
+          />
         </div>
       )}
       <input
