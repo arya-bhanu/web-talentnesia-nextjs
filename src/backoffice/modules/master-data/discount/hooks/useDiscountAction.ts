@@ -17,14 +17,7 @@ export const useDiscountActions = () => {
     }
   }, []);
 
-  const handleEditDiscount = useCallback(async (id: string, data: {
-    name: string;
-    code: string;
-    persentage: number;
-    startDate: string;
-    endDate: string;
-    active: number;
-  }) => {
+  const handleEditDiscount = useCallback(async (id: string, data: any) => {
     try {
       await discountAPI.update(id, data);
     } catch (error) {

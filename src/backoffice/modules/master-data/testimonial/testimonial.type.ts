@@ -25,7 +25,7 @@ export interface SingleTestimonialResponse {
   success: boolean;
   code: number;
   status: string;
-  errors: null; 
+  errors: any; 
   messages: string;
   data: Testimonial;
 }

@@ -17,7 +17,7 @@ export const useCategoryActions = () => {
   
 
 
-  const handleEditCategory = useCallback(async (id: string, data: {name: string, code: string, status?: number}) => {
+  const handleEditCategory = useCallback(async (id: string, data: any) => {
     try {
       await categoryAPI.update(id, data);
     } catch (error) {

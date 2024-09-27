@@ -35,12 +35,11 @@ const DetailCourseView: React.FC<DetailCourseViewProps> = ({ data, isLoading }) 
           </div>
         </div>
         <div className="relative container pt-2 mt-[-8rem]">
-          <PopularCourses courses={data?.items?.map(item => ({...item, currentPrice: parseFloat(item.currentPrice), rating: parseFloat(item.rating)}))} isLoading={isLoading} />
+          <PopularCourses courses={data?.items} isLoading={isLoading} />
         </div>
       </div>
     </div>
   );
-
 };
 
 export default DetailCourseView;

@@ -17,7 +17,7 @@ export default function Example() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
 
-  const handleEdit = useCallback((id: string, rowData: string) => {
+  const handleEdit = useCallback((id: string, rowData: any) => {
     setSelectedId(id);
     setSelectedRowData(rowData);
     setIsPopupOpen(true);

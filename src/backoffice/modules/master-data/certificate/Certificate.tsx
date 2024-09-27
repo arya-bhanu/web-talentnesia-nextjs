@@ -26,16 +26,14 @@ const Certificate = () => {
     await queryClient.invalidateQueries({ queryKey: ['certificate'] });
   }, [queryClient]);
 
-
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string | { name: string; file: string; active?: number }) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
       await handleDeleteCertificate(id);
       fetchData();
-    } else if (action === "edit" && typeof rowData === 'object') {
+    } else if (action === "edit" && rowData) {
       await handleEditCertificate(id, rowData);
       fetchData();
     }
-
   }, [fetchData, handleDeleteCertificate, handleEditCertificate]);
 
   const handleAdd = useCallback(async (name: string, file: string) => {
@@ -62,4 +60,5 @@ const Certificate = () => {
       fetchData={fetchData}
     />
   );
-};export default Certificate;
+};
+export default Certificate;

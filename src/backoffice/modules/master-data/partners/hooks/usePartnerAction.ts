@@ -1,21 +1,16 @@
 import { useCallback } from 'react';
 import { partnerAPI } from '../api/partnerApi';
 
-export  interface PartnerData {
+interface PartnerData {
   name: string, 
   address: string, 
   logo: string, 
   description: string
 }
 export const usePartnerActions = () => {
-  const handleAddPartner = useCallback(async (name: string) => {
+  const handleAddPartner = useCallback(async (name: string, address: string, logo: string, description: string) => {
     try {
-      await partnerAPI.add({
-        name,
-        address: '',
-        logo: '',
-        description: ''
-      });
+      await partnerAPI.add({name, address, logo, description});
     } catch (error) {
       console.error('Failed to add partner');
     }
