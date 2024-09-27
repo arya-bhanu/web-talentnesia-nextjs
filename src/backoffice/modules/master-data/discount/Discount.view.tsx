@@ -33,7 +33,9 @@ const DiscountView: React.FC<IDiscountView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push('/backoffice/master-data/discount/add-discount/');
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push('/backoffice/master-data/discount/add-discount/');
   };
 
   const { handleAddDiscount, handleEditDiscount, handleDeleteDiscount } =

@@ -1,8 +1,8 @@
-import { DetailContent } from '@/backoffice/modules/manage-program/form-program/components/detail-content/DetailContent';
+import { DetailContent } from '@/backoffice/modules/manage-modul/components/detail-content/DetailContent';
 import React from 'react';
 
-const DetailProgramModul = () => {
+const DetailContentModul = () => {
   return <DetailContent />;
 };
 
-export default DetailProgramModul;
+export default DetailContentModul;

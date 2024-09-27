@@ -30,7 +30,9 @@ const TestimonialView: React.FC<ITestimonialView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push('/backoffice/master-data/testimonial/add-testimonial/');
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push('/backoffice/master-data/testimonial/add-testimonial/');
   };
 
   const {
