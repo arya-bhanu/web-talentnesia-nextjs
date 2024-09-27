@@ -4,9 +4,10 @@ import EmailIcon from '../../../../../../../public/icons/course-detail/mail.svg'
 import PhoneIcon from '../../../../../../../public/icons/course-detail/phone.svg';
 import LinkedInIcon from '../../../../../../../public/icons/course-detail/linkedin.svg';
 import FeatureCardView from '../../../../../components/feature-card/FeatureCard.view';
-import { Mentor } from './detailMentor.type';
+import { CoursesData, Mentor } from './detailMentor.type';
+import PopularCourses from './popular-courses/PopularCourse';
 
-const DetailMentorView: React.FC<{ mentor: Mentor }> = ({ mentor }) => {
+const DetailMentorView: React.FC<{ mentor: Mentor; courses: any[]; isLoading: boolean, data: CoursesData }> = ({ mentor, data, isLoading }) => {
   const [activeTab, setActiveTab] = useState('About');
   if (!mentor) return null;
   
@@ -142,25 +143,7 @@ const DetailMentorView: React.FC<{ mentor: Mentor }> = ({ mentor }) => {
                   <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error recusandae dignissimos ab sed vel nihil labore nisi, tenetur earum distinctio pariatur fugit aspernatur minus cumque rem! Odio quod ipsa accusamus!</p>
                   
                   <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <FeatureCardView
-                      title="Sample Course 1"
-                      logo="/path/to/course1-image.jpg"
-                      level="Beginner"
-                      description="A brief description of the course"
-                      rating={4.5}
-                      currentPrice={1000000}
-                      originalPrice={1500000}
-                      isLoading={false} url={''} />
-                    <FeatureCardView
-                      title="Sample Course 2"
-                      logo="/path/to/course2-image.jpg"
-                      level="Intermediate"
-                      description="Another brief description"
-                      rating={4.8}
-                      currentPrice={1200000}
-                      originalPrice={1800000}
-                      isLoading={false} url={''} />
-                    
+                  <PopularCourses courses={data.items} className='mb-16' isLoading={isLoading}/>
                   </div>
                 </div>
               )}
@@ -171,5 +154,4 @@ const DetailMentorView: React.FC<{ mentor: Mentor }> = ({ mentor }) => {
     </div>
   );
 };
-
 export default DetailMentorView;

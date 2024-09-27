@@ -26,12 +26,13 @@ const Discount = () => {
     await queryClient.invalidateQueries({ queryKey: ['Discount'] });
   }, [queryClient]);
 
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string) => {
+
+  const handleActionButtonRow = useCallback((id: string, action: "delete" | "edit", rowData?: string | { name: string; code: string; persentage: number; startDate: string; endDate: string; active: number; }) => {
     if (action === "delete") {
-      await handleDeleteDiscount(id);
+      handleDeleteDiscount(id);
       fetchData();
-    } else if (action === "edit" && rowData) {
-      await handleEditDiscount(id, rowData);
+    } else if (action === "edit" && typeof rowData !== 'string' && rowData) {
+      handleEditDiscount(id, rowData);
       fetchData();
     }
   }, [fetchData, handleDeleteDiscount, handleEditDiscount]);
@@ -60,5 +61,4 @@ const Discount = () => {
     />
   );
 };
-
 export default Discount;

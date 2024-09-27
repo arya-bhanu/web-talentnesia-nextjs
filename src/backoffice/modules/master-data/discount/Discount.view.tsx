@@ -54,17 +54,23 @@ const DiscountView: React.FC<IDiscountView> = ({
   }, []);
 
   const handleAddOrEditDiscount = useCallback(
-    async (id: string | undefined, data: {name: string}) => {
+    async (id: string | undefined, data: FormDataDisc) => {
       if (id) {
-        await handleEditDiscount(id, data );
+        await handleEditDiscount(id, {
+          name: data.name,
+          code: data.code,
+          persentage: data.persentage,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          active: data.active ?? 0,
+        });
       } else {
         await handleAddDiscount(data.name);
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
-    },
-    [handleEditDiscount, handleAddDiscount, fetchData],
+    },    [handleEditDiscount, handleAddDiscount, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(
@@ -184,10 +190,12 @@ const DiscountView: React.FC<IDiscountView> = ({
           setIsPopupOpen(false);
           setSelectedId(null);
           setSelectedRowData(null);
-        } }
+        }}
         onSave={handleAddOrEditDiscount}
         initialData={selectedRowData}
-        id={selectedId || undefined} title={''}      />
+        id={selectedId || undefined}
+        title={''}
+      />
 
       <AlertModal
         openModal={deleteModalOpen}
@@ -200,5 +208,4 @@ const DiscountView: React.FC<IDiscountView> = ({
       />
     </div>
   );
-};
-export default DiscountView;
+};export default DiscountView;

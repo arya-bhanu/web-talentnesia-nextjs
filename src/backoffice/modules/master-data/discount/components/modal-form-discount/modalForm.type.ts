@@ -1,4 +1,4 @@
-// modalForm.type.ts
+
 export interface FormDataDisc {
     name: string;
     persentage: number;

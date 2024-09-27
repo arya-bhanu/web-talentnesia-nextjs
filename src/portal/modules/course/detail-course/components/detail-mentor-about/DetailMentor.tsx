@@ -1,14 +1,14 @@
 import React from 'react'
 import DetailMentorview from './DetailMentor.view'
-import { Mentor } from './detailMentor.type'
+import { CoursesData, Mentor } from './detailMentor.type'
 
 
-const DetailMentor = ({ mentor }: { mentor: Mentor }) => {
+
+const DetailMentor = ({ mentor, courses, isLoading, data }: { mentor: Mentor; courses: any[]; isLoading: boolean; data: CoursesData }) => {
   return (
     <>
     <div>
-
-      <DetailMentorview mentor={mentor} />
+      <DetailMentorview mentor={mentor} courses={courses} isLoading={isLoading} data={data} />
     </div>
     </>
   )
