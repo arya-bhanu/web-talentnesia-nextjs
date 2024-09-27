@@ -52,6 +52,7 @@ const FormBlogView: React.FC<IFormBlogView> = ({
         <DropFile
           onChange={onFileChange}
           initialImage={fullImageUrl || ''}
+          uploadFolder='cms/blog'
         />
       </div>
 

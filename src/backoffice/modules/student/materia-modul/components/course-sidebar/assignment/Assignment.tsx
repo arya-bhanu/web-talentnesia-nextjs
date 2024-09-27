@@ -39,7 +39,7 @@ const Assignment: React.FC = () => {
         </div>
       </div>
       <div>
-        <DropFile onChange={handleImageChange} />
+        <DropFile uploadFolder='course/content/exam' onChange={handleImageChange} />
       </div>
       <div className="flex justify-center mt-4 mb-6">
         <button className="focus:outline-none text-black bg-[#FFC862] hover:bg-[#ffb428] focus:ring-yellow-500 font-semibold rounded-[30px] text-sm px-[270px] py-3 dark:focus:ring-yellow-800">
