@@ -27,8 +27,8 @@ const ListDraggableView: React.FC<IListDraggable> = ({
     transition,
   };
 
-  // const pathname = usePathname();
-  // const moduleId = useSearchParams().get('modulId');
+  const pathname = usePathname();
+  const moduleId = useSearchParams().get('modulId');
 
   const Icon = useMemo(() => {
     if (isexam) {
@@ -66,9 +66,9 @@ const ListDraggableView: React.FC<IListDraggable> = ({
           <DragIndicator />
         </button>
         {Icon}
-        {/* <Link href={pathname + `detail-content?contentId=${id}&modulId=${moduleId}`}> */}
-        <h3 className="font-medium font-lato">{title}</h3>
-        {/* </Link> */}
+        <Link href={pathname + `detail-content?contentId=${id}`}>
+          <h3 className="font-medium font-lato">{title}</h3>
+        </Link>
       </div>
       <p className="font-semibold font-lato text-xs">{durationMinute} minute</p>
     </div>

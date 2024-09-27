@@ -13,6 +13,7 @@ import useCreateQueryParams from '@/hooks/useCreateQueryParams';
 import { ISubmitType } from './formChapter.type';
 import { useStatusModalStore } from '@/lib/store';
 import AlertModal from '@/backoffice/components/alert-modal';
+import { z, ZodError } from 'zod';
 
 const FormChapter = () => {
   const params = useSearchParams();
@@ -53,6 +54,12 @@ const FormChapter = () => {
   const { data: dataChapter, isLoading: isLoadingChapter } = useQuery({
     queryKey: ['chapter'],
     queryFn: () => fetchChapter(params.get('chapterId')),
+  });
+
+  const chapterSchema = z.object({
+    chapter: z
+      .string()
+      .min(1, 'Chapter name is required')
   });
 
   useEffect(() => {
@@ -117,16 +124,36 @@ const FormChapter = () => {
     }
   }, [isConfirmedChapter]);
 
-  const handleSubmitChapter = (form: HTMLFormElement, action: 'addContent' | 'submit' | 'addExam') => {
+  const handleSubmitChapter = (
+    form: HTMLFormElement,
+    action: 'addContent' | 'submit' | 'addExam',
+  ) => {
     const formData = new FormData(form);
     setTempChapterFormData(formData);
   
     if (action === 'addContent' || action === 'addExam') {
-      setIsConfirmedChapter(true);
+      try {
+        const chapterName = formData.get('chapter') as string;
+        chapterSchema.parse({ chapter: chapterName });
+        setIsConfirmedChapter(true);
+      } catch (error) {
+        if (error instanceof ZodError) {
+          openModal({
+            status: 'error',
+            message: error.errors[0].message,
+          });
+        } else {
+          openModal({
+            status: 'error',
+            message: 'An unexpected error occurred',
+          });
+        }
+      }
     } else {
       setOpenAlertModalChapter(true);
     }
   };
+  
 
   const handleConfirmedSubmitChapter = async (formData: FormData) => {
     try {
@@ -183,6 +210,7 @@ const FormChapter = () => {
       }
     } catch (err) {
       console.error(err);
+      console.log(err);
       openModal({ status: 'error', message: JSON.stringify(err) });
     }
   };
