@@ -62,7 +62,9 @@ const NavbarView: React.FC<NavbarViewProps> = ({
 
   return (
     <nav
-      className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 pl-12 md:pl-64"
+      className={`fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 ${
+        isMenuOpen ? 'pl-64' : 'pl-20'
+      }`}
       style={style}
     >
       <div className="flex justify-between items-center py-4 px-6">
@@ -198,5 +200,4 @@ const NavbarView: React.FC<NavbarViewProps> = ({
     </nav>
   );
 };
-
 export default NavbarView;

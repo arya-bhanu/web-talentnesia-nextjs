@@ -33,7 +33,7 @@ import { DividerView } from '../divider/Divider.view';
 
     return (
       <div className="flex flex-col">
-        <div className="flex flex-col sm:flex-row rounded-lg overflow-hidden">
+        <div className="flex flex-col sm:flex-row overflow-hidden">
           <div className="flex-shrink-0 w-full sm:w-auto">
             <SkeletonLoader visible={props.isLoading ? props.isLoading : false} variant="image" height={100} width={100}/>
             {!props.isLoading && props.logo && (
@@ -44,8 +44,8 @@ import { DividerView } from '../divider/Divider.view';
                     ? `${process.env.API_SERVER_URL}/v1/file/${props.logo}`
                     : "/public/images/default-image.jpg"}
                   width={100}
-                  height={100}
-                  className="object-cover w-full h-full sm:max-w-[25vh]"
+                  height={80}
+                  className="object-cover w-full h-full rounded-[8.1px]"
                 />
               </div>
             )}

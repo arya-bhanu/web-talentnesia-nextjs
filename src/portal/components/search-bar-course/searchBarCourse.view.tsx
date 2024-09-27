@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
-import { SearchBarCourseViewProps } from './searchBarCourse.types';
+import { SearchBarCourseViewProps } from './searchBarCourse.type';
 
 const SearchBarCourseView: React.FC<SearchBarCourseViewProps> = ({
   placeHolder,
@@ -34,7 +34,7 @@ const SearchBarCourseView: React.FC<SearchBarCourseViewProps> = ({
       <input
         type="text"
         placeholder={placeHolder}
-        className="font-poppins text-[#667085] text-xs md:text-base w-full px-1 md:px-3 lg:px-5 border-none outline-none focus:outline-none focus:ring-0"
+        className="font-poppins text-[#667085] text-xs md:text-base w-full px-1 md:px-1 lg:px-2 border-none outline-none focus:outline-none focus:ring-0"
         value={value}
         onChange={onChangeInput}
       />

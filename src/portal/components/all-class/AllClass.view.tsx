@@ -8,6 +8,7 @@ import Image from 'next/image';
 import DropdownCourse from '../dropdown-course/DropdownCourse';
 import AllCourse from '@/portal/components/all-course/AllCourse';
 import SearchBarCourse from '../search-bar-course';
+import { DividerView } from '../divider/Divider.view';
 
 const AllClassView: React.FC<AllClassProps> = ({
   filterOptions,
@@ -72,11 +73,11 @@ const AllClassView: React.FC<AllClassProps> = ({
         </h2>
       )}
 
-      <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 mt-8 md:space-x-16 lg:space-x-16 md:mt-12 lg:mt-16">
+      <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 mt-8 md:space-x-4 lg:space-x-6 md:mt-12 lg:mt-16">
         {/* Sidebar */}
         <div
           ref={sidebarRef}
-          className={`fixed md:static inset-y-0 left-0 w-72 bg-white z-20 transform ${
+          className={`fixed md:static inset-y-0 left-0 w-64 bg-white z-20 transform ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 ease-in-out md:translate-x-0`}
         >
@@ -138,6 +139,7 @@ const AllClassView: React.FC<AllClassProps> = ({
               )}
             </div>
           </div>
+          <DividerView className="w-full h-[1px] mt-2 mb-4" />
 
           {/* Course Cards */}
           <div className="grid gap-4">
