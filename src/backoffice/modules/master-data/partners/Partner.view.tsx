@@ -15,7 +15,6 @@ import { useRouter } from 'next/navigation';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 import Image from 'next/image';
 
-
 const columnHelper = createColumnHelper<any>();
 
 const PartnersView: React.FC<IPartnerView> = ({
@@ -36,17 +35,17 @@ const PartnersView: React.FC<IPartnerView> = ({
     router.push('/backoffice/master-data/partner/add-partner/');
   };
 
-  const {
-    handleAddPartner,
-    handleEditPartner,
-    handleDeletePartner,
-  } = usePartnerActions();
+  const { handleAddPartner, handleEditPartner, handleDeletePartner } =
+    usePartnerActions();
 
-  const handleEdit = useCallback((id: string, rowData: string) => {
-    setSelectedId(id);
-    setSelectedRowData(rowData);
-    setIsPopupOpen(true);
-  }, [setIsPopupOpen]);
+  const handleEdit = useCallback(
+    (id: string, rowData: string) => {
+      setSelectedId(id);
+      setSelectedRowData(rowData);
+      setIsPopupOpen(true);
+    },
+    [setIsPopupOpen],
+  );
 
   const handleDelete = useCallback((id: string) => {
     setSelectedId(id);
@@ -54,17 +53,31 @@ const PartnersView: React.FC<IPartnerView> = ({
   }, []);
 
   const handleAddOrEditPartner = useCallback(
-    async (id: string | undefined, data: { name: string, address: string, logo: string, description: string }) => {
+    async (
+      id: string | undefined,
+      data: {
+        name: string;
+        address: string;
+        logo: string;
+        description: string;
+      },
+    ) => {
       if (id) {
         await handleEditPartner(id, data);
       } else {
-        await handleAddPartner(data.name);
+        await handleAddPartner(
+          data.name,
+          data.address,
+          data.logo,
+          data.description,
+        );
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditPartner, handleAddPartner, fetchData],  );
+    [handleEditPartner, handleAddPartner, fetchData],
+  );
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -79,20 +92,10 @@ const PartnersView: React.FC<IPartnerView> = ({
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('logo', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Logo" />
-        ),
+        header: ({ column }) => <SortingTable column={column} title="Logo" />,
         cell: (info) => {
           const logoURL = info.getValue() as string;
-          return(
-            <Image 
-            src={logoURL}  
-            alt='Logo'
-            width={100}
-            height={100}
-            />
-          
-          )
+          return <Image src={logoURL} alt="Logo" width={100} height={100} />;
         },
       }),
       columnHelper.accessor('description', {
@@ -102,10 +105,10 @@ const PartnersView: React.FC<IPartnerView> = ({
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('active', {
-        header: ({ column }) => (
-          <SortingTable column={column} title="Status" />
+        header: ({ column }) => <SortingTable column={column} title="Status" />,
+        cell: (info) => (
+          <BadgeStatus status={info.getValue() as number} type={1} />
         ),
-        cell: (info) => <BadgeStatus status={info.getValue() as number} type={1}/>,
       }),
       columnHelper.accessor('id', {
         id: 'action',
@@ -150,7 +153,7 @@ const PartnersView: React.FC<IPartnerView> = ({
         },
       }),
     ],
-    [handleEdit, handleDelete]
+    [handleEdit, handleDelete],
   );
 
   return (

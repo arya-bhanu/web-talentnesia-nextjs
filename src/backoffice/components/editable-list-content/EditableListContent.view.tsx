@@ -27,6 +27,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import PermissionGranted from '../permission-granted/PermissionGranted';
+import Link from 'next/link';
 
 const EditableListContentView: React.FC<
   IEditableListContent & { className?: string } & {
@@ -117,18 +118,25 @@ const EditableListContentView: React.FC<
         {openModalEdit && <FormContent contentId={injectId} />}
       </Modal>
       <div className="flex items-center gap-2">
-        <button {...listeners} {...attributes} type="button">
+        <button
+          {...listeners}
+          {...attributes}
+          type="button"
+          className="cursor-move"
+        >
           <DragIndicator />
         </button>
         {Icon}
-        <h3 className="font-medium font-lato">{title}</h3>
+        {/* <Link href={pathname + `detail-content?contentId=${id}`}> */}
+          <h3 className="font-medium font-lato cursor-pointer">{title}</h3>
+        {/* </Link> */}
       </div>
       <div className="flex items-center gap-3">
         <p className="font-semibold font-lato text-xs">
           {renderMinuteTime} minute
         </p>
         <div className="flex items-center gap-2.5">
-          <PermissionGranted roleable role='manage-module.editContent'>
+          <PermissionGranted roleable role="manage-module.editContent">
             <button
               onClick={() => {
                 const modulId = params.get('modulId');

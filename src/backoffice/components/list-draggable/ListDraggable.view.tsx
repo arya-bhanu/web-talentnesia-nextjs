@@ -28,7 +28,6 @@ const ListDraggableView: React.FC<IListDraggable> = ({
   };
 
   const pathname = usePathname();
-  const moduleId = useSearchParams().get('modulId');
 
   const Icon = useMemo(() => {
     if (isexam) {

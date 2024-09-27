@@ -1,5 +1,3 @@
-import { IMentoring } from "../form-mentoring/formMentoring.type";
-
 export interface APIContentChapterProps {
   chapterId: string;
   title: string;
@@ -10,5 +8,4 @@ export interface APIContentChapterProps {
   id: string;
   isexam: 0 | 1;
   order: number;
-  mentoring?: IMentoring
 }

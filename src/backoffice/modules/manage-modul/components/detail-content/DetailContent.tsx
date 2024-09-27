@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
@@ -20,15 +20,12 @@ const contentComponents = {
 
 export const DetailContent: React.FC = () => {
   const contentId = useSearchParams().get('contentId');
-  console.log('contentId', contentId);
 
   const { data: contentData, isLoading } = useQuery({
     queryKey: ['content', contentId],
     queryFn: () => fetchContent(contentId as string),
     enabled: !!contentId,
   });
-
-  console.log('contentData', contentData);
 
   if (!contentId) {
     return <div>Content ID not provided</div>;
@@ -38,11 +35,22 @@ export const DetailContent: React.FC = () => {
     <Loading isLoading={isLoading}>
       {contentData ? (
         (() => {
-          const Component = contentComponents[contentData.data.type as keyof typeof contentComponents];
-          return Component ? <Component content={contentData.data} isLoading={isLoading} /> : <div>Unsupported content type</div>;
+          if (contentData.data.isexam === 1) {
+            return <DetailExam content={contentData.data} />;
+          }
+
+          const Component =
+            contentComponents[
+              contentData.data.type as keyof typeof contentComponents
+            ];
+          return Component ? (
+            <Component content={contentData.data} isLoading={isLoading} />
+          ) : (
+            <div>Unsupported content type</div>
+          );
         })()
       ) : (
-        <div>Content not foundadawdawd</div>
+        <div>Content not found</div>
       )}
     </Loading>
   );
