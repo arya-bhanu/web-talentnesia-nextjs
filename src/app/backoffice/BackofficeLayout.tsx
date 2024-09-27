@@ -14,7 +14,6 @@ import { isTokenNull } from '@/lib/lib';
 const Sidebar = dynamic(() => import('@/backoffice/components/sidebar'), {
   ssr: false,
 });
-
 const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -23,7 +22,8 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { user, setUser } = useAuth();
 
-  const [showSessionEndedModal, setShowSessionEndedModal] = useState(isTokenNull());
+  const [showSessionEndedModal, setShowSessionEndedModal] =
+    useState(isTokenNull());
 
   useEffect(() => {
     if (user) {
@@ -102,7 +102,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
     return () => clearInterval(tokenCheckInterval);
   }, []);
 
-  if (isLoading) { 
+  if (isLoading) {
     return <Loading isLoading={isLoading} />;
   }
 
@@ -140,10 +140,12 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
         showCloseButton={false}
       />
       {user && (
+        // Inside the BackofficeLayout component
         <Navbar
-          moduleRoutePath='backoffice'
+          moduleRoutePath="backoffice"
           user={user}
           style={isDashboard ? { ...containerStyle } : undefined}
+          isSidebarOpen={isSidebarOpen}
         />
       )}
       <Sidebar
@@ -152,7 +154,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       />
       <div
         className={`px-8 py-16 min-h-screen transition-all duration-300 ${
-          isSidebarOpen ? 'md:ml-64' : 'md:ml-16'
+          isSidebarOpen ? 'md:ml-64' : 'ml-12 md:ml-16'
         } bg-[#FAFAFA]`}
       >
         <div
@@ -160,9 +162,9 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
           style={
             isDashboard
               ? {
-                marginTop: '3rem',
+                  marginTop: '3rem',
                 }
-              : { }
+              : {}
           }
         >
           {children}

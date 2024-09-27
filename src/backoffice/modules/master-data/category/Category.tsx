@@ -26,13 +26,12 @@ const Category = () => {
     await queryClient.invalidateQueries({ queryKey: ['Category'] });
   }, [queryClient]);
 
-
-  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: string | { name: string; code: string; status?: number }) => {
+  const handleActionButtonRow = useCallback(async (id: string, action: "delete" | "edit", rowData?: any) => {
     if (action === "delete") {
-      await handleDeleteCategory(id);
+      await handleDeleteCategory(id); 
       fetchData();
-    } else if (action === "edit" && typeof rowData === 'object') {
-      await handleEditCategory(id, rowData);
+    } else if (action === "edit" && rowData) {
+      await handleEditCategory(id, rowData); 
       fetchData();
     }
   }, [fetchData, handleDeleteCategory, handleEditCategory]);
@@ -47,9 +46,11 @@ const Category = () => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
+  const categoryItems = data?.items || [];
+
   return (
     <CategoryView
-      data={data || []}
+      data={categoryItems}
       openPopoverIndex={openPopoverIndex}
       setOpenPopoverIndex={setOpenPopoverIndex}
       handleActionButtonRow={handleActionButtonRow}
@@ -62,4 +63,5 @@ const Category = () => {
     />
   );
 };
+
 export default Category;

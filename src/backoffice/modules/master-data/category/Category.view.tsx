@@ -31,7 +31,7 @@ const CategoryView: React.FC<ICategoryView> = ({
     useCategoryActions();
 
   const handleEdit = useCallback(
-    (id: string, rowData?: string) => {
+    (id: string, rowData: any) => {
       setSelectedId(id);
       setSelectedRowData(rowData);
       setIsPopupOpen(true);
@@ -45,7 +45,7 @@ const CategoryView: React.FC<ICategoryView> = ({
   }, []);
 
   const handleAddOrEditCategory = useCallback(
-    async (id: string | undefined, data: { name: string; code: string; status?: number }) => {
+    async (id: string | undefined, data: { name: string }) => {
       if (id) {
         await handleEditCategory(id, data);
       } else {
@@ -54,7 +54,8 @@ const CategoryView: React.FC<ICategoryView> = ({
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
-    },    [handleEditCategory, handleAddCategory, fetchData],
+    },
+    [handleEditCategory, handleAddCategory, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(

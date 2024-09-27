@@ -58,14 +58,13 @@ const PartnersView: React.FC<IPartnerView> = ({
       if (id) {
         await handleEditPartner(id, data);
       } else {
-        await handleAddPartner(data.name, data.address, data.logo, data.description);
+        await handleAddPartner(data.name);
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
     },
-    [handleEditPartner, handleAddPartner, fetchData],
-  );
+    [handleEditPartner, handleAddPartner, fetchData],  );
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [

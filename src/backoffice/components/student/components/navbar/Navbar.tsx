@@ -1,15 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import NavbarView from './Navbar.view';
 import { User, NavbarState } from './navbar.type';
 
 interface NavbarProps {
   user: User;
+  style?: CSSProperties;
   moduleRoutePath: string;
+  isSidebarOpen: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ user, moduleRoutePath }) => {
+const Navbar: React.FC<NavbarProps> = ({ user, style, moduleRoutePath, isSidebarOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -20,9 +22,11 @@ const Navbar: React.FC<NavbarProps> = ({ user, moduleRoutePath }) => {
 
   return (
     <NavbarView
-      moduleRoutePath={moduleRoutePath}
       {...navbarState}
       toggleMenu={toggleMenu}
+      style={style}
+      moduleRoutePath={moduleRoutePath}
+      isMenuOpen={isSidebarOpen}
     />
   );
 };

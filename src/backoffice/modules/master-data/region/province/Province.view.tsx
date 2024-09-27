@@ -51,17 +51,16 @@ const ProvinceView: React.FC<IProvinceView> = ({
   }, []);
 
   const handleAddOrEditProvince = useCallback(
-    async (id: string | undefined, data: { name: string }) => {
+    async (id: string | undefined, data: { province: string }) => {
       if (id) {
-        await handleEditProvince(id, data);
+        await handleEditProvince(id, data.province);
       } else {
-        await handleAddProvince(data.name);
+        await handleAddProvince(data.province);
       }
       fetchData();
       setSelectedId(null);
       setSelectedRowData(null);
-    },
-    [handleEditProvince, handleAddProvince, fetchData],
+    },    [handleEditProvince, handleAddProvince, fetchData],
   );
 
   const columns = useMemo<ColumnDef<any>[]>(

@@ -3,17 +3,18 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Breadcrumb } from '@/backoffice/components/breadcrumb';
+import { NavbarState } from './navbar.type';
 import {
   globalCustomTitles,
   globalCustomBreadcrumbs,
 } from '@/backoffice/components/global-customization/globalCustomizations';
 import { Button, Modal } from 'flowbite-react';
 import { logout, getSession } from '@/lib/action';
+import { SessionData } from '@/lib/lib';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
-import { NavbarState } from '../navbar/navbar.type';
-import { TitleNavbar } from '@/backoffice/components/title-navbar';
 import Link from 'next/link';
+import { TitleNavbar } from '@/backoffice/components/title-navbar';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
@@ -24,11 +25,20 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   user,
   isMenuOpen,
   toggleMenu,
+  style,
   moduleRoutePath,
 }) => {
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [sessionData, setSessionData] = useState<Partial<SessionData> | null>(
+    null,
+  );
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  const toggleProfileMenu = () => {
+    setIsProfileMenuOpen(!isProfileMenuOpen);
+  };
   const { setUser } = useAuth();
   const router = useRouter();
 
@@ -37,10 +47,12 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   };
 
   const handleProfileClick = async () => {
+    const session = await getSession();
+    setSessionData(session);
     setShowProfileModal(true);
   };
 
-  const handleLogoutClick = () => {
+  const handleLogout = () => {
     setShowLogoutModal(true);
   };
 
@@ -54,12 +66,18 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   };
 
   return (
-    <nav className="fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 pl-12 md:pl-64">
+    <nav
+      className={`fixed top-0 z-40 w-full bg-[#FAFAFA] dark:bg-gray-800 transition-all duration-300 dark:border-gray-700 ${
+        isMenuOpen ? 'pl-64' : 'pl-20'
+      }`}
+      style={style}
+    >
       <div className="flex justify-between items-center py-4 px-6">
         <div>
           <TitleNavbar customTitles={globalCustomTitles} />
           <Breadcrumb
             customBreadcrumbs={globalCustomBreadcrumbs}
+            className=""
             pathSegments={[]}
             formattedSegments={[]}
             moduleRoutePath={moduleRoutePath}
@@ -99,7 +117,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
             </div>
 
             <button
-              onClick={toggleMenu}
+              onClick={toggleProfileMenu}
               className="flex items-center focus:outline-none"
             >
               <div className="relative flex items-center space-x-2 bg-[#FFFFFF] p-2 rounded-lg shadow-sm">
@@ -125,7 +143,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                 />
               </div>
             </button>
-            {isMenuOpen && (
+            {isProfileMenuOpen && (
               <div className="absolute right-0 top-full mt-1 w-48 bg-white shadow-md rounded-md p-2 z-50">
                 <ul className="space-y-2">
                   <li
@@ -134,13 +152,13 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <Link href={'/operator/setting'} className="p-0 m-0 block">
+                  <Link href={'/backoffice/setting'} className="p-0 m-0 block">
                     <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
                       Setting
                     </li>
                   </Link>
                   <li
-                    onClick={handleLogoutClick}
+                    onClick={handleLogout}
                     className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm"
                   >
                     Logout
@@ -154,11 +172,11 @@ const NavbarView: React.FC<NavbarViewProps> = ({
       <Modal show={showProfileModal} onClose={() => setShowProfileModal(false)}>
         <Modal.Header>User Profile</Modal.Header>
         <Modal.Body>
-          {user && (
+          {sessionData && (
             <div>
-              <p>Name: {user.name}</p>
-              <p>Email: {user.email}</p>
-              <p>Role: {user.role}</p>
+              <p>Name: {sessionData.name}</p>
+              <p>Email: {sessionData.email}</p>
+              <p>Role: {sessionData.role}</p>
             </div>
           )}
         </Modal.Body>
@@ -187,5 +205,4 @@ const NavbarView: React.FC<NavbarViewProps> = ({
     </nav>
   );
 };
-
 export default NavbarView;

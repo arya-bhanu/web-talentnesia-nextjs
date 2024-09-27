@@ -12,6 +12,7 @@ import { fileHelper } from '@/helpers/file-manager/fileUpload.helper';
 import AlertModal from '@/backoffice/components/alert-modal/AlertModal';
 import { useStatusModalStore } from '@/lib/store';
 import ToasterProvider from '@/utils/ToasterProvider';
+import { User } from '../user.type';
 
 export const useStudentForm = (id: string | null = null) => {
   const [showAlertModal, setShowAlertModal] = useState(false);
@@ -170,9 +171,11 @@ export const useStudentForm = (id: string | null = null) => {
     try {
       let response;
       if (form.id) {
-        response = await userAPI.update(form.id, form);
+
+        response = await userAPI.update(form.id, form as unknown as { [key: string]: User });
       } else {
-        response = await userAPI.add(form);
+
+        response = await userAPI.add(form as unknown as FormData);
       }
       if (response && response.success) {
         openModal({
@@ -192,8 +195,8 @@ export const useStudentForm = (id: string | null = null) => {
         message: error instanceof Error ? error.message : 'An unexpected error occurred',
       });
     }
-  };
 
+  };
   useEffect(() => {
     if (isConfirmed) {
       confirmSubmit();

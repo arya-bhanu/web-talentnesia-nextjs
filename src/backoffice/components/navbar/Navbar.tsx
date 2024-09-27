@@ -8,9 +8,10 @@ interface NavbarProps {
   user: User;
   style?: CSSProperties;
   moduleRoutePath: string;
+  isSidebarOpen: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ user, style, moduleRoutePath }) => {
+const Navbar: React.FC<NavbarProps> = ({ user, style, moduleRoutePath, isSidebarOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -25,6 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, style, moduleRoutePath }) => {
       toggleMenu={toggleMenu}
       style={style}
       moduleRoutePath={moduleRoutePath}
+      isMenuOpen={isSidebarOpen}
     />
   );
 };

@@ -1,11 +1,11 @@
 export interface BootcampData {
-  items: BootcampItems[];
+  items: any[];
   testimonials: Testimonials[];
 }
 
 export interface BootcampViewProps {
   data: BootcampData;
-  courses: BootcampItems[];
+  courses: any[];
   isLoading?: boolean;
 }
 
@@ -14,16 +14,4 @@ export interface Testimonials {
   fullName?: string;
   statusUser?: string;
   description?: string;
-}
-export interface BootcampItems {
-  logo: string; 
-  title: string; 
-  description: string; 
-  duration: number | null; 
-  level: string;
-  totalModul: number; 
-  currentPrice: number; 
-  originalPrice: number; 
-  url: string; 
-  rating: string; 
 }

@@ -51,7 +51,13 @@ const User: React.FC = () => {
   const handleActionButtonRow = async (id: string, action: "edit" | "delete", rowData?: User) => {
     if (action === 'edit' && rowData) {
       try {
-        await userAPI.update(id, convertUserToMentorFormData(rowData));
+
+        const formData = new FormData();
+        const mentorFormData = convertUserToMentorFormData(rowData);
+        Object.entries(mentorFormData).forEach(([key, value]) => {
+          formData.append(key, value as string | Blob);
+        });
+        await userAPI.update(id, formData);
         // Handle successful update
       } catch (error) {
         console.error('Error updating user:', error);
@@ -66,8 +72,8 @@ const User: React.FC = () => {
         // Handle error
       }
     }
-  };
-  return (
+
+  };  return (
     <UserView
       Filter={Filter}
       setFilter={setFilter}

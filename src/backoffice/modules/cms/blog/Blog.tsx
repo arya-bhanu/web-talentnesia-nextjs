@@ -13,6 +13,22 @@ import AlertModal from '@/backoffice/components/alert-modal/AlertModal';
 import { useStatusModalStore } from '@/lib/store';
 import { userAPI } from '../../user/api/userApi';
 
+const AuthorCell: React.FC<{ authorId: string }> = ({ authorId }) => {
+  const [authorName, setAuthorName] = React.useState<string>('');
+
+  React.useEffect(() => {
+    const fetchAuthorName = async () => {
+      const response = await userAPI.show(authorId);
+      if (response && response.data) {
+        setAuthorName(response.data.name);
+      }
+    };
+    fetchAuthorName();
+  }, [authorId]);
+
+  return <>{authorName}</>;
+};
+
 const Blog = () => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
   const [filter, setFilter] = useState('');
@@ -64,19 +80,7 @@ const Blog = () => {
         header: 'Author',
         cell: ({ getValue }) => {
           const authorId = getValue() as string;
-          const [authorName, setAuthorName] = React.useState<string>('');
-
-          React.useEffect(() => {
-            const fetchAuthorName = async () => {
-              const response = await userAPI.show(authorId);
-              if (response && response.data) {
-                setAuthorName(response.data.name);
-              }
-            };
-            fetchAuthorName();
-          }, [authorId]);
-
-          return authorName;
+          return <AuthorCell authorId={authorId} />;
         },
       },
       { accessorKey: 'status', header: 'Status' },

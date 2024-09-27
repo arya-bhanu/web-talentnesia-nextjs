@@ -3,9 +3,10 @@
 import Navbar from '@/backoffice/components/operator/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession } from '@/lib/action'; // Removed refreshToken
+import { getSession } from '@/lib/action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import Loading from '@/components/loading';
 
 const Sidebar = dynamic(
   () => import('@/backoffice/components/operator/components/sidebar'),
@@ -65,14 +66,18 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading isLoading={isLoading} />;
   }
 
   if (!user) {
     return null;
   }
 
-  // Determine if background color should be hidden based on current route
+  const containerStyle = {
+    // maxWidth: '80%',
+    // marginLeft: '9%',
+  };
+
   const customPageStyle = [
     '/operator/dashboard/',
     '/operator/manage-program/',
@@ -81,13 +86,22 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="bg-[#FAFAFA]">
-      {user && <Navbar moduleRoutePath="operator" user={user} />}
+      {user && (
+        <Navbar
+          moduleRoutePath="mentor"
+          user={user}
+          style={isDashboard ? { ...containerStyle } : undefined}
+          isSidebarOpen={isSidebarOpen}
+        />
+      )}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div
-        className={`px-8 py-16 min-h-screen transition-all duration-300 md:ml-64 bg-[#FAFAFA]`}
+        className={`px-8 py-16 min-h-screen transition-all duration-300 ${
+          isSidebarOpen ? 'md:ml-64' : 'ml-12 md:ml-16'
+        } bg-[#FAFAFA]`}
       >
         <div
           className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}
