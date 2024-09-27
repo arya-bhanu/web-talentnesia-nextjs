@@ -38,7 +38,7 @@ const SidebarView: React.FC<SidebarViewProps> = ({
       <div className="flex-shrink-0">
         <div className={`flex items-center justify-between py-4 px-3 ${isSidebarOpen ? '' : 'justify-center'}`}>
           <Link href="/" className="flex items-center">
-            <div className="w-12 h-12 flex-shrink-0 mr-2">
+            <div className="w-12 h-12 flex-shrink-0">
               <Image
                 src="/icons/sidebar/logo.png"
                 alt="logo image"
@@ -56,7 +56,7 @@ const SidebarView: React.FC<SidebarViewProps> = ({
           <button
             onClick={toggleSidebar}
             className={`p-2 transition-all duration-300 rounded-full flex-shrink-0 ${
-              isSidebarOpen ? 'bg-transparent' : 'bg-blue-500 ml-2'
+              isSidebarOpen ? 'bg-transparent' : ''
             }`}
             style={{ width: 38, height: 38 }}
           >

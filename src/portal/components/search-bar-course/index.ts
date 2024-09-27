@@ -1,1 +1,1 @@
-export {default} from './SearchbarCourse';
+export { default } from './SearchBarCourse';

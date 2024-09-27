@@ -154,7 +154,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
       />
       <div
         className={`px-8 py-16 min-h-screen transition-all duration-300 ${
-          isSidebarOpen ? 'md:ml-64' : 'md:ml-16'
+          isSidebarOpen ? 'md:ml-64' : 'ml-12 md:ml-16'
         } bg-[#FAFAFA]`}
       >
         <div

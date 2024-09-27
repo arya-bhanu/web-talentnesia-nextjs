@@ -73,18 +73,30 @@ const StudentLayout = ({ children }: { children: ReactNode }) => {
     return null;
   }
 
+  const containerStyle = {
+    // maxWidth: '80%',
+    // marginLeft: '9%',
+  };
+
   const customPageStyle = pathname.startsWith('/student/student/');
 
   return (
     <div className="bg-[#FAFAFA]">
-      {user && <Navbar moduleRoutePath="mentor" user={user} />}
+      {user && (
+        <Navbar
+          moduleRoutePath="mentor"
+          user={user}
+          style={isDashboard ? { ...containerStyle } : undefined}
+          isSidebarOpen={isSidebarOpen}
+        />
+      )}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div
         className={`px-8 py-16 min-h-screen transition-all duration-300 ${
-          isSidebarOpen ? 'md:ml-64' : 'md:ml-16'
+          isSidebarOpen ? 'md:ml-64' : 'ml-12 md:ml-16'
         } bg-[#FAFAFA]`}
       >
         <div

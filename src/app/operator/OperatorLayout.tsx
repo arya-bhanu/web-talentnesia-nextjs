@@ -3,7 +3,7 @@
 import Navbar from '@/backoffice/components/operator/components/navbar';
 import React, { ReactNode, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { getSession } from '@/lib/action'; 
+import { getSession } from '@/lib/action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Loading from '@/components/loading';
@@ -67,11 +67,16 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
 
   if (isLoading) {
     return <Loading isLoading={isLoading} />;
-  }  
+  }
 
   if (!user) {
     return null;
   }
+
+  const containerStyle = {
+    // maxWidth: '80%',
+    // marginLeft: '9%',
+  };
 
   const customPageStyle = [
     '/operator/dashboard/',
@@ -81,13 +86,22 @@ const OperatorLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="bg-[#FAFAFA]">
-      {user && <Navbar moduleRoutePath="operator" user={user} />}
+      {user && (
+        <Navbar
+          moduleRoutePath="mentor"
+          user={user}
+          style={isDashboard ? { ...containerStyle } : undefined}
+          isSidebarOpen={isSidebarOpen}
+        />
+      )}
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div
-        className={`px-8 py-16 min-h-screen transition-all duration-300 md:ml-64 bg-[#FAFAFA]`}
+        className={`px-8 py-16 min-h-screen transition-all duration-300 ${
+          isSidebarOpen ? 'md:ml-64' : 'ml-12 md:ml-16'
+        } bg-[#FAFAFA]`}
       >
         <div
           className={`mt-14 rounded-xl ${customPageStyle ? '' : 'p-4 shadow-sm bg-[#FFFFFF]'}`}

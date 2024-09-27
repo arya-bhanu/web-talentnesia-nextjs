@@ -34,6 +34,11 @@ const NavbarView: React.FC<NavbarViewProps> = ({
   const [sessionData, setSessionData] = useState<Partial<SessionData> | null>(
     null,
   );
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  const toggleProfileMenu = () => {
+    setIsProfileMenuOpen(!isProfileMenuOpen);
+  };
   const { setUser } = useAuth();
   const router = useRouter();
 
@@ -112,7 +117,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
             </div>
 
             <button
-              onClick={toggleMenu}
+              onClick={toggleProfileMenu}
               className="flex items-center focus:outline-none"
             >
               <div className="relative flex items-center space-x-2 bg-[#FFFFFF] p-2 rounded-lg shadow-sm">
@@ -138,7 +143,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                 />
               </div>
             </button>
-            {isMenuOpen && (
+            {isProfileMenuOpen && (
               <div className="absolute right-0 top-full mt-1 w-48 bg-white shadow-md rounded-md p-2 z-50">
                 <ul className="space-y-2">
                   <li
