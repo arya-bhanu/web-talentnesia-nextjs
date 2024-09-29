@@ -20,7 +20,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           </h3>
         </div>
       </Modal.Body>
-      <Modal.Footer className="bg-gray-200 p-3 justify-end">
+      <Modal.Footer className="bg-gray-100 p-3 justify-end">
         <div className="flex gap-4">
           <Button color="gray" onClick={onClose} className="underline text-gray-600">
             {'Cancel'}

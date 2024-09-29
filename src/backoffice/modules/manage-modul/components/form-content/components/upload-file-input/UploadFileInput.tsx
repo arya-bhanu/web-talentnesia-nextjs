@@ -5,21 +5,22 @@ import DocumentUpload from '@/../public/icons/document-upload.svg';
 interface UploadFileInputProps {
   onChange: (fileUrl: string, fileName: string, fileType: number) => void;
   initialFileName: string;
+  initialFileUrl: string;
   fileType?: number;
 }
 
-export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, initialFileName, fileType }) => {
+export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, initialFileName, initialFileUrl, fileType }) => {
   const [fileName, setFileName] = useState<string | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (initialFileName) {
+    if (initialFileName !== undefined || initialFileUrl !== undefined) {
+      setFileUrl(initialFileUrl);
       setFileName(initialFileName);
       setIsLoading(false);
     }
-  }, [initialFileName]);
-
-  console.log('fileName', fileName);
+  }, [initialFileName, initialFileUrl]);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -36,6 +37,7 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
           throw new Error('Unexpected response format');
         }
         setFileName(file.name);
+        setFileUrl(fileUrl);
         onChange(fileUrl, file.name, fileType || 1);
       } catch (error) {
         console.error('Failed to upload file:', error);
@@ -62,6 +64,16 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
         accept={fileType === 1 ? ".pdf,.doc,.docx" : "image/*"}
         disabled={isLoading}
       />
+      <input
+        type="hidden"
+        name="fileName"
+        value={fileName || ''}
+      />
+      <input
+        type="hidden"
+        name="fileUrl"
+        value={fileUrl || ''}
+      />  
     </div>
   );
 };

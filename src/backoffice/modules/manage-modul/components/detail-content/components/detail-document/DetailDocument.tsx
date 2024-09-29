@@ -17,7 +17,7 @@ const DetailDocument: React.FC<{
       const isPDF = content.body.endsWith('.pdf');
 
       if (isPDF) {
-        fetch(content.body)
+        fetch(imageContent)
           .then(response => {
             if (!response.ok) {
               setPdfNotFound(true);
@@ -30,7 +30,7 @@ const DetailDocument: React.FC<{
     } else {
       setHasContent(false);
     }
-  }, [content]);
+  }, [content, imageContent]);
 
   return (
     <Loading isLoading={isLoading}>
@@ -41,11 +41,13 @@ const DetailDocument: React.FC<{
               <p className="text-lg text-gray-600">PDF file not found</p>
             </div>
           ) : (
-            <iframe
+            <embed
               src={imageContent}
-              className="w-full h-screen border rounded-lg"
-              title="PDF Viewer"
-            ></iframe>
+              type="application/pdf"
+              width="100%"
+              height="600px"
+              className="border rounded-lg"
+            />
           )
         ) : (
           <div>Unsupported file type</div>

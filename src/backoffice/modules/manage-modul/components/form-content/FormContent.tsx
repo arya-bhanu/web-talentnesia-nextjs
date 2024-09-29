@@ -17,7 +17,6 @@ const FormContent: React.FC<{ contentId?: string }> = ({ contentId }) => {
   });
 
   useEffect(() => {
-    console.log('dataContent', dataContent);
     if (dataContent?.data) {
       const [hour, minute] = (dataContent.data.duration as string).split(':');
       setTime(new Date(0, 0, 0, parseInt(hour), parseInt(minute)));
@@ -27,7 +26,6 @@ const FormContent: React.FC<{ contentId?: string }> = ({ contentId }) => {
           .then((url) => {
             setFileName(dataContent.data.fileOrigin);
             setFileUrl(url);
-            console.log('url', url);
           })
           .catch(console.error);
       }
