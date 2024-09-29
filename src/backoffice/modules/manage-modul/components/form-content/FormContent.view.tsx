@@ -6,9 +6,7 @@ import { IFormContent } from './formContent.type';
 import { APIContentChapter } from '../../manageModul.type';
 import { UploadFileInput } from './components/upload-file-input/UploadFileInput';
 
-const FormContentView: React.FC<
-  IFormContent & { populatedData?: APIContentChapter }
-> = ({
+const FormContentView: React.FC<IFormContent & { populatedData?: APIContentChapter }> = ({
   time,
   setTime,
   fileUrl,
@@ -18,6 +16,8 @@ const FormContentView: React.FC<
   handleFileChange,
   populatedData,
 }) => {
+
+  console.log('file name view', fileName);
   return (
     <div className="flex flex-col gap-6">
       <input
@@ -25,11 +25,12 @@ const FormContentView: React.FC<
         name="time"
         value={time.toTimeString().substring(0, 5)}
       />
+      <input type="hidden" name="fileUrl" value={fileUrl} />
+      <input type="hidden" name="fileName" value={fileName} />
+      
       <div className="flex items-center gap-3">
         <div className="flex-1">
-          <LabelForm isImportant htmlFor="title">
-            Name
-          </LabelForm>
+          <LabelForm isImportant htmlFor="title">Name</LabelForm>
           <TextInput
             required
             id="title"
@@ -39,9 +40,7 @@ const FormContentView: React.FC<
           />
         </div>
         <div className="flex-1">
-          <LabelForm isImportant htmlFor="type">
-            Type
-          </LabelForm>
+          <LabelForm isImportant htmlFor="type">Type</LabelForm>
           <Select
             id="type"
             name="type"
@@ -56,16 +55,11 @@ const FormContentView: React.FC<
           </Select>
         </div>
       </div>
-
+      
       <div className="flex gap-3">
         <div className="flex-1">
-          <LabelForm isImportant htmlFor="upload_file">
-            Upload File
-          </LabelForm>
-          <Label
-            htmlFor="upload_file"
-            className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg"
-          >
+          <LabelForm isImportant htmlFor="upload_file">Upload File</LabelForm>
+          <Label htmlFor="upload_file" className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg">
             <UploadFileInput
               onChange={handleFileChange}
               initialFileName={fileName}

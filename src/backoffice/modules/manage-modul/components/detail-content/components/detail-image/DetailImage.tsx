@@ -4,19 +4,24 @@ import Loading from '@/components/loading';
 import { APIContentChapterProps } from '../../detailContent.type';
 
 const DetailImage: React.FC<{
-  content: { data: APIContentChapterProps };
+  content: APIContentChapterProps;
   isLoading: boolean;
 }> = ({ content, isLoading }) => {
   const [hasValidImage, setHasValidImage] = useState(false);
 
   useEffect(() => {
-    if (content && content.data && content.data.body) {
-      const isImage = /\.(png|jpg|jpeg|gif)$/i.test(content.data.body);
+    if (content && content && content.body) {
+      const isImage = /\.(png|jpg|jpeg|gif)$/i.test(content.body);
       setHasValidImage(isImage);
     } else {
       setHasValidImage(false);
     }
   }, [content]);
+
+  console.log('content', content);
+  console.log('hasValidImage', hasValidImage);
+
+  const imageContent = `${process.env.API_SERVER_URL}/v1/file/${content.body}`
 
   return (
     <Loading isLoading={isLoading}>
@@ -24,7 +29,7 @@ const DetailImage: React.FC<{
         <div className="flex justify-center items-center mt-8">
           <div className="relative w-full max-w-xl h-auto">
             <Image
-              src={content.data.body || ''}
+              src={imageContent}
               alt="Content Image"
               layout="responsive"
               width={800}
@@ -36,7 +41,7 @@ const DetailImage: React.FC<{
       ) : (
         <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
           <p className="text-lg text-gray-600">
-            {content && content.data && content.data.body
+            {content && content && content.body
               ? 'Unsupported file type'
               : 'No image available'}
           </p>

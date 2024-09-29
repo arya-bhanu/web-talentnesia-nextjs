@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { uploadFile } from '@/backoffice/modules/school/api/minioApi';
 import DocumentUpload from '@/../public/icons/document-upload.svg';
 
@@ -9,11 +9,22 @@ interface UploadFileInputProps {
 }
 
 export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, initialFileName, fileType }) => {
-  const [fileName, setFileName] = useState<string>(initialFileName);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (initialFileName) {
+      setFileName(initialFileName);
+      setIsLoading(false);
+    }
+  }, [initialFileName]);
+
+  console.log('fileName', fileName);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setIsLoading(true);
       try {
         const response = await uploadFile(file, 'content');
         let fileUrl: string;
@@ -28,6 +39,8 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
         onChange(fileUrl, file.name, fileType || 1);
       } catch (error) {
         console.error('Failed to upload file:', error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -37,7 +50,7 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
       <label htmlFor="upload_file" className="flex items-center cursor-pointer">
         <DocumentUpload />
         <span className="ml-2 text-sm font-normal">
-          {fileName || 'Choose file'}
+          {isLoading ? 'Loading...' : (fileName || 'Choose file')}
         </span>
       </label>
       <input
@@ -47,6 +60,7 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
         className="hidden"
         onChange={handleFileChange}
         accept={fileType === 1 ? ".pdf,.doc,.docx" : "image/*"}
+        disabled={isLoading}
       />
     </div>
   );

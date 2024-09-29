@@ -3,20 +3,21 @@ import Loading from '@/components/loading';
 import React, { useEffect, useState } from 'react';
 
 const DetailDocument: React.FC<{
-  content: { data: APIContentChapter };
+  content: APIContentChapter;
   isLoading: boolean;
 }> = ({ content, isLoading }) => {
 
   const [pdfNotFound, setPdfNotFound] = useState(false);
   const [hasContent, setHasContent] = useState(false);
+  const imageContent = `${process.env.API_SERVER_URL}/v1/file/${content.body}`;
 
   useEffect(() => {
-    if (content && content.data && content.data.body) {
+    if (content && content.body) {
       setHasContent(true);
-      const isPDF = content.data.body.endsWith('.pdf');
+      const isPDF = content.body.endsWith('.pdf');
 
       if (isPDF) {
-        fetch(content.data.body)
+        fetch(content.body)
           .then(response => {
             if (!response.ok) {
               setPdfNotFound(true);
@@ -34,14 +35,14 @@ const DetailDocument: React.FC<{
   return (
     <Loading isLoading={isLoading}>
       {hasContent ? (
-        content.data.body?.endsWith('.pdf') ? (
+        content.body?.endsWith('.pdf') ? (
           pdfNotFound ? (
             <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
               <p className="text-lg text-gray-600">PDF file not found</p>
             </div>
           ) : (
             <iframe
-              src={content.data.body}
+              src={imageContent}
               className="w-full h-screen border rounded-lg"
               title="PDF Viewer"
             ></iframe>

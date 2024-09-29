@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { APIContentChapterProps } from '../../detailContent.type';
 
 const DetailVideo: React.FC<{
-  content: { data: APIContentChapterProps };
+  content: APIContentChapterProps;
   isLoading: boolean;
 }> = ({ content, isLoading }) => {
   const [videoNotFound, setVideoNotFound] = useState(false);
@@ -15,10 +15,10 @@ const DetailVideo: React.FC<{
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  const contentVideo = getYoutubeId(content.data.body || '');
+  const contentVideo = getYoutubeId(content.body || '');
 
   useEffect(() => {
-    if (contentVideo && content.data.body !== undefined) {
+    if (contentVideo && content.body !== undefined) {
       fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${contentVideo}&format=json`)
         .then(response => {
           if (!response.ok) {
@@ -31,7 +31,7 @@ const DetailVideo: React.FC<{
     } else {
       setVideoNotFound(true);
     }
-  }, [content.data.body, contentVideo]);
+  }, [content.body, contentVideo]);
 
   if (!contentVideo || videoNotFound) {
     return (

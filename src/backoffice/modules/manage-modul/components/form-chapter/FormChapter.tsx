@@ -90,13 +90,13 @@ const FormChapter = () => {
     if (chapterId && convertedTime && title && type) {
       try {
         await createContentAsync({
-          body: fileName,
+          body: fileUrl,
           duration: convertedTime,
           title,
           type,
           chapterId,
           isexam: 0,
-          file: fileUrl,
+          fileOrigin: fileName,
         });
         setOpenModalAddContent(false);
         await queryClient.invalidateQueries({ queryKey: ['chapter'] });
