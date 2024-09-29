@@ -226,13 +226,13 @@ const AccordionPanelDraggable: React.FC<
   
       if (chapterId && convertedTime && title && type && fileUrl) {
         await createContentProgramAsync({
-          body: fileName,
+          body: fileUrl,
           duration: convertedTime,
           title,
           type,
           chapterId,
           isexam: 0,
-          file: fileUrl,
+          fileOrigin: fileName,
         });
         await queryClient.invalidateQueries({
           queryKey: ['chapters', 'program', params.get('programId')],
