@@ -5,9 +5,8 @@ import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
 import { fetchContent } from '../../api/formCourse.api';
 import Loading from '@/components/loading/Loading';
 
-const FormContent: React.FC<{ contentId?: string; isEdit?: boolean }> = ({
+const FormContent: React.FC<{ contentId?: string; }> = ({
   contentId,
-  isEdit,
 }) => {
   const [time, setTime] = useState(new Date(0, 0, 0, 1, 0));
   const [fileUrl, setFileUrl] = useState<string>('');
@@ -17,11 +16,11 @@ const FormContent: React.FC<{ contentId?: string; isEdit?: boolean }> = ({
   const { data: dataContent, isLoading } = useQuery({
     queryKey: ['chapter', contentId],
     queryFn: () => fetchContent(contentId),
-    enabled: !!contentId && isEdit,
+    enabled: !!contentId,
   });
 
   useEffect(() => {
-    if (isEdit && dataContent?.data.data) {
+    if (dataContent?.data.data) {
       setFileType(dataContent.data.data.type);
       setFileName(dataContent.data.data.body || '');
       if (dataContent.data.data.duration) {
@@ -34,14 +33,14 @@ const FormContent: React.FC<{ contentId?: string; isEdit?: boolean }> = ({
           .catch(console.error);
       }
     }
-  }, [dataContent, isEdit]);
+  }, [dataContent]);
 
   const handleFileChange = (newFileUrl: string, newFileName: string) => {
     setFileUrl(newFileUrl);
     setFileName(newFileName);
   };
 
-  if (isEdit && isLoading) {
+  if (isLoading) {
     return <Loading isLoading={true} />;
   }
 
@@ -55,7 +54,6 @@ const FormContent: React.FC<{ contentId?: string; isEdit?: boolean }> = ({
       setFileType={setFileType}
       handleFileChange={handleFileChange}
       populatedData={dataContent?.data.data}
-      isEdit={isEdit}
     />
   );
 };
