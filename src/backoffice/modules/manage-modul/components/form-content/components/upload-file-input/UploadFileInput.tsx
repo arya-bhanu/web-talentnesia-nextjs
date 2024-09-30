@@ -9,7 +9,12 @@ interface UploadFileInputProps {
   fileType?: number;
 }
 
-export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, initialFileName, initialFileUrl, fileType }) => {
+export const UploadFileInput: React.FC<UploadFileInputProps> = ({
+  onChange,
+  initialFileName,
+  initialFileUrl,
+  fileType,
+}) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -22,7 +27,9 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
     }
   }, [initialFileName, initialFileUrl]);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       setIsLoading(true);
@@ -31,7 +38,10 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
         let fileUrl: string;
         if (typeof response.path === 'string') {
           fileUrl = response.path;
-        } else if (typeof response.path === 'object' && 'thumbs' in response.path) {
+        } else if (
+          typeof response.path === 'object' &&
+          'thumbs' in response.path
+        ) {
           fileUrl = response.path.thumbs;
         } else {
           throw new Error('Unexpected response format');
@@ -46,34 +56,34 @@ export const UploadFileInput: React.FC<UploadFileInputProps> = ({ onChange, init
       }
     }
   };
-  
+
   return (
     <div className="flex items-center">
       <label htmlFor="upload_file" className="flex items-center cursor-pointer">
         <DocumentUpload />
         <span className="ml-2 text-sm font-normal">
-          {isLoading ? 'Loading...' : (fileName || 'Choose file')}
+          {isLoading ? 'Loading...' : fileName || 'Choose file'}
         </span>
       </label>
       <input
         type="file"
         id="upload_file"
-        name='upload_file'
+        name="upload_file"
         className="hidden"
         onChange={handleFileChange}
-        accept={fileType === 1 ? ".pdf,.doc,.docx" : "image/*"}
+        accept={
+          fileType === 1
+            ? '.pdf,.doc,.docx'
+            : fileType === 2
+              ? 'video/*'
+              : fileType === 3
+                ? 'image/*'
+                : ''
+        }
         disabled={isLoading}
       />
-      <input
-        type="hidden"
-        name="fileName"
-        value={fileName || ''}
-      />
-      <input
-        type="hidden"
-        name="fileUrl"
-        value={fileUrl || ''}
-      />  
+      <input type="hidden" name="fileName" value={fileName || ''} />
+      <input type="hidden" name="fileUrl" value={fileUrl || ''} />
     </div>
   );
 };
