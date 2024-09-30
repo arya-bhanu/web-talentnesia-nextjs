@@ -66,27 +66,14 @@ const FormContentView: React.FC<
           </LabelForm>
           <Label
             htmlFor="upload_file"
-            className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg"
+            className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg cursor-pointer"
           >
-            {isEdit ? (
-              fileName || populatedData?.body ? (
-                <UploadFileInput
-                  onChange={handleFileChange}
-                  initialFileName={fileName || populatedData?.body || ''}
-                  initialFileUrl={fileUrl}
-                  fileType={parseInt(fileType)}
-                />
-              ) : (
-                <div>{fileName || 'No file uploaded'}</div>
-              )
-            ) : (
-              <UploadFileInput
-                onChange={handleFileChange}
-                initialFileName={fileName || ''}
-                initialFileUrl={fileUrl}
-                fileType={parseInt(fileType)}
-              />
-            )}
+            <UploadFileInput
+              onChange={handleFileChange}
+              initialFileName={fileName}
+              initialFileUrl={fileUrl}
+              fileType={parseInt(fileType)}
+            />
           </Label>
         </div>
         <TimeInput setTime={setTime} time={time} />
