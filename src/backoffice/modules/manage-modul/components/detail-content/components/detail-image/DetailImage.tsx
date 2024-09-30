@@ -26,7 +26,7 @@ const DetailImage: React.FC<{
   return (
     <Loading isLoading={isLoading}>
       {hasValidImage ? (
-        <div className="flex justify-center items-center mt-8">
+        <div className="flex justify-center items-center">
           <div className="relative w-full max-w-xl h-auto">
             <Image
               src={imageContent}
