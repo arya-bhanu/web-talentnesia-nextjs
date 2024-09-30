@@ -53,7 +53,7 @@ const QuestionListDraggableView: React.FC<
         case 'textarea':
           return <QuestionFieldTextarea id={id} />;
         case 'file':
-          return <QuestionFieldProject />;
+          return <QuestionFieldProject id={id} />;
         default:
           if (questions) {
             return <QuestionFieldOption id={id} questionOptions={questions} />;
