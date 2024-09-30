@@ -6,55 +6,24 @@ const DetailDocument: React.FC<{
   content: APIContentChapter;
   isLoading: boolean;
 }> = ({ content, isLoading }) => {
-
-  const [pdfNotFound, setPdfNotFound] = useState(false);
-  const [hasContent, setHasContent] = useState(false);
-  const imageContent = `${process.env.API_SERVER_URL}/v1/file/${content.body}`;
+  const [pdfUrl, setPdfUrl] = useState('');
 
   useEffect(() => {
-    if (content && content.body) {
-      setHasContent(true);
-      const isPDF = content.body.endsWith('.pdf');
-
-      if (isPDF) {
-        fetch(imageContent)
-          .then(response => {
-            if (!response.ok) {
-              setPdfNotFound(true);
-            }
-          })
-          .catch(() => {
-            setPdfNotFound(true);
-          });
-      }
-    } else {
-      setHasContent(false);
+    if (content.body) {
+      const url = `${process.env.API_SERVER_URL}/v1/file/${content.body}`;
+      setPdfUrl(url);
     }
-  }, [content, imageContent]);
+  }, [content.body]);
 
   return (
     <Loading isLoading={isLoading}>
-      {imageContent}
-      {hasContent ? (
-        content.body?.endsWith('.pdf') ? (
-          pdfNotFound ? (
-            <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
-              <p className="text-lg text-gray-600">PDF file not found</p>
-            </div>
-          ) : (
-            <iframe
-              src={`${imageContent}#toolbar=0`}
-              className="w-full h-screen border rounded-lg"
-              title="PDF Viewer"
-            ></iframe>
-          )
-        ) : (
-          <div>Unsupported file type</div>
-        )
-      ) : (
-        <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
-          <p className="text-lg text-gray-600">No content available</p>
-        </div>
+      {pdfUrl && (
+        <object
+          data={`${pdfUrl}#view=FitH`}
+          type="application/pdf"
+          className="w-full h-screen border rounded-lg"
+        >
+        </object>
       )}
     </Loading>
   );
