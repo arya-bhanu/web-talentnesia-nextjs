@@ -78,7 +78,10 @@ const StudentLayout = ({ children }: { children: ReactNode }) => {
     // marginLeft: '9%',
   };
 
-  const customPageStyle = pathname.startsWith('/student/student/');
+  const customPageStyle = [
+    '/student/dashboard',
+    '/student/course/course-detail/',
+  ].includes(pathname);
 
   return (
     <div className="bg-[#FAFAFA]">
