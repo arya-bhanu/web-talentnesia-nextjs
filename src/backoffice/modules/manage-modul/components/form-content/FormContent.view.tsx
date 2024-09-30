@@ -64,11 +64,12 @@ const FormContentView: React.FC<
           </LabelForm>
           <Label
             htmlFor="upload_file"
-            className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg"
+            className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg cursor-pointer"
           >
             <UploadFileInput
               onChange={handleFileChange}
               initialFileName={fileName}
+              initialFileUrl={fileUrl}
               fileType={parseInt(fileType)}
             />
           </Label>

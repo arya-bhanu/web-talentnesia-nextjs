@@ -26,8 +26,6 @@ const FormContentView: React.FC<
         name="time"
         value={time.toTimeString().substring(0, 5)}
       />
-      <input type="hidden" name="fileUrl" value={fileUrl} />
-      <input type="hidden" name="fileName" value={fileName} />
 
       <div className="flex items-center gap-3">
         <div className="flex-1">
@@ -75,6 +73,7 @@ const FormContentView: React.FC<
                 <UploadFileInput
                   onChange={handleFileChange}
                   initialFileName={fileName || populatedData?.body || ''}
+                  initialFileUrl={fileUrl}
                   fileType={parseInt(fileType)}
                 />
               ) : (
@@ -84,6 +83,7 @@ const FormContentView: React.FC<
               <UploadFileInput
                 onChange={handleFileChange}
                 initialFileName={fileName || ''}
+                initialFileUrl={fileUrl}
                 fileType={parseInt(fileType)}
               />
             )}
