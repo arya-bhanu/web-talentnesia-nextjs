@@ -18,12 +18,6 @@ const QuestionFieldOptionView: React.FC<{
   return (
     <div className="flex flex-col gap-3">
       {props.questions.map((el, index) => {
-          console.log(`Question ${props.keyId} - Option ${index + 1} (ID: ${el.id}):`, {
-            text: el.text,
-            value: el.value,
-            isCorrect: el.isCorrect,
-            checked: el.isCorrect === '1'
-          });
         return (
           <div key={el.id} className="flex items-center gap-1.5 w-full">
             <Radio
