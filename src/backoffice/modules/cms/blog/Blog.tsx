@@ -74,7 +74,11 @@ const Blog = () => {
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
       { accessorKey: 'title', header: 'Judul Blog' },
-      { accessorKey: 'category', header: 'Category' },
+      { 
+        accessorKey: 'categoryName', 
+        header: 'Category',
+        cell: (info) => info.getValue() || 'N/A'
+      },
       {
         accessorKey: 'authorId',
         header: 'Author',
@@ -83,7 +87,26 @@ const Blog = () => {
           return <AuthorCell authorId={authorId} />;
         },
       },
-      { accessorKey: 'status', header: 'Status' },
+      { 
+        accessorKey: 'status', 
+        header: 'Status',
+        cell: (info) => {
+          const status = info.getValue();
+          if (status === 1) {
+            return (
+              <h1 className="bg-green-100 text-green-600 text-md text-center font-semibold py-2 px-4 rounded-lg w-[60%]">
+                Published
+              </h1>
+            );
+          } else {
+            return (
+              <h1 className="bg-gray-100 text-gray-700 text-sm text-center font-semibold py-2 px-4 rounded-lg">
+                Draft
+              </h1>
+            );
+          }
+        }
+      },
       {
         id: 'actions',
         header: 'Action',
@@ -99,7 +122,7 @@ const Blog = () => {
               openPopoverIndex={openPopoverIndex}
               setOpenPopoverIndex={setOpenPopoverIndex}
               content={
-                <div className="relative flex justify-center">
+                <div className="relative flex justify-start">
                   <div className="w-fit px-3 py-2 gap-1 flex flex-col text-sm text-gray-500 dark:text-gray-400">
                     <PermissionGranted roleable role="manage-modul.delete">
                       <button className={clsx('hover:text-red-500 hover:underline')}>

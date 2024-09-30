@@ -51,5 +51,12 @@ export const discountAPI = {
       url: `/v1/discount/${id}`,
       method: 'DELETE',
     }).then((response) => response.success);
-  }
+  },
+
+  getAllDiscounts: async () => {
+    return fetchAxios<{ data: APIResponseDiscount[] }>({
+      url: `/v1/discount/all`,
+      method: 'GET',
+    }).then((response) => response.data);
+  },
 };
