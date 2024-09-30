@@ -51,7 +51,7 @@ export interface ExamQuestion {
         value: string;
         text: string;
         id: string;
-        isCorrect?: '0' | '1';
+        isCorrect: '0' | '1';
         order?: number;
         questionId?: string;
       }[]

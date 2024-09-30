@@ -48,7 +48,7 @@ const QuestionListDraggableView: React.FC<
     transition,
   };
   const renderFieldOption = useCallback(
-    (questions: { text: string; value: string; id: string; isCorrect?: "0" | "1" }[] | null) => {
+    (questions: { text: string; value: string; id: string; isCorrect: "0" | "1" }[] | null) => {
       switch (questionType.type) {
         case 'textarea':
           return <QuestionFieldTextarea />;

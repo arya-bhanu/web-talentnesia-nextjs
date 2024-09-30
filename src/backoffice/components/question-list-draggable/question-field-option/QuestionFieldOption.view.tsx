@@ -4,17 +4,37 @@ import React from 'react';
 import Add from '@/../public/icons/add-sm.svg';
 
 const QuestionFieldOptionView: React.FC<{
-  questions: { text: string; value: string; id: string }[];
+  questions: {
+    text: string;
+    value: string;
+    id: string;
+    isCorrect: '0' | '1';
+  }[];
   handleAddNewOption: () => void;
   handleChangeOption: (text: string, id: string) => void;
+  handleRadioClick: (id: string) => void;
   keyId: string;
 }> = (props) => {
   return (
     <div className="flex flex-col gap-3">
       {props.questions.map((el, index) => {
+          console.log(`Question ${props.keyId} - Option ${index + 1} (ID: ${el.id}):`, {
+            text: el.text,
+            value: el.value,
+            isCorrect: el.isCorrect,
+            checked: el.isCorrect === '1'
+          });
         return (
-          <div key={el.text + index} className="flex items-center gap-1.5 w-full">
-            <Radio id={el.value + index} name="option" value={el.value} />
+          <div key={el.id} className="flex items-center gap-1.5 w-full">
+            <Radio
+              key={`${props.keyId}_${el.id}`}
+              id={`${el.value}_${index}`}
+              name={`option_${props.keyId}`}
+              value={el.value}
+              onChange={() => props.handleRadioClick(el.id)}
+              checked={String(el.isCorrect) === '1'}
+            />
+
             <Label
               className="font-lato text-sm font-normal"
               htmlFor={el.value + index}
