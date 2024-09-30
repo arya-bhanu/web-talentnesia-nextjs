@@ -36,7 +36,9 @@ const DetailVideo: React.FC<{
   if (videoError) {
     return (
       <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
-        <p className="text-lg text-gray-600">Video tidak ditemukan atau URL tidak valid</p>
+        <p className="text-lg text-gray-600">
+          Video tidak ditemukan atau URL tidak valid
+        </p>
       </div>
     );
   }
@@ -50,7 +52,7 @@ const DetailVideo: React.FC<{
           controls
           playsInline
         >
-          Browser Anda tidak mendukung tag video.
+          {'Browser Anda tidak mendukung tag video.'}
         </video>
       )}
     </Loading>
