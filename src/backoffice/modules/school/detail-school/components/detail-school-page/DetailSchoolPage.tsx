@@ -5,6 +5,7 @@ import DetailSchoolPageView from './DetailSchoolPage.view';
 import { SchoolData } from './detailSchoolPage.type';
 import { SchoolAPI } from '../../../api/schoolApi';
 import { getImageUrl } from '../../../api/minioApi';
+import Loading from '@/components/loading';
 
 const DetailSchoolPage: React.FC = () => {
   const params = useSearchParams();
@@ -42,7 +43,7 @@ const DetailSchoolPage: React.FC = () => {
   }
 
   if (!schoolData) {
-    return null;
+    return <Loading isLoading/>;
   }
 
   return (

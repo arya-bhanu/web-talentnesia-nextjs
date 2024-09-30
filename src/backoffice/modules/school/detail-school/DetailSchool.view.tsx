@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { TabFlex, TabItem } from '@/backoffice/components/tabs/tabs';
 import { IDetailSchoolView, SchoolData } from './detailSchool.type';
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
@@ -16,23 +17,19 @@ interface DetailSchoolViewProps extends IDetailSchoolView {
   setActiveAccordion: Dispatch<SetStateAction<number>>;
   openModalModul: boolean;
   setOpenModalModul: Dispatch<SetStateAction<boolean>>;
-  handleSubmitSelectedModul: (e: FormEvent<HTMLFormElement>) => void;
   className?: string;
   schoolData: SchoolData | null;
   fullImageUrl: string;
 }
 
-function DetailSchoolView({
+const DetailSchoolView = ({
   open,
   selected,
   setOpen,
   setSelected,
   columns,
   rows,
-  schoolId,
-  schoolData,
-  fullImageUrl,
-}: DetailSchoolViewProps) {
+}: DetailSchoolViewProps) => {
   const [activeTab, setActiveTab] = useState<TabTypes>('detailSchool');
 
   const tabs: TabItem<TabTypes>[] = [
@@ -89,6 +86,6 @@ function DetailSchoolView({
       </div>
     </>
   );
-}
+};
 
 export default DetailSchoolView;

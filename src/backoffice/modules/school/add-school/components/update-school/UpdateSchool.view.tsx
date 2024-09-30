@@ -10,23 +10,15 @@ interface UpdateSchoolViewProps {
   initialData: APIResponseSchool;
   fullImageUrl: string;
   hasError: boolean;
-  showModal: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleInputChange: (field: keyof APIResponseSchool, value: string) => void;
   handleImageChange: (imageUrl: string) => void;
   handleSubmit: (e: React.FormEvent) => void;
-  setModalMessage: (message: string) => void;
-  modalMessage: string;
-  handleModalClose: () => void;
 }
 
 const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({
   initialData,
   fullImageUrl,
   hasError,
-  showModal,
-  handleModalClose,
-  modalMessage,
   handleInputChange,
   handleImageChange,
   handleSubmit,
@@ -162,12 +154,6 @@ const UpdateSchoolView: React.FC<UpdateSchoolViewProps> = ({
           Update
         </button>
       </div>
-      <NotificationModal
-        show={showModal}
-        onClose={handleModalClose}
-        message={modalMessage}
-        isError={hasError}
-      />
     </form>
   );
 };

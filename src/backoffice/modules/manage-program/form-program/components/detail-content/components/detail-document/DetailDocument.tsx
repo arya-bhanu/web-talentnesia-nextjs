@@ -3,55 +3,30 @@ import Loading from '@/components/loading';
 import React, { useEffect, useState } from 'react';
 
 const DetailDocument: React.FC<{
-  content: { data: APIContentChapter };
+  content: APIContentChapter;
   isLoading: boolean;
 }> = ({ content, isLoading }) => {
-
-  const [pdfNotFound, setPdfNotFound] = useState(false);
-  const [hasContent, setHasContent] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState('');
 
   useEffect(() => {
-    if (content && content.data && content.data.body) {
-      setHasContent(true);
-      const isPDF = content.data.body.endsWith('.pdf');
-
-      if (isPDF) {
-        fetch(content.data.body)
-          .then(response => {
-            if (!response.ok) {
-              setPdfNotFound(true);
-            }
-          })
-          .catch(() => {
-            setPdfNotFound(true);
-          });
-      }
-    } else {
-      setHasContent(false);
+    if (content.body) {
+      const url = `${process.env.API_SERVER_URL}/v1/file/${content.body}`;
+      setPdfUrl(url);
     }
-  }, [content]);
+  }, [content.body]);
 
   return (
     <Loading isLoading={isLoading}>
-      {hasContent ? (
-        content.data.body?.endsWith('.pdf') ? (
-          pdfNotFound ? (
-            <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
-              <p className="text-lg text-gray-600">PDF file not found</p>
-            </div>
-          ) : (
-            <iframe
-              src={content.data.body}
-              className="w-full h-screen border rounded-lg"
-              title="PDF Viewer"
-            ></iframe>
-          )
-        ) : (
-          <div>Unsupported file type</div>
-        )
+      {pdfUrl ? (
+        <object
+          data={`${pdfUrl}#view=FitH`}
+          type="application/pdf"
+          className="w-full h-screen border rounded-lg"
+        >
+        </object>
       ) : (
         <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
-          <p className="text-lg text-gray-600">No content available</p>
+          <p className="text-lg text-gray-600">File not found</p>
         </div>
       )}
     </Loading>
