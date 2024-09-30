@@ -47,7 +47,7 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/faq.svg',
     title: 'FAQ',
-    path: '#',
+    path: '/backoffice/faq',
   },
   {
     icon: '/icons/sidebar/report.svg',
