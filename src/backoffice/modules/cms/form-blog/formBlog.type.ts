@@ -4,6 +4,7 @@ export interface BlogPostPayload {
     status: number;
     image: string;
     categoryId: string;
+    categoryName: string;
     tags: string[]; // This will now store tag IDs
     slug: string;
 }

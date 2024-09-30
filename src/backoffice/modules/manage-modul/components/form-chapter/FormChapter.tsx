@@ -107,10 +107,11 @@ const FormChapter = () => {
         });
       } catch (err) {
         console.error(err);
+        console.log("Error create")
         openModal({
           status: 'error',
           action: 'create',
-          message: 'Failed to create content',
+          message: 'All data field are required',
         });
       }
     }

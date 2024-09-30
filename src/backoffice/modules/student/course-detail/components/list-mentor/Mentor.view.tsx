@@ -45,7 +45,7 @@ const MentorView: React.FC<MentorViewProps> = ({ mentorData, className }) => {
           {mentorData.map((mentor) => (
             <div
               key={mentor.mentorId}
-              className="flex items-center space-x-4 px-4"
+              className="flex items-center space-x-4 px-4 mb-5"
             >
               <Image
                 src={`${process.env.API_SERVER_URL}/v1/file/${mentor.mentorPhoto}`}

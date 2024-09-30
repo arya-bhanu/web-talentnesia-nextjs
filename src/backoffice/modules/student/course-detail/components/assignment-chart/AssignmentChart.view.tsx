@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 
+
 const AssignmentChartView: React.FC<IAssignmentChart> = ({
   onTimePercentage,
   latePercentage,

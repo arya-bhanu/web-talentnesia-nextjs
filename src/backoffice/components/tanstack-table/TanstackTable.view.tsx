@@ -86,21 +86,32 @@ const TanstackTableView = <T,>({
                           ? 'px-6 py-3 text-center'
                           : 'px-6 py-3'
                       }
-                      onClick={() => handleSort(header.column.id)}
+                      onClick={() => 
+                        header.column.id !== 'action' && header.column.id !== 'actions' 
+                          ? handleSort(header.column.id) 
+                          : undefined
+                      }
                     >
-                      <div className="flex items-center">
+                      <div className={
+                        header.column.id === 'action' ||
+                        header.column.id === 'actions'
+                          ? 'flex items-center justify-center'
+                          : 'flex items-center'
+                      }>
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                        {sortBy === header.column.id ? (
-                          sortOrder === 'asc' ? (
-                            <SortArrowUp className="ml-1" />
+                        {header.column.id !== 'action' && header.column.id !== 'actions' && (
+                          sortBy === header.column.id ? (
+                            sortOrder === 'asc' ? (
+                              <SortArrowUp className="ml-1" />
+                            ) : (
+                              <SortArrowUp className="ml-1 transform rotate-180" />
+                            )
                           ) : (
-                            <SortArrowUp className="ml-1 transform rotate-180" />
+                            <SortArrow className="ml-1" />
                           )
-                        ) : (
-                          <SortArrow className="ml-1" />
                         )}
                       </div>
                     </th>

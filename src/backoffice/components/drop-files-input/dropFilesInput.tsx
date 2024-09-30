@@ -6,9 +6,10 @@ import { Button } from 'flowbite-react';
 interface DropFileProps {
   onChange: (imageUrl: string) => void;
   initialImage?: string;
+  uploadFolder: string;
 }
 
-export function DropFile({ onChange, initialImage }: DropFileProps) {
+export function DropFile({ onChange, initialImage, uploadFolder }: DropFileProps) {
   const [imageSrc, setImageSrc] = useState<string | null>(initialImage || null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -52,7 +53,7 @@ export function DropFile({ onChange, initialImage }: DropFileProps) {
       };
       reader.readAsDataURL(file);
 
-      const response = await uploadFile(file, 'users');
+      const response = await uploadFile(file, uploadFolder);
       const imageUrl = response.path.thumbs;  
 
       await delay(500);

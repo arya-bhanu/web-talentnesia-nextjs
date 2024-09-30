@@ -15,6 +15,9 @@ const QuestionFieldProjectView = () => {
           <p className="text-sm text-gray-500 dark:text-gray-400 font-poppins">
             <span className="font-normal">Drag file here</span>
           </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 font-poppins">
+            (zip, pdf, docx, ppt, sdoc, png, jpeg/jpg)
+          </p>
           <p className="text-sm font-normal text-gray-500 dark:text-gray-400 font-poppins">
             OR
           </p>
