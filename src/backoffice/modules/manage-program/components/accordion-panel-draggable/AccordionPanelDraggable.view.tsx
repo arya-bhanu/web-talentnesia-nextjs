@@ -217,7 +217,7 @@ const AccordionPanelDraggableView: React.FC<
           setOpenModal: setOpenModalContent,
         }}
       >
-        <FormContent isEdit={false} />
+        <FormContent />
       </Modal>
       <div className="flex items-center gap-4">
         <button type="button" {...listeners} {...attributes} className="button">
