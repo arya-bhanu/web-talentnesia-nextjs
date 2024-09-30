@@ -147,7 +147,7 @@ export const editContent = async ({
   data,
 }: {
   id?: string;
-  data: Pick<APIContentChapter, 'title' | 'body' | 'type' | 'duration'>;
+  data: Pick<APIContentChapter, 'title' | 'body' | 'type' | 'duration' | 'fileOrigin'>;
 }) => {
   if (id) {
     const response = await fetchAxios({
