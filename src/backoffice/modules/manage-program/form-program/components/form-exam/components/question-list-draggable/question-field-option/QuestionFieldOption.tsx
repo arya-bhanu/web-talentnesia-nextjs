@@ -21,6 +21,7 @@ const QuestionFieldOption: React.FC<{
             text: 'Option',
             value: `option_${new Date().getTime()}`,
             id: uuid().toString(),
+            isCorrect: '0' as '0' | '1',
           });
           const newData = {
             ...rest,
