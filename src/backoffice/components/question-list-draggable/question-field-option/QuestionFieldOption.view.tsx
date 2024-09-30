@@ -13,7 +13,7 @@ const QuestionFieldOptionView: React.FC<{
     <div className="flex flex-col gap-3">
       {props.questions.map((el, index) => {
         return (
-          <div key={el.text + index} className="flex items-center gap-1.5">
+          <div key={el.text + index} className="flex items-center gap-1.5 w-full">
             <Radio id={el.value + index} name="option" value={el.value} />
             <Label
               className="font-lato text-sm font-normal"
@@ -26,7 +26,7 @@ const QuestionFieldOptionView: React.FC<{
                 type="text"
                 defaultValue={el.text}
                 key={el.id}
-                className="p-0 border-b border-t-0 border-x-0 focus:ring-transparent focus:ring-offset-transparent"
+                className="p-0 border-b border-t-0 border-x-0 w-[200%] focus:ring-transparent focus:ring-offset-transparent"
               />
             </Label>
           </div>
