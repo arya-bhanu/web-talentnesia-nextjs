@@ -6,10 +6,14 @@ interface UploadFileResponse {
   path: {
     thumbs: string;
     origin: string;
-  }
+  };
+  fileOrigin: string;
 }
 
-export const uploadFile = async (file: File, path: string): Promise<UploadFileResponse> => {
+export const uploadFile = async (
+  file: File,
+  path: string,
+): Promise<UploadFileResponse> => {
   const data = new FormData();
   data.append('file', file);
   data.append('path', path);
@@ -43,4 +47,3 @@ export const getImageUrl = async (imageUrl: string): Promise<string> => {
     throw error;
   }
 };
-
