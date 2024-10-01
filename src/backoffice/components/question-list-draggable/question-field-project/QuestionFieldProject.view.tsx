@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import CloudUpload from '@/../public/icons/cloud_upload.svg';
 import {
   FaFilePdf,
@@ -20,6 +20,34 @@ const QuestionFieldProjectView: React.FC<QuestionFieldProjectViewProps> = ({
   onFileUpload,
   fileName,
 }) => {
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragEnter = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      onFileUpload(e.dataTransfer.files[0]);
+    }
+  }, [onFileUpload]);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -34,21 +62,21 @@ const QuestionFieldProjectView: React.FC<QuestionFieldProjectViewProps> = ({
   const getFileIcon = (extension: string) => {
     switch (extension) {
       case 'pdf':
-        return <FaFilePdf size={24} />;
+        return <FaFilePdf size={40} />;
       case 'png':
       case 'jpg':
       case 'jpeg':
-        return <FaFileImage size={24} />;
+        return <FaFileImage size={40} />;
       case 'doc':
       case 'docx':
-        return <FaFileWord size={24} />;
+        return <FaFileWord size={40} />;
       case 'ppt':
       case 'pptx':
-        return <FaFilePowerpoint size={24} />;
+        return <FaFilePowerpoint size={40} />;
       case 'zip':
-        return <FaFileArchive size={24} />;
+        return <FaFileArchive size={40} />;
       default:
-        return <FaFile size={24} />;
+        return <FaFile size={40} />;  
     }
   };
 
@@ -58,7 +86,13 @@ const QuestionFieldProjectView: React.FC<QuestionFieldProjectViewProps> = ({
     <div className="flex w-full items-center justify-center">
       <label
         htmlFor="dropzone-file"
-        className="relative flex h-fit py-10 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        className={`relative flex h-[200px] w-full flex-col items-center justify-center rounded-lg border-2 border-dashed ${
+          isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50'
+        } hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600`}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
       >
         {body ? (
           <div className="flex flex-col items-center justify-center">
