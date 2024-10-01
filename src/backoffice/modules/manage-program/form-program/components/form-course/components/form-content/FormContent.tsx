@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import FormContentView from './FormContent.view';
 import { useQuery } from '@tanstack/react-query';
 import { getImageUrl } from '@/backoffice/modules/school/api/minioApi';
+import Loading from '@/components/loading';
 import { fetchContent } from '../../api/formCourse.api';
-import Loading from '@/components/loading/Loading';
 
-const FormContent: React.FC<{ contentId?: string; }> = ({
-  contentId,
-}) => {
+const FormContent: React.FC<{ contentId?: string }> = ({ contentId }) => {
   const [time, setTime] = useState(new Date(0, 0, 0, 1, 0));
   const [fileUrl, setFileUrl] = useState<string>('');
   const [fileName, setFileName] = useState<string>('');
@@ -16,45 +14,47 @@ const FormContent: React.FC<{ contentId?: string; }> = ({
   const { data: dataContent, isLoading } = useQuery({
     queryKey: ['chapter', contentId],
     queryFn: () => fetchContent(contentId),
-    enabled: !!contentId,
   });
-
+  
   useEffect(() => {
-    if (dataContent?.data.data) {
-      setFileType(dataContent.data.data.type);
-      setFileName(dataContent.data.data.body || '');
-      if (dataContent.data.data.duration) {
-        const [hour, minute] = dataContent.data.data.duration.split(':');
-        setTime(new Date(0, 0, 0, parseInt(hour), parseInt(minute)));
-      }
-      if (dataContent.data.data.file) {
-        getImageUrl(dataContent.data.data.file)
-          .then(setFileUrl)
-          .catch(console.error);
+    if (dataContent?.data) {
+      const [hour, minute] = (dataContent.data.data.duration as string).split(':');
+      setTime(new Date(0, 0, 0, parseInt(hour), parseInt(minute)));
+      setFileType(dataContent.data.type);
+      if (dataContent.data.body && dataContent.data.fileOrigin) {
+        // getImageUrl(dataContent.data.body)
+        //   .then((url) => {
+        setFileName(dataContent.data.fileOrigin);
+        setFileUrl(dataContent.data.body);
+        // })
+        // .catch(console.error);
       }
     }
   }, [dataContent]);
 
-  const handleFileChange = (newFileUrl: string, newFileName: string) => {
+  const handleFileChange = (
+    newFileUrl: string,
+    newFileName: string,
+    newFileType: number,
+  ) => {
     setFileUrl(newFileUrl);
     setFileName(newFileName);
+    setFileType(newFileType.toString());
   };
 
-  if (isLoading) {
-    return <Loading isLoading={true} />;
-  }
-
   return (
-    <FormContentView
-      time={time}
-      setTime={setTime}
-      fileUrl={fileUrl}
-      fileName={fileName}
-      fileType={fileType}
-      setFileType={setFileType}
-      handleFileChange={handleFileChange}
-      populatedData={dataContent?.data.data}
-    />
+    <Loading isLoading={isLoading}>
+      <FormContentView
+        time={time}
+        setTime={setTime}
+        fileUrl={fileUrl}
+        fileName={fileName}
+        fileType={fileType}
+        setFileType={setFileType}
+        handleFileChange={handleFileChange}
+        populatedData={dataContent?.data}
+      />
+    </Loading>
   );
 };
 

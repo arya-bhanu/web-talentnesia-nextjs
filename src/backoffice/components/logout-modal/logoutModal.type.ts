@@ -1,4 +1,4 @@
-export interface ConfirmationModalProps {
+export interface LogoutModalProps {
   show: boolean;
   onClose: () => void;
   onConfirm: () => void;

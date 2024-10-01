@@ -7,6 +7,6 @@ export interface IFormContent {
   fileName: string;
   fileType: string;
   setFileType: Dispatch<SetStateAction<string>>;
-  handleFileChange: (fileUrl: string, fileName: string) => void;
+  handleFileChange: (fileUrl: string, fileName: string, fileType: number) => void;
   isEdit?: boolean;
 }

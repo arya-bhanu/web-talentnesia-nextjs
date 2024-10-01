@@ -7,7 +7,7 @@ import { APIContentChapter } from '@/backoffice/modules/manage-modul/manageModul
 import { UploadFileInput } from '@/backoffice/modules/manage-modul/components/form-content/components/upload-file-input/UploadFileInput';
 
 const FormContentView: React.FC<
-  IFormContent & { populatedData?: APIContentChapter; }
+  IFormContent & { populatedData?: APIContentChapter }
 > = ({
   time,
   setTime,
@@ -18,6 +18,7 @@ const FormContentView: React.FC<
   handleFileChange,
   populatedData,
 }) => {
+  console.log(populatedData)
   return (
     <div className="flex flex-col gap-6">
       <input
@@ -25,7 +26,6 @@ const FormContentView: React.FC<
         name="time"
         value={time.toTimeString().substring(0, 5)}
       />
-
       <div className="flex items-center gap-3">
         <div className="flex-1">
           <LabelForm isImportant htmlFor="title">

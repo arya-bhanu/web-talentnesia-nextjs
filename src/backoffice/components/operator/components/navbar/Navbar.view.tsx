@@ -15,6 +15,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { TitleNavbar } from '@/backoffice/components/title-navbar';
+import LogoutModal from '@/backoffice/components/logout-modal/LogoutModal';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
@@ -152,7 +153,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
                   >
                     Profile
                   </li>
-                  <Link href={'/backoffice/setting'} className="p-0 m-0 block">
+                  <Link href={'/operator/setting'} className="p-0 m-0 block">
                     <li className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 cursor-pointer rounded-md p-2 text-sm">
                       Setting
                     </li>
@@ -184,24 +185,12 @@ const NavbarView: React.FC<NavbarViewProps> = ({
           <Button onClick={() => setShowProfileModal(false)}>Close</Button>
         </Modal.Footer>
       </Modal>
-      <Modal show={showLogoutModal} onClose={() => setShowLogoutModal(false)}>
-        <Modal.Header>Confirm Logout</Modal.Header>
-        <Modal.Body>
-          <div className="text-center">
-            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to logout?
-            </h3>
-            <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={confirmLogout}>
-                Yes
-              </Button>
-              <Button color="gray" onClick={() => setShowLogoutModal(false)}>
-                No
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
+      <LogoutModal
+        show={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={confirmLogout}
+        message="Are you sure you want to logout?"
+      />
     </nav>
   );
 };
