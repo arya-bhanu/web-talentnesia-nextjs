@@ -6,7 +6,7 @@ import debounce from 'lodash.debounce';
 import { createOptionId } from './questionFieldOption.helper';
 
 const QuestionFieldOption: React.FC<{
-  questionOptions: { text: string; value: string; id: string }[];
+  questionOptions: { text: string; value: string; id: string, isCorrect: '0' | '1' }[];
   id: string;
 }> = (props) => {
   const { question, updateQuestion } = useQuestionExamStore();
@@ -22,6 +22,7 @@ const QuestionFieldOption: React.FC<{
             text: 'Option',
             value: `option_${new Date().getTime()}`,
             id: uuid().toString(),
+            isCorrect: '0',
           });
           const newData = {
             ...rest,
@@ -65,10 +66,34 @@ const QuestionFieldOption: React.FC<{
     }
   };
 
+  const handleRadioClick = (clickedId: string) => {
+    const old = [...question];
+    const index = old.findIndex((el) => el.id === props.id);
+    if (index !== -1) {
+      const item = old[index];
+      const options = item.options;
+      if (options && Array.isArray(options)) {
+        const newOptions = options.map((option) => ({
+          ...option,
+          isCorrect:
+            option.id === clickedId ? ('1' as '0' | '1') : ('0' as '0' | '1'),
+        }));
+        const newItem = { ...item, options: newOptions };
+        const newQuestion = [
+          ...old.slice(0, index),
+          newItem,
+          ...old.slice(index + 1),
+        ];
+        updateQuestion(newQuestion);
+      }
+    }
+  };
+
   return (
     <QuestionFieldOptionView
       handleChangeOption={handleChangeOptionText}
       handleAddNewOption={handleAddNewOption}
+      handleRadioClick={handleRadioClick}
       questions={props.questionOptions}
       keyId={props.id}
     />

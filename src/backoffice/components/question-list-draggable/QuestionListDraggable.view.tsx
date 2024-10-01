@@ -48,12 +48,12 @@ const QuestionListDraggableView: React.FC<
     transition,
   };
   const renderFieldOption = useCallback(
-    (questions: { text: string; value: string; id: string }[] | null) => {
+    (questions: { text: string; value: string; id: string; isCorrect: "0" | "1" }[] | null) => {
       switch (questionType.type) {
         case 'textarea':
-          return <QuestionFieldTextarea />;
+          return <QuestionFieldTextarea id={id} />;
         case 'file':
-          return <QuestionFieldProject />;
+          return <QuestionFieldProject id={id} />;
         default:
           if (questions) {
             return <QuestionFieldOption id={id} questionOptions={questions} />;
@@ -88,6 +88,7 @@ const QuestionListDraggableView: React.FC<
             key={id}
             defaultValue={defaultQuestionField}
             onChange={(el) => handleChangeTextQuestion(el, id)}
+            placeholder='Type your question here'
           />
         </div>
         <div className="mt-5">{renderFieldOption(options || null)}</div>

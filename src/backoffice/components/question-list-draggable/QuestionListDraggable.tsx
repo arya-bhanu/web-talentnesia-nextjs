@@ -5,6 +5,7 @@ import { IQuestionListDraggable } from './questionListDraggable.type';
 import { useQuestionExamStore } from '@/backoffice/modules/manage-modul/add-exam/store';
 import { uuid } from 'uuidv4';
 import { defaultOptionRadio } from '@/backoffice/modules/manage-modul/components/form-exam/formExam.data';
+import { ExamQuestion } from '@/backoffice/modules/manage-modul/manageModul.type';
 
 const QuestionListDraggable: React.FC<
   Pick<IQuestionListDraggable, 'questionType' | 'id' | 'options'>
@@ -54,10 +55,25 @@ const QuestionListDraggable: React.FC<
       if (el.id === id) {
         const { type, options, ...rest } = el;
         const defaultOpt = defaultOptionRadio;
-        const newData = {
+        const newData: ExamQuestion = {
+          ...el,
           type: newType,
-          options: newType === 'radio' ? defaultOpt : null,
-          ...rest,
+          options:
+            newType === 'radio'
+              ? (defaultOpt.map((option) => ({
+                  ...option,
+                  isCorrect: '0' as '0' | '1',
+                  order: undefined,
+                  questionId: undefined,
+                })) as {
+                  value: string;
+                  text: string;
+                  id: string;
+                  isCorrect: '0' | '1';
+                  order?: number | undefined;
+                  questionId?: string | undefined;
+                }[])
+              : null,
         };
 
         return newData;

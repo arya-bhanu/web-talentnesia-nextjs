@@ -51,10 +51,12 @@ export interface ExamQuestion {
         value: string;
         text: string;
         id: string;
+        isCorrect: '0' | '1';
         order?: number;
         questionId?: string;
       }[]
     | null;
+  body: string;
   order: number;
   active: null | any;
 }
@@ -64,7 +66,11 @@ export interface IManageModulView {
   Filter: string;
   openPopoverIndex: number;
   setFilter: React.Dispatch<SetStateAction<string>>;
-  handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
+  handleActionButtonRow: (
+    id: string,
+    action: 'delete' | 'edit',
+    rowData?: string,
+  ) => void;
   setOpenPopoverIndex: React.Dispatch<SetStateAction<number>>;
   isLoading: boolean;
 }
