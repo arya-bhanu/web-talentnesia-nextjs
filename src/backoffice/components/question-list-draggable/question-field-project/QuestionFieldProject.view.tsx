@@ -1,5 +1,13 @@
 import React from 'react';
 import CloudUpload from '@/../public/icons/cloud_upload.svg';
+import {
+  FaFilePdf,
+  FaFileImage,
+  FaFileWord,
+  FaFilePowerpoint,
+  FaFileArchive,
+  FaFile,
+} from 'react-icons/fa';
 
 interface QuestionFieldProjectViewProps {
   body: string;
@@ -19,6 +27,33 @@ const QuestionFieldProjectView: React.FC<QuestionFieldProjectViewProps> = ({
     }
   };
 
+  const getFileExtension = (url: string) => {
+    return url.split('.').pop()?.toLowerCase() || '';
+  };
+
+  const getFileIcon = (extension: string) => {
+    switch (extension) {
+      case 'pdf':
+        return <FaFilePdf size={24} />;
+      case 'png':
+      case 'jpg':
+      case 'jpeg':
+        return <FaFileImage size={24} />;
+      case 'doc':
+      case 'docx':
+        return <FaFileWord size={24} />;
+      case 'ppt':
+      case 'pptx':
+        return <FaFilePowerpoint size={24} />;
+      case 'zip':
+        return <FaFileArchive size={24} />;
+      default:
+        return <FaFile size={24} />;
+    }
+  };
+
+  const fileExtension = getFileExtension(body);
+
   return (
     <div className="flex w-full items-center justify-center">
       <label
@@ -26,9 +61,13 @@ const QuestionFieldProjectView: React.FC<QuestionFieldProjectViewProps> = ({
         className="relative flex h-fit py-10 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
       >
         {body ? (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-sm font-normal text-gray-500 dark:text-gray-400 font-poppins">
+          <div className="flex flex-col items-center justify-center">
+            {getFileIcon(fileExtension)}
+            <p className="mt-2 text-sm font-normal text-gray-500 dark:text-gray-400 font-poppins">
               Uploaded file: {fileName}
+            </p>
+            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 font-poppins">
+              Click or drag to replace the file
             </p>
           </div>
         ) : (
