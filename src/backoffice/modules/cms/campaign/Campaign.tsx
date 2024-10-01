@@ -74,11 +74,11 @@ const Campaign = () => {
         cell: (info) => {
           const status = info.getValue();
           if (status === 0) {
-            return <span className="bg-gray-100 text-gray-700 text-md text-center font-semibold py-2 px-4 rounded-lg w-[60%]g">Not Started</span>;
+            return <span className="bg-gray-100 text-gray-700 text-sm text-center font-semibold py-1 px-2 rounded-lg inline-block">Not Started</span>;
           } else if (status === 1) {
-            return <span className="bg-green-100 text-green-600 text-md text-center font-semibold py-2 px-4 rounded-lg w-[60%]">On Going</span>;
+            return <span className="bg-green-100 text-green-600 text-sm text-center font-semibold py-1 px-2 rounded-lg inline-block">On Going</span>;
           } else {
-            return <span className="bg-red-100 text-red-600 text-md text-center font-semibold py-2 px-4 rounded-lg w-[60%]">Finished</span>;
+            return <span className="bg-red-100 text-red-600 text-sm text-center font-semibold py-1 px-2 rounded-lg inline-block">Finished</span>;
           }
         }
       },

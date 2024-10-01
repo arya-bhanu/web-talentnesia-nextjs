@@ -4,6 +4,8 @@ export interface ITanstackTable<T> {
   apiUrl: string;
   columns: ColumnDef<T>[];
   pageSizeOptions?: number[];
+  children?: React.ReactNode;
+  onRefresh?: () => void;
 }
 
 export interface ITanstackTableViewProps<T> {
@@ -22,4 +24,6 @@ export interface ITanstackTableViewProps<T> {
   handleSort: (field: string) => void;
   handlePreviousPage: () => void;
   handleNextPage: () => void;
+  children?: React.ReactNode;
+  onRefresh?: () => void;
 }
