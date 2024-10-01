@@ -59,6 +59,7 @@ export interface ExamQuestion {
   body: string;
   order: number;
   active: null | any;
+  fileName?: string;
 }
 
 export interface IManageModulView {
