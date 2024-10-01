@@ -13,6 +13,7 @@ import { TabFlex } from '../components/tabs/tabs';
 import { IAccordionPanelDraggable } from '../components/accordion-panel-draggable/accordionPanelDraggable.type';
 import { TabsProgram } from '../components/tabs-program/TabsProgram';
 import { TabsListStudent } from '../components/tabs-list-student/TabsListStudent';
+import React from 'react';
 
 function AddSchoolView({
   open,
