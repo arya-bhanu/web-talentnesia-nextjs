@@ -1,16 +1,14 @@
 'use client';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import TanstackTable from '@/backoffice/components/tanstack-table';
 import Popover from '@/backoffice/components/popover/Popover';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 import clsx from 'clsx';
 import Link from 'next/dist/client/link';
-import { AddButton } from '@/backoffice/components/add-button-table';
 import { cmsApi } from '../Api/cmsApi';
-import AlertModal from '@/backoffice/components/alert-modal/AlertModal';
 import { useStatusModalStore } from '@/lib/store';
 import { userAPI } from '../../user/api/userApi';
+import BlogView from './Blog.view';
 
 const AuthorCell: React.FC<{ authorId: string }> = ({ authorId }) => {
   const [authorName, setAuthorName] = React.useState<string>('');
@@ -30,8 +28,7 @@ const AuthorCell: React.FC<{ authorId: string }> = ({ authorId }) => {
 
 const Blog = () => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
-  const [apiUrl, setApiUrl] = useState('/v1/blog');
-  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
   const [blogToDelete, setBlogToDelete] = useState<string | null>(null);
   const { openModal } = useStatusModalStore();
   const [refreshKey, setRefreshKey] = useState(0);
@@ -70,7 +67,7 @@ const Blog = () => {
     }
   };
 
-  const columns = React.useMemo<ColumnDef<any>[]>(
+  const columns = useMemo<ColumnDef<any>[]>(
     () => [
       { accessorKey: 'title', header: 'Judul Blog' },
       { 
@@ -123,11 +120,11 @@ const Blog = () => {
               content={
                 <div className="relative flex justify-start">
                   <div className="w-fit px-3 py-2 gap-1 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                    <PermissionGranted roleable role="manage-modul.delete">
+                    {/* <PermissionGranted roleable role="manage-modul.delete">
                       <button className={clsx('hover:text-red-500 hover:underline')}>
                         Detail
                       </button>
-                    </PermissionGranted>
+                    </PermissionGranted> */}
                     <PermissionGranted roleable role="manage-modul.edit">
                       <Link
                         href={`/backoffice/cms/edit-blog?Id=${id}`}
@@ -156,24 +153,14 @@ const Blog = () => {
   );
 
   return (
-    <>
-      <TanstackTable 
-        key={refreshKey}
-        apiUrl={apiUrl} 
-        columns={columns}
-        onRefresh={handleRefresh}
-      >
-        <Link href="/backoffice/cms/add-blog" className="block">
-          <AddButton onClick={() => {}} text="Add Blog" />
-        </Link>
-      </TanstackTable>
-      <AlertModal
-        openModal={showAlertModal}
-        setOpenModal={setShowAlertModal}
-        setIsConfirmed={confirmDelete}
-        messageText="Are you sure you want to delete this blog post?"
-      />
-    </>
+    <BlogView 
+      columns={columns}
+      refreshKey={refreshKey}
+      handleRefresh={handleRefresh}
+      showAlertModal={showAlertModal}
+      setShowAlertModal={setShowAlertModal}
+      confirmDelete={confirmDelete}
+    />
   );
 };
 
