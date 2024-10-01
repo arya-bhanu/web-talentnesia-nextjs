@@ -21,6 +21,13 @@ export const useMentorForm = (id: string | null = null) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const { openModal } = useStatusModalStore();
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+
 
   const [form, setForm] = useState<MentorFormData>({
     id: id || '',
@@ -72,18 +79,78 @@ export const useMentorForm = (id: string | null = null) => {
     }
   }, [id]);
 
+  const formatNPWP = (value: string) => {
+    const numbers = value.replace(/\D/g, '');
+    const chars = numbers.split('');
+    let formatted = '';
+  
+    for (let i = 0; i < chars.length; i++) {
+      if (i === 2 || i === 5 || i === 8 || i === 12) {
+        formatted += '.';
+      } else if (i === 9) {
+        formatted += '-';
+      }
+      formatted += chars[i];
+    }
+  
+    return formatted;
+  };
+
+  const formatNIK = (value: string) => {
+    const numbers = value.replace(/\D/g, '');
+    const chars = numbers.split('');
+    let formatted = '';
+  
+    for (let i = 0; i < chars.length; i++) {
+      if (i === 4 || i === 8 || i === 12) {
+        formatted += ' ';
+      }
+      formatted += chars[i];
+    }
+  
+    return formatted;
+  };
+  
+  const handleNIKChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatNIK(event.target.value);
+    setForm(prevForm => ({
+      ...prevForm,
+      nik: formatted
+    }));
+  };
+  
+
+  const handleNPWPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatNPWP(event.target.value);
+    setForm(prevForm => ({
+      ...prevForm,
+      npwp: formatted
+    }));
+  };
+
+  const handleNumberOfChildrenChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10);
+    if (!isNaN(value) && value >= 0) {
+      setForm(prevForm => ({
+        ...prevForm,
+        numberOfChildren: value
+      }));
+    }
+  };
+
   const fetchMentorData = async (id: string) => {
     try {
       const response = await userAPI.show(id);
       if (response.success && response.data) {
         const mentorData = response.data;
+        const { password, ...mentorDataWithoutPassword } = mentorData;
         setForm(prevForm => ({
           ...prevForm,
-          ...mentorData,
-          photoKtp: mentorData.photoKtp || '',
-          photoNpwp: mentorData.photoNpwp || '',
-          contract: mentorData.contract || '',
-          profilePicture: mentorData.profilePicture || '',
+          ...mentorDataWithoutPassword,
+          photoKtp: mentorDataWithoutPassword.photoKtp || '',
+          photoNpwp: mentorDataWithoutPassword.photoNpwp || '',
+          contract: mentorDataWithoutPassword.contract || '',
+          profilePicture: mentorDataWithoutPassword.profilePicture || '',
         }));
       }
     } catch (error) {
@@ -167,6 +234,63 @@ export const useMentorForm = (id: string | null = null) => {
     }
   };
 
+  const handlePhoneChange = (value: string) => {
+    setForm(prevForm => ({
+      ...prevForm,
+      phone: value
+    }));
+  };
+
+  const handleEmergencyContactChange = (value: string) => {
+    setForm(prevForm => ({
+      ...prevForm,
+      emergencyContact: value
+    }));
+  };
+
+  const formatGPA = (value: string) => {
+    const numericValue = value.replace(/[^0-9]/g, '');
+    let formattedValue = '';
+  
+    if (numericValue.length > 0) {
+      const firstDigit = parseInt(numericValue[0]);
+      if (firstDigit >= 1 && firstDigit <= 4) {
+        formattedValue = numericValue[0];
+        if (numericValue.length > 1) {
+          formattedValue += '.';
+          if (firstDigit === 4) {
+            formattedValue += numericValue.slice(1, 2);
+            if (numericValue.length > 2) {
+              formattedValue += '0';
+            }
+          } else {
+            formattedValue += numericValue.slice(1, 3);
+          }
+        }
+      }
+    }
+  
+    return formattedValue;
+  };
+
+  const handleGPAChange = (index: number, value: string) => {
+    const formattedGPA = formatGPA(value);
+    setForm(prevForm => ({
+      ...prevForm,
+      educations: prevForm.educations.map((edu, i) =>
+        i === index ? { ...edu, gpa: formattedGPA } : edu
+      )
+    }));
+  };
+
+  const handleZipCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.replace(/\D/g, '').slice(0, 5);
+    setForm(prevForm => ({
+      ...prevForm,
+      zipCode: value
+    }));
+  };
+
   const handleEducationFileChange = (index: number, fieldName: string) => async (file: File | null) => {
     try {
       if (file) {
@@ -238,12 +362,22 @@ export const useMentorForm = (id: string | null = null) => {
     event.preventDefault();
     
     const requiredFields = [
-      'name', 'nik', 'placeOfBirth', 'dateOfBirth', 'religionId', 'gender',
+      'name', 'nik', 'placeOfBirth', 'dateOfBirth', 'religion', 'gender',
       'mariageStatus', 'contract', 'phone', 'email', 'linkedin', 'emergencyContact',
-      'provinceId', 'districtId', 'subDistrictId', 'zipCode', 'addressKtp', 'addressDomicile'
+      'province', 'district', 'subDistrict', 'zipCode', 'addressKtp', 'addressDomicile'
     ];
   
-    const missingFields = requiredFields.filter(field => !form[field as keyof MentorFormData]);
+    const fieldMapping: { [key: string]: string } = {
+      religionId: 'religion',
+      provinceId: 'province',
+      districtId: 'district',
+      subDistrictId: 'subDistrict'
+    };
+  
+    const missingFields = requiredFields.filter(field => {
+      const formField = fieldMapping[field] || field;
+      return !form[formField as keyof MentorFormData];
+    });
     
     if (missingFields.length > 0) {
       openModal({
@@ -255,8 +389,7 @@ export const useMentorForm = (id: string | null = null) => {
   
     setShowAlertModal(true);
   };
-  
-  
+
   useEffect(() => {
     if (isConfirmed) {
       confirmSubmit();
@@ -269,10 +402,8 @@ export const useMentorForm = (id: string | null = null) => {
     try {
       let response;
       if (form.id) {
-
         response = await userAPI.update(form.id, form as unknown as { [key: string]: User });
       } else {
-
         response = await userAPI.add(form as unknown as { [key: string]: User });
       }
       if (response && response.success) {
@@ -286,15 +417,15 @@ export const useMentorForm = (id: string | null = null) => {
         throw new Error(response?.message || 'API response indicates failure');
       }
     } catch (error) {
-      console.log('error');
       console.error(form.id ? 'Error updating mentor:' : 'Error adding mentor:', error);
       openModal({
         status: 'error',
         message: error instanceof Error ? error.message : 'An unexpected error occurred',
       });
     }
-
   };
+  
+
   const resetForm = () => {
     setForm({
       id: id || '',
@@ -353,6 +484,15 @@ export const useMentorForm = (id: string | null = null) => {
     setShowAlertModal,
     setIsConfirmed,
     openModal,
+    handleNPWPChange,
+    handleNIKChange,
+    handlePhoneChange,
+    handleEmergencyContactChange,
+    handleGPAChange,
+    showPassword,
+    togglePasswordVisibility,
+    handleNumberOfChildrenChange,
+    handleZipCodeChange,
   };
 };
 

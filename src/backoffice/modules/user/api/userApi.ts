@@ -1,4 +1,5 @@
 import { fetchAxios, UseFetchProps } from '@/lib/fetchAxios';
+import { AxiosError } from 'axios';
 
 export const userAPI = {
   add: async (data: FormData | { [key: string]: any }) => {
@@ -12,7 +13,7 @@ export const userAPI = {
       return await fetchAxios(config);
     } catch (error) {
       console.error('Failed to add user');
-      return null;
+      return (error as AxiosError).response?.data || error;
     }
   },
 
@@ -26,7 +27,7 @@ export const userAPI = {
       return await fetchAxios(config);
     } catch (error) {
       console.error('Error fetching mentor:', error);
-      return null;
+      return (error as AxiosError).response?.data || error;
     }
   },
 
@@ -40,8 +41,8 @@ export const userAPI = {
     try {
       return await fetchAxios(config);
     } catch (error) {
-      console.error('Failed to update user');
-      return null;
+      console.log('Failed to update user', error);
+      return (error as AxiosError).response?.data || error;
     }
   },
 
@@ -52,11 +53,10 @@ export const userAPI = {
     };
 
     try {
-      const response = await fetchAxios(config);
-      return response !== null;
+      return await fetchAxios(config);
     } catch (error) {
       console.error('Error deleting user:', error);
-      return false;
+      return (error as AxiosError).response?.data || error;
     }
   }
 };
