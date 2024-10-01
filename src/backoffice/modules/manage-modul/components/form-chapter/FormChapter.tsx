@@ -57,9 +57,7 @@ const FormChapter = () => {
   });
 
   const chapterSchema = z.object({
-    chapter: z
-      .string()
-      .min(1, 'Chapter name is required')
+    chapter: z.string().min(1, 'Chapter name is required'),
   });
 
   useEffect(() => {
@@ -86,14 +84,14 @@ const FormChapter = () => {
     const fileName = formData.get('fileName') as string;
     const convertedTime = time.substring(0, 5);
     const chapterId = params.get('chapterId');
-  
+
     if (chapterId && convertedTime && title && type && fileUrl && fileName) {
       try {
         // Validate file type
         if (!validateFileType(fileName, type)) {
           throw new Error('Invalid file type for the selected content type');
         }
-  
+
         await createContentAsync({
           body: fileUrl,
           duration: convertedTime,
@@ -115,7 +113,8 @@ const FormChapter = () => {
         openModal({
           status: 'error',
           action: 'create',
-          message: err instanceof Error ? err.message : 'All data fields are required',
+          message:
+            err instanceof Error ? err.message : 'All data fields are required',
         });
       }
     } else {
@@ -126,7 +125,7 @@ const FormChapter = () => {
       });
     }
   };
-  
+
   const validateFileType = (fileName: string, type: string): boolean => {
     const fileExtension = fileName.split('.').pop()?.toLowerCase();
     switch (type) {
@@ -140,7 +139,6 @@ const FormChapter = () => {
         return false;
     }
   };
-  
 
   useEffect(() => {
     if (isConfirmedChapter && tempChapterFormData) {
@@ -156,7 +154,7 @@ const FormChapter = () => {
   ) => {
     const formData = new FormData(form);
     setTempChapterFormData(formData);
-  
+
     if (action === 'addContent' || action === 'addExam') {
       try {
         const chapterName = formData.get('chapter') as string;
@@ -179,7 +177,6 @@ const FormChapter = () => {
       setOpenAlertModalChapter(true);
     }
   };
-  
 
   const handleConfirmedSubmitChapter = async (formData: FormData) => {
     try {
@@ -206,7 +203,7 @@ const FormChapter = () => {
 
         if (actionSubChapter === 'exam') {
           router.replace(
-            pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
+            pathname + `/add-exam/?chapterId=${chapterId}&modulId=${moduleId}`,
           );
         } else {
           router.push(pathname + '?' + createQuery('chapterId', chapterId));
@@ -228,7 +225,7 @@ const FormChapter = () => {
 
         if (actionSubChapter === 'exam') {
           router.push(
-            pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
+            pathname + `/add-exam/?chapterId=${chapterId}&modulId=${moduleId}`,
           );
         } else {
           setOpenModalAddContent(true);

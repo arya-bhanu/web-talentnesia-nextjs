@@ -47,6 +47,7 @@ const FormChapterView: React.FC<
   const { setSortContents, sortContents, sortActionContents } =
     useDragContents();
   const formRef = useRef(null);
+  const queryParams = new URLSearchParams();
 
   const { mutateAsync: reorderContentsAsync } = useMutation({
     mutationKey: ['contents'],
@@ -172,7 +173,7 @@ const FormChapterView: React.FC<
                   className="border flex items-center transition-none delay-0  text-white outline-transparent  enabled:hover:bg-[#1d829b] bg-[#219EBC]"
                 >
                   <AddWhite />
-                  <span>Add Exam</span>
+                  <span>Add Exam </span>
                 </Button>
               </PermissionGranted>
               <PermissionGranted roleable role="manage-module.addContent">
@@ -209,13 +210,13 @@ const FormChapterView: React.FC<
           </Link>
           <Button
             onClick={() => {
-                setIsEditConfrm(true);
+              setIsEditConfrm(true);
             }}
             type="button"
             color={'warning'}
             className="bg-[#FFC862] text-black"
           >
-            {"Submit"}
+            {'Submit'}
           </Button>
         </div>
       </form>
