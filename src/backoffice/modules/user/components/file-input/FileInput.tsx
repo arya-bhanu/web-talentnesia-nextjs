@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FileInput as FlowbiteFileInput, Label } from 'flowbite-react';
+import { useStatusModalStore } from '@/lib/store';
 
 interface FileInputProps {
   id: string;
@@ -14,20 +15,21 @@ interface FileInputProps {
 }
 
 export function Component({ id, label, onChange, onReset, initialValue, initialFilename }: FileInputProps) {
-  const [fileName, setFileName] = useState(initialFilename || 'Select File');
+  const [fileName, setFileName] = useState(initialFilename || 'Select Image jpg, jpeg, png');
+  const openModal = useStatusModalStore((state) => state.openModal);
 
   useEffect(() => {
     if (initialFilename) {
       setFileName(initialFilename);
     } else if (initialValue) {
-      setFileName(initialValue.split('/').pop() || 'Select File');
+      setFileName(initialValue.split('/').pop() || 'Select Image jpg, jpeg, png');
     }
   }, [initialFilename, initialValue]);
 
   useEffect(() => {
     if (onReset) {
       onReset(() => {
-        setFileName('Select File');
+        setFileName('Select Image jpg, jpeg, png');
         onChange(null);
       });
     }
@@ -36,8 +38,17 @@ export function Component({ id, label, onChange, onReset, initialValue, initialF
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setFileName(file.name);
-      onChange(file);
+      if (file.type.startsWith('image/')) {
+        setFileName(file.name);
+        onChange(file);
+      } else {
+        openModal({
+          status: 'error',
+          message: 'Please select an image file.',
+          timeOut: 3000
+        });
+        event.target.value = '';
+      }
     }
   };
 
@@ -47,6 +58,7 @@ export function Component({ id, label, onChange, onReset, initialValue, initialF
         id={id}
         className="hidden"
         onChange={handleFileChange}
+        accept="image/*"
       />
       <Label htmlFor={id} className="cursor-pointer">
         <span className="sr-only">{label}</span>

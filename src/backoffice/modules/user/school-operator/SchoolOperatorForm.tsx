@@ -18,6 +18,11 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const { openModal } = useStatusModalStore();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const [form, setForm] = useState<SchoolOperatorFormData>({
     id: id || '',
@@ -56,16 +61,18 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
       const response = await userAPI.show(id);
       if (response.success && response.data) {
         const schoolOperatorData = response.data;
+        const { password, ...schoolOperatorDataWithoutPassword } = schoolOperatorData;
         setForm(prevForm => ({
           ...prevForm,
-          ...schoolOperatorData,
-          profilePicture: schoolOperatorData.profilePicture || '',
+          ...schoolOperatorDataWithoutPassword,
+          profilePicture: schoolOperatorDataWithoutPassword.profilePicture || '',
         }));
       }
     } catch (error) {
-      console.error('Error fetching schoolOperator data:', error);
+      console.error('Error fetching school operator data:', error);
     }
   };
+  
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -128,6 +135,44 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
     }
   };
 
+  const formatNIK = (value: string) => {
+    const numbers = value.replace(/\D/g, '');
+    const chars = numbers.split('');
+    let formatted = '';
+  
+    for (let i = 0; i < chars.length; i++) {
+      if (i === 4 || i === 8 || i === 12) {
+        formatted += ' ';
+      }
+      formatted += chars[i];
+    }
+  
+    return formatted;
+  };
+  
+  const handleNIKChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatNIK(event.target.value);
+    setForm(prevForm => ({
+      ...prevForm,
+      nik: formatted
+    }));
+  };
+
+  const handlePhoneChange = (value: string) => {
+    setForm(prevForm => ({
+      ...prevForm,
+      phone: value
+    }));
+  };
+
+  const handleZipCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.replace(/\D/g, '').slice(0, 5);
+    setForm(prevForm => ({
+      ...prevForm,
+      zipCode: value
+    }));
+  };
+
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -137,11 +182,23 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
     event.preventDefault();
     
     const requiredFields = [
-      'name', 'nik', 'placeOfBirth', 'dateOfBirth', 'religionId', 'gender','phone', 'email',
-      'provinceId', 'districtId', 'subDistrictId', 'zipCode', 'addressDomicile', 'educationInstitutionId'
+      'name', 'nik', 'placeOfBirth', 'dateOfBirth', 'religion', 'gender',
+      'phone', 'email', 'province', 'district', 'subDistrict', 'zipCode',
+      'addressDomicile', 'educationInstitution'
     ];
   
-    const missingFields = requiredFields.filter(field => !form[field as keyof SchoolOperatorFormData]);
+    const fieldMapping: { [key: string]: string } = {
+      religionId: 'religion',
+      provinceId: 'province',
+      districtId: 'district',
+      subDistrictId: 'subDistrict',
+      educationInstitutionId: 'educationInstitution'
+    };
+  
+    const missingFields = requiredFields.filter(field => {
+      const formField = fieldMapping[field] || field;
+      return !form[formField as keyof SchoolOperatorFormData];
+    });
     
     if (missingFields.length > 0) {
       openModal({
@@ -153,6 +210,7 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
   
     setShowAlertModal(true);
   };
+  
   
   
   useEffect(() => {
@@ -182,7 +240,6 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
         throw new Error(response?.message || 'API response indicates failure');
       }
     } catch (error) {
-      console.log('error');
       console.error(form.id ? 'Error updating school operator:' : 'Error adding school operator:', error);
       openModal({
         status: 'error',
@@ -235,6 +292,11 @@ export const useSchoolOperatorForm = (id: string | null = null) => {
     setShowAlertModal,
     setIsConfirmed,
     openModal,
+    handleNIKChange,
+    handlePhoneChange,
+    showPassword,
+    togglePasswordVisibility,
+    handleZipCodeChange,
   };
 };
 

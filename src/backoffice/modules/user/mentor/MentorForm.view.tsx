@@ -33,6 +33,8 @@ import {
 } from '@/backoffice/components/dropdown/api/dropdownApi';
 import AlertModal from '@/backoffice/components/alert-modal';
 import ToasterProvider from '@/utils/ToasterProvider';
+import InputPhoneNumber from '@/backoffice/components/phone-number-input/phoneNumberInput';
+
 type MentorViewProps = ReturnType<typeof useMentorForm>;
 
 export const MentorView: React.FC<MentorViewProps> = ({
@@ -55,7 +57,16 @@ export const MentorView: React.FC<MentorViewProps> = ({
   showAlertModal,
   setShowAlertModal,
   setIsConfirmed,
+  handleNPWPChange,
   openModal,
+  handleNIKChange,
+  handlePhoneChange,
+  handleEmergencyContactChange,
+  handleGPAChange,
+  handleZipCodeChange,
+  showPassword,
+  togglePasswordVisibility,
+  handleNumberOfChildrenChange,
 }) => {
   const [religions, setReligions] = useState<APIResponseReligion[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
@@ -164,18 +175,34 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 />
               </div>
               <div>
-                <label className="flex mb-1">
-                  Password<div className="text-red-600">*</div>
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={form.password || ''}
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                  placeholder="Input password"
-                />
-              </div>
+                  <label className="flex mb-1">
+                    Password<div className="text-red-600">*</div>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      value={form.password || ''}
+                      onChange={handleInputChange}
+                      className={styles.inputField}
+                      placeholder="Input password"
+                    />
+                    {form.password && (
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                      >
+                        <Image
+                          src={showPassword ? '/icons/icon-eyeslash.svg' : '/icons/icon-eye.svg'}
+                          alt={showPassword ? 'Hide password' : 'Show password'}
+                          width={20}
+                          height={20}
+                        />
+                      </button>
+                    )}
+                  </div>
+                </div>
               <div>
                 <label className="flex mb-1">
                   NIK<div className="text-red-600">*</div>
@@ -184,9 +211,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   type="text"
                   name="nik"
                   value={form.nik}
-                  onChange={handleInputChange}
+                  onChange={handleNIKChange}
                   className={styles.inputField}
-                  placeholder="Input NIK"
+                  placeholder="0000 0000 0000 0000"
+                  maxLength={19}
                   required
                 />
               </div>
@@ -196,9 +224,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   type="text"
                   name="npwp"
                   value={form.npwp}
-                  onChange={handleInputChange}
+                  onChange={handleNPWPChange}
                   className={styles.inputField}
-                  placeholder="Input NPWP"
+                  placeholder="00.000.000.0-000.000"
+                  maxLength={20}
                 />
               </div>
               <div>
@@ -330,8 +359,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   type="number"
                   name="numberOfChildren"
                   value={form.numberOfChildren ?? ''}
-                  placeholder="Input Number of Child"
-                  onChange={handleInputChange}
+                  placeholder="Input Number of Children"
+                  onChange={handleNumberOfChildrenChange}
+                  min="0"
                   className={styles.inputField}
                 />
               </div>
@@ -360,14 +390,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <label className="flex mb-1">
                   Phone Number<div className="text-red-600">*</div>
                 </label>
-                <input
-                  type="text"
-                  name="phone"
+                <InputPhoneNumber
                   value={form.phone}
-                  placeholder="Phone Number"
-                  required
-                  onChange={handleInputChange}
-                  className={styles.inputField}
+                  onChange={handlePhoneChange}
                 />
               </div>
               <div>
@@ -402,14 +427,9 @@ export const MentorView: React.FC<MentorViewProps> = ({
                 <label className="flex mb-1">
                   Emergency Contact<div className="text-red-600">*</div>
                 </label>
-                <input
-                  type="text"
-                  name="emergencyContact"
+                <InputPhoneNumber
                   value={form.emergencyContact}
-                  placeholder="Emergency Contact"
-                  required
-                  onChange={handleInputChange}
-                  className={styles.inputField}
+                  onChange={handleEmergencyContactChange}
                 />
               </div>
             </div>
@@ -516,8 +536,11 @@ export const MentorView: React.FC<MentorViewProps> = ({
                   name="zipCode"
                   value={form.zipCode}
                   placeholder="Input Zip Code"
-                  onChange={handleInputChange}
+                  onChange={handleZipCodeChange}
                   className={styles.inputField}
+                  maxLength={5}
+                  pattern="\d{5}"
+                  required
                 />
               </div>
               <div>
@@ -622,7 +645,6 @@ export const MentorView: React.FC<MentorViewProps> = ({
                     >
                       <option value="">Select Title</option>
                       {academicTitles.map((title: APIResponseAcademicTitle, index: number) => {
-                        console.log(title);
                         return (
                           <option key={index} value={title.id}>
                             {title.name}
@@ -654,9 +676,10 @@ export const MentorView: React.FC<MentorViewProps> = ({
                       id={`educations[${index}].gpa`}
                       name={`educations[${index}].gpa`}
                       value={educations.gpa}
-                      placeholder="Input GPA"
-                      onChange={(e) => handleEducationChange(e, index)}
+                      placeholder="0.00"
+                      onChange={(e) => handleGPAChange(index, e.target.value)}
                       className={styles.inputField}
+                      maxLength={4}
                     />
                   </div>
                   <div>
