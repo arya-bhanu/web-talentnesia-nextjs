@@ -23,6 +23,7 @@ import SortArrowUp from '../../../../public/icons/sort-arrow-up.svg';
  * @param {Column<T>[]} props.columns - Column definitions for the table.
  * @param {number} props.currentPage - The current page number.
  * @param {number} props.totalPages - Total number of pages.
+ * @param {number} props.totalData - Total number of data items.
  * @param {number} props.pageSize - Number of items displayed per page.
  * @param {number[]} props.pageSizeOptions - Options for items per page.
  * @param {string} props.searchTerm - The current search term.
@@ -33,6 +34,8 @@ import SortArrowUp from '../../../../public/icons/sort-arrow-up.svg';
  * @param {(field: string) => void} props.handleSort - Function to handle column sorting.
  * @param {() => void} props.handlePreviousPage - Function to handle navigating to the previous page.
  * @param {() => void} props.handleNextPage - Function to handle navigating to the next page.
+ * @param {React.ReactNode} props.children - Optional children to render next to the search bar.
+ * @param {() => void} props.onRefresh - Function to trigger a refresh of the table data.
  */
 
 const TanstackTableView = <T,>({
@@ -51,6 +54,8 @@ const TanstackTableView = <T,>({
   handleSort,
   handlePreviousPage,
   handleNextPage,
+  children,
+  onRefresh,
 }: ITanstackTableViewProps<T>) => {
   const table = useReactTable({
     columns,
@@ -63,16 +68,23 @@ const TanstackTableView = <T,>({
   return (
     <>
       <div className="p-2">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="bg-[#FFFFFF] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4"
-        />
+        <div className="flex justify-between items-center mb-4">
+          <div className={`${children ? 'w-1/4' : 'w-full'}`}>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="bg-[#FFFFFF] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </div>
+          {children}
+        </div>
 
+        {/* Table structure */}
         <div className="overflow-x-auto sm:rounded-lg mt-5">
           <table className="w-full relative z-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            {/* Table header */}
             <thead className="text-md font-bold text-[#323232] bg-[#FFFFFF] border-b">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -119,6 +131,7 @@ const TanstackTableView = <T,>({
                 </tr>
               ))}
             </thead>
+            {/* Table body */}
             <tbody>
               {table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="bg-[#FFFFFF] border-b">
@@ -144,6 +157,7 @@ const TanstackTableView = <T,>({
           </table>
         </div>
 
+        {/* Pagination controls */}
         <div className="flex justify-between items-center w-full mt-5">
           <div className="flex items-center gap-2 text-[#667085]">
             <label htmlFor="pageSize" className="block">
@@ -173,9 +187,6 @@ const TanstackTableView = <T,>({
               >
                 <IconLeft />
               </button>
-              {/* <span className="text-[#667085]">
-                Page {currentPage} of {totalPages}
-              </span> */}
               <button
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}

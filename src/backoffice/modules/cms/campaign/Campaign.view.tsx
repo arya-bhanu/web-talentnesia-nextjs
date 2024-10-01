@@ -1,47 +1,51 @@
-import { AddButton } from '@/backoffice/components/add-button-table/AddButtonTable';
-import { DataTable } from '@/backoffice/components/data-table/DataTable';
-import { SearchTable } from '@/backoffice/components/search-table/SearchTable';
+import React from 'react';
 import { ColumnDef } from '@tanstack/react-table';
+import TanstackTable from '@/backoffice/components/tanstack-table';
+import { AddButton } from '@/backoffice/components/add-button-table';
 import Link from 'next/dist/client/link';
-import React, { Dispatch, SetStateAction } from 'react';
+import AlertModal from '@/backoffice/components/alert-modal/AlertModal';
+import { SearchTable } from '@/backoffice/components/search-table/SearchTable';
 
 export interface ICampaignView {
-  filter: string;
-  setFilter: Dispatch<SetStateAction<string>>;
   columns: ColumnDef<any>[];
+  apiUrl: string;
+  filter: string;
+  setFilter: React.Dispatch<React.SetStateAction<string>>;
+  showAlertModal: boolean;
+  setShowAlertModal: React.Dispatch<React.SetStateAction<boolean>>;
+  confirmDelete: () => void;
+  refreshKey: number;
+  handleRefresh: () => void;
 }
 
-const dataCampagin = [
-  {
-    title: 'New Year Discount',
-    discount: 'Discount 1',
-    date: {
-      dateStart: 'Jan 12th 2024',
-      dateEnd: ' Jan 30th 2024',
-    },
-    status: 'finished',
-    id: '1',
-  },
-];
-
 const CampaignView: React.FC<ICampaignView> = ({
-  filter,
   columns,
+  apiUrl,
+  filter,
   setFilter,
+  showAlertModal,
+  setShowAlertModal,
+  confirmDelete,
+  refreshKey,
+  handleRefresh,
 }) => {
   return (
     <>
-      <div className="flex justify-between items-center font-poppins">
-        <SearchTable value={filter} onChange={setFilter} />
-        <Link href="/backoffice/cms/add-campaign" className="block">
-          <AddButton onClick={() => {}} text="Add Campaign" />
-        </Link>
-      </div>
-      <DataTable
-        data={dataCampagin}
+      <TanstackTable 
+        key={refreshKey}
+        apiUrl="/v1/campaign" 
         columns={columns}
-        sorting={[]}
-        filter={{ Filter: filter, setFilter }}
+        onRefresh={handleRefresh}
+      >
+        <Link href="/backoffice/cms/add-campaign" className="block">
+          <AddButton onClick={() => {}} text="Add campaign" />
+        </Link>
+      </TanstackTable>
+      <AlertModal
+        openModal={showAlertModal}
+        setOpenModal={setShowAlertModal}
+        setIsConfirmed={confirmDelete}
+        messageText="Are you sure you want to delete this campaign?"
       />
     </>
   );
