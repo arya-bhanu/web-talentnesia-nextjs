@@ -11,31 +11,33 @@ const QuestionFieldProject: React.FC<{ id: string }> = ({ id }) => {
       const response = await uploadFile(file, 'content');
       let fileUrl: string;
       let fileName: string;
-      if (typeof response.path === 'string') {
-        fileUrl = response.path;
-        fileName = response.fileOrigin;
-      } else if (
-        typeof response.path === 'object' &&
-        'thumbs' in response.path
-      ) {
-        if (typeof response.path.thumbs === 'string') {
+      let fileType: string = file.type;
+  
+      if (fileType.startsWith('image/')) {
+        if (typeof response.path === 'object' && 'thumbs' in response.path) {
           fileUrl = response.path.thumbs;
         } else {
-          throw new Error('Invalid response format');
+          throw new Error('Invalid response format for image');
         }
       } else {
-        throw new Error('Unexpected response format');
+        if (typeof response.path === 'string') {
+          fileUrl = response.path;
+        } else {
+          throw new Error('Invalid response format for non-image file');
+        }
       }
-
+  
+      fileName = response.fileOrigin;
+  
       const updatedQuestions = question.map((q) =>
-        q.id === id ? { ...q, body: fileUrl, fileName } : q,
+        q.id === id ? { ...q, body: fileUrl, fileName, fileType } : q
       );
       updateQuestion(updatedQuestions);
-      console.log(response);
     } catch (error) {
       console.error('Failed to upload file:', error);
     }
   };
+  
 
   const currentQuestion = question.find((q) => q.id === id);
 
