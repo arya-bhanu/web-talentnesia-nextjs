@@ -130,8 +130,8 @@ const AccordionPanelDraggableView: React.FC<
             <div className="text-start">
               <h2 className="font-lato text-sm font-bold">{title}</h2>
               <div className="flex items-center gap-2 text-sm font-lato text-[#323232]">
-                <p>{totalMinuteDuration} min</p>
-                <p>{totalCurriculum} curriculum</p>
+                <p>{totalMinuteDuration ?? 0} min</p>
+                <p>{totalCurriculum ?? 0} curriculum</p>
               </div>
             </div>
           </div>

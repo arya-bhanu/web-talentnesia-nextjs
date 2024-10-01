@@ -3,6 +3,7 @@ import { APIContentChapter } from '@/backoffice/modules/manage-modul/manageModul
 export type IListDraggable = APIContentChapter & {
   title: string;
   iconSrc?: string;
-  durationMinute?: number;
+  duration?: string;
   className?: string;
 };
+
