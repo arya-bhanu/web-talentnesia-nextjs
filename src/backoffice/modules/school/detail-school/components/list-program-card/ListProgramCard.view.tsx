@@ -53,7 +53,6 @@ export const ListProgramCardView: React.FC<ProgramCardViewProps> = ({ data }) =>
     }
   };
 
-
   return (
     <>
       <div className="block p-4 shadow-sm shadow-indigo-100 cursor-pointer" onClick={handleOpenSidebar}>

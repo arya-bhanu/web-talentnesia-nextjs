@@ -32,20 +32,6 @@ const FormContent: React.FC<{ contentId?: string }> = ({ contentId }) => {
     }
   }, [dataContent]);
 
-  const validateFileType = (file: File, type: string): boolean => {
-    const fileExtension = file.name.split('.').pop()?.toLowerCase();
-    switch (type) {
-      case '1': // Document
-        return ['pdf', 'doc', 'docx'].includes(fileExtension || '');
-      case '2': // Video
-        return file.type.startsWith('video/');
-      case '3': // Image
-        return file.type.startsWith('image/');
-      default:
-        return false;
-    }
-  };
-
   const handleFileChange = (
     newFileUrl: string,
     newFileName: string,
