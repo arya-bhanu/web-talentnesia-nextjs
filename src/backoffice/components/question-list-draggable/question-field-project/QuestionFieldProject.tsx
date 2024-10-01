@@ -10,8 +10,10 @@ const QuestionFieldProject: React.FC<{ id: string }> = ({ id }) => {
     try {
       const response = await uploadFile(file, 'content');
       let fileUrl: string;
+      let fileName: string;
       if (typeof response.path === 'string') {
         fileUrl = response.path;
+        fileName = response.fileOrigin;
       } else if (
         typeof response.path === 'object' &&
         'thumbs' in response.path
@@ -26,9 +28,10 @@ const QuestionFieldProject: React.FC<{ id: string }> = ({ id }) => {
       }
 
       const updatedQuestions = question.map((q) =>
-        q.id === id ? { ...q, body: fileUrl } : q,
+        q.id === id ? { ...q, body: fileUrl, fileName } : q,
       );
       updateQuestion(updatedQuestions);
+      console.log(response);
     } catch (error) {
       console.error('Failed to upload file:', error);
     }
@@ -38,6 +41,7 @@ const QuestionFieldProject: React.FC<{ id: string }> = ({ id }) => {
 
   return (
     <QuestionFieldProjectView
+      fileName={currentQuestion?.fileName || ''}
       body={currentQuestion?.body || ''}
       onFileUpload={handleFileUpload}
     />
