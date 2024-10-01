@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import TanstackTable from '@/backoffice/components/tanstack-table';
 import Popover from '@/backoffice/components/popover/Popover';
@@ -7,7 +7,6 @@ import PermissionGranted from '@/backoffice/components/permission-granted/Permis
 import clsx from 'clsx';
 import Link from 'next/dist/client/link';
 import { AddButton } from '@/backoffice/components/add-button-table';
-import { SearchTable } from '@/backoffice/components/search-table/SearchTable';
 import { cmsApi } from '../Api/cmsApi';
 import AlertModal from '@/backoffice/components/alert-modal/AlertModal';
 import { useStatusModalStore } from '@/lib/store';
@@ -31,15 +30,15 @@ const AuthorCell: React.FC<{ authorId: string }> = ({ authorId }) => {
 
 const Blog = () => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
-  const [filter, setFilter] = useState('');
   const [apiUrl, setApiUrl] = useState('/v1/blog');
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState<string | null>(null);
   const { openModal } = useStatusModalStore();
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  useEffect(() => {
-    setApiUrl(`/v1/blog?search=${filter}`);
-  }, [filter]);
+  const handleRefresh = useCallback(() => {
+    setRefreshKey(prevKey => prevKey + 1);
+  }, []);
 
   const handleDelete = (id: string) => {
     setBlogToDelete(id);
@@ -56,7 +55,7 @@ const Blog = () => {
             action: 'delete',
             message: 'Blog post deleted successfully',
           });
-          // Refresh the table data here
+          handleRefresh();
         } else {
           throw new Error(response?.message || 'Failed to delete blog post');
         }
@@ -94,13 +93,13 @@ const Blog = () => {
           const status = info.getValue();
           if (status === 1) {
             return (
-              <h1 className="bg-green-100 text-green-600 text-md text-center font-semibold py-2 px-4 rounded-lg w-[60%]">
-                Published
-              </h1>
+              <h1 className="bg-green-100 text-green-600 text-sm text-center font-semibold py-1 px-2 rounded-lg inline-block">
+              Published
+            </h1>
             );
           } else {
             return (
-              <h1 className="bg-gray-100 text-gray-700 text-sm text-center font-semibold py-2 px-4 rounded-lg">
+              <h1 className="bg-gray-100 text-gray-700 text-sm text-center font-semibold py-1 px-2 rounded-lg inline-block">
                 Draft
               </h1>
             );
@@ -158,13 +157,16 @@ const Blog = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center font-poppins">
-        <SearchTable value={filter} onChange={setFilter} />
+      <TanstackTable 
+        key={refreshKey}
+        apiUrl={apiUrl} 
+        columns={columns}
+        onRefresh={handleRefresh}
+      >
         <Link href="/backoffice/cms/add-blog" className="block">
           <AddButton onClick={() => {}} text="Add Blog" />
         </Link>
-      </div>
-      <TanstackTable apiUrl={apiUrl} columns={columns} />
+      </TanstackTable>
       <AlertModal
         openModal={showAlertModal}
         setOpenModal={setShowAlertModal}
