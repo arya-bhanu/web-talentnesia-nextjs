@@ -7,7 +7,7 @@ const FormGenerate = () => {
 
   const generateCertificate = async (certificateNumber: string) => {
     try {
-      const response = await axios.post('https://api-talentnesia.skwn.dev/api/v1/generateCertificate', {
+      const response = await axios.post('https://api-talentnesia.skwn.dev/api/v1/program-chapter/{id}/generate-certificates', {
         certificateNumber
       });
       setCertificateData(response.data);

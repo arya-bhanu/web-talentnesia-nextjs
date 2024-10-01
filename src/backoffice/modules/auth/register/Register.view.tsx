@@ -11,6 +11,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
   togglePasswordVisibility,
   onSubmit,
   error,
+  token,
 }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');

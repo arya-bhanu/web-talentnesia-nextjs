@@ -1,8 +1,9 @@
-import { Register } from '@/backoffice/modules/auth/register/Register';
 import React from 'react';
+import dynamic from 'next/dynamic';
 
-const RegisterPage = () => {
-  return <Register />;
-};
+const RegisterComponent = dynamic(() => import('@/backoffice/modules/auth/register/Register').then(mod => mod.Register), {  ssr: false
+});
 
-export default RegisterPage;
+export default function RegisterPage() {
+  return <RegisterComponent />;
+}
