@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useMemo, useState } from 'react';
 import AccordionPanelDraggableView from './AccordionPanelDraggable.view';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -18,7 +18,7 @@ import AlertModal from '@/backoffice/components/alert-modal';
 import { set } from 'date-fns';
 
 const AccordionPanelDraggable: React.FC<
-  IAccordionPanelDraggable & { index: number }
+  IAccordionPanelDraggable & { index: number; chapterId?: string }
 > = (props) => {
   const [openPopover, setOpenPopover] = useState(false);
   const [openModalMentoring, setOpenModalMentoring] = useState(false);
@@ -57,6 +57,12 @@ const AccordionPanelDraggable: React.FC<
     mutationKey: ['update', 'mentor'],
     mutationFn: editMentoring,
   });
+
+  const totalMinuteDuration = useMemo(() => {
+    return props.contents.reduce((total, content) => total + content.durationMinute, 0);
+  }, [props.contents]);
+
+  const totalCurriculum = props.contents.length;
 
   const { timeStart, date, timeEnd, clear } = useFormMentoringStore();
 
@@ -277,6 +283,8 @@ const AccordionPanelDraggable: React.FC<
         setOpenModalCertificate={setOpenModalCertificate}
         setOpenModalGenerate={setOpenModalGenerate}
         {...props}
+        totalMinuteDuration={totalMinuteDuration}
+        totalCurriculum={totalCurriculum}
       />
       <AlertModal
         openModal={openAlertModalMentoring}

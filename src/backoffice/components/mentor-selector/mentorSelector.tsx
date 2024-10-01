@@ -24,9 +24,8 @@ function MentorSelector({
 
   return (
     <div className="relative">
-      {/* Custom Select with Badges */}
       <div
-        className="flex items-center border rounded-md p-2 cursor-pointer"
+        className="flex flex-wrap items-center border rounded-md p-2 cursor-pointer max-h-24 overflow-y-auto"
         onClick={() => setDropdownOpen(!dropdownOpen)}
       >
         {selectedMentors.length > 0 ? (
@@ -34,9 +33,9 @@ function MentorSelector({
             <Badge
               key={mentor.id}
               color="info"
-              className="flex items-center mr-2"
+              className="flex items-center mr-2 mb-1"
             >
-              <span className="flex items-center">
+              <span className="flex items-center truncate max-w-[150px]">
                 {mentor.name}
                 <span
                   className="ml-2 cursor-pointer flex items-center justify-center"
@@ -65,13 +64,10 @@ function MentorSelector({
         ) : (
           <span className="text-gray-500">Pilih Mentor</span>
         )}
-        <span className="ml-auto">&darr;</span>
       </div>
 
-      {/* Dropdown Menu */}
       {dropdownOpen && (
         <div className="absolute top-full left-0 w-full bg-white border mt-1 rounded-md shadow-lg z-10">
-          {/* Search Bar */}
           <div className="p-2">
             <TextInput
               placeholder="Search Mentor"
@@ -81,7 +77,6 @@ function MentorSelector({
             />
           </div>
           <hr />
-          {/* Mentor List with Checkboxes */}
           <div className="p-2 max-h-40 overflow-y-auto">
             {defaultMentors
               .filter((mentor) =>
