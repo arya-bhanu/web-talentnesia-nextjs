@@ -52,6 +52,7 @@ const FormBlogView: React.FC<IFormBlogView> = ({
         <DropFile
           onChange={onFileChange}
           initialImage={fullImageUrl || ''}
+          uploadFolder='cms/blog'
         />
       </div>
 
@@ -99,15 +100,16 @@ const FormBlogView: React.FC<IFormBlogView> = ({
       <div className="col-span-1">
         <LabelForm isImportant htmlFor="category">Kategori</LabelForm>
         <Dropdown<any>
-        onItemSelect={(categoryId) => {
-          onChange('categoryId', categoryId);
-        }}
-        getItems={(limit, offset) => categoryAPI.fetch(offset / limit + 1).then(response => response.items)}
-        itemToString={(item) => item.name}
-        containerClassName="w-full"
-        inputClassName="w-full rounded-lg"
-        placeholderText="Pilih Kategori"
-      />
+          onItemSelect={(categoryId) => {
+            onChange('categoryId', categoryId);
+          }}
+          getItems={(limit, offset) => categoryAPI.fetch(offset / limit + 1).then(response => response.items)}
+          itemToString={(item) => item.name}
+          containerClassName="w-full"
+          inputClassName="w-full rounded-lg"
+          placeholderText="Pilih Kategori"
+          initialValue={formData.categoryName || formData.categoryId}
+        />
       </div>
 
       <div className="col-span-1">
@@ -122,7 +124,7 @@ const FormBlogView: React.FC<IFormBlogView> = ({
               onChange={(e) => onChange('status', e.target.value)}
               className="form-radio w-6 h-6"
             />
-            <span className="ml-2">Not started</span>
+            <span className="ml-2">draft</span>
           </label>
           <label className="inline-flex items-center">
             <input
@@ -133,18 +135,7 @@ const FormBlogView: React.FC<IFormBlogView> = ({
               onChange={(e) => onChange('status', e.target.value)}
               className="form-radio w-6 h-6"
             />
-            <span className="ml-2">On going</span>
-          </label>
-          <label className="inline-flex items-center">
-            <input
-              type="radio"
-              name="status"
-              value="2"
-              checked={formData.status === 2}
-              onChange={(e) => onChange('status', e.target.value)}
-              className="form-radio w-6 h-6"
-            />
-            <span className="ml-2">Finished</span>
+            <span className="ml-2">publish</span>
           </label>
         </div>
       </div>

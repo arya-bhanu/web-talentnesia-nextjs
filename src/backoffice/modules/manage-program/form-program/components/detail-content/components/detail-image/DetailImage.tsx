@@ -7,26 +7,41 @@ const DetailImage: React.FC<{
   content: { data: APIContentChapterProps };
   isLoading: boolean;
 }> = ({ content, isLoading }) => {
-  const isImage = /\.(png|jpg|jpeg|gif)$/.test(content.data.body || '');
+  const [hasValidImage, setHasValidImage] = useState(false);
 
-  if (!isImage) {
-    return <div>Unsupported file type</div>;
-  }
+  useEffect(() => {
+    if (content && content.data && content.data.body) {
+      const isImage = /\.(png|jpg|jpeg|gif)$/i.test(content.data.body);
+      setHasValidImage(isImage);
+    } else {
+      setHasValidImage(false);
+    }
+  }, [content]);
 
   return (
     <Loading isLoading={isLoading}>
-      <div className="flex justify-center items-center mt-8">
-        <div className="relative w-full max-w-xl h-auto">
-          <Image
-            src={content.data.body || ''}
-            alt="Content Image"
-            layout="responsive"
-            width={800}
-            height={600}
-            objectFit="contain"
-          />
+      {hasValidImage ? (
+        <div className="flex justify-center items-center mt-8">
+          <div className="relative w-full max-w-xl h-auto">
+            <Image
+              src={content.data.body || ''}
+              alt="Content Image"
+              layout="responsive"
+              width={800}
+              height={600}
+              objectFit="contain"
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-full h-64 flex items-center justify-center bg-gray-100 border rounded-lg">
+          <p className="text-lg text-gray-600">
+            {content && content.data && content.data.body
+              ? 'Unsupported file type'
+              : 'No image available'}
+          </p>
+        </div>
+      )}
     </Loading>
   );
 };

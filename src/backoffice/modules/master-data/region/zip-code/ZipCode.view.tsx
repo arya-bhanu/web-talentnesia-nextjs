@@ -30,7 +30,9 @@ const ZipCodeView: React.FC<IZipCodeView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push('/backoffice/master-data/region/zip-code/add-zip-code/');
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push('/backoffice/master-data/region/zip-code/add-zip-code/');
   };
 
   const { handleAddZipCode, handleEditZipCode, handleDeleteZipCode } =

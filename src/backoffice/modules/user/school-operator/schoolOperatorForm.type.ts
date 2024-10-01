@@ -1,5 +1,3 @@
-
-
 export interface SchoolOperatorFormData {
   id: string | null;
   role: number;

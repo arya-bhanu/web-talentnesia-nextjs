@@ -118,7 +118,7 @@ const ListDraggableView: React.FC<
         }}
         handleSubmit={handleEditContent}
       >
-        <FormContent contentId={id} isEdit={true} />
+        <FormContent contentId={id} />
       </Modal>
       <Modal
         title="Mentoring"

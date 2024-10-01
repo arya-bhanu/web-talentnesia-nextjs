@@ -30,7 +30,9 @@ const ReligionView: React.FC<IReligionView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push('/backoffice/master-data/religion/add-religion/');
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push('/backoffice/master-data/religion/add-religion/');
   };
 
   const { handleAddReligion, handleEditReligion, handleDeleteReligion } =

@@ -15,12 +15,16 @@ import { fetchAxios } from '@/lib/fetchAxios';
  * @param {string} props.apiUrl - The API URL to fetch table data.
  * @param {Column<T>[]} props.columns - Column definitions for the table.
  * @param {number[]} [props.pageSizeOptions] - Options for the number of items displayed per page (default: [10, 20, 30, 40, 50]).
+ * @param {React.ReactNode} [props.children] - Optional children to render next to the search bar.
+ * @param {() => void} props.onRefresh - Function to trigger a refresh of the table data.
  */
 
 const TanstackTable = <T,>({
   apiUrl,
   columns,
   pageSizeOptions = [10, 20, 30, 40, 50],
+  children,
+  onRefresh,
 }: ITanstackTable<T>) => {
   const [data, setData] = useState<T[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,25 +35,26 @@ const TanstackTable = <T,>({
   const [sortBy, setSortBy] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Fetch data from API
+  // Function to fetch data from API
+  const fetchData = async () => {
+    try {
+      const response = await fetchAxios({
+        url: `${apiUrl}?page=${currentPage}&perPage=${pageSize}&search=${searchTerm}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+        method: 'GET',
+      });
+
+      const paginatedData = response.data;
+      setData(paginatedData.items);
+      setTotalPages(paginatedData.meta.lastPage);
+      setTotalData(paginatedData.meta.total);
+      setCurrentPage(paginatedData.meta.currentPage);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  // Fetch data when dependencies change
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchAxios({
-          url: `${apiUrl}?page=${currentPage}&perPage=${pageSize}&search=${searchTerm}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
-          method: 'GET',
-        });
-
-        const paginatedData = response.data;
-        setData(paginatedData.items);
-        setTotalPages(paginatedData.meta.lastPage);
-        setTotalData(paginatedData.meta.total);
-        setCurrentPage(paginatedData.meta.currentPage);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     fetchData();
   }, [currentPage, searchTerm, pageSize, sortBy, sortOrder]);
 
@@ -76,6 +81,14 @@ const TanstackTable = <T,>({
     }
   };
 
+  // Refresh handler
+  const handleRefresh = () => {
+    fetchData();
+    if (onRefresh) {
+      onRefresh();
+    }
+  };
+
   return (
     <TanstackTableView<T>
       data={data}
@@ -93,7 +106,10 @@ const TanstackTable = <T,>({
       handleSort={handleSort}
       handlePreviousPage={handlePreviousPage}
       handleNextPage={handleNextPage}
-    />
+      onRefresh={handleRefresh}
+    >
+      {children}
+    </TanstackTableView>
   );
 };
 

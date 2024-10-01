@@ -44,7 +44,6 @@ const AccordionPanelDraggableView: React.FC<IAccordionPanelDraggable> = ({
               </h2>
               <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 font-lato text-xs sm:text-sm text-gray-800 font-bold">
                 <p>{totalMinuteDuration} min</p>
-                <p className="hidden sm:inline">•</p>
                 <p>{contents.length} curriculum</p>
               </div>
             </div>

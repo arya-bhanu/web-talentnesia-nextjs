@@ -137,12 +137,12 @@ const EditableListContent: React.FC<IEditableListContent> = (props) => {
           duration: time,
           title,
           type,
-          body: fileName,
+          body: fileUrl,
           isexam: 0,
           chapterId: props.chapterId,
           id: props.id,
           order: props.order,
-          file: fileUrl,
+          fileOrigin: fileName,
         },
       });
       await queryClient.invalidateQueries({ queryKey: ['chapter'] });

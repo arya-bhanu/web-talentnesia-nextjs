@@ -71,14 +71,8 @@ const DetailSchool: React.FC = () => {
     fetchSchoolData();
   }, [schoolId]);
 
-  const handleSubmitSelectedModul = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Handle form submission
-  };
-
   return (
     <DetailSchoolView
-      handleSubmitSelectedModul={handleSubmitSelectedModul}
       setStatus={setStatus}
       status={status}
       selected={selectedStudents}

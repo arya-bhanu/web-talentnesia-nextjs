@@ -2,20 +2,26 @@
 
 import React, { useState, useCallback } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Popover } from 'flowbite-react';
 import TanstackTable from '@/backoffice/components/tanstack-table';
+import { Popover } from 'flowbite-react';
 import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import { AddButton } from '@/backoffice/components/add-button-table';
 import AlertModal from '@/backoffice/components/alert-delete-modal';
 import ModalForm from './components/modal-form-example/ModalForm';
 import { exampleAPI } from './api/example.api';
-import { SearchTable } from '@/backoffice/components/search-table';
+import Link from 'next/link';
 
 export default function Example() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowData, setSelectedRowData] = useState<any>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [apiUrl] = useState('/v1/example');
+
+  const handleRefresh = useCallback(() => {
+    setRefreshKey(prevKey => prevKey + 1);
+  }, []);
 
   const handleEdit = useCallback((id: string, rowData: any) => {
     setSelectedId(id);
@@ -39,21 +45,25 @@ export default function Example() {
         setIsPopupOpen(false);
         setSelectedId(null);
         setSelectedRowData(null);
+        handleRefresh();
       } catch (error) {
         console.error('Failed to save example', error);
       }
     },
-    [],
+    [handleRefresh],
   );
 
-  const handleDeleteExample = useCallback(async (id: string) => {
-    try {
-      await exampleAPI.delete(id);
-      setDeleteModalOpen(false);
-    } catch (error) {
-      console.error('Failed to delete example', error);
+  const handleDeleteExample = useCallback(async () => {
+    if (selectedId) {
+      try {
+        await exampleAPI.delete(selectedId);
+        setDeleteModalOpen(false);
+        handleRefresh();
+      } catch (error) {
+        console.error('Failed to delete example', error);
+      }
     }
-  }, []);
+  }, [selectedId, handleRefresh]);
 
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
@@ -99,19 +109,24 @@ export default function Example() {
   );
 
   return (
-    <div>
-      <div className="flex justify-between items-center font-poppins">
-        <SearchTable onChange={() => {}} value="" />
-        <AddButton
-          onClick={() => {
-            setSelectedId(null);
-            setSelectedRowData(null);
-            setIsPopupOpen(true);
-          }}
-          text="Add Example"
-        />
-      </div>
-      <TanstackTable apiUrl="/v1/example" columns={columns} />
+    <>
+      <TanstackTable 
+        key={refreshKey}
+        apiUrl={apiUrl} 
+        columns={columns}
+        onRefresh={handleRefresh}
+      >
+        <Link href="#" className="block">
+          <AddButton
+            onClick={() => {
+              setSelectedId(null);
+              setSelectedRowData(null);
+              setIsPopupOpen(true);
+            }}
+            text="Add Example"
+          />
+        </Link>
+      </TanstackTable>
 
       <ModalForm
         isOpen={isPopupOpen}
@@ -129,12 +144,8 @@ export default function Example() {
       <AlertModal
         openModal={deleteModalOpen}
         setOpenModal={setDeleteModalOpen}
-        setIsConfirmed={async () => {
-          if (selectedId) {
-            await handleDeleteExample(selectedId);
-          }
-        }}
+        setIsConfirmed={handleDeleteExample}
       />
-    </div>
+    </>
   );
 }

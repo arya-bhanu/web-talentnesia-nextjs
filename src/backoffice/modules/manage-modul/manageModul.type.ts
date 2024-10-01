@@ -18,7 +18,7 @@ export interface APIContentChapter {
   id: string;
   isexam: 0 | 1;
   order: number;
-  file?: string;
+  fileOrigin?: string;
 }
 
 export interface APIChapterModul {
@@ -51,12 +51,15 @@ export interface ExamQuestion {
         value: string;
         text: string;
         id: string;
+        isCorrect: '0' | '1';
         order?: number;
         questionId?: string;
       }[]
     | null;
+  body: string;
   order: number;
   active: null | any;
+  fileName?: string;
 }
 
 export interface IManageModulView {
@@ -64,7 +67,11 @@ export interface IManageModulView {
   Filter: string;
   openPopoverIndex: number;
   setFilter: React.Dispatch<SetStateAction<string>>;
-  handleActionButtonRow: (id: string, action: 'delete' | 'edit', rowData?: string) => void;
+  handleActionButtonRow: (
+    id: string,
+    action: 'delete' | 'edit',
+    rowData?: string,
+  ) => void;
   setOpenPopoverIndex: React.Dispatch<SetStateAction<number>>;
   isLoading: boolean;
 }

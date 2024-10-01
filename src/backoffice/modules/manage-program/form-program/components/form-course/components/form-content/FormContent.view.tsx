@@ -7,7 +7,7 @@ import { APIContentChapter } from '@/backoffice/modules/manage-modul/manageModul
 import { UploadFileInput } from '@/backoffice/modules/manage-modul/components/form-content/components/upload-file-input/UploadFileInput';
 
 const FormContentView: React.FC<
-  IFormContent & { populatedData?: APIContentChapter; isEdit?: boolean }
+  IFormContent & { populatedData?: APIContentChapter; }
 > = ({
   time,
   setTime,
@@ -17,7 +17,6 @@ const FormContentView: React.FC<
   setFileType,
   handleFileChange,
   populatedData,
-  isEdit,
 }) => {
   return (
     <div className="flex flex-col gap-6">
@@ -26,8 +25,6 @@ const FormContentView: React.FC<
         name="time"
         value={time.toTimeString().substring(0, 5)}
       />
-      <input type="hidden" name="fileUrl" value={fileUrl} />
-      <input type="hidden" name="fileName" value={fileName} />
 
       <div className="flex items-center gap-3">
         <div className="flex-1">
@@ -68,25 +65,14 @@ const FormContentView: React.FC<
           </LabelForm>
           <Label
             htmlFor="upload_file"
-            className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg"
+            className="h-[2.65rem] flex items-center px-3 border border-gray-300 rounded-lg cursor-pointer"
           >
-            {isEdit ? (
-              fileName || populatedData?.body ? (
-                <UploadFileInput
-                  onChange={handleFileChange}
-                  initialFileName={fileName || populatedData?.body || ''}
-                  fileType={parseInt(fileType)}
-                />
-              ) : (
-                <div>{fileName || 'No file uploaded'}</div>
-              )
-            ) : (
-              <UploadFileInput
-                onChange={handleFileChange}
-                initialFileName={fileName || ''}
-                fileType={parseInt(fileType)}
-              />
-            )}
+            <UploadFileInput
+              onChange={handleFileChange}
+              initialFileName={fileName}
+              initialFileUrl={fileUrl}
+              fileType={parseInt(fileType)}
+            />
           </Label>
         </div>
         <TimeInput setTime={setTime} time={time} />

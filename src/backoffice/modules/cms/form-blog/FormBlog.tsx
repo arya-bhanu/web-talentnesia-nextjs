@@ -21,6 +21,7 @@ const FormBlog = () => {
     status: 0,
     image: "",
     categoryId: "",
+    categoryName: "",
     tags: [],
     slug: "",
   });
@@ -44,7 +45,12 @@ const FormBlog = () => {
     try {
       const response = await cmsApi.show(blogId);
       if (response && response.data) {
-        setFormData(response.data);
+        const categoryResponse = await categoryAPI.getById(response.data.categoryId);
+        setFormData({
+          ...response.data,
+          categoryId: categoryResponse.id,
+          categoryName: categoryResponse.name
+        });
         if (response.data.image) {
           try {
             const imageUrl = await getImageUrl(response.data.image);
@@ -141,22 +147,22 @@ const FormBlog = () => {
     event.preventDefault();
     
     const requiredFields = [
-      'title', 'content', 'status', 'image', 'categoryId', 'tags', 'slug'
+      'title', 'content', 'image', 'categoryId', 'tags', 'slug'
     ];
     
     const missingFields = requiredFields.filter(field => !formData[field as keyof BlogPostPayload]);
     
-    if (missingFields.length > 0) {
+    if (missingFields.length > 0 || formData.status === null || formData.status === undefined) {
       openModal({
         status: 'error',
-        message: `Please fill in the following required fields: ${missingFields.join(', ')}`,
+        message: `Please fill in the following required fields: ${missingFields.join(', ')}${missingFields.length > 0 && (formData.status === null || formData.status === undefined) ? ', ' : ''}${(formData.status === null || formData.status === undefined) ? 'status' : ''}`,
       });
       return;
     }
     
     setShowAlertModal(true);
   };
-  
+
 
   const confirmSubmit = async () => {
     setShowAlertModal(false);

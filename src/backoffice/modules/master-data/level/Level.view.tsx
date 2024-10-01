@@ -31,7 +31,9 @@ const LevelView: React.FC<ILevelView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push('/backoffice/master-data/level/add-level/');
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push('/backoffice/master-data/level/add-level/');
   };
 
   const { handleAddLevel, handleEditLevel, handleDeleteLevel } =

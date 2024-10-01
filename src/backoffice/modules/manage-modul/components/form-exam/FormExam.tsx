@@ -106,9 +106,9 @@ const FormExam: React.FC<{ className?: string }> = ({ className }) => {
         } as APIExamChapter;
 
         if (examId) {
-          console.log('updating exam...');
+          // console.log('updating exam...');
           await updateExamAsync({ data: dataExam, id: examId });
-          console.log('reordering exam...');
+          // console.log('reordering exam...');
           // await reorderExamsAynsc({
           //   examId,
           //   questions: question.map((el) => el.id),

@@ -30,9 +30,11 @@ const SubDistrictView: React.FC<ISubDistrictView> = ({
   const router = useRouter();
 
   const openDocumentEditor = () => {
-    router.push(
-      '/backoffice/master-data/region/sub-district/add-sub-district/',
-    );
+    setSelectedId(null);
+    setIsPopupOpen(true);
+    // router.push(
+    //   '/backoffice/master-data/region/sub-district/add-sub-district/',
+    // );
   };
 
   const {

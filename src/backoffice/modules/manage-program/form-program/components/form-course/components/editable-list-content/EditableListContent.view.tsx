@@ -124,7 +124,7 @@ const EditableListContentView: React.FC<
         handleSubmit={handleSubmitEdit}
         title="Update Content"
       >
-        {openModalEdit && <FormContent contentId={id} isEdit />}
+        {openModalEdit && <FormContent contentId={id} />}
       </Modal>
       <Modal
         title="Mentoring"

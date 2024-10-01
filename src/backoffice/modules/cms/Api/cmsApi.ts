@@ -61,6 +61,65 @@ export const cmsApi = {
     }
   },
 
+  // CAMPAIGN
+  addCampaign: async (data: FormData | { [key: string]: any }) => {
+    const config: UseFetchProps = {
+      url: '/v1/campaign',
+      method: 'POST',
+      formData: data,
+    };
+
+    try {
+      return await fetchAxios(config);
+    } catch (error) {
+      console.error('Failed to add campaign');
+      return null;
+    }
+  },
+
+  updateCampaign: async (id: string, data: FormData | { [key: string]: any }) => {
+    const config: UseFetchProps = {
+      url: `/v1/campaign/${id}`,
+      method: 'PUT',
+      formData: data,
+    };
+
+    try {
+      return await fetchAxios(config);
+    } catch (error) {
+      console.error('Failed to update campaign');
+      return null;
+    }
+  },
+
+  showCampaign: async (id: string) => {
+    const config: UseFetchProps = {
+      url: `/v1/campaign/${id}`,
+      method: 'GET',
+    };
+
+    try {
+      return await fetchAxios(config);
+    } catch (error) {
+      console.error('Failed to fetch campaign');
+      return null;
+    }
+  },
+
+  deleteCampaign: async (id: string) => {
+    const config: UseFetchProps = {
+      url: `/v1/campaign/${id}`,
+      method: 'DELETE',
+    };
+
+    try {
+      return await fetchAxios(config);
+    } catch (error) {
+      console.error('Failed to delete campaign');
+      return null;
+    }
+  },
+
   // TAG
   addTag: async (data: FormData | { [key: string]: any }) => {
     const config: UseFetchProps = {

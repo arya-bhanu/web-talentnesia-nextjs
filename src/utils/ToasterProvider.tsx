@@ -11,11 +11,11 @@ const ToasterProvider = ({ children }: { children: ReactNode }) => {
     if (action) {
       switch (action) {
         case 'create':
-          return 'Successfully Create Data';
+          return 'Create Data';
         case 'delete':
-          return 'Successfully Delete Data';
+          return 'Delete Data';
         case 'update':
-          return 'Successfully Update Data';
+          return 'Update Data';
         default:
           return '';
       }
@@ -46,7 +46,10 @@ const ToasterProvider = ({ children }: { children: ReactNode }) => {
                     {status === 'success' ? 'Success' : 'Failed'}
                   </p>
                   {actionMessage && (
-                    <p className="text-center">{actionMessage}</p>
+                    <p className="text-center">
+                      <span>{status === 'error' ? 'Unable to ' : 'Successfully'}</span>
+                      <span>{actionMessage}</span>
+                    </p>
                   )}
                   {modalMessage && (
                     <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-center">

@@ -35,6 +35,11 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
     }));
   };
 
+  const handlePhoneChange = (value: string) => {
+    const numericValue = value.replace(/[^0-9]/g, '');
+    handleInputChange('phone', numericValue);
+  };
+
   const handleImageChange = async (imageUrl: string) => {
     try {
       const fullUrl = await getImageUrl(imageUrl);
@@ -49,7 +54,7 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setHasError(true);
+    setHasError(false);
 
     const requiredFields: (keyof APIResponseSchool)[] = [
       'name',
@@ -59,12 +64,17 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
       'address',
       'imageUrl',
     ];
-    const isFormValid = requiredFields.every((field) => formData[field]);
+
+    const isFormValid = requiredFields.every((field) => {
+      const value = formData[field];
+      return value !== undefined && value !== null && (typeof value === 'string' ? value.trim() !== '' : true);
+    });
 
     if (!isFormValid) {
-      console.log(formData)
+      console.log('Form data:', formData);
       setModalMessage('Please fill in all required fields.');
       setShowModal(true);
+      setHasError(true);
       return;
     }
 
@@ -72,7 +82,6 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
       const newSchool = await SchoolAPI.add(formData as APIResponseSchool);
       console.log('School added successfully:', newSchool);
       setModalMessage('School added successfully!');
-      setHasError(false);
       setShowModal(true);
       router.push('/backoffice/school');
     } catch (error) {
@@ -81,9 +90,7 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
       setHasError(true);
       setShowModal(true);
     }
-  };
-
-  return (
+  };  return (
     <form onSubmit={handleSubmit} className="p-6 rounded-lg bg-white">
       <div className="mb-6 flex">
         <ImageUploadInput
@@ -148,24 +155,26 @@ const AddSchoolView: React.FC<AddSchoolViewProps> = () => {
         </div>
 
         <div>
-          <LabelForm isImportant htmlFor="phone">
-            Nomor Telepon
-          </LabelForm>
-          <input
-            id="phone"
-            placeholder="Input Phone Number"
-            type="tel"
-            value={formData.phone || ''}
-            onChange={(e) => handleInputChange('phone', e.target.value)}
-            required
-            className={`block w-full p-2 border ${hasError && !formData.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg`}
-          />
-          {hasError && !formData.phone && (
-            <p className="text-red-500 text-xs mt-1">
-              Phone Number is required.
-            </p>
-          )}
-        </div>
+        <LabelForm isImportant htmlFor="phone">
+          Nomor Telepon
+        </LabelForm>
+        <input
+          id="phone"
+          placeholder="Input Phone Number"
+          type="tel"
+          value={formData.phone}
+          onChange={(e) => handlePhoneChange(e.target.value)}
+          required
+          className={`block w-full p-2 border ${
+            hasError && !formData.phone ? 'border-red-500' : 'border-gray-300'
+          } rounded-lg`}
+        />
+        {hasError && !formData.phone && (
+          <p className="text-red-500 text-xs mt-1">
+            Phone Number is required.
+          </p>
+        )}
+      </div>
 
         <div className="col-span-2">
           <LabelForm isImportant htmlFor="address">
