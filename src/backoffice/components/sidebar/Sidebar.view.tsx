@@ -139,8 +139,8 @@ const SidebarView: React.FC<SidebarViewProps> = ({
                         <Image
                           src={item.icon || ''}
                           alt={`${item.title} icon`}
-                          width={20}
-                          height={20}
+                          width={24}
+                          height={24}
                           className="mr-3"
                           style={{
                             filter:
@@ -214,14 +214,15 @@ const SidebarView: React.FC<SidebarViewProps> = ({
                           style={{
                             top: `${submenuPosition.top}px`,
                             left: '64px',
-                            minWidth: '200px',
-                            maxHeight: '80vh',
+                            minWidth: '180px',
+                            maxHeight: '70vh',
                             overflowY: 'auto',
+                            fontSize: '0.8rem',
                           }}
                           onMouseEnter={() => handleSubmenuHover(true)}
                           onMouseLeave={() => handleSubmenuHover(false)}
                         >
-                          <ul className="space-y-2">
+                          <ul className="space-y-1">
                             {item.links.map((link, subIndex) => (
                               <li key={subIndex}>
                                 <Link
@@ -230,7 +231,7 @@ const SidebarView: React.FC<SidebarViewProps> = ({
                                     handleSubItemClick(subIndex);
                                     setHoveredIndex(null);
                                   }}
-                                  className={`block p-2 rounded-lg hover:bg-gray-100 ${
+                                  className={`block p-1.5 rounded-lg hover:bg-gray-100 ${
                                     activeSubIndex === subIndex
                                       ? 'text-[#219EBC]'
                                       : 'text-[#667085]'
