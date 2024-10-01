@@ -84,14 +84,14 @@ const FormChapter = () => {
     const fileName = formData.get('fileName') as string;
     const convertedTime = time.substring(0, 5);
     const chapterId = params.get('chapterId');
-  
+
     if (chapterId && convertedTime && title && type && fileUrl && fileName) {
       try {
         // Validate file type
         if (!validateFileType(fileName, type)) {
           throw new Error('Invalid file type for the selected content type');
         }
-  
+
         await createContentAsync({
           body: fileUrl,
           duration: convertedTime,
@@ -113,7 +113,8 @@ const FormChapter = () => {
         openModal({
           status: 'error',
           action: 'create',
-          message: err instanceof Error ? err.message : 'All data fields are required',
+          message:
+            err instanceof Error ? err.message : 'All data fields are required',
         });
       }
     } else {
@@ -124,7 +125,7 @@ const FormChapter = () => {
       });
     }
   };
-  
+
   const validateFileType = (fileName: string, type: string): boolean => {
     const fileExtension = fileName.split('.').pop()?.toLowerCase();
     switch (type) {
@@ -138,7 +139,6 @@ const FormChapter = () => {
         return false;
     }
   };
-  
 
   useEffect(() => {
     if (isConfirmedChapter && tempChapterFormData) {
@@ -202,7 +202,9 @@ const FormChapter = () => {
         }
 
         if (actionSubChapter === 'exam') {
-          router.replace(pathname + '/add-exam/?chapterId=' + chapterId);
+          router.replace(
+            pathname + `/add-exam/?chapterId=${chapterId}&modulId=${moduleId}`,
+          );
         } else {
           router.push(pathname + '?' + createQuery('chapterId', chapterId));
           setOpenModalAddContent(true);
@@ -222,7 +224,9 @@ const FormChapter = () => {
         }
 
         if (actionSubChapter === 'exam') {
-          router.push(pathname + '/add-exam/?chapterId=' + chapterId);
+          router.push(
+            pathname + `/add-exam/?chapterId=${chapterId}&modulId=${moduleId}`,
+          );
         } else {
           setOpenModalAddContent(true);
         }
