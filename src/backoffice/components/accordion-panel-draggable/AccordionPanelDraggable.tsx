@@ -30,7 +30,7 @@ const AccordionPanelDraggable: React.FC<
   const handleClickEdit = () => {
     router.push(
       pathname +
-        '/chapter?modulId=' +
+        'chapter?modulId=' +
         params.get('modulId') +
         '&chapterId=' +
         props.id,

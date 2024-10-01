@@ -57,9 +57,7 @@ const FormChapter = () => {
   });
 
   const chapterSchema = z.object({
-    chapter: z
-      .string()
-      .min(1, 'Chapter name is required')
+    chapter: z.string().min(1, 'Chapter name is required'),
   });
 
   useEffect(() => {
@@ -107,7 +105,7 @@ const FormChapter = () => {
         });
       } catch (err) {
         console.error(err);
-        console.log("Error create")
+        console.log('Error create');
         openModal({
           status: 'error',
           action: 'create',
@@ -131,7 +129,7 @@ const FormChapter = () => {
   ) => {
     const formData = new FormData(form);
     setTempChapterFormData(formData);
-  
+
     if (action === 'addContent' || action === 'addExam') {
       try {
         const chapterName = formData.get('chapter') as string;
@@ -154,7 +152,6 @@ const FormChapter = () => {
       setOpenAlertModalChapter(true);
     }
   };
-  
 
   const handleConfirmedSubmitChapter = async (formData: FormData) => {
     try {
@@ -180,9 +177,7 @@ const FormChapter = () => {
         }
 
         if (actionSubChapter === 'exam') {
-          router.replace(
-            pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
-          );
+          router.replace(pathname + '/add-exam/?chapterId=' + chapterId);
         } else {
           router.push(pathname + '?' + createQuery('chapterId', chapterId));
           setOpenModalAddContent(true);
@@ -202,9 +197,7 @@ const FormChapter = () => {
         }
 
         if (actionSubChapter === 'exam') {
-          router.push(
-            pathname + '/add-exam' + '?' + createQuery('chapterId', chapterId),
-          );
+          router.push(pathname + '/add-exam/?chapterId=' + chapterId);
         } else {
           setOpenModalAddContent(true);
         }
