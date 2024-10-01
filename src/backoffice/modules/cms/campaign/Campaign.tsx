@@ -1,16 +1,13 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import TanstackTable from '@/backoffice/components/tanstack-table';
 import Popover from '@/backoffice/components/popover/Popover';
 import PermissionGranted from '@/backoffice/components/permission-granted/PermissionGranted';
 import clsx from 'clsx';
 import Link from 'next/dist/client/link';
-import { AddButton } from '@/backoffice/components/add-button-table';
-import { SearchTable } from '@/backoffice/components/search-table/SearchTable';
 import { cmsApi } from '../Api/cmsApi';
-import AlertModal from '@/backoffice/components/alert-modal/AlertModal';
 import { useStatusModalStore } from '@/lib/store';
+import CampaignView from './Campaign.view';
 
 const Campaign = () => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
@@ -19,6 +16,11 @@ const Campaign = () => {
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [campaignToDelete, setCampaignToDelete] = useState<string | null>(null);
   const { openModal } = useStatusModalStore();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = useCallback(() => {
+    setRefreshKey(prevKey => prevKey + 1);
+  }, []);
 
   useEffect(() => {
     setApiUrl(`/v1/campaign?search=${filter}`);
@@ -39,7 +41,7 @@ const Campaign = () => {
             action: 'delete',
             message: 'Campaign deleted successfully',
           });
-          // Refresh the table data here
+          handleRefresh();
         } else {
           throw new Error(response?.message || 'Failed to delete campaign');
         }
@@ -54,7 +56,7 @@ const Campaign = () => {
     }
   };
 
-  const columns = React.useMemo<ColumnDef<any>[]>(
+  const columns = useMemo<ColumnDef<any>[]>(
     () => [
       { accessorKey: 'title', header: 'Campaign Title' },
       { accessorKey: 'discountName', header: 'Discount' },
@@ -99,11 +101,11 @@ const Campaign = () => {
               content={
                 <div className="relative flex justify-start">
                   <div className="w-fit px-3 py-2 gap-1 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-                    <PermissionGranted roleable role="manage-modul.delete">
+                    {/* <PermissionGranted roleable role="manage-modul.delete">
                       <button className={clsx('hover:text-red-500 hover:underline')}>
                         Detail
                       </button>
-                    </PermissionGranted>
+                    </PermissionGranted> */}
                     <PermissionGranted roleable role="manage-modul.edit">
                       <Link
                         href={`/backoffice/cms/edit-campaign?Id=${id}`}
@@ -132,21 +134,17 @@ const Campaign = () => {
   );
 
   return (
-    <>
-      <div className="flex justify-between items-center font-poppins">
-        <SearchTable value={filter} onChange={setFilter} />
-        <Link href="/backoffice/cms/add-campaign" className="block">
-          <AddButton onClick={() => {}} text="Add Campaign" />
-        </Link>
-      </div>
-      <TanstackTable apiUrl={apiUrl} columns={columns} />
-      <AlertModal
-        openModal={showAlertModal}
-        setOpenModal={setShowAlertModal}
-        setIsConfirmed={confirmDelete}
-        messageText="Are you sure you want to delete this campaign?"
-      />
-    </>
+    <CampaignView
+      columns={columns}
+      apiUrl={apiUrl}
+      filter={filter}
+      setFilter={setFilter}
+      showAlertModal={showAlertModal}
+      setShowAlertModal={setShowAlertModal}
+      confirmDelete={confirmDelete}
+      refreshKey={refreshKey}
+      handleRefresh={handleRefresh}
+    />
   );
 };
 
