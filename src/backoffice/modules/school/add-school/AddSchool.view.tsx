@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Dispatch,
   FormEvent,
@@ -5,7 +6,6 @@ import {
   useState,
   MouseEvent,
 } from 'react';
-import { Button, Card } from 'flowbite-react';
 import AddSchool from './components/add';
 import ModalAddProgram from '@/backoffice/components/modal-add-program/ModalAddProgram';
 import { IAddSchoolView } from './addSchool.type';

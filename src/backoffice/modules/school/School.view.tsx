@@ -114,7 +114,7 @@ const SchoolView: React.FC<ISchoolView> = ({
                 setSelectedId(null);
                 setSelectedRowData(null);
               }}
-              text="Add Course"
+              text="Add School"
             />
           </Link>
         </PermissionGranted>

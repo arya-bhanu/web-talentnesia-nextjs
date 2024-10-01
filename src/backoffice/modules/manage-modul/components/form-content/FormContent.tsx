@@ -22,19 +22,24 @@ const FormContent: React.FC<{ contentId?: string }> = ({ contentId }) => {
       setTime(new Date(0, 0, 0, parseInt(hour), parseInt(minute)));
       setFileType(dataContent.data.type);
       if (dataContent.data.body && dataContent.data.fileOrigin) {
-        getImageUrl(dataContent.data.body)
-          .then((url) => {
-            setFileName(dataContent.data.fileOrigin);
-            setFileUrl(url);
-          })
-          .catch(console.error);
+        // getImageUrl(dataContent.data.body)
+        //   .then((url) => {
+        setFileName(dataContent.data.fileOrigin);
+        setFileUrl(dataContent.data.body);
+        // })
+        // .catch(console.error);
       }
     }
   }, [dataContent]);
 
-  const handleFileChange = (newFileUrl: string, newFileName: string) => {
+  const handleFileChange = (
+    newFileUrl: string,
+    newFileName: string,
+    newFileType: number,
+  ) => {
     setFileUrl(newFileUrl);
     setFileName(newFileName);
+    setFileType(newFileType.toString());
   };
 
   return (

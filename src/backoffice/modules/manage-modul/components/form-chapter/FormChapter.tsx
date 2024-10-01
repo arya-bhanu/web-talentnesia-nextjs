@@ -84,9 +84,14 @@ const FormChapter = () => {
     const fileName = formData.get('fileName') as string;
     const convertedTime = time.substring(0, 5);
     const chapterId = params.get('chapterId');
-
-    if (chapterId && convertedTime && title && type) {
+  
+    if (chapterId && convertedTime && title && type && fileUrl && fileName) {
       try {
+        // Validate file type
+        if (!validateFileType(fileName, type)) {
+          throw new Error('Invalid file type for the selected content type');
+        }
+  
         await createContentAsync({
           body: fileUrl,
           duration: convertedTime,
@@ -105,15 +110,35 @@ const FormChapter = () => {
         });
       } catch (err) {
         console.error(err);
-        console.log('Error create');
         openModal({
           status: 'error',
           action: 'create',
-          message: 'All data field are required',
+          message: err instanceof Error ? err.message : 'All data fields are required',
         });
       }
+    } else {
+      openModal({
+        status: 'error',
+        action: 'create',
+        message: 'All data fields are required',
+      });
     }
   };
+  
+  const validateFileType = (fileName: string, type: string): boolean => {
+    const fileExtension = fileName.split('.').pop()?.toLowerCase();
+    switch (type) {
+      case '1': // Document
+        return ['pdf', 'doc', 'docx'].includes(fileExtension || '');
+      case '2': // Video
+        return ['mp4', 'avi', 'mov', 'wmv'].includes(fileExtension || '');
+      case '3': // Image
+        return ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension || '');
+      default:
+        return false;
+    }
+  };
+  
 
   useEffect(() => {
     if (isConfirmedChapter && tempChapterFormData) {

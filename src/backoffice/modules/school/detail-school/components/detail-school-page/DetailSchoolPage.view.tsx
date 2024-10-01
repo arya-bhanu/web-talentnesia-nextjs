@@ -14,8 +14,8 @@ const DetailSchoolPageView: React.FC<DetailSchoolPageViewProps> = ({ schoolData,
       <div className="items-start">
         <div className="w-[15%] gap-y-4">
           <Image 
-            src={fullImageUrl || '/default-image.png'} 
-            alt="School Image" 
+            src={fullImageUrl || '/placeholder-image.png'} 
+            alt="Unavailable" 
             width={400}
             height={250}
             className="w-full h-auto rounded-lg"
