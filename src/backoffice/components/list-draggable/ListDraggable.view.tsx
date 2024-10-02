@@ -9,15 +9,19 @@ import Video from '@/../public/icons/videocam.svg';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
-const ListDraggableView: React.FC<IListDraggable> = ({
+interface ListDraggableViewProps extends IListDraggable {
+  renderMinuteTime: number;
+}
+
+const ListDraggableView: React.FC<ListDraggableViewProps> = ({
   className,
   title,
-  durationMinute,
   isexam,
   type,
   id,
+  renderMinuteTime,
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: id });
@@ -69,7 +73,7 @@ const ListDraggableView: React.FC<IListDraggable> = ({
           <h3 className="font-medium font-lato">{title}</h3>
         </Link>
       </div>
-      <p className="font-semibold font-lato text-xs">{durationMinute} minute</p>
+      <p className="font-semibold font-lato text-xs">{renderMinuteTime} minute</p>
     </div>
   );
 };

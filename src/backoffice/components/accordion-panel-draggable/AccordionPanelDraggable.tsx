@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import AccordionPanelDraggableView from './AccordionPanelDraggable.view';
 import { IAccordionPanelDraggable } from './accordionPanelDraggable.type';
 import { IStateChapter } from '@/backoffice/modules/manage-modul/components/chapter/chapter.type';
@@ -30,7 +30,7 @@ const AccordionPanelDraggable: React.FC<
   const handleClickEdit = () => {
     router.push(
       pathname +
-        '/chapter?modulId=' +
+        'chapter?modulId=' +
         params.get('modulId') +
         '&chapterId=' +
         props.id,
@@ -57,6 +57,19 @@ const AccordionPanelDraggable: React.FC<
       }
     })();
   }, [isConfirmDel]);
+
+  const totalMinuteDuration = useMemo(() => {
+    return props.contents.reduce((total, content) => {
+      if (content.duration) {
+        const [hours, minutes] = content.duration.split(':');
+        return total + parseInt(hours) * 60 + parseInt(minutes);
+      }
+      return total;
+    }, 0);
+  }, [props.contents]);
+
+  const totalCurriculum = props.contents.length;
+
   return (
     <AccordionPanelDraggableView
       setIdDelete={setIdDelete}
@@ -67,8 +80,9 @@ const AccordionPanelDraggable: React.FC<
       openModal={openModal}
       handleEdit={handleClickEdit}
       {...props}
+      totalMinuteDuration={totalMinuteDuration}
+      totalCurriculum={totalCurriculum}
     />
   );
 };
-
 export default AccordionPanelDraggable;

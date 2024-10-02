@@ -23,6 +23,8 @@ import {
   subDistrictAPI,
 } from '@/backoffice/components/dropdown/api/dropdownApi';
 import AlertModal from '@/backoffice/components/alert-modal';
+import InputPhoneNumber from '@/backoffice/components/phone-number-input/phoneNumberInput';
+import Image from 'next/image';
 
 type SchoolOperatorViewProps = ReturnType<typeof useSchoolOperatorForm>;
 
@@ -43,6 +45,11 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
   setShowAlertModal,
   setIsConfirmed,
   openModal,
+  handleNIKChange,
+  handlePhoneChange,
+  showPassword,
+  togglePasswordVisibility,
+  handleZipCodeChange,
 }) => {
   const [religions, setReligions] = useState<APIResponseReligion[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
@@ -147,18 +154,34 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                 />
               </div>
               <div>
-                <label className="flex mb-1">
-                  Password<div className="text-red-600">*</div>
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={form.password || ''}
-                  onChange={handleInputChange}
-                  className={styles.inputField}
-                  placeholder="Input Password"
-                />
-              </div>
+                  <label className="flex mb-1">
+                    Password<div className="text-red-600">*</div>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      value={form.password || ''}
+                      onChange={handleInputChange}
+                      className={styles.inputField}
+                      placeholder="Input password"
+                    />
+                    {form.password && (
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                      >
+                        <Image
+                          src={showPassword ? '/icons/icon-eyeslash.svg' : '/icons/icon-eye.svg'}
+                          alt={showPassword ? 'Hide password' : 'Show password'}
+                          width={20}
+                          height={20}
+                        />
+                      </button>
+                    )}
+                  </div>
+                </div>
               <div>
                 <label className="flex mb-1">
                   NIK/Identity Number<div className="text-red-600">*</div>
@@ -167,9 +190,10 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   type="text"
                   name="nik"
                   value={form.nik}
-                  onChange={handleInputChange}
+                  onChange={handleNIKChange}
                   className={styles.inputField}
-                  placeholder="Input NIK"
+                  placeholder="0000 0000 0000 0000"
+                  maxLength={19}
                   required
                 />
               </div>
@@ -220,7 +244,6 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                     Select Religion
                   </option>
                   {religions.map((religion: any, index: number) => {
-                    console.log(religion);
                     return (
                       <option key={index} value={religion.id}>
                         {religion.name}
@@ -267,18 +290,13 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
               B. Contact Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
+            <div>
                 <label className="flex mb-1">
                   Phone Number<div className="text-red-600">*</div>
                 </label>
-                <input
-                  type="text"
-                  name="phone"
+                <InputPhoneNumber
                   value={form.phone}
-                  placeholder="Phone Number"
-                  required
-                  onChange={handleInputChange}
-                  className={styles.inputField}
+                  onChange={handlePhoneChange}
                 />
               </div>
               <div>
@@ -398,8 +416,11 @@ export const SchoolOperatorView: React.FC<SchoolOperatorViewProps> = ({
                   name="zipCode"
                   value={form.zipCode}
                   placeholder="Input Zip Code"
-                  onChange={handleInputChange}
+                  onChange={handleZipCodeChange}
                   className={styles.inputField}
+                  maxLength={5}
+                  pattern="\d{5}"
+                  required
                 />
               </div>
               <div>
