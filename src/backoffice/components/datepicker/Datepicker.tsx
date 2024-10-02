@@ -28,28 +28,22 @@ export function Component({
     }
   }, [onReset, setSelectedDate]);
 
-  /* const parseDate = (dateString: string | undefined): Date | undefined => {
+  const parseDate = (dateString: string | undefined): Date | undefined => {
     if (!dateString) return undefined;
     const parsedDate = new Date(dateString);
     return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
-  }; */
-
-  const parseDate = (dateStr: string | undefined): Date | undefined => {
-    if (!dateStr) return undefined;
-    const date = new Date(dateStr);
-    return isNaN(date.getTime()) ? undefined : date; // Check if the date is valid
   };
 
   return (
     <FlowbiteDatepicker
       icon={CalendarIcon}
-      value={parseDate(selectedDate)?.toISOString().split('T')[0]}
+      // Kirimkan string format 'YYYY-MM-DD' atau string kosong jika tidak ada tanggal
+      value={selectedDate || ''} // Menggunakan string sesuai dengan tipe yang diharapkan
       onSelect={(date) => {
         if (setSelectedDate && date instanceof Date) {
-          setSelectedDate(date.toISOString().split('T')[0]);
+          setSelectedDate(date.toISOString().split('T')[0]); // Simpan tanggal sebagai string 'YYYY-MM-DD'
         }
       }}
-      placeholder="Select Date"
     />
   );
 }
