@@ -18,7 +18,7 @@ export const faqAPI = {
   add: async (data: { question: string; answer: string; active: number }) => {
     const cleanedData = {
       ...data,
-      answer: data.answer,
+      answer: data.answer.replace(/<\/?[^>]+(>|$)/g, ""),
     };
     return fetchAxios<{ data: APIResponseFAQ; message: string }>({
       url: `/v1/faq`,
@@ -30,7 +30,7 @@ export const faqAPI = {
   update: async (id: string, data: { question: string; answer: string; active: number }) => {
     const cleanedData = {
       ...data,
-      answer: data.answer,
+      answer: data.answer.replace(/<\/?[^>]+(>|$)/g, ""),
     };
     return fetchAxios<{ data: APIResponseFAQ }>({
       url: `/v1/faq/${id}`,

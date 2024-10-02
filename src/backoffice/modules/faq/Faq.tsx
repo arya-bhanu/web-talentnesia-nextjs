@@ -52,7 +52,6 @@ const Faq: React.FC = () => {
   const columns = [
     { header: 'Question', accessor: 'question' },
     { header: 'Answer', accessor: 'answer' },
-    { header: 'Actions', accessor: 'actions' },
   ];
 
   return (
