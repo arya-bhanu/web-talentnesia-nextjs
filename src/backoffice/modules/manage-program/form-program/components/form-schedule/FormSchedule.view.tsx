@@ -5,7 +5,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 
 const FormScheduleView: React.FC<{
   timeInputState: { setTime: Dispatch<SetStateAction<Date>>; time: Date };
-  dateInputState: { setDate: Dispatch<SetStateAction<Date>>; date: Date };
+  dateInputState: { setDate: Dispatch<SetStateAction<Date | null>>; date: Date | null };
 }> = ({ timeInputState, dateInputState }) => {
   return (
     <div className="flex items-start gap-5 min-h-[30vh]">
@@ -14,8 +14,10 @@ const FormScheduleView: React.FC<{
           Date
         </LabelForm>
         <Datepicker
-          defaultDate={dateInputState.date}
-          onSelectedDateChanged={(date) => dateInputState.setDate(date)}
+          id="schedule_date"
+          onChange={(date) => dateInputState.setDate(date)}
+          value={dateInputState.date}
+          placeholder="Select date"
         />
       </div>
       <div className="flex-1">

@@ -37,16 +37,14 @@ export function Component({
   return (
     <FlowbiteDatepicker
       icon={CalendarIcon}
-      // Ubah Date menjadi string yang diharapkan dengan toISOString().split('T')[0]
-      value={
-        selectedDate ? parseDate(selectedDate)?.toISOString().split('T')[0] : ''
-      }
+      value={parseDate(selectedDate)}
+      defaultValue={parseDate(selectedDate)}
       onSelect={(date) => {
         if (setSelectedDate && date instanceof Date) {
-          // Simpan dalam format string YYYY-MM-DD
           setSelectedDate(date.toISOString().split('T')[0]);
         }
       }}
+      placeholder="Select Date"
     />
   );
 }

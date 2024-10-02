@@ -16,9 +16,13 @@ export const Component: React.FC<DatepickerProps> = ({
   value,
   placeholder = 'Select date',
 }) => {
-  const handleChange = (date: Date) => {
-    const nextDay = addDays(date, 1);
-    onChange(nextDay);
+  const handleChange = (date: Date | null) => {
+    if (date) {
+      const nextDay = addDays(date, 1);
+      onChange(nextDay);
+    } else {
+      onChange(null);
+    }
   };
 
   const CalendarIcon = () => (
@@ -34,8 +38,9 @@ export const Component: React.FC<DatepickerProps> = ({
     <Datepicker
       id={id}
       icon={CalendarIcon}
-      onSelectedDateChanged={handleChange}
-      value={value ? value.toISOString().split('T')[0] : undefined}
+      onChange={handleChange}
+      value={value}
+      defaultValue={value || undefined}
       placeholder={placeholder}
     />
   );
