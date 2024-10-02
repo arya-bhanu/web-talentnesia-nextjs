@@ -4,8 +4,8 @@ import Image from 'next/image';
 
 interface DatepickerProps {
   onReset?: (resetFunction: () => void) => void;
-  selectedDate?: string;
-  setSelectedDate?: (arg: string) => void;
+  selectedDate?: Date | null;
+  setSelectedDate?: (arg: Date | null) => void;
 }
 
 const CalendarIcon = () => (
@@ -24,17 +24,17 @@ export function Component({
 }: DatepickerProps) {
   useEffect(() => {
     if (onReset && setSelectedDate) {
-      onReset(() => setSelectedDate(''));
+      onReset(() => setSelectedDate(null));
     }
-  }, [onReset]);
+  }, [onReset, setSelectedDate]);
 
   return (
     <FlowbiteDatepicker
       icon={CalendarIcon}
-      value={selectedDate}
+      value={selectedDate?.toISOString()}
       onSelectedDateChanged={(date) => {
         if (setSelectedDate) {
-          setSelectedDate(date ? date.toDateString() : '');
+          setSelectedDate(date);
         }
       }}
       placeholder="Select Date"
