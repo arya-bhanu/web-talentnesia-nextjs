@@ -28,13 +28,19 @@ export function Component({
     }
   }, [onReset, setSelectedDate]);
 
+  const parseDate = (dateString: string | undefined): Date | undefined => {
+    if (!dateString) return undefined;
+    const parsedDate = new Date(dateString);
+    return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+  };
+
   return (
     <FlowbiteDatepicker
       icon={CalendarIcon}
-      value={selectedDate ? new Date(selectedDate).toISOString() : undefined}
+      value={parseDate(selectedDate)}
       onSelectedDateChanged={(date) => {
         if (setSelectedDate) {
-          setSelectedDate(date ? date.toDateString() : '');
+          setSelectedDate(date ? date.toISOString().split('T')[0] : '');
         }
       }}
       placeholder="Select Date"
