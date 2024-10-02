@@ -37,7 +37,7 @@ export function Component({
   return (
     <FlowbiteDatepicker
       icon={CalendarIcon}
-      value={parseDate(selectedDate)}
+      value={parseDate(selectedDate)?.toISOString().split('T')[0]}
       onSelect={(date) => {
         if (setSelectedDate && date instanceof Date) {
           setSelectedDate(date.toISOString().split('T')[0]);
