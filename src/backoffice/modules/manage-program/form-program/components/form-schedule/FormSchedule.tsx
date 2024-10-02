@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import FormScheduleView from './FormSchedule.view';
 import { useQuery } from '@tanstack/react-query';
 import { fetchContent } from '../form-course/api/formCourse.api';
@@ -45,7 +45,7 @@ const FormSchedule = ({ contentId }: { contentId?: string }) => {
   return (
     <FormScheduleView
       timeInputState={{ setTime, time }}
-      dateInputState={{ date: dateState, setDate: setDateState }}
+      dateInputState={{ date: dateState, setDate: setDateState as Dispatch<SetStateAction<Date | null>> }}
     />
   );
 };

@@ -118,15 +118,22 @@ const FormDetailView: React.FC<
           Start Date
         </LabelForm>
         <Datepicker
-          defaultDate={
+          id="start_date"
+          onChange={(date) => {
+            // Handle the date change here
+            // You might want to update your form state or perform any other action
+          }}
+          defaultValue={
             defaultData && defaultData.startDate !== ''
               ? moment(defaultData.startDate).toDate()
               : new Date()
           }
-          key={defaultData?.startDate}
-          // defaultDate={new Date()}
-          id="start_date"
-          name="start_date"
+          value={
+            defaultData && defaultData.startDate !== ''
+              ? moment(defaultData.startDate).toDate()
+              : new Date()
+          }
+          placeholder="Select start date"
         />
       </div>
       <div>
@@ -134,14 +141,22 @@ const FormDetailView: React.FC<
           End Date
         </LabelForm>
         <Datepicker
-          defaultDate={
+          id="end_date"
+          onChange={(date) => {
+            // Handle the date change here
+            // You might want to update your form state or perform any other action
+          }}
+          defaultValue={
             defaultData && defaultData.endDate !== ''
               ? moment(defaultData.endDate).toDate()
               : new Date()
           }
-          key={defaultData?.startDate}
-          id="end_date"
-          name="end_date"
+          value={
+            defaultData && defaultData.endDate !== ''
+              ? moment(defaultData.endDate).toDate()
+              : new Date()
+          }
+          placeholder="Select end date"
         />
       </div>
 
