@@ -35,7 +35,7 @@ export const Component: React.FC<DatepickerProps> = ({
       id={id}
       icon={CalendarIcon}
       onSelectedDateChanged={handleChange}
-      value={value || undefined}
+      value={value ? value.toISOString().split('T')[0] : undefined}
       placeholder={placeholder}
     />
   );
