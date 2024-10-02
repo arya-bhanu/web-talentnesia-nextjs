@@ -39,12 +39,12 @@ export function Component({
       icon={CalendarIcon}
       value={
         selectedDate
-          ? parseDate(selectedDate)?.toISOString().split('T')[0]
-          : undefined
-      } // Ensure the value is in 'YYYY-MM-DD' format
+          ? parseDate(selectedDate)?.toISOString().split('T')[0] // Format tanggal sebagai 'YYYY-MM-DD'
+          : '' // Jika tidak ada tanggal yang dipilih, gunakan string kosong
+      }
       onSelect={(date) => {
         if (setSelectedDate && date instanceof Date) {
-          setSelectedDate(date.toISOString().split('T')[0]); // Save the date as a string
+          setSelectedDate(date.toISOString().split('T')[0]); // Simpan tanggal sebagai string dalam format 'YYYY-MM-DD'
         }
       }}
     />
