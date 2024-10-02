@@ -130,7 +130,7 @@ const BackofficeLayout = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <div className="bg-[#FAFAFA]">
+    <div className="bg-[#FFFFFF]">
       <AlertModal
         openModal={showSessionEndedModal}
         setOpenModal={setShowSessionEndedModal}

@@ -19,3 +19,24 @@
 .sidebar-closed {
   background-color: transparent; /* Or maintain the same color */
 }
+
+.submenu-container {
+  position: fixed;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  z-index: 9999;
+  min-width: 180px;
+  max-height: 70vh;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translateX(-100%); /* Hidden initially */
+  opacity: 0; /* Hidden initially */
+}
+
+.submenu-container.visible {
+  transform: translateX(0); /* Slide in */
+  opacity: 1;
+}
