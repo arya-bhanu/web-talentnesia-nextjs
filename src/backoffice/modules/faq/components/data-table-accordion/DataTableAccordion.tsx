@@ -2,23 +2,20 @@
 import React from 'react';
 import { DataTableAccordionView } from './DataTableAccordion.view';
 import { DataTableAccordionProps } from './dataTableAccordion.type';
+import { FAQItem } from '../../faq.type';
 
-export function DataTableAccordion<T>({
+export function DataTableAccordion({
   data,
   columns,
   sorting,
   initialColumnOrder,
   filter,
   accordionProps,
-}: DataTableAccordionProps<T>) {
-  const handleEdit = (id: string) => {
-    console.log('Edit FAQ:', id);
-  };
-
-  const handleDelete = (id: string) => {
-    console.log('Delete FAQ:', id);
-  };
-
+  handleEdit,
+  handleDelete,
+}: DataTableAccordionProps<FAQItem> & {
+  handleEdit: (id: string) => void;
+}) {
   return (
     <DataTableAccordionView
       data={data}

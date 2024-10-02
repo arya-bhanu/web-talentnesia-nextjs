@@ -1,74 +1,81 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import FaqView from './Faq.view';
 import { FAQItem } from './faq.type';
-import { createColumnHelper, ColumnDef } from '@tanstack/react-table';
 import ModalForm from './components/modal-faq';
-
-const columnHelper = createColumnHelper<FAQItem>();
+import { useFaqActions } from './hooks/useFaqAction';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { faqAPI } from './api/faqApi';
 
 const Faq: React.FC = () => {
-  const [faqs, setFaqs] = useState<FAQItem[]>([
-    { id: '1', question: 'Apa itu LMS Talentnesia?', answer: 'LMS Talentnesia adalah Learning Management System yang dirancang untuk mendukung proses pembelajaran dan pengembangan keterampilan di berbagai industri.' },
-  ]);
-
   const [filter, setFilter] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingFaq, setEditingFaq] = useState<FAQItem | null>(null);
 
-  const columns = useMemo<ColumnDef<FAQItem, any>[]>(
-    () => [
-      columnHelper.accessor('question', {
-        header: 'Pertanyaan',
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor('answer', {
-        header: 'Jawaban',
-        cell: (info) => info.getValue(),
-      }),
-    ],
-    []
-  );
+  const queryClient = useQueryClient();
 
-  const handleAddFaq = () => {
-    setEditingFaq(null);
-    setIsModalOpen(true);
-  };
+  const { data: faqs, isLoading, isError } = useQuery<FAQItem[]>({
+    queryKey: ['faqs'],
+    queryFn: faqAPI.fetch,
+  });
 
-  const handleEditFaq = (faq: FAQItem) => {
+  const { handleAddFaq, handleEditFaq, handleDeleteFaq } = useFaqActions();
+
+  const handleEditFaqClick = (faq: FAQItem) => {
     setEditingFaq(faq);
     setIsModalOpen(true);
   };
 
   const handleSaveFaq = async (id: string | undefined, data: any) => {
     if (id) {
-      setFaqs(faqs.map(faq => faq.id === id ? { ...faq, ...data } : faq));
+      await handleEditFaq(id, data.question, data.answer);
+      queryClient.setQueryData(['faqs'], (oldFaqs: FAQItem[] | undefined) =>
+        oldFaqs?.map(faq => faq.id === id ? { ...faq, ...data } : faq)
+      );
     } else {
-      const newFaq: FAQItem = {
-        id: String(faqs.length + 1),
-        ...data
-      };
-      setFaqs([...faqs, newFaq]);
+      const newFaq = await handleAddFaq(data.question, data.answer);
+      queryClient.setQueryData(['faqs'], (oldFaqs: FAQItem[] | undefined) => [...(oldFaqs || []), newFaq]);
     }
+    setIsModalOpen(false);
   };
+
+  const handleDeleteFaqClick = async (id: string) => {
+    await handleDeleteFaq(id);
+    queryClient.setQueryData(['faqs'], (oldFaqs: FAQItem[] | undefined) =>
+      oldFaqs?.filter(faq => faq.id !== id)
+    );
+  };
+
+  if (isLoading) return <div>Memuat...</div>;
+  if (isError) return <div>Terjadi kesalahan saat memuat data</div>;
+
+  const columns = [
+    { header: 'Question', accessor: 'question' },
+    { header: 'Answer', accessor: 'answer' },
+    { header: 'Actions', accessor: 'actions' },
+  ];
 
   return (
     <>
       <FaqView
-        data={faqs}
+        data={faqs || []}
         filter={filter}
         setFilter={setFilter}
+        onAddFaq={() => setIsModalOpen(true)}
+        onEditFaq={handleEditFaqClick}
+        onDeleteFaq={handleDeleteFaqClick}
         columns={columns}
-        onAddFaq={handleAddFaq}
-        onEditFaq={handleEditFaq}
       />
       <ModalForm
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingFaq(null);
+        }}
         onSave={handleSaveFaq}
         initialData={editingFaq}
         id={editingFaq?.id}
-        title={editingFaq ? 'Edit FAQ' : 'Add FAQ'}
+        title={editingFaq ? 'Edit FAQ' : 'Tambah FAQ'}
       />
     </>
   );

@@ -37,15 +37,15 @@ const ModalForm: React.FC<ModalFormProps> = ({
 
   const handleSave = async () => {
     if (!formData.question || !formData.answer) {
-      setHasError(true);
+      setHasError(true); 
       return;
     }
-
     try {
-      await onSave(id, formData);
+      const cleanedAnswer = formData.answer.replace(/<p>|<\/p>/g, '');
+      await onSave(id, { ...formData, answer: cleanedAnswer }); 
       onClose();
     } catch (error) {
-      console.error('Failed to save data');
+      console.error('Gagal menyimpan data', error);
     }
   };
 

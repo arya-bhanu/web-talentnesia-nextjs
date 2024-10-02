@@ -14,9 +14,10 @@ import { DataTableAccordionProps } from './dataTableAccordion.type';
 import ArrowUp from '@/../public/icons/arrow-up.svg';
 import Edit from '@/../public/icons/edit.svg';
 import Trash from '@/../public/icons/trash.svg';
+import { FAQItem } from '../../faq.type';
 import clsx from 'clsx';
 
-export function DataTableAccordionView<T>({
+export function DataTableAccordionView<T extends FAQItem>({
   data,
   columns,
   sorting = [],
@@ -86,11 +87,13 @@ export function DataTableAccordionView<T>({
                             aria-pressed={false}
                             className="flex items-center justify-between w-full cursor-pointer"
                           >
-                            <h2 className="font-lato text-[14px] font-semibold">{accordionProps.question}</h2>
+                            <h2 className="font-lato text-[14px] font-semibold">{row.original.question}</h2>
                             <span
                               className={clsx(
                                 'transition-all',
-                                index === activeAccordion ? 'rotate-0' : 'rotate-180',
+                                index === activeAccordion
+                                  ? 'rotate-0'
+                                  : 'rotate-180',
                               )}
                             >
                               <ArrowUp />
@@ -103,14 +106,20 @@ export function DataTableAccordionView<T>({
                             index === activeAccordion ? 'block' : 'hidden',
                           )}
                         >
-                          <p className="text-sm font-lato text-[14px] text-[#667085]">{accordionProps.answer}</p>
+                          <p className="text-sm font-lato text-[14px] text-[#667085]">{row.original.answer}</p>
                         </div>
                       </div>
                       <div className="flex gap-3 mt-3">
-                        <button type="button" onClick={() => handleEdit(accordionProps.id)}>
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(row.original.id)}
+                        >
                           <Edit />
                         </button>
-                        <button type="button" onClick={() => handleDelete(accordionProps.id)}>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(row.original.id)}
+                        >
                           <Trash />
                         </button>
                       </div>

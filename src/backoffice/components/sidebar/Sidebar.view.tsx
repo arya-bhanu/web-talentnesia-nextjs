@@ -74,8 +74,8 @@ const SidebarView: React.FC<SidebarViewProps> = ({
       ref={sidebarRef}
       id="icon-sidebar"
       className={`fixed top-0 left-0 z-40 h-screen flex flex-col transition-all duration-300 ${
-        isSidebarOpen ? 'w-64' : 'w-16'
-      } ${isSidebarOpen ? 'bg-[#FFFFFF] shadow-md overflow-y-auto' : 'bg-transparent'}`}
+        isSidebarOpen ? 'w-64' : 'w-20'
+      } ${isSidebarOpen ? 'bg-[#FFFFFF] shadow-md overflow-y-auto' : 'bg-[#FFFFFF] shadow-md'}`}
       aria-label="Sidebar"
     >
       <div className="flex-shrink-0">

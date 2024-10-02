@@ -13,6 +13,8 @@ const FaqView: React.FC<IFaq> = ({
   setFilter,
   columns,
   onAddFaq,
+  onEditFaq,
+  onDeleteFaq,
 }) => {
   return (
     <section>
@@ -28,15 +30,26 @@ const FaqView: React.FC<IFaq> = ({
             data={data}
             columns={columns}
             filter={{ Filter: filter, setFilter: setFilter }}
-            accordionProps={{
-              id: data[0]?.id || '',
-              question: data[0]?.question || '',
-              answer: data[0]?.answer || '',
-            }}
+            accordionProps={
+              data.length > 0
+                ? {
+                    id: data[0]?.id ?? '',
+                    question: data[0]?.question ?? '',
+                    answer: data[0]?.answer ?? '', 
+                  }
+                : {
+                    id: '',
+                    question: '',
+                    answer: '',
+                  }
+            }            
+            handleEdit={(id: string) =>
+              onEditFaq(data.find((faq) => faq.id === id)!)
+            }
+            handleDelete={onDeleteFaq}
           />
         </PermissionGranted>
       </div>
     </section>
   );
-};
-export default FaqView;
+};export default FaqView;

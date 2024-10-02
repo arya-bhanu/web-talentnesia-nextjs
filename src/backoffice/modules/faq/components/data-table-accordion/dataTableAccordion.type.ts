@@ -14,4 +14,5 @@ export interface DataTableAccordionProps<T> {
     question: string;
     answer: string;
   };
+  handleDelete: (id: string) => void;
 }

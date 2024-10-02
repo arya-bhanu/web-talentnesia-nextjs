@@ -8,11 +8,18 @@ export interface IFaq {
   columns: ColumnDef<FAQItem>[];
   onAddFaq: () => void;
   onEditFaq: (faq: FAQItem) => void;
+  onDeleteFaq: (id: string) => Promise<void>;
 }
-
 
 export interface FAQItem {
   id: string;
   question: string;
   answer: string;
+}
+
+export interface APIResponseFAQ {
+  id: string;
+  question: string;
+  answer: string;
+  active: string;
 }
