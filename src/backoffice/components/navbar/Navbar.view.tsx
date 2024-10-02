@@ -15,7 +15,7 @@ import { SessionData } from '@/lib/lib';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import ConfirmationModal from '../logout-modal/LogoutModal';
+import LogoutModal from '../logout-modal/LogoutModal';
 
 interface NavbarViewProps extends NavbarState {
   toggleMenu: () => void;
@@ -185,7 +185,7 @@ const NavbarView: React.FC<NavbarViewProps> = ({
           <Button onClick={() => setShowProfileModal(false)}>Close</Button>
         </Modal.Footer>
       </Modal>
-      <ConfirmationModal
+      <LogoutModal
         show={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}
         onConfirm={confirmLogout}

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Modal } from 'flowbite-react';
-import { ConfirmationModalProps } from './logoutModal.type';
+import { LogoutModalProps } from './logoutModal.type';
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+const LogoutModal: React.FC<LogoutModalProps> = ({
   show,
   onClose,
   onConfirm,
@@ -34,4 +34,4 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   );
 };
 
-export default ConfirmationModal;
+export default LogoutModal;

@@ -54,6 +54,7 @@ export interface ExamQuestion {
         isCorrect: '0' | '1';
         order?: number;
         questionId?: string;
+        type?: string | undefined;
       }[]
     | null;
   body: string;

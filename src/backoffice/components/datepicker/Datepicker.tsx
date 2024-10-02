@@ -26,12 +26,12 @@ export function Component({
     if (onReset && setSelectedDate) {
       onReset(() => setSelectedDate(''));
     }
-  }, [onReset]);
+  }, [onReset, setSelectedDate]);
 
   return (
     <FlowbiteDatepicker
       icon={CalendarIcon}
-      value={selectedDate}
+      value={selectedDate ? new Date(selectedDate).toISOString() : undefined}
       onSelectedDateChanged={(date) => {
         if (setSelectedDate) {
           setSelectedDate(date ? date.toDateString() : '');
