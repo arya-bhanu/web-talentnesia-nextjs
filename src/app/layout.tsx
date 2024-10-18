@@ -6,7 +6,6 @@ import 'swiper/css/bundle';
 import clsx from 'clsx';
 import GlobalProvider from '@/utils/GlobalProvider';
 import { ThemeModeScript } from 'flowbite-react';
-import Head from 'next/head';
 import Script from 'next/script';
 import 'flatpickr/dist/flatpickr.css';
 import 'react-quill/dist/quill.core.css';
@@ -26,13 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <Head>
+      <head>
         <ThemeModeScript />
         <link
           href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css"
           rel="stylesheet"
         />
-      </Head>
+      </head>
       <body suppressHydrationWarning={true} className={clsx(inter.className)}>
         <GlobalProvider>{children}</GlobalProvider>
         <Script

@@ -1,4 +1,4 @@
-import FeatureCard from '@/portal/components/feature-card/FeatureCard';
+import FeatureCard from '@/skripsi/home/components/feature-card/FeatureCard';
 import React from 'react';
 import { EliteClassSectionViewProps } from './eliteClass.type';
 import SkeletonLoader from '@/portal/components/skeleton-animation';

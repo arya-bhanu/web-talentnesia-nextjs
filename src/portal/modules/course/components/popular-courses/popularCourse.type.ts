@@ -1,4 +1,4 @@
-import { courses } from '@/portal/components/feature-card/featureCard.type';
+import { courses } from '@/skripsi/home/components/feature-card/featureCard.type';
 
 export interface PopularCoursesSectionViewProps {
   className?: string;

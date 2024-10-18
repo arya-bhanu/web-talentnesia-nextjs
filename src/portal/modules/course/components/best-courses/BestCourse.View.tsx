@@ -1,4 +1,4 @@
-import FeatureCard from '@/portal/components/feature-card/FeatureCard';
+import FeatureCard from '@/skripsi/home/components/feature-card/FeatureCard';
 import React from 'react';
 import { BestCourseSectionViewProps } from './bestCourse.type';
 import SkeletonLoader from '@/portal/components/skeleton-animation';

@@ -1,9 +1,8 @@
-import React from 'react'
+import Home from '@/skripsi/home/Home';
+import React from 'react';
 
 const HomePage = () => {
-  return (
-    <div>HomePage</div>
-  )
-}
+  return <Home />;
+};
 
-export default HomePage
+export default HomePage;

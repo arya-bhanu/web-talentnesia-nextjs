@@ -1,5 +1,5 @@
 export interface Programs {
-  logo: string;
+  logo: string | null;
   title: string;
   url?: string;
 }

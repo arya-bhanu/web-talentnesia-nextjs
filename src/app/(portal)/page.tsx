@@ -1,7 +1,5 @@
-import { Home } from "@/portal/modules/home";
-
-const HomeIndex = async () => {
-  return <Home />;
+const HomeIndex = () => {
+  return <>Hello World</>;
 };
 
 export default HomeIndex;
