@@ -11,9 +11,7 @@ import NewsLetterSubscription from './components/news-letter-subscription';
 import { HomeViewProps } from './home.type';
 
 const HomeView: React.FC<HomeViewProps> = ({ data }) => {
-  console.log(data.courses)
   const [skeletonAnimation, setTime] = useState(true);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setTime(false);
@@ -21,10 +19,9 @@ const HomeView: React.FC<HomeViewProps> = ({ data }) => {
     return () => clearTimeout(timer);
   }, []);
 
-
   return (
     <>
-      <Hero isLoading={skeletonAnimation}/>
+      <Hero isLoading={skeletonAnimation} />
       <main className="container">
         <Benefits className="mt-9 md:mt-16 xl:mt-0" />
         <ProgramDimension
@@ -47,7 +44,10 @@ const HomeView: React.FC<HomeViewProps> = ({ data }) => {
           partners={data.partners}
           isLoading={skeletonAnimation}
         />
-        <NewsLetterSubscription className="mt-16 md:mt-28 lg:mt-36" isLoading={skeletonAnimation}/>
+        <NewsLetterSubscription
+          className="mt-16 md:mt-28 lg:mt-36"
+          isLoading={skeletonAnimation}
+        />
       </main>
     </>
   );
