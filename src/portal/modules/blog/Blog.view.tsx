@@ -6,7 +6,7 @@ import { Article } from './blog.type';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import Image from 'next/image';
 import Link from 'next/link';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 import { recentArticles } from './Blog.data';
 
 interface BlogviewProps {

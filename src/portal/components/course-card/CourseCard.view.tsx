@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { CourseCardProps } from './courseCard.type';
-import SkeletonLoader from '../skeleton-animation';
+import SkeletonLoader from '../../../skripsi/components/skeleton-animation';
 
 const CourseCardView: React.FC<CourseCardProps> = ({
   image,

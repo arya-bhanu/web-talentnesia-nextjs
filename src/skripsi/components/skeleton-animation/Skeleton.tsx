@@ -1,7 +1,6 @@
 import React from "react";
 import { SkeletonProps } from "./skeleton.type";
 import SkeletonView from "./Skeleton.view";
-import { styleText } from "util";
 
 const SkeletonLoader: React.FC<SkeletonProps> = ({
     variant,

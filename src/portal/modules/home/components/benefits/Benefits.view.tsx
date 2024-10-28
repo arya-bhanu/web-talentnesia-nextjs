@@ -1,5 +1,5 @@
 'use client';
-import BenefitCard from '@/portal/components/benefit-card';
+import BenefitCard from '@/skripsi/home/components/benefits/benefit-card';
 import clsx from 'clsx';
 import React from 'react';
 import { dataBenefits } from './benefits.data';

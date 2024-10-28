@@ -1,6 +1,6 @@
 'use client';
 import RoundedPrimaryButton from '@/portal/components/rounded-primary-button/RoundedPrimaryButton';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 import { ObserverContext } from '@/utils/portal/ObserverProvider';
 import clsx from 'clsx';
 import Image from 'next/image';

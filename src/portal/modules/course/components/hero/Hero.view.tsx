@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Breadcrumb } from '@/portal/components/breadcrumb';
 import Image from 'next/image';
 import React, { useContext } from 'react';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 const CourseHeroView = ({ className, isLoading }: { className?: string, isLoading?: boolean }) => {
   const { headerObserver } = useContext(ObserverContext);

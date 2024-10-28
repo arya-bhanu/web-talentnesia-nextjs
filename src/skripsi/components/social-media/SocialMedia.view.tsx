@@ -1,7 +1,5 @@
-// file: SocialMedia.view.tsx
-
 import React from 'react';
-import SocialLogo from '../social-logo/SocialLogo';
+import SocialLogo from './components/social-logo/SocialLogo';
 import { SocialMediaViewProps } from './socialMedia.type';
 
 const SocialMediaView: React.FC<SocialMediaViewProps> = ({

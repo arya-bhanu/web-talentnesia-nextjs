@@ -8,8 +8,12 @@ const nextConfig = {
     APP_URL: process.env.APP_URL,
   },
   images: {
-    unoptimized: true,
+    dangerouslyAllowSVG: true,
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+      },
       {
         hostname: 'flowbite.com',
       },

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import { ProgramProps } from './program.type';
 import { programData } from './program.data';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 const ProgramItem = ({
   logoprogram,

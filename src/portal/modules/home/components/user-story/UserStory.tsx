@@ -1,6 +1,6 @@
 import React from 'react';
 import UserStorySectionView from './UserStory.view';
-import { Testimonials } from '@/portal/components/user-story-card/userStoryCard.type';
+import { Testimonials } from '@/skripsi/home/components/user-story/user-story-card/userStoryCard.type';
 import { Island_Moments } from 'next/font/google';
 
 const UserStory: React.FC<{

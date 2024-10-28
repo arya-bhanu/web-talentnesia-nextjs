@@ -1,8 +1,8 @@
 'use client';
-import Header from '@/portal/components/header/Header';
-import Footer from '@/portal/components/footer';
+import Header from '@/skripsi/components/header';
+import Footer from '@/skripsi/components/footer';
 import React, { ReactNode } from 'react';
-import ObserverProvider from '@/utils/portal/ObserverProvider';
+import ObserverProvider from '@/skripsi/provider/ObserverProvider';
 import { useInView } from 'react-intersection-observer';
 
 const PortalLayout = ({ children }: { children: ReactNode }) => {

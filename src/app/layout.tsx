@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
-import 'swiper/css';
-import 'swiper/css/bundle';
 import clsx from 'clsx';
 import GlobalProvider from '@/utils/GlobalProvider';
-import { ThemeModeScript } from 'flowbite-react';
-import Script from 'next/script';
+import { ThemeModeScript } from 'flowbite-react/components/ThemeModeScript';
+
+
 import 'flatpickr/dist/flatpickr.css';
 import 'react-quill/dist/quill.core.css';
 import 'react-quill/dist/quill.snow.css';
+import './globals.css';
+import 'swiper/css';
+import 'swiper/css/bundle';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,17 +28,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <head>
         <ThemeModeScript />
-        <link
-          href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css"
-          rel="stylesheet"
-        />
       </head>
       <body suppressHydrationWarning={true} className={clsx(inter.className)}>
         <GlobalProvider>{children}</GlobalProvider>
-        <Script
-          strategy="beforeInteractive"
-          src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"
-        ></Script>
       </body>
     </html>
   );

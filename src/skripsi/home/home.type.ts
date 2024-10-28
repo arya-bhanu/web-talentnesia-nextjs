@@ -4,13 +4,21 @@ import { Programs } from '../components/program-dimension-card/programDimensionC
 import { Testimonials } from '../components/user-story-card/userStoryCard.type';
 
 export interface IHomeData {
-  programs: Programs[];
-  courses: courses[];
-  testimonials: Testimonials[];
-  partners: Partners[];
+  id: string;
+  section:
+    | 'hero'
+    | 'benefits'
+    | 'program-dimension/program'
+    | 'program-dimension/card-carrier'
+    | 'super-class'
+    | 'user-story'
+    | 'partners'
+    | 'news-letter-subscription'
+    | 'footer/social-media';
+  body: {};
 }
 
 export interface IHomeProps {
-  dataHome: IHomeData;
+  dataHome: IHomeData[];
   skeletonAnimation: boolean;
 }

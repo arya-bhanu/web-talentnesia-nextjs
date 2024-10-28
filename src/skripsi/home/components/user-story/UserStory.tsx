@@ -1,15 +1,19 @@
 import React from 'react';
 import UserStorySectionView from './UserStory.view';
-import { Testimonials } from '@/portal/components/user-story-card/userStoryCard.type';
-import { Island_Moments } from 'next/font/google';
+import { IDataUserStory } from './userStory.type';
 
 const UserStory: React.FC<{
   className?: string;
-  testimonials: Testimonials[];
+  dataUserStory: IDataUserStory;
   isLoading?: boolean;
-}> = ({ className, testimonials, isLoading }) => {
+}> = ({ className, dataUserStory, isLoading }) => {
   return (
-    <UserStorySectionView className={className} testimonials={testimonials} isLoading={isLoading}/>
+    <UserStorySectionView
+      className={className}
+      stories={dataUserStory.stories}
+      isLoading={isLoading}
+      heading={dataUserStory.heading}
+    />
   );
 };
 

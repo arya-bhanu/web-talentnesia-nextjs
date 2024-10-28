@@ -3,15 +3,19 @@ import React from 'react';
 
 const NewsLetterSubscriptionSectionView = ({
   className,
-  isLoading
+  isLoading,
+  heading,
+  subheading,
 }: {
   className?: string;
   isLoading?: boolean;
+  heading: string;
+  subheading: string;
 }) => {
   return (
     <section className={className}>
       <NewsLetterSubscriptionCard
-        subTitle="Mulai berlangganan newsletter kami untuk mendapatkan update artikel terbaru dari Talentnesia"
+        subTitle={subheading}
         color={{
           bg: 'bg-[#00558C]',
           text: 'text-[#FFFFFF]',
@@ -21,8 +25,8 @@ const NewsLetterSubscriptionSectionView = ({
           bgColor: 'bg-[#FFC862]',
           text: 'Gabung Sekarang',
           textColor: 'text-[#2B2E33]',
-        }} 
-        title="Dapatkan Wawasan Eksklusif Sesuai Minatmu Langsung melalui Emailmu"
+        }}
+        title={heading}
         isLoading={isLoading}
       />
     </section>

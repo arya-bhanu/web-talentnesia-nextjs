@@ -5,7 +5,7 @@ import { AllClassProps } from './allClass.type';
 import SearchBar from '@/portal/components/search-bar';
 import Pagination from '@/portal/components/pagination';
 import DropdownCourse from '@/portal/components/dropdown-course/DropsownCourse';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 const AllClassView: React.FC<AllClassProps> = ({ filterOptions, courses, isLoading }) => {
   const [currentPage, setCurrentPage] = useState(1);

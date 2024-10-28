@@ -1,11 +1,8 @@
 export interface courses {
-  logo: string;
+  img: string;
   title: string;
   description: string;
-  level: string;
-  currentPrice: string;
-  originPrice: string;
-  url: string;
-  rating: string;
-  isLoading?: boolean
+  rating_star: number;
+  original_price: number;
+  discounted_price: number;
 }

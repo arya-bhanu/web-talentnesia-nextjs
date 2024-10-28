@@ -1,9 +1,13 @@
 import React from 'react';
 import SocialMediaView from './SocialMedia.view';
 import clsx from 'clsx';
-import { dataSocialMedia } from './socialMedia.data';
+import { ISocialLogo } from './components/social-logo/socialLogo.type';
 
-const SocialMedia: React.FC<{ className?: string, isLoading?: boolean}> = ({ className, isLoading }) => {
+const SocialMedia: React.FC<{
+  className?: string;
+  isLoading?: boolean;
+  dataSocialMedia: ISocialLogo[];
+}> = ({ className, isLoading, dataSocialMedia }) => {
   return (
     <SocialMediaView
       className={clsx('flex items-center gap-3', className)}

@@ -1,4 +1,4 @@
-import { Testimonials } from '@/portal/components/user-story-card/userStoryCard.type';
+import { Testimonials } from '@/skripsi/home/components/user-story/user-story-card/userStoryCard.type';
 
 export interface UserStorySectionViewProps {
   className?: string;

@@ -2,13 +2,14 @@ export interface UserStoryCardViewProps {
   className?: string;
   activeNumber?: number;
   setActiveNumber?: React.Dispatch<React.SetStateAction<number>>;
-  testimonials?: Testimonials[];
-  isLoading?: boolean
+  story?: Testimonials[];
+  isLoading?: boolean;
+  heading: string;
 }
 
 export interface Testimonials {
-  photo?: string;
-  fullName?: string;
-  statusUser?: string;
-  description?: string;
+  story: string;
+  img_url: string;
+  student_name: string;
+  student_status: string;
 }

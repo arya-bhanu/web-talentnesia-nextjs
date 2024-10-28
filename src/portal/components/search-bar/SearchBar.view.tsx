@@ -10,7 +10,7 @@ const SearchBarView: React.FC<SearchBarViewProps> = ({
   return (
     <div
       className={clsx(
-        'border-[#D0D5DD] border rounded-full gap-x-1.5 px-2 lg:px-4 py-2 lg:py-2.5 h-fit flex items-center',
+        'border-[#D0D5DD] border rounded-full gap-x-1.5 px-2 lg:px-4 py-1 h-fit flex items-center',
         className,
       )}
     >

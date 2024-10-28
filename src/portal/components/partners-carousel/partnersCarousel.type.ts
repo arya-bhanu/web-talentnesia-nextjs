@@ -1,4 +1,4 @@
 export type Partners = {
-  logo: string;
-  link?: string;
+  img_url: string;
+  url_link: string;
 };

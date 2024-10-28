@@ -2,9 +2,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer utilities {
-  .disabled {
-    @apply bg-[#ccc] cursor-not-allowed border;
-  }
-}

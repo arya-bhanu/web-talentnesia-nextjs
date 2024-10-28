@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import './contactForm.style.css';
 import { ContactFormViewProps } from './contactForm.type';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 export const ContactFormView: React.FC<ContactFormViewProps> = ({
   className,

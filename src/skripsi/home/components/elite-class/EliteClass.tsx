@@ -4,10 +4,16 @@ import { EliteClassSectionViewProps } from './eliteClass.type';
 
 const EliteClass: React.FC<EliteClassSectionViewProps> = ({
   className,
-  courses,
-  isLoading
+  isLoading,
+  dataApi,
 }) => {
-  return <EliteClassSectionView className={className} courses={courses} isLoading={isLoading}/>;
+  return (
+    <EliteClassSectionView
+      className={className}
+      dataApi={dataApi}
+      isLoading={isLoading}
+    />
+  );
 };
 
 export default EliteClass;

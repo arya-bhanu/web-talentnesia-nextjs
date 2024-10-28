@@ -1,7 +1,7 @@
 import React from 'react';
 import { Breadcrumb } from '@/portal/components/breadcrumb';
 import { IoEyeOutline } from 'react-icons/io5';
-import SocialMedia from '@/portal/components/social-media/SocialMedia';
+import SocialMedia from '@/skripsi/components/social-media/SocialMedia';
 import Image from 'next/image';
 import { relatedArticles } from './singleblog.data';
 import { FaArrowRightLong } from 'react-icons/fa6';

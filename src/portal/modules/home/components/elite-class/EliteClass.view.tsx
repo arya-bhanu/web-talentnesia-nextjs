@@ -1,7 +1,7 @@
 import FeatureCard from '@/skripsi/home/components/feature-card/FeatureCard';
 import React from 'react';
 import { EliteClassSectionViewProps } from './eliteClass.type';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 const EliteClassSectionView: React.FC<EliteClassSectionViewProps> = ({
   className,

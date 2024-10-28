@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { benefitsData } from './benefits.data';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 export const BenefitsView = ({ className, isLoading }: { className?: string, isLoading?: boolean }) => {
   return (

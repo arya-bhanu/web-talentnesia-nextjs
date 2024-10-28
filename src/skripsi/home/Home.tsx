@@ -12,7 +12,7 @@ const Home = () => {
   });
   return (
     <RenderNode data={data} isLoading={isLoading} isError={isError}>
-      {data && <HomeView dataHome={data?.data?.data} skeletonAnimation={isLoading} />}
+      {data && <HomeView dataHome={data?.data} skeletonAnimation={isLoading} />}
     </RenderNode>
   );
 };

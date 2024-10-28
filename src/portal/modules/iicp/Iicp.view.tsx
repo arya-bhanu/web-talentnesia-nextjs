@@ -8,10 +8,10 @@ import { Divider } from '@/portal/components/divider';
 import { Features } from './components/features-section';
 import { Program } from './components/program-section';
 import PartnersCarousel from '@/portal/components/partners-carousel';
-import UserStoryCard from '@/portal/components/user-story-card';
+import UserStoryCard from '@/skripsi/home/components/user-story/user-story-card';
 import { Contact } from './components/contact-section';
 import { useIicpData } from './hooks/useIicp';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 export const IicpView: React.FC = () => {
   const { data, isLoading, error } = useIicpData();

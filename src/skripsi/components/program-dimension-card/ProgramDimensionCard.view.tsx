@@ -2,17 +2,12 @@ import Image from 'next/image';
 import React from 'react';
 import { Programs } from './programDimensionCard.type';
 
-const ProgramDimensionCardView = ({ logo, title, url }: Programs) => {
-  console.log(logo)
-  const logoUrl = logo?.startsWith('http')
-    ? logo
-    : `https://api-talentnesia.skwn.dev/${logo}`;
-
+const ProgramDimensionCardView = ({ img_icon, title }: Programs) => {
   return (
     <div className="p-2 flex flex-col md:items-start items-center md:p-3 lg:p-5 hover:bg-[#EFF8FF] transition">
       <Image
-        alt={logo}
-        src={logoUrl}
+        alt={'icon program'}
+        src={img_icon}
         width={50}
         height={50}
         className="object-cover rounded-full"

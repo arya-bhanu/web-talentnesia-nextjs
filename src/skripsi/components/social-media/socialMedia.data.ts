@@ -1,4 +1,4 @@
-import { ISocialLogo } from '../social-logo/socialLogo.type';
+import { ISocialLogo } from './components/social-logo/socialLogo.type';
 
 export const dataSocialMedia: ISocialLogo[] = [
   { imgUrl: '/img/landing/social-media/facebook.svg', linkSocial: '/' },

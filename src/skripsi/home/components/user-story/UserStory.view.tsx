@@ -1,22 +1,24 @@
 'use client';
 
-import UserStoryCard from '@/portal/components/user-story-card/UserStoryCard';
+import UserStoryCard from '@/skripsi/home/components/user-story/user-story-card/UserStoryCard';
 import React, { useState } from 'react';
 import { UserStorySectionViewProps } from './userStory.type';
 
 const UserStorySectionView: React.FC<UserStorySectionViewProps> = ({
   className,
-  testimonials,
-  isLoading
+  heading,
+  stories,
+  isLoading,
 }) => {
   const [activeNumber, setActiveNumber] = useState(0);
   return (
     <section className={className}>
       <UserStoryCard
-        testimonials={testimonials}
+        heading={heading}
         activeNumber={activeNumber}
         setActiveNumber={setActiveNumber}
         isLoading={isLoading}
+        story={stories}
       />
     </section>
   );

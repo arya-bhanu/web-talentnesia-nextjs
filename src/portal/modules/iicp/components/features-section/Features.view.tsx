@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { featuresData } from './features.data';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 export const FeaturesView = ({ className, isLoading }: { className?: string, isLoading?: boolean }) => {
   return (

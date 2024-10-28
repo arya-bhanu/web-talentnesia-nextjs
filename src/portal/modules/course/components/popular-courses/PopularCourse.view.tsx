@@ -1,7 +1,7 @@
 import FeatureCard from '@/skripsi/home/components/feature-card/FeatureCard';
 import React from 'react';
 import { PopularCoursesSectionViewProps } from './popularCourse.type';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 const PopularCoursesSectionView: React.FC<PopularCoursesSectionViewProps> = ({ className, courses, isLoading }) => {
   return (

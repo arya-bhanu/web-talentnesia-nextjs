@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ProgramDimensionCard from '@/portal/components/program-dimension-card/ProgramDimensionCard';
 import RoundedPrimaryButton from '@/portal/components/rounded-primary-button/RoundedPrimaryButton';
 import { ProgramDimensionSectionViewProps } from './programDimension.type';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 const ProgramDimensionSectionView: React.FC<
   ProgramDimensionSectionViewProps

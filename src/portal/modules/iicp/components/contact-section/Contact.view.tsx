@@ -3,7 +3,7 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { ContactProps } from './contact.type';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 export const ContactView: React.FC<ContactProps> = ({ className, isLoading }) => {
   return (

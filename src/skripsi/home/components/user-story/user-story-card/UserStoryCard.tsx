@@ -7,8 +7,9 @@ import { UserStoryCardViewProps } from './userStoryCard.type';
 
 const UserStoryCard: React.FC<UserStoryCardViewProps> = ({
   className,
-  testimonials,
-  isLoading
+  story,
+  heading,
+  isLoading,
 }) => {
   const [activeNumber, setActiveNumber] = useState(0);
   return (
@@ -19,7 +20,8 @@ const UserStoryCard: React.FC<UserStoryCardViewProps> = ({
       )}
       activeNumber={activeNumber}
       setActiveNumber={setActiveNumber}
-      testimonials={testimonials}
+      story={story}
+      heading={heading}
       isLoading={isLoading}
     />
   );

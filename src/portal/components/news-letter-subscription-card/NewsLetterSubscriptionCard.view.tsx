@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import RoundedPrimaryButton from '../rounded-primary-button';
 import { IButtonProps, IColorProps } from './newsLetterSubscriptionCard.type';
-import SkeletonLoader from '../skeleton-animation';
+import SkeletonLoader from '../../../skripsi/components/skeleton-animation';
 
 const NewsLetterSubscriptionCardView = ({
   title,

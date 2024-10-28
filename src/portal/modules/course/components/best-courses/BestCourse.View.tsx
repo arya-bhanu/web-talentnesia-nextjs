@@ -1,7 +1,7 @@
 import FeatureCard from '@/skripsi/home/components/feature-card/FeatureCard';
 import React from 'react';
 import { BestCourseSectionViewProps } from './bestCourse.type';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 const BestCourseSectionView: React.FC<BestCourseSectionViewProps> = ({
   className,

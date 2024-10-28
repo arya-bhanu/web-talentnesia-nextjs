@@ -4,7 +4,7 @@ import { Breadcrumb } from '@/portal/components/breadcrumb';
 import { heroSectionData } from './hero.data';
 import Link from 'next/link';
 import clsx from 'clsx';
-import SkeletonLoader from '@/portal/components/skeleton-animation';
+import SkeletonLoader from '@/skripsi/components/skeleton-animation';
 
 export const HeroSectionView = ({ className, isLoading }: { className?: string, isLoading?: boolean }) => {
   return (

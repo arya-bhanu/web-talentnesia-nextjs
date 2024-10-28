@@ -2,6 +2,11 @@ import { Partners } from '@/portal/components/partners-carousel/partnersCarousel
 
 export interface PartnersProps {
   className?: string;
-  partners: Partners[];
+  dataPartner: IDataPartners;
   isLoading?: boolean;
+}
+
+export interface IDataPartners {
+  partners: Partners[];
+  heading: string;
 }

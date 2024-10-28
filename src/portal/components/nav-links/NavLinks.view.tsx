@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { ILink } from './navLinks.type';
-import SkeletonLoader from '../skeleton-animation';
+import SkeletonLoader from '../../../skripsi/components/skeleton-animation';
 
 const NavLinksView = ({ title, links, isLoading }: { title: string; links: ILink[], isLoading?: boolean }) => {
   return (

@@ -1,12 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
-import SocialMedia from '../social-media';
+import SocialMedia from '../../../skripsi/components/social-media';
 import LogoCompany from '../../../../public/logo-company.svg';
 import NavLinks from '../nav-links';
 import Arrow from '../../../../public/icons/arrow-right-sharp.svg';
 import { FooterViewProps } from './footer.type';
-import SkeletonLoader from '../skeleton-animation';
+import SkeletonLoader from '../../../skripsi/components/skeleton-animation';
 
 const FooterView = ({ className, dataNavs }: FooterViewProps) => {
   const [skeletonAnimation, setTime] = React.useState(true);
