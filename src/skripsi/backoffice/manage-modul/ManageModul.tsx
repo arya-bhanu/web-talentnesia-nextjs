@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import ManageModulView from './ManageModul.view';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchModules } from './api/manageModelApi';
 
 const ManageModul = () => {
@@ -15,6 +15,8 @@ const ManageModul = () => {
   ) => {
     switch (action) {
       case 'delete':
+        break;
+      case 'edit':
         break;
       default:
         break;

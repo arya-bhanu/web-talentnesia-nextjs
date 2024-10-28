@@ -6,23 +6,13 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import MoreHoriz from '../../../../public/icons/more_horiz.svg';
+import MoreHoriz from '@/../public/icons/more_horiz.svg';
 import { IPopover } from './popover.type';
-import Link from 'next/link';
-import AlertModal from '../alert-modal';
+import AlertModal from '@/backoffice/components/alert-modal';
 
-const renderContent = (
-  setOpenModal: Dispatch<SetStateAction<boolean>>,
-  id: string,
-) => {
+const renderContent = (setOpenModal: Dispatch<SetStateAction<boolean>>) => {
   return (
     <div className="w-fit px-4 py-3 gap-4 flex flex-col text-sm text-gray-500 dark:text-gray-400">
-      <Link
-        href={`/backoffice/manage-modul/update?modulId=${id}`}
-        className="hover:text-blue-500 hover:underline"
-      >
-        Edit
-      </Link>
       <button
         className="hover:text-red-500 hover:underline"
         onClick={() => setOpenModal(true)}
@@ -39,7 +29,6 @@ const PopoverView: React.FC<IPopover> = ({
   handleActionButtonRow,
   id,
   setOpenPopoverIndex,
-  content,
 }) => {
   const [open, setOpen] = useState(openPopoverIndex === index);
   const [openModal, setOpenModal] = useState(false);
@@ -63,7 +52,7 @@ const PopoverView: React.FC<IPopover> = ({
         open={open}
         onOpenChange={setOpen}
         aria-labelledby="default-popover"
-        content={content ? content : renderContent(setOpenModal, id)}
+        content={renderContent(setOpenModal)}
       >
         <button onClick={() => setOpenPopoverIndex(index)}>
           <MoreHoriz />

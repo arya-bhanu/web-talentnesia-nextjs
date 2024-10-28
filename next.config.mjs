@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 import withBundleAnalyzer from '@next/bundle-analyzer';
+
 const nextConfig = {
   reactStrictMode: true,
   env: {
@@ -13,25 +14,6 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'ik.imagekit.io',
-      },
-      {
-        hostname: 'flowbite.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'flowbite.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api-talentnesia.skwn.dev',
-      },
-      {
-        protocol: 'https',
-        hostname: 'img-b.udemycdn.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'imagizer.imageshack.com',
       },
     ],
   },

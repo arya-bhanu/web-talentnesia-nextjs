@@ -5,7 +5,7 @@ import Add from '@/../public/icons/add.svg';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
 import { IManageModulView } from './manageModul.type';
-import Popover from '@/backoffice/components/popover';
+import Popover from '@/skripsi/backoffice/components/popover';
 import { ModulStatus } from '@/enum/enum';
 
 const ManageModulView: React.FC<IManageModulView> = ({

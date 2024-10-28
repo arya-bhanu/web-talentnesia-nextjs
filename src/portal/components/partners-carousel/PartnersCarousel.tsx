@@ -23,10 +23,10 @@ const PartnersCarousel = ({
 
       <div className="mt-5 md:mt-16 lg:mt-20 flex items-center flex-wrap justify-center gap-1 sm:gap-3 lg:justify-between mx-auto">
         {partners.map((partner, index: number) => (
-          <Link href={partner.img_url || '/'} key={index}>
+          <Link href={partner.url_link || '/'} key={index}>
             <Image
               alt="partner image"
-              src={partner.url_link}
+              src={partner.img_url}
               width={120}
               height={30}
               className="w-20 sm:w-24 md:w-32 h-9 sm:h-10 md:h-14 object-contain"
