@@ -1,13 +1,18 @@
 'use client';
 import React, { useState } from 'react';
 import ManageModulView from './ManageModul.view';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchModules } from './api/manageModelApi';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteModul, fetchModules } from './api/manageModelApi';
 
 const ManageModul = () => {
   const queryClient = useQueryClient();
   const query = useQuery({ queryKey: ['modules'], queryFn: fetchModules });
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
+
+  const { mutateAsync: deleteModulAsync } = useMutation({
+    mutationKey: ['delete', 'modul'],
+    mutationFn: deleteModul,
+  });
 
   const handleActionButtonRow = async (
     id: string,
@@ -15,6 +20,7 @@ const ManageModul = () => {
   ) => {
     switch (action) {
       case 'delete':
+        await deleteModulAsync(Number(id));
         break;
       case 'edit':
         break;
