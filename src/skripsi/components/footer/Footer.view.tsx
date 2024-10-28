@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import Link from 'next/link';
 import SocialMedia from '@/skripsi/components/social-media';
 import NavLinks from '@/portal/components/nav-links';
 import Arrow from '@/../public/icons/arrow-right-sharp.svg';

@@ -1,9 +1,8 @@
-import React from 'react'
+import ManageModul from '@/skripsi/backoffice/manage-modul';
+import React from 'react';
 
 const BackofficePage = () => {
-  return (
-    <div>BackofficePage</div>
-  )
-}
+  return <ManageModul />;
+};
 
-export default BackofficePage
+export default BackofficePage;

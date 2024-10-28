@@ -7,20 +7,9 @@ import { Sling as Hamburger } from 'hamburger-react';
 import clsx from 'clsx';
 import { HeaderViewProps } from './header.type';
 import { programLinks } from '@/portal/components/dropdown/dropdown.data';
-import { getSession } from '@/lib/action';
 
 const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
   const [userRole, setUserRole] = useState<number | null>(null);
-
-  useEffect(() => {
-    const checkSession = async () => {
-      const session = await getSession();
-      if (session && session.isLoggedIn) {
-        setUserRole(session.role ?? null);
-      }
-    };
-    checkSession();
-  }, []);
 
   const getDashboardLink = () => {
     switch (userRole) {

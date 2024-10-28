@@ -1,5 +1,5 @@
 'use client';
-import React, { use } from 'react';
+import React from 'react';
 import FooterView from './Footer.view';
 import { dataNavs } from './footer.data';
 import { useQuery } from '@tanstack/react-query';
