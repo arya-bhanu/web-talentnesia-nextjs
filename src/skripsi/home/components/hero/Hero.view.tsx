@@ -38,6 +38,7 @@ const HeroSectionView = ({
         </div>
         <div className="flex-[2] justify-end lg:flex hidden">
           <Image
+            id="data-image"
             alt="hero image"
             className="block object-contain"
             src={dataHero.hero_image}
