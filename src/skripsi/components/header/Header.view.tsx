@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import SearchBar from '@/portal/components/search-bar';
-import Dropdown from '@/portal/components/dropdown';
+import Dropdown from '../dropdown';
 import { Sling as Hamburger } from 'hamburger-react';
 import clsx from 'clsx';
 import { HeaderViewProps } from './header.type';
-import { programLinks } from '@/portal/components/dropdown/dropdown.data';
+import { programLinks } from '../dropdown/dropdown.data';
 
 const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
   const [userRole, setUserRole] = useState<number | null>(null);

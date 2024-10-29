@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SidebarView from './Sidebar.view';
-import clsx from 'clsx';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
