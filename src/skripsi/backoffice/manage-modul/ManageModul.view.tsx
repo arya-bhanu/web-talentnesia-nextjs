@@ -123,6 +123,7 @@ const ManageModulView: React.FC<IManageModulView> = ({
               {data.map((el, index) => {
                 return (
                   <tr
+                    id='data-row'
                     key={el.id}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
