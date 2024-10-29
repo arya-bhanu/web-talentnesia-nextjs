@@ -9,7 +9,7 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/course.svg',
     title: 'Manage Module',
-    path: '/backoffice/manage-modul',
+    path: '#',
   },
   {
     icon: '/icons/sidebar/program.svg',
@@ -27,24 +27,24 @@ export const sidebarData: SidebarProps[] = [
     links: [
       {
         label: 'Academic Level',
-        link: '/backoffice/master-data/academic-level',
+        link: '#',
       },
       {
         label: 'Academic Title',
-        link: '/backoffice/master-data/academic-title',
+        link: '#',
       },
-      { label: 'Category', link: '/backoffice/master-data/category' },
-      { label: 'Certificate', link: '/backoffice/master-data/certificate' },
-      { label: 'Discount', link: '/backoffice/master-data/discount' },
-      { label: 'Level', link: '/backoffice/master-data/level' },
-      { label: 'Region', link: '/backoffice/master-data/region' },
-      { label: 'Religion', link: '/backoffice/master-data/religion' },
+      { label: 'Category', link: '#' },
+      { label: 'Certificate', link: '#' },
+      { label: 'Discount', link: '#' },
+      { label: 'Level', link: '#' },
+      { label: 'Region', link: '#' },
+      { label: 'Religion', link: '#' },
     ],
   },
   {
     icon: '/icons/sidebar/cms.svg',
     title: 'CMS',
-    path: '',
+    path: '#',
   },
   {
     icon: '/icons/sidebar/faq.svg',
@@ -54,11 +54,11 @@ export const sidebarData: SidebarProps[] = [
   {
     icon: '/icons/sidebar/report.svg',
     title: 'Report',
-    path: '/backoffice/report',
+    path: '#',
   },
   {
     icon: '/icons/sidebar/school.svg',
     title: 'School',
-    path: '/backoffice/school',
+    path: '#',
   },
 ];

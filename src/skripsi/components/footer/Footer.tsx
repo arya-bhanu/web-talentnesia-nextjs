@@ -7,7 +7,6 @@ const Footer = async ({ className }: { className?: string }) => {
     next: { tags: ['footer'] },
   });
   let posts = await data.json();
-  console.log(posts);
   return (
     <FooterView data={posts.body} className={className} dataNavs={dataNavs} />
   );

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import SearchBar from '@/portal/components/search-bar';
-import Dropdown from '@/portal/components/dropdown';
+import Dropdown from '@/skripsi/components/dropdown';
 import { Sling as Hamburger } from 'hamburger-react';
 import clsx from 'clsx';
 import { HeaderViewProps } from './header.type';
-import { programLinks } from '@/portal/components/dropdown/dropdown.data';
+import { programLinks } from '@/skripsi/components/dropdown/dropdown.data';
 
 const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
   const [userRole, setUserRole] = useState<number | null>(null);
@@ -54,13 +54,13 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
       <nav className=" lg:flex hidden items-center w-[60%] 2xl:w-[50%] ml-auto justify-end gap-2 lg:gap-3 xl:gap-8">
         <Dropdown links={programLinks}>Program</Dropdown>
         <Link
-          href={'/contact'}
+          href={'/'}
           className="font-inter font-medium lg:text-base text-sm"
         >
           Kontak Kami
         </Link>
         <Link
-          href={'/blog'}
+          href={'/'}
           className="font-inter font-medium lg:text-base text-sm hover:text-blue-600"
         >
           Blog
@@ -77,13 +77,13 @@ const HeaderView = ({ isTopView, headerObserver }: HeaderViewProps) => {
             <>
               <Link
                 className="px-4 lg:px-5 xl:px-8 py-1.5 lg:py-2 xl:py-3 border border-[#D0D5DD] rounded-full font-inter font-semibold"
-                href={'/auth/register'}
+                href={'/'}
               >
                 Daftar
               </Link>
               <Link
                 className="px-4 lg:px-5 xl:px-8 py-1.5 lg:py-2 xl:py-3 border border-[#D0D5DD] bg-[#FFC862] rounded-full font-inter font-semibold"
-                href={'/auth/login'}
+                href={'/'}
               >
                 Masuk
               </Link>
