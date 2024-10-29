@@ -1,25 +1,14 @@
-'use client';
-import React, { useCallback } from 'react';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
 import Add from '@/../public/icons/add.svg';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
 import { IManageModulView } from './manageModul.type';
-import Popover from '@/skripsi/backoffice/components/popover';
 import { ModulStatus } from '@/enum/enum';
 
 const ManageModulView: React.FC<IManageModulView> = ({
   data,
-  handleActionButtonRow,
-  setOpenPopoverIndex,
-  openPopoverIndex,
+  handleDeleteModulSubmit,
 }) => {
-  const renderStatus = useCallback(
-    (status: ModulStatus) => {
-      return status === ModulStatus.NON_ACTIVE ? 'Inactive' : 'Active';
-    },
-    [data],
-  );
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -129,14 +118,26 @@ const ManageModulView: React.FC<IManageModulView> = ({
                     <td className="px-6 py-4">{index + 1}</td>
                     <td className="px-6 py-4">{el.id}</td>
                     <td className="px-6 py-4">{el.name}</td>
-                    <td className="px-6 py-4">{renderStatus(el.active)}</td>
                     <td className="px-6 py-4">
-                      <button
-                        className="hover:text-red-500 hover:underline"
-                        onClick={() => handleActionButtonRow(el.id, 'delete')}
-                      >
-                        Delete
-                      </button>
+                      {el.active === ModulStatus.NON_ACTIVE
+                        ? 'Inactive'
+                        : 'Active'}
+                    </td>
+                    <td className="px-6 py-4">
+                      <form action={handleDeleteModulSubmit}>
+                        <input
+                          id="default_id"
+                          name="default_id"
+                          type="hidden"
+                          defaultValue={el.id}
+                        />
+                        <button
+                          type="submit"
+                          className="hover:text-red-500 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </form>
                     </td>
                   </tr>
                 );

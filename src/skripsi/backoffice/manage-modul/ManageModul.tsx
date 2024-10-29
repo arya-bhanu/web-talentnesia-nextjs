@@ -1,40 +1,28 @@
-'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import ManageModulView from './ManageModul.view';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteModul, fetchModules } from './api/manageModelApi';
+import { revalidateTag } from 'next/cache';
 
-const ManageModul = () => {
-  const queryClient = useQueryClient();
-  const query = useQuery({ queryKey: ['modules'], queryFn: fetchModules });
-  const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
-
-  const { mutateAsync: deleteModulAsync } = useMutation({
-    mutationKey: ['delete', 'modul'],
-    mutationFn: deleteModul,
+const ManageModul = async () => {
+  let data = await fetch(`${process.env.API_SKRIPSI}/backoffice/modul`, {
+    next: { tags: ['modules'] },
   });
-
-  const handleActionButtonRow = async (
-    id: string,
-    action: 'delete' | 'edit',
-  ) => {
-    switch (action) {
-      case 'delete':
-        await deleteModulAsync(Number(id));
-        break;
-      case 'edit':
-        break;
-      default:
-        break;
+  let posts = await data.json();
+  const handleDeleteModulSubmit = async (formData: FormData) => {
+    'use server';
+    const defaultId = formData.get('default_id');
+    try {
+      await fetch(`${process.env.API_SKRIPSI}/backoffice/modul/${defaultId}`, {
+        method: 'DELETE',
+      });
+      revalidateTag('modules');
+    } catch (err) {
+      console.error(err);
     }
-    queryClient.invalidateQueries({ queryKey: ['modules'] });
   };
   return (
     <ManageModulView
-      openPopoverIndex={openPopoverIndex}
-      setOpenPopoverIndex={setOpenPopoverIndex}
-      data={query.data}
-      handleActionButtonRow={handleActionButtonRow}
+      data={posts}
+      handleDeleteModulSubmit={handleDeleteModulSubmit}
     />
   );
 };

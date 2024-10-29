@@ -1,20 +1,12 @@
-'use client';
-import React from 'react';
 import HomeView from './Home.view';
-import { useQuery } from '@tanstack/react-query';
-import { getHomeData } from './api/home.api';
-import RenderNode from '../util/RenderNode';
 
-const Home = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['home'],
-    queryFn: getHomeData,
+const Home = async () => {
+  let data = await fetch(`${process.env.API_SKRIPSI}/cms/home/all`, {
+    next: { tags: ['home'] },
   });
-  return (
-    <RenderNode data={data} isLoading={isLoading} isError={isError}>
-      {data && <HomeView dataHome={data?.data} skeletonAnimation={isLoading} />}
-    </RenderNode>
-  );
+  let posts = await data.json();
+
+  return <HomeView dataHome={posts} skeletonAnimation={false} />;
 };
 
 export default Home;

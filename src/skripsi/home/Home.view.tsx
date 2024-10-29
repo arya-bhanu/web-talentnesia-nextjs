@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import { IHomeProps } from './home.type';
 import Hero from './components/hero';

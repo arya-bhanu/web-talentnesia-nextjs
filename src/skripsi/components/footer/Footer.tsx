@@ -1,16 +1,16 @@
-'use client';
 import React from 'react';
 import FooterView from './Footer.view';
 import { dataNavs } from './footer.data';
-import { useQuery } from '@tanstack/react-query';
-import { fetchSocialMediaLink } from './api/footer.api';
 
-const Footer = ({ className }: { className?: string }) => {
-  const query = useQuery({
-    queryKey: ['social'],
-    queryFn: fetchSocialMediaLink,
+const Footer = async ({ className }: { className?: string }) => {
+  let data = await fetch(`${process.env.API_SKRIPSI}/cms/footer/social-media`, {
+    next: { tags: ['footer'] },
   });
-  return <FooterView query={query} className={className} dataNavs={dataNavs} />;
+  let posts = await data.json();
+  console.log(posts);
+  return (
+    <FooterView data={posts.body} className={className} dataNavs={dataNavs} />
+  );
 };
 
 export default Footer;

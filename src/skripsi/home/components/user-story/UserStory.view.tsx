@@ -1,5 +1,4 @@
 'use client';
-
 import UserStoryCard from '@/skripsi/home/components/user-story/user-story-card/UserStoryCard';
 import React, { useState } from 'react';
 import { UserStorySectionViewProps } from './userStory.type';

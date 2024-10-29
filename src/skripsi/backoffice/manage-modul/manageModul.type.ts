@@ -1,5 +1,5 @@
 import { ModulStatus } from '@/enum/enum';
-import { SetStateAction } from 'react';
+import { FormEvent } from 'react';
 
 export interface APIResponseManageModul {
   id: string;
@@ -59,7 +59,5 @@ export interface ExamQuestion {
 
 export interface IManageModulView {
   data?: APIResponseManageModul[];
-  openPopoverIndex: number;
-  setOpenPopoverIndex: React.Dispatch<SetStateAction<number>>;
-  handleActionButtonRow: (id: string, action: 'delete' | 'edit') => void;
+  handleDeleteModulSubmit: (formData: FormData) => void;
 }

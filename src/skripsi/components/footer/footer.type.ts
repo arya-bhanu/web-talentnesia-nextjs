@@ -1,5 +1,6 @@
 import { UseQueryResult } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
+import { ISocialLogo } from '../social-media/components/social-logo/socialLogo.type';
 
 export interface ILink {
   label: string;
@@ -12,5 +13,5 @@ export interface FooterViewProps {
     title: string;
     links: ILink[];
   }[];
-  query: UseQueryResult<AxiosResponse<any, any>, Error>;
+  data: ISocialLogo[];
 }
