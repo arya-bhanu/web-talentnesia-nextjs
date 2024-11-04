@@ -1,18 +1,15 @@
 'use client';
 import React, { useCallback } from 'react';
 import Search from '@/../public/icons/iconamoon_search-bold.svg';
-import Add from '@/../public/icons/add.svg';
 import IconLeft from '@/../public/icons/btn-left.svg';
 import IconRight from '@/../public/icons/btn-right.svg';
 import { IManageModulView } from './manageModul.type';
-import Popover from '@/skripsi/backoffice/components/popover';
 import { ModulStatus } from '@/enum/enum';
 
 const ManageModulView: React.FC<IManageModulView> = ({
   data,
   handleActionButtonRow,
-  setOpenPopoverIndex,
-  openPopoverIndex,
+  handleFetchData,
 }) => {
   const renderStatus = useCallback(
     (status: ModulStatus) => {
@@ -40,9 +37,11 @@ const ManageModulView: React.FC<IManageModulView> = ({
             />
           </div>
         </form>
-        <button className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">
-          <Add />
-          <span className="text-black"> Add Modul</span>
+        <button
+          onClick={handleFetchData}
+          className="flex items-center focus:outline-none text-white bg-[#FFC862] hover:bg-yellow-400 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+        >
+          <span className="text-black"> Start testing</span>
         </button>
       </div>
       <div className="overflow-x-auto max-h-[60vh] overflow-y-auto shadow-md sm:rounded-lg mt-5">

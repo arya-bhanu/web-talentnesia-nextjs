@@ -9,3 +9,8 @@ export const fetchModules = async () => {
 export const deleteModul = async (id: number) => {
   return await skripsiAxios.delete(`/backoffice/modul/${id}`);
 };
+
+export const startTesting = async () => {
+  const response = await skripsiAxios.post('/backoffice/modul/test');
+  return response.data;
+};
