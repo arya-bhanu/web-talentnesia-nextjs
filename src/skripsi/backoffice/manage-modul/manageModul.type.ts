@@ -58,6 +58,8 @@ export interface ExamQuestion {
 }
 
 export interface IManageModulView {
+  revalidateFunc: () => void;
+  handleStartExperiment: () => void;
   data?: APIResponseManageModul[];
   handleDeleteModulSubmit: (formData: FormData) => void;
 }
