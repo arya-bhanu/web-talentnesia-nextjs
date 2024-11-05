@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache';
 
 const ManageModul = async () => {
   let data = await fetch(`${process.env.API_SKRIPSI}/backoffice/modul`, {
-    next: { tags: ['modules'] },
+    next: { tags: ['modules'], revalidate: 1500 },
   });
   let posts = await data.json();
   const handleDeleteModulSubmit = async (formData: FormData) => {
