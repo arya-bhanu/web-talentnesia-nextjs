@@ -10,7 +10,7 @@ const ManageModul = () => {
   const query = useQuery({
     queryKey: ['modules'],
     queryFn: fetchModules,
-    refetchInterval: intervalActive ? 1500 : undefined,
+    refetchInterval: intervalActive ? 1000 : undefined,
   });
   const [openPopoverIndex, setOpenPopoverIndex] = useState(-1);
 
