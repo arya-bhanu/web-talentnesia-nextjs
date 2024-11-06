@@ -5,4 +5,5 @@ export interface courses {
   rating_star: number;
   original_price: number;
   discounted_price: number;
+  number: number;
 }

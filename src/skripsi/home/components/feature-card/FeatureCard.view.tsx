@@ -31,6 +31,7 @@ const FeatureCardView = (props: courses) => {
     <figure className="border border-[#EAECF0] rounded-md overflow-clip">
       <div className="h-[180px] overflow-clip w-full">
         <Image
+          id={props.number === 0 ? 'data-image-class' : undefined}
           alt="card image"
           src={props.img}
           width={400}
