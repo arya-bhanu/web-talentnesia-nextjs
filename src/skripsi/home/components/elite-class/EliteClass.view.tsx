@@ -17,7 +17,16 @@ const EliteClassSectionView: React.FC<EliteClassSectionViewProps> = ({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 md:mt-7 lg:mt-9 gap-10">
         {dataApi.class.map((course, index: number) => (
-          <FeatureCard key={index} {...course} />
+          <FeatureCard
+            key={index}
+            number={index}
+            description={course.description}
+            discounted_price={course.discounted_price}
+            img={course.img}
+            original_price={course.original_price}
+            rating_star={course.rating_star}
+            title={course.title}
+          />
         ))}
       </div>
     </section>
