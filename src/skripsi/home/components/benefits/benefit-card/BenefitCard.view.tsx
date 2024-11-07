@@ -6,9 +6,11 @@ import { IBenefitCard } from './benefitCard.type';
 const BenefitCardView = ({
   className,
   props,
+  number,
 }: {
   className?: string;
   props: IBenefitCard;
+  number: number;
 }) => {
   return (
     <figure
@@ -19,6 +21,7 @@ const BenefitCardView = ({
       )}
     >
       <Image
+        id={number === 0 ? 'data-image-benefit' : undefined}
         alt="benefit image"
         src={props.img_icon}
         width={75}

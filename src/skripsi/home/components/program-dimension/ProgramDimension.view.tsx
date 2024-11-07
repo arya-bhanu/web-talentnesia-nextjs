@@ -18,7 +18,11 @@ const ProgramDimensionSectionView: React.FC<ProgramDimensionProps> = ({
       <div className="mt-4 md:mt-7 lg:mt-10 flex gap-6 md:gap-7 lg:gap-10 md:flex-row flex-col flex-wrap">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 flex-[3] gap-0 sm:gap-2 md:gap-5">
           {programs.map((program, index) => (
-            <ProgramDimensionCard key={program.title + index} {...program} />
+            <ProgramDimensionCard
+              key={program.title + index}
+              {...program}
+              number={index}
+            />
           ))}
         </div>
         <div className="bg-[#E0F7FA] rounded-[8px] w-fit px-3 lg:px-4 xl:px-7 py-4 md:py-6 lg:py-8 flex-1 flex flex-col justify-between">

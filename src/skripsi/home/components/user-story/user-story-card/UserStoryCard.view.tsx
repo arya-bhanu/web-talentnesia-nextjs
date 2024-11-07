@@ -24,6 +24,7 @@ const UserStoryCardView: React.FC<UserStoryCardViewProps> = ({
           <div className="flex-[1] relative">
             <figure className="static lg:absolute bottom-0 bg-[#0097A7] rounded-b-3xl rounded-t-2xl left-0 xl:left-5 lg:flex-row flex-col lg:items-start items-center">
               <Image
+                id={activeNumber === 0 ? 'data-image-user' : undefined}
                 alt="user story photo"
                 src={currentTestimonial.img_url}
                 width={200}

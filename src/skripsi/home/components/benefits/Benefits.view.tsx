@@ -46,7 +46,7 @@ const BenefitsSectionView = ({
       >
         {dataBenefits.map((el, index) => (
           <SwiperSlide key={index}>
-            <BenefitCard props={{ ...el }} />
+            <BenefitCard props={{ ...el }} number={index} />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -2,10 +2,11 @@ import Image from 'next/image';
 import React from 'react';
 import { Programs } from './programDimensionCard.type';
 
-const ProgramDimensionCardView = ({ img_icon, title }: Programs) => {
+const ProgramDimensionCardView = ({ img_icon, title, number }: Programs) => {
   return (
     <div className="p-2 flex flex-col md:items-start items-center md:p-3 lg:p-5 hover:bg-[#EFF8FF] transition">
       <Image
+        id={number === 0 ? 'data-image-program' : undefined}
         alt={'icon program'}
         src={img_icon}
         width={50}
