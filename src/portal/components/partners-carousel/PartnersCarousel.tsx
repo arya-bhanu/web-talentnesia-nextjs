@@ -24,6 +24,7 @@ const PartnersCarousel = ({
         {partners.map((partner, index: number) => (
           <Link href={partner.url_link || '/'} key={index}>
             <Image
+              id={index === 0 ? 'data-image-partners' : undefined}
               alt="partner image"
               src={partner.img_url}
               width={120}
