@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import clsx from 'clsx';
-import GlobalProvider from '@/utils/GlobalProvider';
 import { ThemeModeScript } from 'flowbite-react/components/ThemeModeScript';
-
 
 import 'flatpickr/dist/flatpickr.css';
 import 'react-quill/dist/quill.core.css';
@@ -30,7 +28,7 @@ export default function RootLayout({
         <ThemeModeScript />
       </head>
       <body suppressHydrationWarning={true} className={clsx(inter.className)}>
-        <GlobalProvider>{children}</GlobalProvider>
+        {children}
       </body>
     </html>
   );
