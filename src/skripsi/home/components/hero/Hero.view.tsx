@@ -33,7 +33,7 @@ const HeroSectionView = ({
             {dataHero.subheading}
           </p>
           <RoundedPrimaryButton className="px-5 py-2.5 font-poppins mt-14">
-            Start Your Career
+            Mulai Perjalanan Karirmu
           </RoundedPrimaryButton>
         </div>
         <div className="flex-[2] justify-end lg:flex hidden">
