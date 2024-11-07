@@ -2,15 +2,20 @@
 import React from 'react';
 import FooterView from './Footer.view';
 import { dataNavs } from './footer.data';
-import { useQuery } from '@tanstack/react-query';
-import { fetchSocialMediaLink } from './api/footer.api';
+import { useFetch } from '@/skripsi/hooks/useFetch';
 
 const Footer = ({ className }: { className?: string }) => {
-  const query = useQuery({
-    queryKey: ['social'],
-    queryFn: fetchSocialMediaLink,
-  });
-  return <FooterView query={query} className={className} dataNavs={dataNavs} />;
+  const url = process.env.NEXT_PUBLIC_API_SKRIPSI_URL;
+  const { data, loading, error } = useFetch(`${url}/cms/footer/social-media` || '');
+  return (
+    <FooterView
+      data={data}
+      error={error}
+      loading={loading}
+      className={className}
+      dataNavs={dataNavs}
+    />
+  );
 };
 
 export default Footer;

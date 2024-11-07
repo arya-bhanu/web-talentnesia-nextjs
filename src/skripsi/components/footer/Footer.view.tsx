@@ -5,16 +5,19 @@ import NavLinks from '@/portal/components/nav-links';
 import Arrow from '@/../public/icons/arrow-right-sharp.svg';
 import { FooterViewProps } from './footer.type';
 
-const FooterView = ({ className, dataNavs, query }: FooterViewProps) => {
+const FooterView = ({
+  className,
+  dataNavs,
+  data,
+  error,
+  loading,
+}: FooterViewProps) => {
   return (
     <footer className={clsx(className, 'py-4 md:py-9 lg:py-12')}>
       <div className="container  flex justify-between md:flex-row flex-col gap-3 md:gap-0">
         <div>
-          {!query.isLoading && query.data?.data && (
-            <SocialMedia
-              isLoading={query.isLoading}
-              dataSocialMedia={query.data?.data?.body}
-            />
+          {!loading && data && (
+            <SocialMedia isLoading={loading} dataSocialMedia={data.body} />
           )}
           <p className="mt-3 sm:mt-4 font-inter text-[#999999] text-sm">
             Copyright 2023 Skripsidev - All Right Reserved

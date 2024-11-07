@@ -1,5 +1,3 @@
-import { UseQueryResult } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
 
 export interface ILink {
   label: string;
@@ -12,5 +10,7 @@ export interface FooterViewProps {
     title: string;
     links: ILink[];
   }[];
-  query: UseQueryResult<AxiosResponse<any, any>, Error>;
+  data: undefined | any;
+  loading: boolean;
+  error: undefined | any;
 }

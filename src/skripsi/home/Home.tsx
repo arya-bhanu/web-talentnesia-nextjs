@@ -1,18 +1,15 @@
 'use client';
 import React from 'react';
 import HomeView from './Home.view';
-import { useQuery } from '@tanstack/react-query';
-import { getHomeData } from './api/home.api';
 import RenderNode from '../util/RenderNode';
+import { useFetch } from '../hooks/useFetch';
 
 const Home = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['home'],
-    queryFn: getHomeData,
-  });
+  const url = process.env.NEXT_PUBLIC_API_SKRIPSI_URL;
+  const { data, loading, error } = useFetch(`${url}/cms/home/all` || '');
   return (
-    <RenderNode data={data} isLoading={isLoading} isError={isError}>
-      {data && <HomeView dataHome={data?.data} skeletonAnimation={isLoading} />}
+    <RenderNode data={data} isLoading={loading} isError={error}>
+      {data && <HomeView dataHome={data} skeletonAnimation={loading} />}
     </RenderNode>
   );
 };
