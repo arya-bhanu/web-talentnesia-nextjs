@@ -5,11 +5,15 @@ import { IBenefitCard } from './benefitCard.type';
 const BenefitCard = ({
   className,
   props,
+  number,
 }: {
   className?: string;
   props: IBenefitCard;
+  number: number;
 }) => {
-  return <BenefitCardView className={className} props={props} />;
+  return (
+    <BenefitCardView className={className} props={props} number={number} />
+  );
 };
 
 export default BenefitCard;
