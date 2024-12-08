@@ -3,7 +3,7 @@ import FooterView from './Footer.view';
 import { dataNavs } from './footer.data';
 
 const Footer = async ({ className }: { className?: string }) => {
-  let data = await fetch(`${process.env.API_SKRIPSI}/cms/footer/social-media`, {
+  let data = await fetch(`${process.env.API_SKRIPSI}/cms/home/footer/social-media`, {
     next: { tags: ['footer'] },
   });
   let posts = await data.json();
