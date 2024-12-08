@@ -6,7 +6,7 @@ import { useFetch } from '@/skripsi/hooks/useFetch';
 
 const Footer = ({ className }: { className?: string }) => {
   const url = process.env.NEXT_PUBLIC_API_SKRIPSI_URL;
-  const { data, loading, error } = useFetch(`${url}/cms/footer/social-media` || '');
+  const { data, loading, error } = useFetch(`${url}/cms/home/footer/social-media` || '');
   return (
     <FooterView
       data={data}
